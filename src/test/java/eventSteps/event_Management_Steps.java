@@ -54,7 +54,8 @@ public class event_Management_Steps {
 	
 	
 	@Then("the event is added to admin requst")
-	public void theEventIsAddedToAdminRequst() {  event.addEventToFile(event,"event.txt");}
+	public void theEventIsAddedToAdminRequst() throws Exception {  event.addEventToFile(event,"event.txt");
+	}
 
 
 	
@@ -129,7 +130,7 @@ public class event_Management_Steps {
 
 	
 	@Then("the event is successfully created in the system")
-	public void theEventIsSuccessfullyCreatedInTheSystem() { assertTrue(event.creat=true); event.addEventToFile(event,"event.txt");}
+	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(event.creat=true); event.addEventToFile(event,"event.txt");}
 	
 
  ////////////////////////////////////

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,29 +48,74 @@ public class Event {
 
    
     
-    public  void addEventToFile(Event event,String filename)
+    public static Event getEventFromLine(String line) {
+        Event event = new Event();
+        String inputString1,inputString2;
+        int eventID =0;  int attendeeCount=0;
+        String[] items = line.split(",");
+        if (items.length >= 9) {
+        	 String name = items[0];
+             String date = items[1];
+             String time = items[2];
+             String description = items[3];             
+             String UID = items[5];
+             String theme = items[6];
+             String category = items[7];
+             
+             try {
+            	 
+                 inputString1 = items[8];
+                 eventID = Integer.parseInt(inputString1);
+                 
+                 inputString2=items[4];
+                attendeeCount=Integer.parseInt(inputString2);
+                
+             } catch (NumberFormatException EE) {
+                 System.err.println("Invalid input: " + EE.getMessage());
+             }
+             
+             event.setName(name);
+             event.setDate(date);
+             event.setTime(time);
+             event.setDescription(description);
+             event.setUID(UID);
+             event.setTheme(theme);
+             event.setCategory(category);
+             event.setEID(eventID);
+             event.setAttendeeCount(attendeeCount);   
+        }
+        return event;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public  void addEventToFile(Event event,String filename) throws Exception
     {
-        try {
-        	
-            FileWriter eventsFile = new FileWriter(filename, true);
-            eventsFile.append(event.getName()).append(" , ")
-                    .append(event.getDate()).append(" , ")
-                    .append(event.getTime()).append(" , ")
-                    .append(event.getDescription()).append(" , ")
-                    .append(String.valueOf(event.getAttendeeCount())).append(" , ")
-                    .append(event.getUID()).append(" , ")
-                    .append(event.getCategory()).append(" , ")
-                    .append(event.getTheme()).append(" , ")
-                    .append(Integer.toString(event.getEID())).append(" , ");
-
-                    //.append("\n");
-            printing.printSomething("added");
-            eventsFile.close();
-        } catch (IOException e)
-        {
-            
-			printing.printSomething("An error occurred: " + e.getMessage());
-       }
+    	 RandomAccessFile file = new RandomAccessFile(filename, "rw");
+         long fileLength = file.length();
+         file.seek(fileLength-1); // Move the file pointer to the end of the file
+         file.writeBytes(
+             event.getName() + " , " +
+            		 event.getDate() + " , " +
+            		 event.getTime() + " , " +
+            		 event.getDescription() + " , " +
+            		 event.getAttendeeCount() + " , " +
+            		 event.getUID() + " , " +
+            		 event.getCategory() + " , " +
+            		 event.getTheme() + " , " +
+            		 event.getEID()+'\n'
+         );
+         file.close();
+         printing.printSomething("added");
     }
  
     public static  Event findeventID(int Eid,String filename) {
@@ -105,7 +151,7 @@ public class Event {
         String inputString;
         int eventID =0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            int currentLine = 1;
+            int  currentLine=1;
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
                 if (items.length >= 9) {
@@ -261,14 +307,24 @@ public class Event {
 		
 		
 		
-            addEventToFile(toupdatedEvent, filename);
-		
-		
+           addEventToFile(toupdatedEvent, filename);
+          
+            
+           
+        } 
+          
+            
+            
+            
+            
+            
+            
+  return toupdatedEvent ;          
 		
  }
 		
-		return toupdatedEvent ;
-}
+		
+
     
     
     

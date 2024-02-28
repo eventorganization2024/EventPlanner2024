@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -44,7 +44,7 @@ public class Functions {
 	    private String password;
 	    
 ///////////////////////////////////////////////////////////////////////////////////////	    
-	    void addevent() throws IOException, ParseException {
+	    void addevent() throws Exception {
 	              event_obj = new Event();
 	            
 	               event_obj.setUID(this.id);
@@ -359,6 +359,60 @@ addProviderToFile(provider_obj);
 	                "\n|   3. DELETE                           |"+"\n|   4. EDIT                             |"+
 	                "\n|   5.                                  |"+"\n|   6.                                  |"+
 	                "\n|   7. Log Out                          |\n"+SPACE+"\n"+LINE+"\n");}
+
+	public void viewallcustomers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void viewalleventsforAdmin() {
+		 List<Event> events = new ArrayList<>();
+		  String filename = "event.txt";
+		  Event event = new Event();
+		  
+		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+		        String line;
+		       while ((line = reader.readLine()) != null) {
+		           
+		          event=event.getEventFromLine(line);
+		           
+		           events.add(event);
+		        }
+		    } catch (Exception e) {
+		       e.printStackTrace();
+		    }
+
+		    for (Event event1 : events) {
+		      printing.printSomething(event1.getName().toString()+"\n");
+		       
+		    }
+	
+	
+	
+	
+	}
+
+	public void viewallVenuesforAdmin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void viewallProviders() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void viewCostomerevents() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void viewallVenuesforCoustmer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	    
       
 ///////////////////////////////////////////////////////////////////////////////////////	    
