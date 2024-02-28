@@ -1,6 +1,33 @@
 package org.example;
 import java.util.*;
 
+
+public class Main {
+	 public static void main(String[] args) throws  Exception {
+
+		 Scanner scanner = new Scanner(System.in);
+		
+		// Event newEvent2 = new Event("Birthday Party", "2024-2-3", "10:00 AM", "A celebration", 50, "user123", "Party", "Birthday",12);
+   
+		 
+	// newEvent1.addEventToFile(newEvent1, "event.txt"); 
+	//	 newEvent2.addEventToFile(newEvent2, "event.txt");
+ //newEvent1.deleteevent(newEvent1,"event.txt",11);
+		// newEvent.findevent(120,"event.txt");
+		//newEvent1.updateEvent(99, "event.txt");
+      
+	 }
+	 
+
+
+}
+
+
+
+
+
+
+/*
 public class Main {
 	 public static void main(String[] args) throws  Exception {
 	        Functions functions = new Functions();
@@ -41,3 +68,4 @@ public class Main {
 	        }
 	    }
 }
+*/

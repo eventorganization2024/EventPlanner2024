@@ -47,14 +47,15 @@ public class Functions {
 	    void addevent() throws IOException, ParseException {
 	              event_obj = new Event();
 	            
-	               event_obj.setID(this.id);
+	               event_obj.setUID(this.id);
+	               
 	               printing.printSomething("Enter event name:");
 	               event_obj.setName(scanner.next());
 	               
 	              	              
 	               printing.printSomething("Enter event date (yyyy-MM-dd):");
 	               String dateInput = scanner.next();
-	               event_obj.setDate(java.sql.Date.valueOf(dateInput));
+	               event_obj.setDate(dateInput);
 	               
 	               printing.printSomething("Enter event time:");
 	               event_obj.setTime(scanner.next());
@@ -62,11 +63,14 @@ public class Functions {
 	               event_obj.setDescription(scanner.next());
 	               printing.printSomething("Enter event attendee count:");
 	               event_obj.setAttendeeCount(Integer.parseInt(scanner.next()));
-	               
+	               printing.printSomething("Enter event theme :");
+		           event_obj.setTheme(scanner.next());   
+		           printing.printSomething("Enter event category:");
+		              event_obj.setCategory(scanner.next());
 	               
 	               printing.printSomething("\n done successfully\n");
 	               events.add(event_obj);
-	              event_obj.addEventToFile(event_obj);
+	              event_obj.addEventToFile(event_obj,"requst");
 	           }
 	       
 ///////////////////////////////////////////////////////////////////////////////////////	    
@@ -117,7 +121,8 @@ public class Functions {
 	            printing.printSomething(ENTER_CHOICE);
 	            int c = scanner.nextInt();
 	              if (c == 1) 
-	               {EventManagementAdminPageList();break;}
+	               {    addevent();}
+	            	  //EventManagementAdminPageList();break;}
 	              else if (c == 2) {
 	            	UserManagementAdminPageList();break;
 	            } else if (c == 3) {
