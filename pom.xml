@@ -36,7 +36,12 @@
     </dependency>
 
        
-    </dependencies>
+    <dependency>
+    	<groupId>Event.Planner</groupId>
+    	<artifactId>event_planner</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+   </dependencies>
  
   
   

@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.example.Customer;
 import org.example.Event;
+import org.example.Functions;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -50,7 +51,8 @@ public class event_Management_Steps {
 	        event.setCategory(string5);
 	        event.setTheme(string6);
 	        event.setEID(int2);
-	        event.setUID(customer.getId());}
+	        event.setUID(customer.getId());
+	   	 Functions.addEmptyLine("event.txt");}
 	
 	
 	@Then("the event is added to admin requst")
@@ -130,7 +132,9 @@ public class event_Management_Steps {
 
 	
 	@Then("the event is successfully created in the system")
-	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(event.creat=true); event.addEventToFile(event,"event.txt");}
+	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(event.creat=true); 
+
+	event.addEventToFile(event,"event.txt");}
 	
 
  ////////////////////////////////////

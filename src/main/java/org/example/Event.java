@@ -102,7 +102,7 @@ public class Event {
     {
     	 RandomAccessFile file = new RandomAccessFile(filename, "rw");
          long fileLength = file.length();
-         file.seek(fileLength-1); // Move the file pointer to the end of the file
+         file.seek(fileLength-1); 
          file.writeBytes(
              event.getName() + " , " +
             		 event.getDate() + " , " +
@@ -112,7 +112,7 @@ public class Event {
             		 event.getUID() + " , " +
             		 event.getCategory() + " , " +
             		 event.getTheme() + " , " +
-            		 event.getEID()+'\n'
+            		 event.getEID()+"\n"
          );
          file.close();
          printing.printSomething("added");
@@ -120,6 +120,8 @@ public class Event {
  
     public static  Event findeventID(int Eid,String filename) {
     	String line;
+    	 String inputString;
+         int Event_id =0;
 		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
     	{   int currentLine = 1;
             while ((line = reader.readLine()) != null)
@@ -134,8 +136,22 @@ public class Event {
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-                int Event_id = Integer.parseInt(items[8]);
+                
+               // int Event_id = Integer.parseInt(items[8]);
              
+                
+                try {
+                    inputString = items[8];
+                    Event_id = Integer.parseInt(inputString);
+                    
+                   
+                    System.out.println("Event ID: " + Event_id);
+                } catch (NumberFormatException EE) {
+                    System.err.println("Invalid input: " + EE.getMessage());
+                }
+                
+                
+                
             if (Event_id==Eid) 
             { return new Event(name, date, time, description, attendeeCount, UID,theme,cate,Eid);
             }else currentLine ++; 

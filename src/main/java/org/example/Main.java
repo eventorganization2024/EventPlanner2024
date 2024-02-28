@@ -7,6 +7,13 @@ public class Main {
 
 		 Scanner scanner = new Scanner(System.in);
 		 Functions functions = new Functions();
+		 Customer c=new Customer("12114555","Ansam","057806241","Nablus","123456","ansam@gmail.com",0);
+		 c.addCustomerToFile(c, "customer.txt");
+		 
+		 
+		 
+		 
+		 
 		 
 		// functions.viewalleventsforAdmin();
 		 Event newEvent2 = new Event("Birthday Party", "2024-2-3", "10:00 AM", "A celebration", 50, "user123", "Party", "Birthday",12);

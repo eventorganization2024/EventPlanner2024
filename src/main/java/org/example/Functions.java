@@ -383,12 +383,21 @@ addProviderToFile(provider_obj);
 		    }
 
 		    for (Event event1 : events) {
-		      printing.printSomething(event1.getName().toString()+"\n");
+		      printing.printSomething(event1.getName().toString()+"\n");}
 		       
 		    }
 	
 	
-	
+/////////////////////////////////////////////////////////////////////////////////
+		    public static void addEmptyLine(String filename) {
+		        try (FileWriter fileWriter = new FileWriter(filename, true)) {
+		            fileWriter.write("\n");
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            // Handle exception as needed
+		        }
+		    
+		    ///////////////////////////////////////////
 	
 	}
 
