@@ -5,8 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.logging.Level;
 import java.util.logging.*;
-import event_planner.Admin;
-import event_planner.User;
+import org.example.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -32,8 +31,8 @@ public class LogInSteps {
 
     @Given("The user has entered all the data correctly  {string} , {string}")
     public void the_user_has_entered_all_the_data_correctly(String string, String string2) {
-        u.setUserName(string);
-        u.setPass(string2);
+        u.setName(string);
+        u.setPassword(string2);
         u.loginCH(string, string2);
     }
 

@@ -3,7 +3,7 @@ package eventSteps;
 import static org.junit.Assert.assertTrue;
 import java.util.logging.Level;
 import java.util.logging.*;
-import event_planner.User;
+import org.example.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -23,8 +23,8 @@ public class UserRegSteps {
 	@Given("there is a User with User ID {string} ,NAME {string} , PASSWORD {string} , phone {string}, address {string}")
 	public void thereIsAUserWithUserIDNAMEPASSWORDPhoneAddress(String string, String string2, String string3, String string4, String string5) {
 		 u.setId(string);
-	        u.setUserName(string2);
-	        u.setPass(string3);
+	        u.setName(string2);
+	        u.setPassword(string3);
 	        u.setPhone(string4);
 	        u.setAddress(string5);
 	        u.setType("customer");

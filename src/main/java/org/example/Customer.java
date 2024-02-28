@@ -51,7 +51,8 @@ public class Customer extends User {
 	                customer.getphone() + " , " +
 	                customer.getaddress() + " , " +
 	                customer.getEmail() + " , " +
-	                customer.getPassword() + "\n"
+	                customer.getPassword() + ","+
+	                customer.getNumOfEvents()+"\n"
 	        );
 
 	        printing.printSomething("added");
@@ -62,24 +63,32 @@ public class Customer extends User {
     
     
     
-    
-    
-    
-    
-    
-    
-    
+        
     
     public static Customer getCustomerFromLine(String line){
         Customer customer1 = new Customer();
-        String[] items = line.split(" , ");
-        if (items.length >= 6) {
+        String inputString1;
+        int num=0;
+        String[] items = line.split(",");
+        if (items.length >= 7) {
             customer1.setId(items[0]);
             customer1.setName(items[1]);
             customer1.setPhone(items[2]);
             customer1.setAddress(items[3]);
             customer1.setEmail(items[4]);
             customer1.setPassword(items[5]);
+                                  
+            try {
+           	 
+                inputString1 = items[6];
+                num = Integer.parseInt(inputString1);
+                customer1.setNumOfEvents(num);
+                   
+            } catch (NumberFormatException EE) {
+                System.err.println("Invalid input: " + EE.getMessage());
+            }
+      
+            
         } else {
         
             System.err.println("Invalid line format: " + line);
