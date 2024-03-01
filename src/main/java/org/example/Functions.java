@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
+
 import org.example.*;
 
 
@@ -27,6 +29,8 @@ public class Functions {
 	    boolean found;
 	    String tmp;
 	    Admin admin = new Admin();
+	    static Customer customer1 = new Customer();
+	    static Event event1=new Event();
 	   public final ArrayList<Customer> customers = new ArrayList<>();
 	   private final ArrayList<Provider> providers = new ArrayList<>();
 	   private final ArrayList<Event> events = new ArrayList<>();
@@ -73,15 +77,15 @@ public class Functions {
 	              
 	               printing.printSomething("\n"+"Enter event Id:");
 		           id = scanner.next();	               
-	               int idInt= Integer.parseInt(id);
-	               
-	               if (searchIdE(idInt, "requst.txt")&& searchIdE(idInt, "event.txt")) { found =true ;}	              
+	              
+	               if (searchIdE(id, "requst.txt")|| searchIdE(id, "event.txt")) { found =true ;}else found=false;	              
 	               if (found)
-	               { printing.printSomething("This account is already existed, Please Sign in."); return null;
-	               // signInFunction();}     
-	               }   
+	               { printing.printSomething("This account is already existed, Please Sign in."); 
+	               addevent(Userid, filename);return null; }
+	                   
+	                 
 	             else  {   
-	            	 event_obj.setEID(idInt);
+	              event_obj.setEID(id);
 	               event_obj.setUID(Userid);		                
 	               printing.printSomething("Enter event name:");
 	               event_obj.setName(scanner.next());
@@ -93,7 +97,7 @@ public class Functions {
 	               printing.printSomething("Enter event description:");
 	               event_obj.setDescription(scanner.next());
 	               printing.printSomething("Enter event attendee count:");
-	               event_obj.setAttendeeCount(Integer.parseInt(scanner.next()));
+	               event_obj.setAttendeeCount(scanner.next());
 	               printing.printSomething("Enter event theme :");
 		           event_obj.setTheme(scanner.next());   
 		           printing.printSomething("Enter event category:");
@@ -105,10 +109,24 @@ public class Functions {
 	              
 	
 	
-	          public void  delete_Event_from_arraylist(String filename,int eventid){
+	          public void  delete_Event_from_arraylist(String filename,String eventid){
               for (Event e : events) 
 	           if (e.getEID()== eventid) {events.remove(e);} }
-	
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+	          public void updateEventListFromFile(String filename) {
+	        	    events.clear(); // Clear existing data
+	        	    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+	        	        String line;
+	        	        while ((line = br.readLine()) != null) {
+	        	            Event event = Event.getEventFromLine(line); // Assuming you have a method to create Event objects from a line
+	        	           
+	        	            events.add(event);
+	        	        }
+	        	    } catch (IOException e) {
+	        	        printing.printSomething("Error reading event data: " + e.getMessage());
+	        	    }
+	        	}
+
 	    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
 	  
@@ -124,20 +142,27 @@ public class Functions {
 	    
 	  
 	  public void viewCostomerevents( String Cid) {
-			
+		 
+		  updateEventListFromFile("event.txt");
+          updateEventListFromFile("requst.txt");               
+          updateCustomersList();  
+          
 		  System.out.println("Customer Events:");
-		    for (Customer customer : customers) {
-		        if (customer.getId().equals(Cid)) {
-		            List<Event> allCustomerevents = customer.getEvents();
-		            for (Event event : allCustomerevents) {
-		                System.out.println(event); 
-		            }
-		            return; 
-		        }
-		    }
-		    System.out.println("Customer not found or has no events.");
-
-		     }	     	    
+		  for (Customer customer : customers) {
+		      if (customer.getId().equals(Cid)) {
+		          List<Event> allCustomerevents = customer.getEvents();
+		          if (allCustomerevents != null && !allCustomerevents.isEmpty()) {
+		              for (Event event : allCustomerevents) {
+		                  System.out.println(event); 
+		              }
+		          } else {
+		              System.out.println("Customer found, but has no events.");
+		          }
+		          return;
+		      }
+		  }
+		  System.out.println("Customer not found.");
+  }	     	    
 		    
 		
 
@@ -174,14 +199,14 @@ public class Functions {
 	    }
 	    
 	    
-	    boolean searchIdE(int id, String filename) {
+	    boolean searchIdE(String id2, String filename) {
 	        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 	            String line;
 	            while ((line = br.readLine()) != null) {
 	                String[] items = line.split(" , ");
 	                if (items.length >= 9) {
-	                    int event_id = Integer.parseInt(items[8].trim());
-	                    if (event_id == id) {
+	                    String event_id =items[8].trim();
+	                    if (event_id .equals(id2)) {
 	                        return true; // Return true if the ID is found
 	                    }
 	                }
@@ -445,8 +470,8 @@ addProviderToFile(provider_obj);
 	        );}
 	  public void customerPageList(){
 	        printing.printSomething("\n------- Welcome to Customer Page -------\n"+SPACE+"\n|        1. Update My Profile          |"+
-	                "\n|        2. Make An Order              |"+"\n|        3. Update Order               |"+
-	                "\n|        4. Cancel Order               |"+ "\n|        5. Invoices                   |"+
+	                "\n|        2. Make An Event              |"+"\n|        3. Update Event                |"+
+	                "\n|        4. Cancel Event               |"+ "\n|        5. Invoices                   |"+
 	                "\n|        6. Delete My Profile          |"+"\n|        7. Log Out                    |\n"+SPACE+"\n"+LINE+"\n"
 	                +ENTER_CHOICE );
 	    }
@@ -605,7 +630,7 @@ addProviderToFile(provider_obj);
         }
     }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void updateCustomerFile() {
         try {
             FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME);
@@ -623,7 +648,7 @@ addProviderToFile(provider_obj);
             printing.printSomething("An error occurred while updating the customer file: " + e.getMessage());
         }
     }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     void updateCustomersList() {
         String line;
         customers.clear();
@@ -656,7 +681,7 @@ addProviderToFile(provider_obj);
         }
     } 
     
-    
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     public void updateCustomerProfile(int n) throws IOException {
         String tmp1;
         for (Customer customer1 : customers) {
@@ -729,7 +754,7 @@ addProviderToFile(provider_obj);
         }
     }
 
-    
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////   
     public static void updateFile(String filePath, String oldValue, String newValue) throws IOException {
         RandomAccessFile file = new RandomAccessFile(filePath, "rw");
         String line;
@@ -746,60 +771,48 @@ addProviderToFile(provider_obj);
     }
     
     
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void customerOptions(int x) throws Exception {
+    	
         switch (x){
             case 1:
                 updateCustomersList();
                 printing.printSomething("Which info you want to update?\n1. Name  2.Phone  3. Address  4. Email"+"\n"+ENTER_CHOICE);
                 updateCustomerProfile(scanner.nextInt());
                 break;
-           /* case 2:
-                updateOrdersList();
-                n = orders.size();
+            case 2:
+                updateEventListFromFile("event.txt");
+                updateEventListFromFile("requst.txt");               
                 updateCustomersList();
-                customer2.setId(id);
-                int l = getLineIndexById(CUSTOMER_FILE_NAME, id);
-                System.out.println(l);
-                do {
-                    n++;
-                    Order order = new Order(n);
-                    order.setStatus(Order.Status.WAITING);
-                    order.setCustomerId(id);
-                    do {
-                        Product product = new Product();
-                        printing.printSomething("-----Product Information-----\n"+"Enter Name [Carpet,Cover]: ");
-                        product.setName(scanner.next());
-                        printing.printSomething("Enter Material [Wool,Nylon,Olefin,Polyester,Triexta,Cotton,Microfiber,Velvet]: ");
-                        product.setMaterial(scanner.next());
-                        printing.printSomething("Enter Area [Height X Width]: ");
-                        float area = scanner.nextFloat();
-                        product.setArea(area);
-                        printing.printSomething("Is required special treatment? [Yes,No]: ");
-                        product.setTreatment(scanner.next());
-                        printing.printSomething("Enter picture [picture path]: ");
-                        product.setPicture(scanner.next());
-                        product.setCustomerId(id);
-                        product.setOrderId(n);
-                        order.addProduct(product);
-                        double t = area * 10;
-                        order.setTotalPrice(t);
-                        products.add(product);
-                        addProductToFile(product);
-                        printing.printSomething("Add another product? [Yes,No]: ");
-                    } while (!scanner.next().equalsIgnoreCase("No"));
-                    customer2.addOrder(order);
-                    orders.add(order);
-                    customer2.setNumberOfOrders(orders.size());
-                    addOrderToFile(order);
-                    printing.printSomething("Add another order? [Yes,No]: ");
-                } while (!scanner.next().equalsIgnoreCase("No"));
-                replaceLastValueInLine(CUSTOMER_FILE_NAME, l, String.valueOf(customer2.getOrders().size()));
+                
+                
+                customeraddevent(customer1.getId(),"requst.txt");
+               printing.printSomething("Add another order? [Yes,No]: ");
+                while (!scanner.next().equalsIgnoreCase("No"));
                 break;
+                
+                
             case 3:
-                printing.printSomething("\n\n");
+            	             
+               //  printing.printSomething("\n "+" all events for you: ");
+               ////  customer1.setId(id);
+                 //viewCostomerevents(customer1.getId());
+                 
+                 
+                 printing.printSomething("\n"+"enter Event ID you wont to update ");
+                 String eventid=scanner.next();
+                event1.updateEvent(eventid, "requst.txt");    /////////"event.txt"
+                 
+                
+                printing.printSomething("Add another ? [Yes,No]: ");
+                while (!scanner.next().equalsIgnoreCase("No"));
+              
                 break;
-            case 4:
+                
+                
+                
+                
+          /*  case 4:
                 printing.printSomething("\n");
                 break;
             case 5:

@@ -21,19 +21,19 @@ public class Event {
     private String date;
     private String time;
     private String description;
-    private int attendeeCount;
+    private String attendeeCount;
     private String theme;
     private  String category;
 	public boolean creat=false;
 	public boolean cancel;
-	public int EVENTID;
+	public String EVENTID;
 	
    static Printing printing = new Printing();
    Functions f =new Functions();
     
     public  Event() {}
     
-    public Event(String name, String date, String time,  String description, int attendeeCount, String UserID, String theme ,String category,int Eid) {
+    public Event(String name, String date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Eid) {
         this .UserID=UserID; 
         this.name = name;
         this.date = date;
@@ -49,29 +49,20 @@ public class Event {
     
     public static Event getEventFromLine(String line) {
         Event event = new Event();
-        String inputString1,inputString2;
-        int eventID =0;  int attendeeCount=0;
+       
+        
         String[] items = line.split(",");
         if (items.length >= 9) {
         	 String name = items[0];
              String date = items[1];
              String time = items[2];
-             String description = items[3];             
+             String description = items[3];
+             String attendeeCount=items[4];
              String UID = items[5];
              String theme = items[6];
              String category = items[7];
-             
-             try {
-            	 
-                 inputString1 = items[8];
-                 eventID = Integer.parseInt(inputString1);                 
-                 inputString2=items[4];
-                attendeeCount=Integer.parseInt(inputString2);
-                
-             } catch (NumberFormatException EE) {
-                 System.err.println("Invalid input: " + EE.getMessage());
-             }
-             
+             String EID = items[8];
+  
              event.setName(name);
              event.setDate(date);
              event.setTime(time);
@@ -79,7 +70,7 @@ public class Event {
              event.setUID(UID);
              event.setTheme(theme);
              event.setCategory(category);
-             event.setEID(eventID);
+             event.setEID(EID);
              event.setAttendeeCount(attendeeCount);   
         }
         return event;
@@ -114,11 +105,11 @@ public class Event {
                      event.getUID() + " , " +
                      event.getCategory() + " , " +
                      event.getTheme() + " , " +
-                     event.getEID() + "\n"
+                     event.getEID()
              );
          } else {
              // If the file is not empty, seek to the end and then write
-             file.seek(fileLength - 1);
+             file.seek(fileLength-1);
              file.writeBytes(
                      event.getName() + " , " +
                      event.getDate() + " , " +
@@ -128,17 +119,17 @@ public class Event {
                      event.getUID() + " , " +
                      event.getCategory() + " , " +
                      event.getTheme() + " , " +
-                     event.getEID() + "\n"
+                     event.getEID()
              );
          }
          file.close();
          printing.printSomething("added");
     }
  
-    public static  Event findeventID(int Eid,String filename) {
+    public static  Event findeventID(String Eid,String filename) {
     	String line;
     	 String inputString;
-         int Event_id =0;
+         
 		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
     	{   int currentLine = 1;
             while ((line = reader.readLine()) != null)
@@ -149,16 +140,13 @@ public class Event {
                 String  date= items[1];
                 String time = items[2];
                 String description = items[3];
-                int attendeeCount = Integer.parseInt(items[4]);
+                String attendeeCount = items[4];
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-               try {inputString = items[8];
-                    Event_id = Integer.parseInt(inputString); System.out.println("Event ID: " + Event_id);
-                } catch (NumberFormatException EE) {
-                    System.err.println("Invalid input: " + EE.getMessage());
-                }
-            if (Event_id==Eid) 
+                String EID=items[8];
+               
+            if (EID.equals(Eid)) 
             { return new Event(name, date, time, description, attendeeCount, UID,theme,cate,Eid);
             }else currentLine ++; 
         } } }
@@ -170,36 +158,26 @@ public class Event {
     
     public static Event findevent(String searchCriteria, String searchType, String filename) {
         String line;
-        String inputString;
-        int eventID =0;
+     
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             int  currentLine=1;
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
                 if (items.length >= 9) {
-                    String name = items[0];
-                    String date = items[1];
+                	String name = items[0];
+                    String  date= items[1];
                     String time = items[2];
                     String description = items[3];
-                    int attendeeCount = Integer.parseInt(items[4]);
+                    String attendeeCount = items[4];
                     String UID = items[5];
-                    String theme = items[6];
-                    String category = items[7];
+                    String theme=items[6];
+                    String cate=items[7];
+                    String EID=items[8];
                     
-                    
-                    try {
-                        inputString = items[8];
-                        eventID = Integer.parseInt(inputString);
-                        
-                       
-                        System.out.println("Event ID: " + eventID);
-                    } catch (NumberFormatException EE) {
-                        System.err.println("Invalid input: " + EE.getMessage());
-                    }
                     if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(name)) {
-                        return new Event(name, date, time, description, attendeeCount, UID, theme, category, eventID);
+                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
                     } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(items[1])) {
-                        return new Event(name, date, time, description, attendeeCount, UID, theme, category, eventID);
+                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
                     } else {
                         currentLine++;
                     }
@@ -215,11 +193,11 @@ public class Event {
     
    
 	 	
-    public void delete_event_from_file_and_arraylist(Event e,String filename,int eventid)throws Exception 
+    public void delete_event_from_file_and_arraylist(Event e,String filename,String EID)throws Exception 
     { 
-    	f. delete_Event_from_arraylist(filename, eventid);
+    	//f. delete_Event_from_arraylist(filename, EID);
     	
-    	int Event_id=0;
+    	
     	ArrayList<Event> events = new ArrayList<>();   
     	String line;
     	 StringBuilder sb = new StringBuilder();
@@ -230,20 +208,18 @@ public class Event {
             if (items.length >= 9) 
             {
             	 
-            	try {Event_id = Integer.parseInt(items[8]);} catch (NumberFormatException EE) {  System.err.println("Invalid number format: " + EE.getMessage());           	}
-              
-                  if (Event_id != eventid) 
+            	   String EVENTID=items[8];
+                  if (EVENTID.equals(EID)) 
                   {
-            	   String name = items[0];
-                   String date = items[1];
-                   String time = items[2];
-                   String description = items[3];
-                   int attendeeCount = Integer.parseInt(items[4]);
-                   String UID = items[5];
-                   String theme = items[6];
-                   String cate = items[7];
-
-                   Event event = new Event(name, date, time, description, attendeeCount, UID, theme, cate, Event_id);
+                	  String name = items[0];
+                      String  date= items[1];
+                      String time = items[2];
+                      String description = items[3];
+                      String attendeeCount = items[4];
+                      String UID = items[5];
+                      String theme=items[6];
+                      String cate=items[7];                    
+                   Event event = new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
                    events.add(event);
                    sb.append(line).append("\n");
                   }   
@@ -261,7 +237,9 @@ public class Event {
    
 	     
     	
-	public Event updateEvent(int id, String filename)throws Exception {
+	public Event updateEvent(String id, String filename)throws Exception {
+		
+		
 		Event toupdatedEvent = findeventID(id, filename);
 	   delete_event_from_file_and_arraylist(toupdatedEvent, filename, id);
 		
@@ -307,7 +285,7 @@ public class Event {
                     break;
                 case "5":
                 	 printing.printSomething("Enter  new event attendee count:");
-  	                toupdatedEvent.setAttendeeCount(Integer.parseInt(scanner.next()));
+  	                toupdatedEvent.setAttendeeCount(scanner.next());
   	               break;
                 case "6":
                 	 printing.printSomething("Enter new event theme :");
@@ -324,7 +302,7 @@ public class Event {
 		
 		
            addEventToFile(toupdatedEvent, filename);
-          
+           //f.updateEventListFromFile( filename);
             
            
         } 
@@ -380,11 +358,11 @@ public class Event {
         this.description = description;
     }
 
-    public int getAttendeeCount() {
+    public String  getAttendeeCount() {
         return attendeeCount;
     }
 
-    public void setAttendeeCount(int attendeeCount) {
+    public void setAttendeeCount(String attendeeCount) {
         this.attendeeCount = attendeeCount;
     }
     
@@ -398,11 +376,11 @@ public class Event {
     
     
     
-    public int getEID() {
+    public String getEID() {
         return EVENTID;
     }
 
-    public void setEID(int ID) {
+    public void setEID(String ID) {
         this.EVENTID = ID;
     }
     

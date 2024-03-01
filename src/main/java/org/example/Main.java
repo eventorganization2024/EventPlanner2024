@@ -8,41 +8,8 @@ import java.io.*;
 
 public class Main {
 	 public static void main(String[] args) throws  Exception {
-	   
-		
-	    
-	     Functions functions = new Functions();
-	     Scanner scanner = new Scanner(System.in);
-	     
-	      
-	    Customer c1 = new Customer("1222","Ahamd","057806241","Nablus","123456","ansam@gmail.com",0);
-		c1.addCustomerToFile(c1, "customer.txt"); 
-		functions.customers.add(c1);
-		functions .customeraddevent("1222","requst.txt"); 
-		// functions.viewCostomerevents("1222");
-		 
-		 
-		  Customer c2 = new Customer("1444","Ahamd","057806241","Nablus","123456","ansam@gmail.com",0);
-		  c2.addCustomerToFile(c2, "customer.txt"); 
-			functions.customers.add(c2);
-			functions .customeraddevent("1444","requst.txt"); 
-			functions .customeraddevent("1444","requst.txt"); 
-			functions .customeraddevent("1444","requst.txt"); 
-			
-			functions.viewCostomerevents("1444");
-			functions.viewCostomerevents("1222");
-			 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	 }}	 
-		 
-	 /*
-		 Functions functions = new Functions();
+
+	   	 Functions functions = new Functions();
 	        Scanner scanner = new Scanner(System.in);
 	        Printing printing = new Printing();
 	        
@@ -118,6 +85,63 @@ public class Main {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+	    
+	     Functions functions = new Functions();
+	     Scanner scanner = new Scanner(System.in);
+	     functions.printEvents();
+	    functions. updateEventListFromFile("event.txt");
+	     functions.printEvents();
+	    Customer c1 = new Customer("1222","Ahamd","057806241","Nablus","123456","ansam@gmail.com",0);
+		c1.addCustomerToFile(c1, "customer.txt"); 
+		functions.customers.add(c1);
+		functions .customeraddevent("1222","requst.txt"); 
+		// functions.viewCostomerevents("1222");
+		 
+		 
+		  Customer c2 = new Customer("1444","Ahamd","057806241","Nablus","123456","ansam@gmail.com",0);
+		  c2.addCustomerToFile(c2, "customer.txt"); 
+			functions.customers.add(c2);
+			functions .customeraddevent("1444","requst.txt"); 
+			functions .customeraddevent("1444","requst.txt"); 
+			functions .customeraddevent("1444","requst.txt"); 
+			
+			functions.viewCostomerevents("1444");
+			functions.viewCostomerevents("1222");
+			 
+		 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 */

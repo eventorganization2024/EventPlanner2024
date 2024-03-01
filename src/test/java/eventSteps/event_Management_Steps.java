@@ -41,16 +41,16 @@ public class event_Management_Steps {
 	}
 	                                                 
 	
-	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {int}, name {string},category {string} ,theme {string},eventid {int}")
-	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, Integer int1, String string4, String string5, String string6, Integer int2) {
-	       event.setDate(string);
+	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},eventid {string}")
+	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
+       event.setDate(string);
 	        event.setTime(string2);
 	        event.setDescription(string3);
-	        event.setAttendeeCount(int1);
-	        event.setName(string4);
-	        event.setCategory(string5);
-	        event.setTheme(string6);
-	        event.setEID(int2);
+	        event.setAttendeeCount(string4);
+	        event.setName(string5);
+	        event.setCategory(string6);
+	        event.setTheme(string7);
+	        event.setEID(string8);
 	        event.setUID(customer.getId());
 	   	 Functions.addEmptyLine("event.txt");}
 	
@@ -118,16 +118,16 @@ public class event_Management_Steps {
 	public void theAdministratorIsGoingToCreateAnEvent() {event.creat=true;}
 	   
 
-  @When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {int}, name {string},category {string} ,theme {string},eventid {int}")
-   public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, Integer int1, String string4, String string5, String string6, Integer int2) {
-	event.setDate(string);
+@When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},eventid {string}")
+public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
+ 	event.setDate(string);
         event.setTime(string2);
         event.setDescription(string3);
-        event.setAttendeeCount(int1);
-        event.setName(string4);
-        event.setCategory(string5);
-        event.setTheme(string6);
-        event.setEID(int2);
+        event.setAttendeeCount(string4);
+        event.setName(string5);
+        event.setCategory(string6);
+        event.setTheme(string7);
+        event.setEID(string8);
         event.setUID(customer.getId());}
 
 	
