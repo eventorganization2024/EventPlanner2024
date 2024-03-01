@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Event {
 	private String UserID;
@@ -25,12 +26,10 @@ public class Event {
     private  String category;
 	public boolean creat=false;
 	public boolean cancel;
-	 public int EVENTID;
+	public int EVENTID;
 	
-    private static final String EVENT_FILE_NAME = "requst.txt";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    static Printing printing = new Printing();
-    
+   static Printing printing = new Printing();
+   Functions f =new Functions();
     
     public  Event() {}
     
@@ -65,8 +64,7 @@ public class Event {
              try {
             	 
                  inputString1 = items[8];
-                 eventID = Integer.parseInt(inputString1);
-                 
+                 eventID = Integer.parseInt(inputString1);                 
                  inputString2=items[4];
                 attendeeCount=Integer.parseInt(inputString2);
                 
@@ -100,20 +98,39 @@ public class Event {
     
     public  void addEventToFile(Event event,String filename) throws Exception
     {
+    	
+    	
     	 RandomAccessFile file = new RandomAccessFile(filename, "rw");
          long fileLength = file.length();
-         file.seek(fileLength-1); 
-         file.writeBytes(
-             event.getName() + " , " +
-            		 event.getDate() + " , " +
-            		 event.getTime() + " , " +
-            		 event.getDescription() + " , " +
-            		 event.getAttendeeCount() + " , " +
-            		 event.getUID() + " , " +
-            		 event.getCategory() + " , " +
-            		 event.getTheme() + " , " +
-            		 event.getEID()+"\n"
-         );
+         
+         if (fileLength == 0) {
+             // If the file is empty, no need to seek, write directly
+             file.writeBytes(
+                     event.getName() + " , " +
+                     event.getDate() + " , " +
+                     event.getTime() + " , " +
+                     event.getDescription() + " , " +
+                     event.getAttendeeCount() + " , " +
+                     event.getUID() + " , " +
+                     event.getCategory() + " , " +
+                     event.getTheme() + " , " +
+                     event.getEID() + "\n"
+             );
+         } else {
+             // If the file is not empty, seek to the end and then write
+             file.seek(fileLength - 1);
+             file.writeBytes(
+                     event.getName() + " , " +
+                     event.getDate() + " , " +
+                     event.getTime() + " , " +
+                     event.getDescription() + " , " +
+                     event.getAttendeeCount() + " , " +
+                     event.getUID() + " , " +
+                     event.getCategory() + " , " +
+                     event.getTheme() + " , " +
+                     event.getEID() + "\n"
+             );
+         }
          file.close();
          printing.printSomething("added");
     }
@@ -136,22 +153,11 @@ public class Event {
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-                
-               // int Event_id = Integer.parseInt(items[8]);
-             
-                
-                try {
-                    inputString = items[8];
-                    Event_id = Integer.parseInt(inputString);
-                    
-                   
-                    System.out.println("Event ID: " + Event_id);
+               try {inputString = items[8];
+                    Event_id = Integer.parseInt(inputString); System.out.println("Event ID: " + Event_id);
                 } catch (NumberFormatException EE) {
                     System.err.println("Invalid input: " + EE.getMessage());
                 }
-                
-                
-                
             if (Event_id==Eid) 
             { return new Event(name, date, time, description, attendeeCount, UID,theme,cate,Eid);
             }else currentLine ++; 
@@ -190,10 +196,7 @@ public class Event {
                     } catch (NumberFormatException EE) {
                         System.err.println("Invalid input: " + EE.getMessage());
                     }
-                    
-                    
-                    
-                   if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(name)) {
+                    if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(name)) {
                         return new Event(name, date, time, description, attendeeCount, UID, theme, category, eventID);
                     } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(items[1])) {
                         return new Event(name, date, time, description, attendeeCount, UID, theme, category, eventID);
@@ -208,9 +211,14 @@ public class Event {
         return null;
     }
 
-
-    public void deleteevent(Event e,String filename,int eventid)throws Exception 
+   
+    
+   
+	 	
+    public void delete_event_from_file_and_arraylist(Event e,String filename,int eventid)throws Exception 
     { 
+    	f. delete_Event_from_arraylist(filename, eventid);
+    	
     	int Event_id=0;
     	ArrayList<Event> events = new ArrayList<>();   
     	String line;
@@ -222,13 +230,7 @@ public class Event {
             if (items.length >= 9) 
             {
             	 
-            	try {
-            	     Event_id = Integer.parseInt(items[8]);
-            	    // Use Event_id
-            	} catch (NumberFormatException EE) {
-            	    // Handle the case where the string cannot be parsed as an integer
-            	    System.err.println("Invalid number format: " + EE.getMessage());
-            	}
+            	try {Event_id = Integer.parseInt(items[8]);} catch (NumberFormatException EE) {  System.err.println("Invalid number format: " + EE.getMessage());           	}
               
                   if (Event_id != eventid) 
                   {
@@ -247,23 +249,21 @@ public class Event {
                   }   
             }  } sb.append("").append("\n");
          }
-            
-		
-	  
-			 try (FileOutputStream fos = new FileOutputStream(filename, false)) {
+             try (FileOutputStream fos = new FileOutputStream(filename, false)) {
 		            fos.write(sb.toString().getBytes());
 		        }
 			
-		
-
+             
+                  
 }
        
  
-          
+   
+	     
     	
 	public Event updateEvent(int id, String filename)throws Exception {
 		Event toupdatedEvent = findeventID(id, filename);
-	    deleteevent(toupdatedEvent, filename, id);
+	   delete_event_from_file_and_arraylist(toupdatedEvent, filename, id);
 		
 		if (toupdatedEvent != null) 
 		{

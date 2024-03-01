@@ -9,12 +9,26 @@ import java.util.List;
 
 import org.example.*;
 
+
 public class Customer extends User {
     private String email;
     public  int numofevents;
-    private List<Event> events = new ArrayList<>();
+    private List<Event> Cevents = new ArrayList<>();
+   
+   
     static Printing printing = new Printing();
-	  
+	Functions f =new Functions();
+	 
+	
+  
+    
+    public List<Event> getEvents() { return this.Cevents; }
+    public void addEvent(Event event) { this.Cevents.add(event); }
+    
+    
+	
+    
+        
    
     public Customer() {}
     public Customer(String id, String username, String phone, String address,String pass, String email,int numofE) {
@@ -33,9 +47,9 @@ public class Customer extends User {
     public int getNumOfEvents() { return numofevents;}
  
     
-    public List<Event> getEvents() { return this.events; }
+   
     
-    
+   
     
     
     
@@ -61,10 +75,45 @@ public class Customer extends User {
 	    }}
     
     
+  public static Customer getCustomerFromLine(String line){
+      Customer customer1 = new Customer();
+      String[] items = line.split(" , ");
+      if (items.length >= 6) {
+          customer1.setId(items[0]);
+          customer1.setName(items[1]);
+          customer1.setPhone(items[2]);
+          customer1.setAddress(items[3]);
+          customer1.setEmail(items[4]);
+          customer1.setPassword(items[5]);
+      } else {
+      
+          System.err.println("Invalid line format: " + line);
+
+      }
+      return customer1;
+  }
     
     
-        
-    
+  
+  
+  
+  public String toString() {
+	    return "Customer{" +
+	            "id='" + getId() + '\'' +
+	            ", username='" + getUsername() + '\'' +
+	            ", phone='" + getphone() + '\'' +
+	            ", address='" + getaddress() + '\'' +
+	            ", email='" + getEmail() + '\'' +
+	            ", password='" + getPassword() + '\'' +
+	            ", numofevents=" + numofevents +
+	            '}';
+	}
+  
+  
+  
+  
+  
+  /*  
     public static Customer getCustomerFromLine(String line){
         Customer customer1 = new Customer();
         String inputString1;
@@ -97,6 +146,6 @@ public class Customer extends User {
         return customer1;
     }
 
-
+*/
 
 }

@@ -27,7 +27,7 @@ public class Functions {
 	    boolean found;
 	    String tmp;
 	    Admin admin = new Admin();
-	   private final ArrayList<Customer> customers = new ArrayList<>();
+	   public final ArrayList<Customer> customers = new ArrayList<>();
 	   private final ArrayList<Provider> providers = new ArrayList<>();
 	   private final ArrayList<Event> events = new ArrayList<>();
  
@@ -41,27 +41,53 @@ public class Functions {
 	    static final String ENTER_PASSWORD= "\nEnter Password ";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
-	    
-	    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-	    
 	    private String id;
 	    private String password;
 	    
-///////////////////////////////////////////////////////////////////////////////////////	    
-	    void addevent() throws Exception {
-	              event_obj = new Event();
-	            
-	               event_obj.setUID(this.id);
+///////////////////////////////////////////////////////////////////////////////////////
+	    
+	    public void printCustomers() {
+	        System.out.println("List of Customers:");
+	        for (Customer customer : customers) {
+	            System.out.println(customer);
+	        }
+	    }
+	    public void printProviders() {
+	        System.out.println("List of Providers:");
+	        for (Provider provider : providers) {
+	            System.out.println(provider);
+	        }
+	    }
+
+	    public void printEvents() {
+	        System.out.println("List of Events:");
+	        for (Event event : events) {
+	            System.out.println(event);
+	        }}
+	    
+	    
+//////////////////////////////////////////////////////////////////////////////////////////	    
+	public Event addevent (String Userid,String filename) throws Exception {
+	               event_obj = new Event();	            
+	              
+	               printing.printSomething("\n"+"Enter event Id:");
+		           id = scanner.next();	               
+	               int idInt= Integer.parseInt(id);
 	               
+	               if (searchIdE(idInt, "requst.txt")&& searchIdE(idInt, "event.txt")) { found =true ;}	              
+	               if (found)
+	               { printing.printSomething("This account is already existed, Please Sign in."); return null;
+	               // signInFunction();}     
+	               }   
+	             else  {   
+	            	 event_obj.setEID(idInt);
+	               event_obj.setUID(Userid);		                
 	               printing.printSomething("Enter event name:");
 	               event_obj.setName(scanner.next());
-	               
-	              	              
 	               printing.printSomething("Enter event date (yyyy-MM-dd):");
 	               String dateInput = scanner.next();
-	               event_obj.setDate(dateInput);
-	               
+	               event_obj.setDate(dateInput);	               
 	               printing.printSomething("Enter event time:");
 	               event_obj.setTime(scanner.next());
 	               printing.printSomething("Enter event description:");
@@ -71,12 +97,50 @@ public class Functions {
 	               printing.printSomething("Enter event theme :");
 		           event_obj.setTheme(scanner.next());   
 		           printing.printSomething("Enter event category:");
-		              event_obj.setCategory(scanner.next());
-	               
+		           event_obj.setCategory(scanner.next());
 	               printing.printSomething("\n done successfully\n");
-	               events.add(event_obj);
-	              event_obj.addEventToFile(event_obj,"requst");
-	           }
+	               events.add(event_obj);	               	               
+	               event_obj.addEventToFile(event_obj,filename);
+	               return event_obj;}}
+	              
+	
+	
+	          public void  delete_Event_from_arraylist(String filename,int eventid){
+              for (Event e : events) 
+	           if (e.getEID()== eventid) {events.remove(e);} }
+	
+	    
+////////////////////////////////////////////////////////////////////////////////////////////////////////	    
+	  
+	  public void customeraddevent(String Cid,String filename) throws Exception {
+	     
+		  Event e= addevent(Cid, filename);  
+	       for (Customer customer : customers) 
+	           if (customer.getId().equals(Cid)) {
+	        	   
+	        	  customer.addEvent(e);
+	          }
+	     }	     	    
+	    
+	  
+	  public void viewCostomerevents( String Cid) {
+			
+		  System.out.println("Customer Events:");
+		    for (Customer customer : customers) {
+		        if (customer.getId().equals(Cid)) {
+		            List<Event> allCustomerevents = customer.getEvents();
+		            for (Event event : allCustomerevents) {
+		                System.out.println(event); 
+		            }
+		            return; 
+		        }
+		    }
+		    System.out.println("Customer not found or has no events.");
+
+		     }	     	    
+		    
+		
+
 	       
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    boolean searchIdU(String id) {
@@ -108,6 +172,32 @@ public class Functions {
 	        }
 	        return f;
 	    }
+	    
+	    
+	    boolean searchIdE(int id, String filename) {
+	        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] items = line.split(" , ");
+	                if (items.length >= 9) {
+	                    int event_id = Integer.parseInt(items[8].trim());
+	                    if (event_id == id) {
+	                        return true; // Return true if the ID is found
+	                    }
+	                }
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething("Error: " + e.getMessage());
+	        } catch (NumberFormatException e) {
+	            printing.printSomething("Invalid input: " + e.getMessage());
+	        }
+	        return false; // Return false if the ID is not found in any line
+	    }
+
+	    
+	    
+	    
+	    
 
 /////////////////////////////////////////////////////////////////////////////////////	    
 	   void inputs(){
@@ -126,7 +216,7 @@ public class Functions {
 	            printing.printSomething(ENTER_CHOICE);
 	            int c = scanner.nextInt();
 	              if (c == 1) 
-	               {    addevent();}
+	               {}  //  addevent("requst.txt");}
 	            	  //EventManagementAdminPageList();break;}
 	              else if (c == 2) {
 	            	UserManagementAdminPageList();break;
@@ -205,28 +295,43 @@ public class Functions {
 		            }
 		           
 	            	break;   
-	                
-	                
-	                
+
+	            	
+	            	
 	             case 3:
-	                for(Provider providerr: providers){
-	                    if(providerr.getId().equals(id)){
-	                        if(providerr.getPassword().equals(password)) {
-	                            while (x > 0) {
-	                                ProviderPageList();
-	                                c = scanner.nextInt();
-	                              //  providerOptions(c);
-	                            }
-	                        }else{
-	                            printing.printSomething("\nSigning in failed, Please check your entered password\n");
-	                            printing.printSomething(ENTER_PASSWORD);
-	                            password = scanner.next();
-	                        }
-	                    }else {
-	                        printing.printSomething("\nThis account is not exist, Please check the inputs.\n");
-	                    }
-	                }
-	                break;          
+	            	 boolean foundp = false;
+	            	 // updateProviderListFromViewFile(); // Update method to read from file
+			           
+	            	 try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
+			                String line;
+			                while ((line = br.readLine()) != null) {
+			                    String[] ProviderData = line.split(",");
+			                    String ProviderIdFromFile = ProviderData[0].trim();
+			                    String passwordFromFile = ProviderData[5].trim(); // Assuming password is at index 5
+			                    if (id.equals(ProviderIdFromFile) && password.equals(passwordFromFile)) {
+			                        foundp = true;
+			                        break;
+			                    }
+			                }
+			            } catch (IOException e) {
+			                printing.printSomething("Error reading Povider data: " + e.getMessage());
+			            }
+	            	 
+	            	 
+	            	 if (foundp) {
+			                // Successful customer login
+			                while (x > 0) {
+			                    ProviderPageList();
+			                    c = scanner.nextInt();
+			                   //ProviderOptions(c);
+			                }
+			            } else {
+			                printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
+			                signInFunction(); // Allow the user to retry login
+			            }
+			           
+		            	break; 
+	            	          
 	            default:    printing.printSomething("\n"+INVALID_CHOICE);
 
 	        }
@@ -296,7 +401,7 @@ public class Functions {
        }
        
 ///////////////////////////////////////////////////////////////////////////////////////	    
-    public  void providerSignUp() throws Exception {
+public  void providerSignUp() throws Exception {
 provider_obj = new Provider();
 printing.printSomething("Enter your Id: ");
 id = scanner.next();
@@ -379,28 +484,29 @@ addProviderToFile(provider_obj);
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-	public void viewalleventsforAdmin() {
-		 List<Event> events = new ArrayList<>();
-		  String filename = "event.txt";
-		  Event event = new Event();
+	public void viewalleventsforAdmin(String filename) {
+		 List<Event> events2 = new ArrayList<>();
+		//  String filename = "event.txt";
+		  Event event2 = new Event();
 		  
 		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 		        String line;
 		       while ((line = reader.readLine()) != null) {
 		           
-		          event=event.getEventFromLine(line);
+		          event2=event2.getEventFromLine(line);
 		           
-		           events.add(event);
+		           events2.add(event2);
 		        }
 		    } catch (Exception e) {
 		       e.printStackTrace();
 		    }
-
-		    for (Event event1 : events) {
-		      printing.printSomething(event1.getName().toString()+"\n");}
+		    printing.printSomething("List of Events: \n");
 		       
+		    for (Event event22 : events2) {
+		    	   tmp = " Event ID :"+event22.getEID() + "\t  " + "Event Name :"+event22.getName() + "\n";
+		           printing.printSomething(tmp); 
 		    }
-	
+	}
 	
 /////////////////////////////////////////////////////////////////////////////////
    public static void addEmptyLine(String filename) {
@@ -425,11 +531,8 @@ addProviderToFile(provider_obj);
 		
 	}
 
-	public void viewCostomerevents() {
-		// TODO Auto-generated method stub
-		
-	}
 
+	
 	public void viewallVenuesforCoustmer() {
 		// TODO Auto-generated method stub
 		
@@ -466,6 +569,8 @@ addProviderToFile(provider_obj);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+  
+    
     public boolean deleteCustomer(String id) {
         String trimmedId = id.trim();
         for (int i = 0; i < customers.size(); i++) {
@@ -543,6 +648,7 @@ addProviderToFile(provider_obj);
             String line;
             while ((line = br.readLine()) != null) {
                 Customer customer = Customer.getCustomerFromLine(line); // Assuming you have a method to create Customer objects from a line
+               
                 customers.add(customer);
             }
         } catch (IOException e) {

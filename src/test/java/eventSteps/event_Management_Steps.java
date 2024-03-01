@@ -79,7 +79,7 @@ public class event_Management_Steps {
 	
 	@Then("the event deleted")
 	public void theEventDeleted() throws Exception{ 	
-	event .deleteevent( event,"event.txt",event.getEID()); 
+	event .delete_event_from_file_and_arraylist( event,"event.txt",event.getEID()); 
 	System.out.println("The event deleted");}
 
 	

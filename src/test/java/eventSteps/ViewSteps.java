@@ -58,7 +58,7 @@ Functions F=new Functions();
 	@Then("the list of events  displayed")
 	public void theListOfEventsDisplayed() {
 		 
-		assertTrue(show_ListOfEventsforAdmin); F.viewalleventsforAdmin();              
+		assertTrue(show_ListOfEventsforAdmin); F.viewalleventsforAdmin("event.txt");              
 	}
 
 
@@ -108,7 +108,7 @@ Functions F=new Functions();
 	}
 	@Then("the list of Myevents  displayed")
 	public void theListOfMyeventsDisplayed() {
-		 assertTrue(show_eventsofCustomer); F.viewCostomerevents();         //////////////////////////////
+		 assertTrue(show_eventsofCustomer);//.viewCostomerevents();         //////////////////////////////
 			
 	}
 

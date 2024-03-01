@@ -25,10 +25,11 @@ public class Provider extends User {
     public static Provider getProviderFromLine(String line) {
         String[] items = line.split(" , ");
         String id = items[0];
-        String password = items[1];
-        String name = items[2];
-        String phone = items[3];
+        String name = items[1];
+        String phone = items[2];
+        String address = items[3];
         String email = items[4];
+        String password=items[5];
 
         return new Provider(id, password, name, phone, email);
     }
