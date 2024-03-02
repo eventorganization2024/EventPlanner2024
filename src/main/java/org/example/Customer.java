@@ -14,7 +14,7 @@ import org.example.*;
 public class Customer extends User {
     private String email;
     public  int numofevents;
-    private List<Event> Cevents = new ArrayList<>();
+   public List<Event> Cevents = new ArrayList<>();
    
    
     static Printing printing = new Printing();

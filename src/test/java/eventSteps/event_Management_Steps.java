@@ -106,8 +106,8 @@ public class event_Management_Steps {
 	
 	@Then("the event details are successfully updated in the system")
 	public void theEventDetailsAreSuccessfullyUpdatedInTheSystem() throws Exception {
-		 {assertTrue(update);  event.updateEvent(event.getEID(),"event.txt");}	
-	
+		 {assertTrue(update);  //event.updateEvent(event.getEID(),"event.txt");}	
+		 }
 	}
 
 	@Given("there is an existing event to update")

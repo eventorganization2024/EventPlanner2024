@@ -45,7 +45,9 @@ public class Functions {
 	    static final String ENTER_PASSWORD= "\nEnter Password ";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
-
+	    
+	    private String id1;
+		  
 	    private String id;
 	    private String password;
 	    
@@ -72,21 +74,24 @@ public class Functions {
 	    
 	    
 //////////////////////////////////////////////////////////////////////////////////////////	    
-	public Event addevent (String Userid,String filename) throws Exception {
+	public Event addevent (String filename) throws Exception {
+		          updateEventList("requst.txt");
+		          updateEventList("event.txt");
 	               event_obj = new Event();	            
 	              
 	               printing.printSomething("\n"+"Enter event Id:");
-		           id = scanner.next();	               
+		           id1 = scanner.next();	               
 	              
 	               if (searchIdE(id, "requst.txt")|| searchIdE(id, "event.txt")) { found =true ;}else found=false;	              
 	               if (found)
 	               { printing.printSomething("This account is already existed, Please Sign in."); 
-	               addevent(Userid, filename);return null; }
+	               addevent( filename);return null; }
 	                   
 	                 
 	             else  {   
-	              event_obj.setEID(id);
-	               event_obj.setUID(Userid);		                
+	            	  
+	              event_obj.setEID(id1);
+	               event_obj.setUID(this.id);		                
 	               printing.printSomething("Enter event name:");
 	               event_obj.setName(scanner.next());
 	               printing.printSomething("Enter event date (yyyy-MM-dd):");
@@ -102,67 +107,100 @@ public class Functions {
 		           event_obj.setTheme(scanner.next());   
 		           printing.printSomething("Enter event category:");
 		           event_obj.setCategory(scanner.next());
-	               printing.printSomething("\n done successfully\n");
+	               printing.printSomething("\n done successfully\n");	               
 	               events.add(event_obj);	               	               
 	               event_obj.addEventToFile(event_obj,filename);
 	               return event_obj;}}
 	              
+	
+	             
+	public static void searchEventsByCustomer(String customerId) {
+	    String filename = "requst.txt"; 
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	          
+	            String[] fields = line.split(",\\s*"); 
+	            
+	     
+	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim())) {
+	             
+	                System.out.println(line);
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.err.println("An error occurred while reading the file: " + e.getMessage());
+	    }
+	}
+              
 	
 	
 	          public void  delete_Event_from_arraylist(String filename,String eventid){
               for (Event e : events) 
 	           if (e.getEID()== eventid) {events.remove(e);} }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	          public void updateEventListFromFile(String filename) {
-	        	    events.clear(); // Clear existing data
-	        	    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-	        	        String line;
-	        	        while ((line = br.readLine()) != null) {
-	        	            Event event = Event.getEventFromLine(line); // Assuming you have a method to create Event objects from a line
-	        	           
-	        	            events.add(event);
-	        	        }
-	        	    } catch (IOException e) {
-	        	        printing.printSomething("Error reading event data: " + e.getMessage());
-	        	    }
-	        	}
+	        
+	            public void updateEventList( String filename) {
+		  	        String line;
+		  	        events.clear();
+		  	        FileReader eventFileReader;
+		  	        try {
+		  	           eventFileReader = new FileReader(filename);
+		  	            BufferedReader lineReader = new BufferedReader(eventFileReader);
+		  	            while ((line = lineReader.readLine()) != null) {
+		  	                if (line.isEmpty()) continue;
+		  	               events.add(Event.getEventFromLine(line));
+		  	            }
+		  	            lineReader.close();
+		  	           eventFileReader.close();
+		  	        } catch (IOException e){
+		  	            printing.printSomething("An error occurred: " + e.getMessage());
+		  	        }
+      
+		  	    }
+/////////////////////////////		  	     
+	public void updateeventandcustomer() {
+		
+		updateEventList("requst.txt");
+		updateCustomersList();
+		
+		 for (Customer customer : customers) {
+		   for (Event event : events) {
+		        if (!event.getUID().equals(customer.getId())) {/// must be equals /////
+		            customer.Cevents.add(event);
+		        }
+		    }
+		}
 
-	    
+		
+		
+	}
+	         	    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
 	  
-	  public void customeraddevent(String Cid,String filename) throws Exception {
-	     
-		  Event e= addevent(Cid, filename);  
-	       for (Customer customer : customers) 
-	           if (customer.getId().equals(Cid)) {
-	        	   
-	        	  customer.addEvent(e);
-	          }
-	     }	     	    
-	    
-	  
+
 	  public void viewCostomerevents( String Cid) {
-		 
-		  updateEventListFromFile("event.txt");
-          updateEventListFromFile("requst.txt");               
-          updateCustomersList();  
-          
-		  System.out.println("Customer Events:");
+          updateeventandcustomer();   
+          List<Event> allCustomerevents= null;;
+           System.out.println(" Customer Events:");
 		  for (Customer customer : customers) {
-		      if (customer.getId().equals(Cid)) {
-		          List<Event> allCustomerevents = customer.getEvents();
-		          if (allCustomerevents != null && !allCustomerevents.isEmpty()) {
-		              for (Event event : allCustomerevents) {
-		                  System.out.println(event); 
-		              }
-		          } else {
-		              System.out.println("Customer found, but has no events.");
-		          }
+		      if (customer.getId().equals(Cid))
+		      {
+		          allCustomerevents = customer.getEvents();       
+		          for (Event event : allCustomerevents)  {System.out.println(event);}
+		          
+		      } 
+		            
+		      else { System.out.println("Customer found, but has no events."); }
 		          return;
+		          
 		      }
+		    // If the loop finishes without finding the customer, print appropriate message
+		    System.out.println("Customer not found or has no events.");
+
 		  }
-		  System.out.println("Customer not found.");
-  }	     	    
+		 	    
 		    
 		
 
@@ -567,9 +605,7 @@ addProviderToFile(provider_obj);
 	    
       
 ///////////////////////////////////////////////////////////////////////////////////////	    
-	
-	
-    
+  
     public void viewCustomers() {
         updateCustomersList();
         printing.printSomething("List of Customers: \n");
@@ -591,7 +627,6 @@ addProviderToFile(provider_obj);
         }
     }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
   
@@ -612,8 +647,26 @@ addProviderToFile(provider_obj);
         }
         return false; 
     }
-
-   
+////////////////////
+   /* public boolean deleteEvent(String eventId) {
+        String trimmedId = eventId.trim();
+        for (int i = 0; i < events.size(); i++) {
+            String eventEID = events.get(i).getEID().trim(); // Assuming getEID() returns the event ID
+            if (eventEID.equals(trimmedId)) {
+                events.remove(i);
+                try {
+                    deleteLineByValue("requst.txt", eventId);
+                } catch (IOException e) {
+                    // Handle IOException
+                    printing.printSomething("An error occurred while deleting the event from the file: " + e.getMessage());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+ 
+ */
     public static void deleteLineByValue(String filePath, String value) throws IOException {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -781,41 +834,34 @@ addProviderToFile(provider_obj);
                 updateCustomerProfile(scanner.nextInt());
                 break;
             case 2:
-                updateEventListFromFile("event.txt");
-                updateEventListFromFile("requst.txt");               
-                updateCustomersList();
-                
-                
-                customeraddevent(customer1.getId(),"requst.txt");
-               printing.printSomething("Add another order? [Yes,No]: ");
-                while (!scanner.next().equalsIgnoreCase("No"));
-                break;
+               updateCustomersList(); 
+               addevent("requst.txt");
+               break;
                 
                 
             case 3:
-            	             
-               //  printing.printSomething("\n "+" all events for you: ");
-               ////  customer1.setId(id);
-                 //viewCostomerevents(customer1.getId());
-                 
-                 
-                 printing.printSomething("\n"+"enter Event ID you wont to update ");
+              printing.printSomething("\n "+" all events for you: "+"\n");
+               viewCostomerevents(id);
+            
+                 printing.printSomething("\n"+"Enter Event ID you wont to update : ");
                  String eventid=scanner.next();
                 event1.updateEvent(eventid, "requst.txt");    /////////"event.txt"
-                 
-                
-                printing.printSomething("Add another ? [Yes,No]: ");
-                while (!scanner.next().equalsIgnoreCase("No"));
-              
-                break;
-                
-                
-                
-                
-          /*  case 4:
+                viewCostomerevents(id);         
+            break;
+            
+            
+               case 4:
                 printing.printSomething("\n");
+                viewCostomerevents(id);
+                printing.printSomething("\n"+"Enter Event ID you wont to delete : ");
+                String eventidd=scanner.next();
+               event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventidd);
+               viewCostomerevents(id);         
                 break;
-            case 5:
+                
+                
+                
+           /*  case 5:
                 updateCustomersList();
                 for (Customer customer1 : customers) {
                     if (customer1.getId().equals(id)) {

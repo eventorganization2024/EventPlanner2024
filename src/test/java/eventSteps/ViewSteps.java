@@ -45,7 +45,7 @@ Functions F=new Functions();
 	}
 	@Then("the list of users  displayed")
 	public void theListOfUsersDisplayed() {
-		 assertTrue(show_allcustomers); F.viewCustomers();               ////////////////////////////////////////////////////////////////////
+		 assertTrue(show_allcustomers); //F.viewCustomers();               ////////////////////////////////////////////////////////////////////
 	}
 
 

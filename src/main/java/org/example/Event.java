@@ -77,6 +77,25 @@ public class Event {
     }
     
     
+    public void addEventToFile(Event event, String filename) {
+        try {
+            FileWriter  eventFile = new FileWriter(filename, true);
+            eventFile.append(event.getName()).append(" , ")
+                    .append(event.getDate()).append(" , ")
+                    .append(event.getTime()).append(" , ")
+                    .append(event.getDescription()).append(" , ")
+                    .append(event.getAttendeeCount()).append(" , ")
+                    .append(event.getUID()).append(" , ")
+                    .append(event.getCategory()).append(" , ")
+                    .append(event.getTheme()).append(" , ")
+                    .append(event.getEID()).append("\n");
+
+
+          eventFile.close();
+        } catch (IOException e) {
+            printing.printSomething("An error occurred: " + e.getMessage());
+        }
+    }
     
     
     
@@ -84,7 +103,7 @@ public class Event {
     
     
     
-    
+    /*
     
     
     public  void addEventToFile(Event event,String filename) throws Exception
@@ -125,7 +144,7 @@ public class Event {
          file.close();
          printing.printSomething("added");
     }
- 
+ */
     public static  Event findeventID(String Eid,String filename) {
     	String line;
     	 String inputString;
@@ -198,8 +217,7 @@ public class Event {
     	//f. delete_Event_from_arraylist(filename, EID);
     	
     	
-    	ArrayList<Event> events = new ArrayList<>();   
-    	String line;
+        String line;
     	 StringBuilder sb = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
     	{   
@@ -207,23 +225,16 @@ public class Event {
             {   String[] items = line.split(" , ");
             if (items.length >= 9) 
             {
-            	 
-            	   String EVENTID=items[8];
-                  if (EVENTID.equals(EID)) 
-                  {
-                	  String name = items[0];
-                      String  date= items[1];
-                      String time = items[2];
-                      String description = items[3];
-                      String attendeeCount = items[4];
-                      String UID = items[5];
-                      String theme=items[6];
-                      String cate=items[7];                    
-                   Event event = new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
-                   events.add(event);
-                   sb.append(line).append("\n");
-                  }   
-            }  } sb.append("").append("\n");
+            	  String EVENTID=items[8];
+            	  if (!EVENTID.equals(EID)) {
+                      sb.append(line).append("\n");
+                  } 
+            } 
+            
+          //   else   sb.append(line).append("\n");
+            }
+            
+           
          }
              try (FileOutputStream fos = new FileOutputStream(filename, false)) {
 		            fos.write(sb.toString().getBytes());

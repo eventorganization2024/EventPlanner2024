@@ -12,8 +12,7 @@ public class Main {
 	   	 Functions functions = new Functions();
 	        Scanner scanner = new Scanner(System.in);
 	        Printing printing = new Printing();
-	        
-	        
+       
 	         while(true){
 	            printing.printSomething("\n------ Welcome to Home Page ------"+"\n|                                |"+
 	                    "\n|          1. Sign up            |"+"\n|          2. Sign in            |"+
@@ -49,7 +48,6 @@ public class Main {
 	        }
 	    }
 }
-
 
 
 
