@@ -168,55 +168,118 @@ public class Functions {
 /////////////////////////////		  	     
 	public void updateeventandcustomer() throws Exception{
 		
-		updateEventList("event.txt");
+		//updateEventList("event.txt");
 		updateCustomersList();
 		String E=null,C=null;
+		 String line;
+		 
+    	 StringBuilder sb = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader("event.txt"))) 
+    	{   
+            while ((line = reader.readLine()) != null)
+            {   String[] items = line.split(" , ");
+            if (items.length >= 9) 
+            {
+            	
+            	String name = items[0];
+                String  date= items[1];
+                String time = items[2];
+                String description = items[3];
+                String attendeeCount = items[4];
+                String UID = items[5];
+                String theme=items[6];
+                String cate=items[7];
+                String EID=items[8];
+            	
+            	
+            	
+            	   
+            	   for (Customer customer : customers)   {
+      				 C=customer.getId();
+      				 
+            	   if (UID.equals(C)) {
+            		   
+            		   Event Event111=new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
+            		   customer.Cevents.add(Event111);
+            		   break;
+            	   }
+            	  
+            	   
+            	   }
+            	   
+            	   
+            	   
+            	  
+            	  
+            	  
+            	  
+            	  
+            	  
+            } 
+            
+           }
+            
+           
+    	}
 		
-		 for (Event event : events) {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	/*	
+		
+		 for (Event event :allEvents) {
 	          E=event.getUID();
 	         for (Customer customer : customers)   {
 				 C=customer.getId();
 				 	 
-		        if (C.equals(E)) 
-		        	customer.Cevents.add(event);  /// must be equals /////
-		      
-		        
+		        if (C.compareTo(E) == 0) 
+		           customer.Cevents.add(event);  /// must be equals /////
+			      
 		    }
 		}
 
 		
-		
+	*/	
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
 	  
 
 	  public boolean viewCostomerevents( String Cid) throws Exception {
-		  boolean found1;
-          updateeventandcustomer();   
-          List<Event> allCustomerevents= null;;
-         for (Customer customer : customers) {
-		      if (customer.getId().equals(Cid))
-		      {  printing.printSomething("\nHere are all your events:\n");
+		  boolean found = false; // Initialize found flag
 
-		          allCustomerevents = customer.getEvents();       
-		          for (Event ev : allCustomerevents)  {
-		        	  System.out.println(ev); }
-		          
-		          return   found1=true;
-	       
-		      } 
-		            
-		      else { System.out.println("Customer found, but has no events.");
-		         
-		           }
-		          return  found1=false;
-		          
-		      }
+		    updateeventandcustomer(); // Assuming this method updates the customers list
+
+		    for (Customer customer : customers) {
+		        if (customer.getId().equals(Cid)) {
+		            List<Event> customerEvents = customer.getEvents();
+
+		            if (!customerEvents.isEmpty()) {
+		                System.out.println("\nHere are all your events:");
+		                for (Event event : customerEvents) {
+		                	   System.out.println(event.toString());
+		                }
+		            } else {
+		                System.out.println("Customer found, but has no events.");
+		            }
+
+		            found = true; // Set found flag to true if customer is found
+		            break; // Exit the loop once the customer is found
+		        }
+		    }
+
 		    // If the loop finishes without finding the customer, print appropriate message
-		    System.out.println("Customer not found or has no events.");
-		    return  found1=false;
+		    if (!found) {
+		        System.out.println("Customer not found or has no events.");
+		    }
 
-		  }
+		    return found;}
 	       
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    boolean searchIdU(String id) {

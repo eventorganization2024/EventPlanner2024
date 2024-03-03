@@ -59,8 +59,8 @@ public class Event {
              String description = items[3];
              String attendeeCount=items[4];
              String UID = items[5];
-             String theme = items[6];
-             String category = items[7];
+             String theme = items[7];
+             String category = items[6];
              String EID = items[8];
   
              event.setName(name);
