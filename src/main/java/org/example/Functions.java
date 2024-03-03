@@ -166,16 +166,20 @@ public class Functions {
       
 		  	    }
 /////////////////////////////		  	     
-	public void updateeventandcustomer() {
+	public void updateeventandcustomer() throws Exception{
 		
 		updateEventList("event.txt");
 		updateCustomersList();
+		String E=null,C=null;
 		
 		 for (Event event : events) {
-			 for (Customer customer : customers)   {
-		        if (event.getUID().equals(customer.getId())) 
+	          E=event.getUID();
+	         for (Customer customer : customers)   {
+				 C=customer.getId();
+				 	 
+		        if (C.equals(E)) 
 		        	customer.Cevents.add(event);  /// must be equals /////
-		            
+		      
 		        
 		    }
 		}
@@ -186,7 +190,7 @@ public class Functions {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
 	  
 
-	  public boolean viewCostomerevents( String Cid) {
+	  public boolean viewCostomerevents( String Cid) throws Exception {
 		  boolean found1;
           updateeventandcustomer();   
           List<Event> allCustomerevents= null;;
