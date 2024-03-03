@@ -13,7 +13,7 @@ import org.example.*;
 
 public class Customer extends User {
     private String email;
-    public  int numofevents;
+    
    public List<Event> Cevents = new ArrayList<>();
    
    
@@ -32,21 +32,18 @@ public class Customer extends User {
         
    
     public Customer() {}
-    public Customer(String id, String username, String phone, String address,String pass, String email,int numofE) {
+    public Customer(String id, String username, String phone, String address,String pass, String email) {
         super(username, pass, "Customer");
         this.address = address;
         this.phone=phone;
         this.id=id;
         this.email=email;
-        this.numofevents=numofE;
         
        
     }
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;} 
-    public void setNumOfEvents(int numofevents) {this.numofevents = numofevents;}
-    public int getNumOfEvents() { return numofevents;}
- 
+   
     
    
     
@@ -66,8 +63,7 @@ public class Customer extends User {
 	                customer.getphone() + " , " +
 	                customer.getaddress() + " , " +
 	                customer.getEmail() + " , " +
-	                customer.getPassword() + ","+
-	                customer.getNumOfEvents()+"\n"
+	                customer.getPassword() + ","
 	        );
 
 	        printing.printSomething("added");
@@ -86,7 +82,7 @@ public class Customer extends User {
           customer1.setAddress(items[3]);
           customer1.setEmail(items[4]);
           customer1.setPassword(items[5]);
-      } else {
+     } else {
       
           System.err.println("Invalid line format: " + line);
 
@@ -106,8 +102,7 @@ public class Customer extends User {
 	            ", address='" + getaddress() + '\'' +
 	            ", email='" + getEmail() + '\'' +
 	            ", password='" + getPassword() + '\'' +
-	            ", numofevents=" + numofevents +
-	            '}';
+	           '}';
 	}
   
   

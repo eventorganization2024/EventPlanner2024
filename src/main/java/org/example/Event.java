@@ -40,8 +40,8 @@ public class Event {
         this.time = time;
         this.description = description;
         this.attendeeCount = attendeeCount;
-        this.theme= theme;
         this.category=category;
+        this.theme= theme;
         this .EVENTID=Eid;
     }
 
@@ -413,8 +413,8 @@ public class Event {
     }
 
 	
-    public String toString() {
-        return "Event{" +
+    public String toString3() {
+        return  
                 "UserID='" + UserID + '\'' +
                 ", event id=" + EVENTID+'\'' +
                 ",1. name='" + name + '\'' +
@@ -423,11 +423,39 @@ public class Event {
                 ",4. description='" + description + '\'' +
                 ",5. attendeeCount=" + attendeeCount +'\'' +
                 ",6. theme='" + theme + '\'' +
-                ",7. category='" + category + '\''  +
-                '}';
+                ",7. category='" + category + '\''  
+                ;
     }
 
-    public String toString1() 
+  
+    
+    public String toString2() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\033[0;36m"); // Set text color to cyan
+        sb.append("Event Details:\n");
+        sb.append("\033[0;33m"); // Set text color to yellow for attribute names
+        sb.append("- UserID: ").append(UserID).append("\n");
+        sb.append("- Event ID: ").append(EVENTID).append("\n");
+        sb.append("- Name: ").append(name).append("\n");
+        sb.append("- Date: ").append(date).append("\n");
+        sb.append("- Time: ").append(time).append("\n");
+        sb.append("- Description: ").append(description).append("\n");
+        sb.append("- Attendee Count: ").append(attendeeCount).append("\n");
+        sb.append("- Theme: ").append(theme).append("\n");
+        sb.append("- Category: ").append(category).append("\n");
+        sb.append("\033[0m"); // Reset text color
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
+
+    public String toString() 
     {
     	 return	   name +
                  ", " + date +

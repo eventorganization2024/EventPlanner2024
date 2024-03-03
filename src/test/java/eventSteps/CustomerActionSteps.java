@@ -13,7 +13,7 @@ import eventSteps.*;
 
 public class CustomerActionSteps {
 	 User user = new User();
-	    Customer customer = new Customer("12114555","Ansam","057806241","Nablus","123456","ansam@gmail.com",0);
+	    Customer customer = new Customer("12114555","Ansam","057806241","Nablus","123456","ansam@gmail.com");
 	    Functions functions = new Functions();
 	    static boolean updated = false;
 	    static boolean deleteProfile = false;
@@ -67,7 +67,7 @@ public class CustomerActionSteps {
 
 		  @When("I navigate to Invoices")
 		    public void i_navigate_to_invoices()  {
-		        printing.printSomething("\nNumber of orders:"+ customer.getNumOfEvents());
+		        //printing.printSomething("\nNumber of orders:"+ customer.getNumOfEvents());
 		        //invoice = new Invoice(customer);
 		        //invoice.invoiceRes(customer);
 		    }

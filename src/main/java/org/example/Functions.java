@@ -52,6 +52,15 @@ public class Functions {
 	    private String password;
 	    
 ///////////////////////////////////////////////////////////////////////////////////////
+	    void inputs(){
+	    	printing.printSomething("Enter Id: ");
+	    	id = scanner.next();
+	    	printing.printSomething(ENTER_PASSWORD);
+	    	password = scanner.next();
+	    	}
+////////////////////////////////////////////////////////////////////////////////////////	    
+	    
+	    
 	    
 	    public void printCustomers() {
 	        System.out.println("List of Customers:");
@@ -134,14 +143,11 @@ public class Functions {
 	    }
 	}
               
-	
-	
-	          public void  delete_Event_from_arraylist(String filename,String eventid){
+    public void  delete_Event_from_arraylist(String filename,String eventid){
               for (Event e : events) 
 	           if (e.getEID()== eventid) {events.remove(e);} }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	        
-	            public void updateEventList( String filename) {
+	 	            public void updateEventList( String filename) {
 		  	        String line;
 		  	        events.clear();
 		  	        FileReader eventFileReader;
@@ -162,48 +168,51 @@ public class Functions {
 /////////////////////////////		  	     
 	public void updateeventandcustomer() {
 		
-		updateEventList("requst.txt");
+		updateEventList("event.txt");
 		updateCustomersList();
 		
-		 for (Customer customer : customers) {
-		   for (Event event : events) {
-		        if (!event.getUID().equals(customer.getId())) {/// must be equals /////
-		            customer.Cevents.add(event);
-		        }
+		 for (Event event : events) {
+			 for (Customer customer : customers)   {
+		        if (event.getUID().equals(customer.getId())) 
+		        	customer.Cevents.add(event);  /// must be equals /////
+		            
+		        
 		    }
 		}
 
 		
 		
 	}
-	         	    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
 	  
 
-	  public void viewCostomerevents( String Cid) {
+	  public boolean viewCostomerevents( String Cid) {
+		  boolean found1;
           updateeventandcustomer();   
           List<Event> allCustomerevents= null;;
-           System.out.println(" Customer Events:");
-		  for (Customer customer : customers) {
+         for (Customer customer : customers) {
 		      if (customer.getId().equals(Cid))
-		      {
+		      {  printing.printSomething("\nHere are all your events:\n");
+
 		          allCustomerevents = customer.getEvents();       
-		          for (Event event : allCustomerevents)  {System.out.println(event);}
+		          for (Event ev : allCustomerevents)  {
+		        	  System.out.println(ev); }
 		          
+		          return   found1=true;
+	       
 		      } 
 		            
-		      else { System.out.println("Customer found, but has no events."); }
-		          return;
+		      else { System.out.println("Customer found, but has no events.");
+		         
+		           }
+		          return  found1=false;
 		          
 		      }
 		    // If the loop finishes without finding the customer, print appropriate message
 		    System.out.println("Customer not found or has no events.");
+		    return  found1=false;
 
 		  }
-		 	    
-		    
-		
-
 	       
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    boolean searchIdU(String id) {
@@ -256,53 +265,6 @@ public class Functions {
 	        }
 	        return false; // Return false if the ID is not found in any line
 	    }
-
-	    
-	    
-	    
-	    
-
-/////////////////////////////////////////////////////////////////////////////////////	    
-	   void inputs(){
-	        printing.printSomething("Enter Id: ");
-	        id = scanner.next();
-	        printing.printSomething(ENTER_PASSWORD);
-	        password = scanner.next();
-	    }
-	    int x =1;
-	    void adminPage() throws IOException, Exception
-	    { 
-	    	
-	        while (x > 0)
-	        {
-	            adminList();
-	            printing.printSomething(ENTER_CHOICE);
-	            int c = scanner.nextInt();
-	              if (c == 1) 
-	               {}  //  addevent("requst.txt");}
-	            	  //EventManagementAdminPageList();break;}
-	              else if (c == 2) {
-	            	UserManagementAdminPageList();break;
-	            } else if (c == 3) {
-	            	VenueManagementadminList();break; 
-	            } else if (c == 4) {
-	              
-	            } else if (c == 5) {
-	              
-	            } else if (c == 6) {
-	              
-	            } else if (c == 7) {
-	                signInFunction();
-	            } else printing.printSomething(INVALID_CHOICE);
-	        }
-	    }
-	    
-///////////////////////////////////////////////////////////////////////////////////////	    
-	    
-	    
-	    
-	    
-	    
 	    
 ///////////////////////////////////////////////////////////////////////////////////////	    
        void signInFunction() throws Exception {
@@ -500,16 +462,16 @@ addProviderToFile(provider_obj);
 	    
 	  public void adminList() {      
 	        printing.printSomething("\n--------- Welcome to Admin Page --------\n"+SPACE+
-	                "\n|   1. Customer Management   |"+"\n|   2. Discount Management                 |"+
+	                "\n|   1. Customer Management             |"+"\n|   2. Discount Management             |"+
 	                "\n|   3. Event Management                |"+"\n|   4. Venue Management                |"+
 	                "\n|   5. Provider Management             |"+"\n|   6. Notify Customer By Email        |"+
 	                "\n|   7. Calendar and Scheduling         |"+"\n|   8. View Statistics                 |"+
-	                "\n|   9. View Report                     |"+ "\n|  10. Log Out                         |\n"
+	                "\n|   9. View Report                     |"+"\n|  10. Log Out                         |\n"+"\n"
 	        );}
 	  public void customerPageList(){
 	        printing.printSomething("\n------- Welcome to Customer Page -------\n"+SPACE+"\n|        1. Update My Profile          |"+
-	                "\n|        2. Make An Event              |"+"\n|        3. Update Event                |"+
-	                "\n|        4. Cancel Event               |"+ "\n|        5. Invoices                   |"+
+	                "\n|        2. Make An Event              |"+"\n|        3. Update Event               |"+
+	                "\n|        4. Cancel Event               |"+"\n|        5. Invoices                   |"+
 	                "\n|        6. Delete My Profile          |"+"\n|        7. Log Out                    |\n"+SPACE+"\n"+LINE+"\n"
 	                +ENTER_CHOICE );
 	    }
@@ -521,33 +483,54 @@ addProviderToFile(provider_obj);
 	                    "\n|        3.                            |"+"\n|        4. Log Out                    |\n"+
 	                    SPACE+ "\n----------------------------------------\n"+ENTER_CHOICE);
 	        }      
-     public void EventManagementAdminPageList(){
-	         printing.printSomething(
-	             "\n--------- Welcome to EventManagement  Page --------\n"+SPACE+
-		                "\n|   1. View All                         |"+"\n|   2. ADD EVENT                    |"+
-		                "\n|   3. DELETE                           |"+"\n|   4. EDIT                         |"+
-		                "\n|   5.                                  |"+"\n|   6.                              |"+
-		                "\n|   7. Log Out                          |\n"+SPACE+"\n"+LINE+"\n");
-	        }
-     public void UserManagementAdminPageList(){
-         printing.printSomething(
-        		 "\n--------- Welcome to  User Management  Page --------\n"+SPACE+
-	                "\n|   1. View All                         |"+"\n|   2. ADD                              |"+
-	                "\n|   3. DELETE                           |"+"\n|   4. EDIT                             |"+
-	                "\n|   5.                                  |"+"\n|   6.                                  |"+
-	                "\n|   7. Log Out                          |\n"+SPACE+"\n"+LINE+"\n");
-        }
-     public void VenueManagementadminList(){
-	        printing.printSomething(
-	        	 "\n--------- Welcome to Venue Management  Page --------\n"+SPACE+
-	                "\n|   1. VIEW ALL                         |"+"\n|   2. ADD                              |"+
-	                "\n|   3. DELETE                           |"+"\n|   4. EDIT                             |"+
-	                "\n|   5.                                  |"+"\n|   6.                                  |"+
-	                "\n|   7. Log Out                          |\n"+SPACE+"\n"+LINE+"\n");}
+     public void EventManagementAdminPageList() {
+    	    printing.printSomething(
+    	        "\n\033[1;33m"+
+    	        "---- Welcome to EventManagement Page ----\n" +
+    	        "\033[1;33m"+
+    	        "|   1. IN requst                        |\n" +
+    	        "|   2. All events                       |\n" +
+    	        "|   3. ADD EVENT                        |\n" +
+    	        "|   4. DELETE                           |\n" +
+    	        "|   5. EDIT                             |\n" +
+    	        "|   6. Log Out                          |\n" +
+    	        "\033[1;36m" + "\n"  + "\n\033[0m"
+    	    );
+    	}
 
+     public void UserManagementAdminPageList() {
+    	    printing.printSomething(
+    	        "\n\033[1;33m" +
+    	        "---- Welcome to User Management Page ----\n" +
+    	        "\033[1;33m" +
+    	        "|   1. View All                         |\n" +
+    	        "|   2. ADD                              |\n" +
+    	        "|   3. DELETE                           |\n" +
+    	        "|   4. EDIT                             |\n" +
+    	        "|   5.                                  |\n" +
+    	        "|   6.                                  |\n" +
+    	        "|   7. Log Out                          |\n" +
+    	        "\033[1;36m" + "\n" + "\n\033[0m"
+    	    );
+    	}
+
+     public void VenueManagementadminList() {
+    	    printing.printSomething(
+    	        "\n\033[1;33m" +
+    	        "---- Welcome to Venue Management Page ----\n" +
+    	        "\033[1;33m" +
+    	        "|   1. VIEW ALL                         |\n" +
+    	        "|   2. ADD                              |\n" +
+    	        "|   3. DELETE                           |\n" +
+    	        "|   4. EDIT                             |\n" +
+    	        "|   5.                                  |\n" +
+    	        "|   6.                                  |\n" +
+    	        "|   7. Log Out                          |\n" +
+    	        "\033[1;36m" +"\n" + "\n\033[0m"
+    	    );}
 ////////////////////////////////////////////////////////////////////////////////////
 
-	public void viewalleventsforAdmin(String filename) {
+	public boolean viewalleventsforAdmin(String filename) {
 		 List<Event> events2 = new ArrayList<>();
 		//  String filename = "event.txt";
 		  Event event2 = new Event();
@@ -563,12 +546,19 @@ addProviderToFile(provider_obj);
 		    } catch (Exception e) {
 		       e.printStackTrace();
 		    }
-		    printing.printSomething("List of Events: \n");
-		       
-		    for (Event event22 : events2) {
-		    	   tmp = " Event ID :"+event22.getEID() + "\t  " + "Event Name :"+event22.getName() + "\n";
-		           printing.printSomething(tmp); 
+		    if (events2.isEmpty()) {
+		        printing.printSomething("No events found.\n");
+		        return false;
 		    }
+		    
+		    printing.printSomething("List of Events: \n");
+		    
+		    for (Event event22 : events2) {
+		        System.out.println(event22); 
+		    }
+		    
+		    return true;
+			
 	}
 	
 /////////////////////////////////////////////////////////////////////////////////
@@ -628,10 +618,8 @@ addProviderToFile(provider_obj);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
   
-    
-    public boolean deleteCustomer(String id) {
+  public boolean deleteCustomer(String id) {
         String trimmedId = id.trim();
         for (int i = 0; i < customers.size(); i++) {
             String customerId = customers.get(i).getId().trim(); 
@@ -647,26 +635,7 @@ addProviderToFile(provider_obj);
         }
         return false; 
     }
-////////////////////
-   /* public boolean deleteEvent(String eventId) {
-        String trimmedId = eventId.trim();
-        for (int i = 0; i < events.size(); i++) {
-            String eventEID = events.get(i).getEID().trim(); // Assuming getEID() returns the event ID
-            if (eventEID.equals(trimmedId)) {
-                events.remove(i);
-                try {
-                    deleteLineByValue("requst.txt", eventId);
-                } catch (IOException e) {
-                    // Handle IOException
-                    printing.printSomething("An error occurred while deleting the event from the file: " + e.getMessage());
-                }
-                return true;
-            }
-        }
-        return false;
-    }
- 
- */
+
     public static void deleteLineByValue(String filePath, String value) throws IOException {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -840,23 +809,26 @@ addProviderToFile(provider_obj);
                 
                 
             case 3:
-              printing.printSomething("\n "+" all events for you: "+"\n");
-               viewCostomerevents(id);
-            
-                 printing.printSomething("\n"+"Enter Event ID you wont to update : ");
-                 String eventid=scanner.next();
-                event1.updateEvent(eventid, "requst.txt");    /////////"event.txt"
-                viewCostomerevents(id);         
-            break;
+             boolean f=  viewCostomerevents(id);
+             if (f)
+             {   
+        	    printing.printSomething("Please enter the Event ID you want to update: ");
+               String eventid=scanner.next();
+               event1.updateEvent(eventid, "event.txt");    /////////"event.txt"
+              viewCostomerevents(id);         
+               }
+                
+               break;
             
             
                case 4:
-                printing.printSomething("\n");
-                viewCostomerevents(id);
-                printing.printSomething("\n"+"Enter Event ID you wont to delete : ");
+                printing.printSomething("\n");   
+                if (viewCostomerevents(id)) {
+                printing.printSomething("\n"+"Please enter the Event ID of the event you want to delete: ");
                 String eventidd=scanner.next();
-               event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventidd);
-               viewCostomerevents(id);         
+               event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventidd);/////////"event.txt"
+               printing.printSomething("\n ");
+               viewCostomerevents(id); }        
                 break;
                 
                 
@@ -886,14 +858,122 @@ addProviderToFile(provider_obj);
     
   
   
-     
-    	
+/////////////////////////////////////////////////////////////////////////////////////	    
+
+int x =1;
+void adminPage() throws IOException, Exception
+{ 
+
+	while (x > 0) {
+	    adminList();
+	    printing.printSomething(ENTER_CHOICE);
+	    int c = scanner.nextInt();
+
+	    switch (c) {
+	        case 1:
+	        	 UserManagementAdminPageList();
+	            break;
+	        case 2:
+	           //discount
+	            break;
+	        case 3:
+	        	EventManagementAdminPageList();
+	        	int CE=scanner.nextInt();
+	        	EventManagementOptions(CE);
+	            break;
+	        case 4:
+	        	VenueManagementadminList();
+	            break;
+	        case 5:
+	            //  Provider Management
+	            break;
+	        case 6:
+	            // Handle Notify Customer By Email
+	            break;
+	        case 7:
+	           // calendar
+	            break;
+	        case 8:
+	            //  View Statistics
+	            break;
+	        case 9:
+	            //  View Report
+	            break;
+	        case 10:
+	        	signInFunction();
+	            break;
+	        default:
+	        	printing.printSomething(INVALID_CHOICE);
+	     	    
+	    }
+}
+}
+///////////////////////////////////////////////////////////////////////////////////////	    
+
+
+private void EventManagementOptions(int cE) throws Exception {
+    switch (cE) {
+        case 1:
+           if( viewalleventsforAdmin("requst.txt")) {
+            printing.printSomething("\nEnter the Event ID of the event you want to accept or reject: ");
+            String eventID = scanner.next();
+            
+            printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
+            String choice = scanner.next().toUpperCase();
+            if (choice.equals("Y")) {
+                event1= event1.findeventID(eventID, "requst.txt");
+            	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+            	event1.addEventToFile(event1, "event.txt");
+               printing.printSomething("\nEvent accepted.");
+                ///to send notifation
+               
+               
+            } else if (choice.equals("N")) {
+            	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+            	printing.printSomething("\nEvent rejected.");
+               
+            } else {
+                
+            	printing.printSomething(INVALID_CHOICE);
+         	     }}
+           
+            break;        
+        case 2:
+        	 viewalleventsforAdmin("event.txt");
+            break;
+        case 3:
+           addevent("event.txt");
+            break;
+        case 4:
+        	if( viewalleventsforAdmin("event.txt")) {
+                printing.printSomething("\nEnter the Event ID of the event you want to delete : ");
+                String eventID = scanner.next();
+                event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
+        	  printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");}
+
+        	break;
+        case 5:
+        	 if (viewalleventsforAdmin("event.txt")) {   
+         	    printing.printSomething("Please enter the Event ID you want to update: ");
+                String eventid=scanner.next();
+                event1.updateEvent(eventid, "event.txt");    
+                viewalleventsforAdmin("event.txt"); 
+                printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
+
+                }
+        	
+        	
+            break;
+        case 6:adminPage();
+        default:
+            printing.printSomething(INVALID_CHOICE);
+     	     break;
+    }
+}
+
+
 	
-	
-	
-	
-	
-	
+/////////////////////////////////////////////////////////////////////////////////////	    
 	
 	
 	
@@ -909,3 +989,7 @@ addProviderToFile(provider_obj);
 	
 	
 }
+	
+	
+	
+
