@@ -1,0 +1,2 @@
+1 , 555 , type , name , *** , 500.0 , av
+2 , 3333 , type , name , ddd , 700.0 , a

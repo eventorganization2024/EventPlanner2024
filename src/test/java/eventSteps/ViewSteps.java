@@ -142,7 +142,7 @@ Functions F=new Functions();
 	}
 	@Then("the list  providerlist  displayed")
 	public void theListProviderlistDisplayed() {
-		 assertTrue(show_providerlist); F.ProviderPageList();              
+		 assertTrue(show_providerlist); F.providerPageList();              
 
 	}
 

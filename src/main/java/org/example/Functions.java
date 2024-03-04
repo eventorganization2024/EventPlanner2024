@@ -3,6 +3,7 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,11 +32,12 @@ public class Functions {
 	    Admin admin = new Admin();
 	    static Customer customer1 = new Customer();
 	    static Event event1=new Event();
+	    static Provider provider1=new Provider();
 	   public final ArrayList<Customer> customers = new ArrayList<>();
 	   private final ArrayList<Provider> providers = new ArrayList<>();
 	   private final ArrayList<Event> events = new ArrayList<>();
- 
-	    
+	   public List<ServiceDetails> serviceDetails = new ArrayList<>();
+
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    static final String CUSTOMER_FILE_NAME = "customer.txt";
 	    static final String PROVIDER_FILE_NAME = "provider.txt";
@@ -99,10 +101,14 @@ public class Functions {
 	                 
 	             else  {   
 	            	  
-	              event_obj.setEID(id1);
-	               event_obj.setUID(this.id);		                
-	               printing.printSomething("Enter event name:");
-	               event_obj.setName(scanner.next());
+	               event_obj.setEID(id1);
+	               event_obj.setUID(this.id);
+	               
+	               
+	               printing.printSomething("Enter event name:");  
+                   event_obj.setName(scanner.next());
+	               
+	               
 	               printing.printSomething("Enter event date (yyyy-MM-dd):");
 	               String dateInput = scanner.next();
 	               event_obj.setDate(dateInput);	               
@@ -122,7 +128,7 @@ public class Functions {
 	               return event_obj;}}
 	              
 	
-	             
+///////////////////////////////////////////////////////////////////////////////////////////	             
 	public static void searchEventsByCustomer(String customerId) {
 	    String filename = "requst.txt"; 
 
@@ -147,7 +153,7 @@ public class Functions {
               for (Event e : events) 
 	           if (e.getEID()== eventid) {events.remove(e);} }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 	            public void updateEventList( String filename) {
+	 public void updateEventList( String filename) {
 		  	        String line;
 		  	        events.clear();
 		  	        FileReader eventFileReader;
@@ -189,11 +195,7 @@ public class Functions {
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-                String EID=items[8];
-            	
-            	
-            	
-            	   
+                String EID=items[8];	   
             	   for (Customer customer : customers)   {
       				 C=customer.getId();
       				 
@@ -207,51 +209,17 @@ public class Functions {
             	   
             	   }
             	   
-            	   
-            	   
-            	  
-            	  
-            	  
-            	  
-            	  
-            	  
-            } 
+               } 
             
            }
             
            
     	}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	/*	
-		
-		 for (Event event :allEvents) {
-	          E=event.getUID();
-	         for (Customer customer : customers)   {
-				 C=customer.getId();
-				 	 
-		        if (C.compareTo(E) == 0) 
-		           customer.Cevents.add(event);  /// must be equals /////
-			      
-		    }
-		}
-
-		
-	*/	
+	
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
-	  
-
-	  public boolean viewCostomerevents( String Cid) throws Exception {
+  public boolean viewCostomerevents( String Cid) throws Exception {
 		  boolean found = false; // Initialize found flag
 
 		    updateeventandcustomer(); // Assuming this method updates the customers list
@@ -333,6 +301,30 @@ public class Functions {
 	        return false; // Return false if the ID is not found in any line
 	    }
 	    
+	    
+	    
+	    
+	    public boolean searchIdS(String serviceID, String fileName) {
+	        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] items = line.split(" , ");
+	                if (items.length >= 7) { 
+	                    String service_id = items[0].trim();
+	                    if (service_id.equals(serviceID)) {
+	                        return true; 
+	                    }
+	                }
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething("Error: " + e.getMessage());
+	        } catch (NumberFormatException e) {
+	            printing.printSomething("Invalid input: " + e.getMessage());
+	        }
+	        return false; // Return false if the ID is not found in any line
+	    }
+
+
 ///////////////////////////////////////////////////////////////////////////////////////	    
        void signInFunction() throws Exception {
 	        int c;
@@ -392,7 +384,7 @@ public class Functions {
 	            	
 	             case 3:
 	            	 boolean foundp = false;
-	            	 // updateProviderListFromViewFile(); // Update method to read from file
+	            	 updateProvidersList(); // Update method to read from file
 			           
 	            	 try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
 			                String line;
@@ -411,11 +403,11 @@ public class Functions {
 	            	 
 	            	 
 	            	 if (foundp) {
-			                // Successful customer login
+			                // Successful login
 			                while (x > 0) {
-			                    ProviderPageList();
+			                	providerPageList();
 			                    c = scanner.nextInt();
-			                   //ProviderOptions(c);
+			                   providerOptions(c);
 			                }
 			            } else {
 			                printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
@@ -473,51 +465,6 @@ public class Functions {
               addCustomerToFile(customer_obj);
            }
        }
- //////////////////////////////////////////////////////////////////////////////////
-       
-       void addProviderToFile(Provider provider) {
-           try {
-               FileWriter ProvidersFile = new FileWriter(PROVIDER_FILE_NAME, true);
-               ProvidersFile.append(provider.getId()).append(" , ")
-                       .append(provider.getUsername()).append(" , ")
-                       .append(provider.getphone()).append(" , ")
-                       .append(provider.getaddress()).append(" , ")
-                       .append(provider.getEmail()).append(" , ")
-                       .append(provider.getPassword()).append("\n");
-                       
-
-               ProvidersFile.close();
-           } catch (IOException e) {
-               printing.printSomething("An error occurred: " + e.getMessage());
-           }
-       }
-       
-///////////////////////////////////////////////////////////////////////////////////////	    
-public  void providerSignUp() throws Exception {
-provider_obj = new Provider();
-printing.printSomething("Enter your Id: ");
-id = scanner.next();
-found = searchIdP(id);
-if (found) {
-printing.printSomething("This account is already existed, Please Sign in.");
-signInFunction();
-} else {
-provider_obj.setId(id);
-printing.printSomething("Enter your Name: ");
-provider_obj.setName(scanner.next());
-printing.printSomething("Enter your Phone: ");
-provider_obj.setPhone(scanner.next());
-printing.printSomething("Enter your Address: ");
-provider_obj.setAddress(scanner.next());
-printing.printSomething("Enter your Email: ");
-provider_obj.setEmail(scanner.next());
-printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
-provider_obj.setPassword(scanner.next());
-printing.printSomething("\nRegistration done successfully\n");
-providers.add(provider_obj);
-addProviderToFile(provider_obj);
-}
-}
 /////////////////////////////////////////////////////////////////////////////
 
 	  public void signInPageList(){
@@ -544,12 +491,15 @@ addProviderToFile(provider_obj);
 	    }
 	        
 	        
-     public void ProviderPageList(){
-	         printing.printSomething("\n-------- Welcome to Providers Page --------\n"+SPACE+
-	                    "\n|        1.Update My Profile           |"+"\n|        2.                            |"+
-	                    "\n|        3.                            |"+"\n|        4. Log Out                    |\n"+
-	                    SPACE+ "\n----------------------------------------\n"+ENTER_CHOICE);
-	        }      
+	  public void providerPageList() {
+		    printing.printSomething("\n-------- Welcome to Providers Page --------\n" + SPACE +
+		            "\n|        1. Update My Profile           |" + "\n|        2. Add Service                 |" +
+		            "\n|        3. Update Service              |" + "\n|        4. Delete Service              |" +
+		            "\n|        5. View Bookings               |" + "\n|        6. View Payments               |" +
+		            "\n|        7. Log Out                    |\n" +
+		            SPACE + "\n----------------------------------------\n" + ENTER_CHOICE);
+		}
+   
      public void EventManagementAdminPageList() {
     	    printing.printSomething(
     	        "\n\033[1;33m"+
@@ -686,7 +636,7 @@ addProviderToFile(provider_obj);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
   
-  public boolean deleteCustomer(String id) {
+    public boolean deleteCustomer(String id) {
         String trimmedId = id.trim();
         for (int i = 0; i < customers.size(); i++) {
             String customerId = customers.get(i).getId().trim(); 
@@ -1043,13 +993,272 @@ private void EventManagementOptions(int cE) throws Exception {
 /////////////////////////////////////////////////////////////////////////////////////	    
 	
 	
+//////////////////////////////////////////////////////////////////////////////////
+
+void addProviderToFile(Provider provider) {
+    try {
+        FileWriter ProvidersFile = new FileWriter(PROVIDER_FILE_NAME, true);
+        ProvidersFile.append(provider.getId()).append(" , ")
+                .append(provider.getUsername()).append(" , ")
+                .append(provider.getphone()).append(" , ")
+                .append(provider.getaddress()).append(" , ")
+                .append(provider.getEmail()).append(" , ")
+                .append(provider.getPassword())
+                .append("\n");
+
+                
+
+        ProvidersFile.close();
+    } catch (IOException e) {
+        printing.printSomething("An error occurred: " + e.getMessage());
+    }
+}
+
+
+
+
+void addServiceToFile(ServiceDetails service) {
+    try {
+        FileWriter serviceFile = new FileWriter("service.txt", true);
+        serviceFile.append(service.getServiceID()).append(" , ")
+                   .append(service.getProviderID()).append(" , ")
+                   .append(service.getServiceType()).append(" , ")
+                   .append(service.getServiceName()).append(" , ")
+                   .append(service.getDescription()).append(" , ")
+                   .append(String.valueOf(service.getPrice())).append(" , ")
+                   .append(service.getAvailability())
+                   .append("\n");
+
+        serviceFile.close();
+    } catch (IOException e) {
+        printing.printSomething("An error occurred: " + e.getMessage());
+    }
+}
+
+
+//////////////////  
+
+public  void providerSignUp() throws Exception {
+provider_obj = new Provider();
+printing.printSomething("Enter your Id: ");
+id = scanner.next();
+found = searchIdP(id);
+if (found) {
+printing.printSomething("This account is already existed, Please Sign in.");
+signInFunction();
+} else {
+provider_obj.setId(id);
+printing.printSomething("Enter your Name: ");
+provider_obj.setName(scanner.next());
+printing.printSomething("Enter your Phone: ");
+provider_obj.setPhone(scanner.next());
+printing.printSomething("Enter your Address: ");
+provider_obj.setAddress(scanner.next());
+printing.printSomething("Enter your Email: ");
+provider_obj.setEmail(scanner.next());
+printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
+provider_obj.setPassword(scanner.next());
+printing.printSomething("\nRegistration done successfully\n");
+providers.add(provider_obj);
+addProviderToFile(provider_obj);
+}
+}
+
+/////////////////////////////////////////////////	
+	
+private void updateProvidersList() {
+    providers.clear(); // Clear existing data
+    try (BufferedReader br = new BufferedReader(new FileReader("provider.txt"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            Provider provider = Provider.getProviderFromLine(line); // Assuming you have a method to create Provider objects from a line
+
+            providers.add(provider);
+        }
+    } catch (IOException e) {
+        printing.printSomething("Error reading provider data: " + e.getMessage());
+    }
+}
+
+//////////
+public void updateServiceList() {
+    try (BufferedReader br = new BufferedReader(new FileReader("service.txt"))) {
+        String line;
+        serviceDetails.clear(); // Clear existing data
+        
+        while ((line = br.readLine()) != null) {
+            if (line.isEmpty()) continue;
+            ServiceDetails service = ServiceDetails.getServiceFromLine(line);
+            serviceDetails.add(service);
+        }
+    } catch (IOException e) {
+        // Handle IOException
+        printing.printSomething("An error occurred: " + e.getMessage());
+    }
+}
+/////////
+
+public void updateProviderAndServiceList() throws FileNotFoundException, IOException {
+	
+	
+			updateProvidersList();
+			 updateServiceList();
+			String P=null,S1=null;
+			 String line;
+			
+	    	 StringBuilder sb = new StringBuilder();
+			try (BufferedReader reader = new BufferedReader(new FileReader("service.txt"))) 
+	    	{   
+	            while ((line = reader.readLine()) != null)
+	            {   String[] items = line.split(" , ");
+	            if (items.length >= 7) 
+	            {
+	            	
+	            	 if (items.length >= 7) {
+	            		 String sID = items[0];
+	            		 String providerID = items[1];
+	            		 String serviceType = items[2];
+	            		 String serviceName = items[3];
+	            		 String description = items[4];
+	            		 double price = Double.parseDouble(items[5]);
+	            		 String availability = items[6];
+	                
+	            	   for (Provider  Prov :  providers)   {
+	      				   P=Prov.getId();
+	      				 
+	            	   if (providerID.equals(P)) {
+	            		   
+	            		   ServiceDetails newService = new ServiceDetails( serviceType, serviceName, description, availability,sID, price, providerID);
+	            		   Prov.serviceDetailsList.add(newService);
+	            		   break;
+	            	   }
+	            	  
+	            	   
+	            	   }
+	            	   
+	               } 
+	            	 
+	            
+	            }
+	            
+	           }
+	            
+	           
+	    	}
+			
 	
 	
 	
-	
-	
-	
-	
+}
+////////
+
+private boolean viewproviderservice(String id2) throws FileNotFoundException, IOException {
+	 boolean found = false; 
+
+	  updateProviderAndServiceList(); 
+
+	    for (Provider PROV  : providers) {
+	        if ( PROV.getId().equals(id2)) {
+	            List<ServiceDetails> providersservices = PROV.getServiceDetailsList();
+
+	            if (! providersservices .isEmpty()) {
+	               
+	            	 PROV. displayServiceDetails() ;
+	                
+	            } else {
+	                System.out.println("provider found, but has Servics no .");
+	            }
+
+	            found = true; 
+	            break; 
+	        }
+	    }
+
+	   if (!found) {
+	        System.out.println("provider not found or has Servics no .");
+	    }
+
+	    return found;
+}
+
+////////////////////////////////////
+public void providerOptions(int choice) throws Exception {
+    switch (choice) {
+        case 1:
+            //updateProviderProfile();
+            break;
+        case 2:
+        	 updateProvidersList();
+        	addService();
+            break;
+        case 3:
+          
+        	
+            break;
+        case 4:
+        	 printing.printSomething("\n");   
+             if (viewproviderservice(id)) {
+             printing.printSomething("\n"+"Please enter the Event ID of the service you want to delete: ");
+             String Sid=scanner.next();
+        	
+        	
+             provider1.deleteService(Sid);}
+            break;
+        case 5:
+           
+            break;
+        case 6:
+            
+            break;
+        default:
+            printing.printSomething("Invalid choice.");
+            break;
+    }
+}
+
+
+////////////////////////
+public ServiceDetails addService() throws Exception {
+     updateServiceList();
+    ServiceDetails service = new ServiceDetails();
+
+    printing.printSomething("\n"+"Enter event Id:");
+    id1 = scanner.next();	               
+   
+    if (searchIdS(id,"service.txt" )) { found =true ;}else found=false;	              
+    if (found)
+    { printing.printSomething("This account is already existed, Please Sign in."); 
+    addService( );return null; }
+   else  {   
+ 	  
+	   service.setServiceID(id1);
+	   service.setProviderID(id);
+	   
+     printing.printSomething("Enter service type:");
+    service.setServiceType(scanner.next());
+
+    printing.printSomething("Enter service name:");
+    service.setServiceName(scanner.next());
+
+    printing.printSomething("Enter service description:");
+    service.setDescription(scanner.next());
+
+    printing.printSomething("Enter service price:");
+    double price = scanner.nextDouble();
+    service.setPrice(price);
+
+    printing.printSomething("Enter service availability:");
+    service.setAvailability(scanner.next());
+
+   
+    serviceDetails.add(service);
+   addServiceToFile(service);
+   printing.printSomething("\nService added successfully.");
+    return service;}
+    
+    
+}
+
 	
 	
 	
