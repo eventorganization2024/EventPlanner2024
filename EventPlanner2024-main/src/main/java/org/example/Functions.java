@@ -254,25 +254,29 @@ public class Functions {
     private boolean checkAvailabilityById(String venueId, String date) throws IOException {
         File venueBookFile = new File("venuebook.txt");
         Scanner scanner = new Scanner(venueBookFile);
-        
+
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(",");
-            String venueIdFromFile = parts[0];
-            String dateFromFile = parts[2];
-            String reserved = parts[3];
-            
-            
-            if (venueIdFromFile.equals(venueId) && dateFromFile.equals(date) && reserved.equalsIgnoreCase("Reserved")) {
-                System.out.println("The venue is reserved on " + date + ". Please choose another venue.");
-                scanner.close();
-                return false;
+
+            // Check if the parts array has at least 4 elements
+            if (parts.length >= 4) {
+                String venueIdFromFile = parts[0];
+                String dateFromFile = parts[2];
+                String reserved = parts[3];
+
+                if (venueIdFromFile.equals(venueId) && dateFromFile.equals(date) && reserved.equalsIgnoreCase("Reserved")) {
+                    System.out.println("The venue is reserved on " + date + ". Please choose another venue.");
+                    scanner.close();
+                    return false;
+                }
             }
         }
-        
+
         scanner.close();
         return true; // Venue available
     }
+
     
     ///////////////////////////////////////////////////
     
@@ -307,7 +311,7 @@ public class Functions {
     	{   
             while ((line = reader.readLine()) != null)
             {   String[] items = line.split(" , ");
-            if (items.length >= 9) 
+            if (items.length >= 10) 
             {
             	
             	String name = items[0];
@@ -318,7 +322,8 @@ public class Functions {
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-                String EID=items[8];
+                String Venuename=items[8];
+                String EID=items[9];
             	
             	
             	
@@ -328,7 +333,7 @@ public class Functions {
       				 
             	   if (UID.equals(C)) {
             		   
-            		   Event Event111=new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
+            		   Event Event111=new Event(name, date, time, description, attendeeCount, UID, theme, cate, Venuename,EID);
             		   customer.Cevents.add(Event111);
             		   break;
             	   }
@@ -379,6 +384,34 @@ public class Functions {
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
 
+    public void deleteVenueBooking(String eventId, String filename) {
+        List<String> lines = new ArrayList<>();
+        
+        // Read the contents of the file and exclude the line with the specified event ID
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] eventData = line.split(","); // Assuming each line is comma-separated
+                if (eventData.length >= 5 && eventData[4].trim().equals(eventId)) {
+                    // Skip the line with the specified event ID
+                    continue;
+                }
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        // Rewrite the file with updated contents (excluding the line with the specified event ID)
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	  public static void addVenueToFile(String filename, String venueDetails) {
 	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
