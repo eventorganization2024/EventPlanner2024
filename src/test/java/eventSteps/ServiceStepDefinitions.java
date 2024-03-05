@@ -14,8 +14,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -164,7 +162,7 @@ public class ServiceStepDefinitions {
     }
 
     @Then("the Entertainment service should be removed from the providers profile")
-    public void the_entertainment_service_should_be_removed_from_the_providers_profile() throws FileNotFoundException, IOException {
+    public void the_entertainment_service_should_be_removed_from_the_providers_profile() throws Exception {
         // Assume you have a method in ServiceProviderService to check if the service is removed
     	serviceProviderService.deleteService(deletedService.getServiceType());
        // assertTrue(!serviceProviderService.doesServiceExist("Entertainment"));

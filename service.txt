@@ -1,2 +1,2 @@
-1 , 555 , type , name , *** , 500.0 , av
-2 , 3333 , type , name , ddd , 700.0 , a
+0 , 555 , type , name , des , 50.0 , avail
+4 , 555 , type , name , ee , 34.0 , 90

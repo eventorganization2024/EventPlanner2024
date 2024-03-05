@@ -1,5 +1,9 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class ServiceDetails {
     private String serviceID;
     private String providerID;
@@ -8,7 +12,9 @@ public class ServiceDetails {
     private String description;
     private double price;
     private String availability;
-
+    static Printing printing = new Printing();
+    Functions f =new Functions();
+     
     
     public ServiceDetails() {}
 
@@ -95,12 +101,11 @@ public class ServiceDetails {
 	    return service;
 	}
 
+  
 
    
-   
-   
-   
-   
+  
+
    
    
 }

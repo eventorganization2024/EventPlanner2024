@@ -350,7 +350,7 @@ public class Functions {
 	            case 2:
 
 		            boolean found1 = false;
-		            updateCustomersListFromViewFile(); // Update method to read from file
+		            updateCustomersList(); // Update method to read from file
 		            try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
 		                String line;
 		                while ((line = br.readLine()) != null) {
@@ -545,6 +545,18 @@ public class Functions {
     	        "|   7. Log Out                          |\n" +
     	        "\033[1;36m" +"\n" + "\n\033[0m"
     	    );}
+     
+     public void ProviderManagementAdminPageList() {
+         printing.printSomething(
+	        "\n\033[1;33m" +
+	        "---- Welcome to Provider Management Page ----\n" +
+	        "\033[1;33m" +
+	        "|   1. VIEW ALL                         |\n" +
+	        "|   2. DELETE Provider                            |\n" +
+	        "|   3.  Log Out                         |\n" +
+	  
+	        "\033[1;36m" +"\n" + "\n\033[0m"
+	    );}
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public boolean viewalleventsforAdmin(String filename) {
@@ -706,7 +718,7 @@ public class Functions {
         }
     }
   
-    private void updateCustomersListFromViewFile() {
+  /*  private void updateCustomersListFromViewFile() {
         customers.clear(); // Clear existing data
         try (BufferedReader br = new BufferedReader(new FileReader("customer.txt"))) {
             String line;
@@ -719,7 +731,7 @@ public class Functions {
             printing.printSomething("Error reading customer data: " + e.getMessage());
         }
     } 
-    
+  */  
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     public void updateCustomerProfile(int n) throws IOException {
         String tmp1;
@@ -902,7 +914,9 @@ void adminPage() throws IOException, Exception
 	        	VenueManagementadminList();
 	            break;
 	        case 5:
-	            //  Provider Management
+	        	ProviderManagementAdminPageList();
+	        	int PR=scanner.nextInt();
+	        	ProviderAdminManagementOptions(PR);
 	            break;
 	        case 6:
 	            // Handle Notify Customer By Email
@@ -1185,14 +1199,27 @@ private boolean viewproviderservice(String id2) throws FileNotFoundException, IO
 public void providerOptions(int choice) throws Exception {
     switch (choice) {
         case 1:
-            //updateProviderProfile();
+        	updateProvidersList();
+            printing.printSomething("Which info you want to update?\n1. Name  2.Phone  3. Address  4. Email"+"\n"+ENTER_CHOICE);
+           updateProviderProfile(scanner.nextInt());
+          
             break;
         case 2:
         	 updateProvidersList();
         	addService();
             break;
         case 3:
-          
+        	 printing.printSomething("\n");   
+        	 if (viewproviderservice(id)) {
+                 printing.printSomething("\n"+"Please enter the Event ID of the service you want to update : ");
+                 String Sid=scanner.next();
+            	
+                 updateProviderAndServiceList();
+                 updateServiceList();
+                provider1.updateServiceDetails(Sid,"service.txt");
+                printing.printSomething("\nService updated successfully.");
+                viewproviderservice(id);
+                 }
         	
             break;
         case 4:
@@ -1200,9 +1227,9 @@ public void providerOptions(int choice) throws Exception {
              if (viewproviderservice(id)) {
              printing.printSomething("\n"+"Please enter the Event ID of the service you want to delete: ");
              String Sid=scanner.next();
-        	
-        	
-             provider1.deleteService(Sid);}
+             provider1.deleteService(Sid);
+             printing.printSomething("\nService deleted successfully.");
+             }
             break;
         case 5:
            
@@ -1259,10 +1286,94 @@ public ServiceDetails addService() throws Exception {
     
 }
 
+/////////////////
+
+private void updateProviderProfile(int n) throws IOException {
+    String tmp1;
+    for (Provider provider1 : providers) {
+        if (provider1.getId().equals(id)) {
+            switch (n){
+                case 1:
+                    printing.printSomething(ENTER_NAME);
+                    tmp1 = scanner.next();
+                    updateFile("provider.txt", provider1.getUsername(), tmp1);
+                    provider1.setName(tmp1);
+                    break;
+                case 2:
+                    printing.printSomething("Enter New Phone: ");
+                    tmp1 = scanner.next();
+                    updateFile("provider.txt", provider1.getphone(), tmp1);
+                    provider1.setPhone(tmp1);
+                    break;
+                case 3:
+                    printing.printSomething("Enter New Address: ");
+                    tmp1= scanner.next();
+                    updateFile("provider.txt", provider1.getaddress(), tmp1);
+                    provider1.setAddress(tmp1);
+                    break;
+                case 4:
+                    printing.printSomething("Enter New Email: ");
+                    tmp1 = scanner.next();
+                    updateFile("provider.txt", provider1.getEmail(), tmp1);
+                    provider1.setEmail(tmp1);
+                    break;
+                default:    printing.printSomething(INVALID_CHOICE);
+            }
+        }
+    }
+
 	
+}
+//////////////////
+
+private void ProviderAdminManagementOptions(int p) throws Exception {
+	switch (p) {
+    case 1:
+    	 viewallprovider("provider.txt");
+    	 break;
+    case 2:
+    	  if(  viewallprovider("provider.txt")) {
+              printing.printSomething("\nEnter the Provider ID  you want to delete it: ");
+              String providerID = scanner.next();  
+             provider1.delete_provider_from_file_and_arraylist(provider1, "provider.txt", providerID);
+      	  printing.printSomething("\nProvider with ID " + providerID + " successfully deleted .");}
+
+      	break;    
+  
+	}}
 	
+///////////////////////
+
+	public boolean viewallprovider(String filename) {
+		 List<Provider> prov = new ArrayList<>();
 	
-	
+		  Provider provider2 = new Provider();
+		  
+		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+		        String line;
+		       while ((line = reader.readLine()) != null) {
+		           
+		         provider2=provider2.getProviderFromLine(line);
+		           
+		           prov.add(provider2);
+		        }
+		    } catch (Exception e) {
+		       e.printStackTrace();
+		    }
+		    if (prov.isEmpty()) {
+		        printing.printSomething("No provider found.\n");
+		        return false;
+		    }
+		    
+		    printing.printSomething("List of providers: \n");
+		    
+		    for (Provider providers2 : prov) {
+		        System.out.println(providers2); 
+		    }
+		    
+		    return true;
+			
+	}
 	
 }
 	
