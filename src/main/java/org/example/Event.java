@@ -14,11 +14,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Stack;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Event {
 	private String UserID;
     private String name;
-    private String date;
+    private Date date;
     private String time;
     private String description;
     private String attendeeCount;
@@ -30,10 +33,12 @@ public class Event {
 	
    static Printing printing = new Printing();
    Functions f =new Functions();
-    
+   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+   
+   
     public  Event() {}
     
-    public Event(String name, String date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Eid) {
+    public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Eid) {
         this .UserID=UserID; 
         this.name = name;
         this.date = date;
@@ -54,7 +59,14 @@ public class Event {
         String[] items = line.split(",");
         if (items.length >= 9) {
         	 String name = items[0];
-             String date = items[1];
+        	 Date date;
+             try {
+                 date = DATE_FORMAT.parse(items[1]);
+             } catch (ParseException e) {
+
+                 e.printStackTrace();
+                 return null;
+             }
              String time = items[2];
              String description = items[3];
              String attendeeCount=items[4];
@@ -81,7 +93,7 @@ public class Event {
         try {
             FileWriter  eventFile = new FileWriter(filename, true);
             eventFile.append(event.getName()).append(" , ")
-                    .append(event.getDate()).append(" , ")
+                    .append(DATE_FORMAT.format(event.getDate())).append(" , ")
                     .append(event.getTime()).append(" , ")
                     .append(event.getDescription()).append(" , ")
                     .append(event.getAttendeeCount()).append(" , ")
@@ -156,7 +168,14 @@ public class Event {
             if (items.length >= 9) 
             {
                 String name = items[0];
-                String  date= items[1];
+                Date date;
+                try {
+                    date = DATE_FORMAT.parse(items[1]);
+                } catch (ParseException e) {
+
+                    e.printStackTrace();
+                    return null;
+                }
                 String time = items[2];
                 String description = items[3];
                 String attendeeCount = items[4];
@@ -184,7 +203,14 @@ public class Event {
                 String[] items = line.split(" , ");
                 if (items.length >= 9) {
                 	String name = items[0];
-                    String  date= items[1];
+                	 Date date;
+                     try {
+                         date = DATE_FORMAT.parse(items[1]);
+                     } catch (ParseException e) {
+
+                         e.printStackTrace();
+                         return null;
+                     }
                     String time = items[2];
                     String description = items[3];
                     String attendeeCount = items[4];
@@ -283,7 +309,15 @@ public class Event {
                 case "2":
                 	 printing.printSomething("Enter new event date (yyyy-MM-dd):");
   	               String dateInput = scanner.next();
-  	               toupdatedEvent.setDate(dateInput);
+  	             Date date;
+  	             try {
+  	                 date = DATE_FORMAT.parse(dateInput);
+  	             } catch (ParseException e) {
+
+  	                 e.printStackTrace();
+  	                 return null;
+  	             }
+  	               toupdatedEvent.setDate(date);
                      
                     break;
                 case "3":
@@ -344,11 +378,11 @@ public class Event {
         this.name = name;
     }
 
-    public String getDate() {
+    public  Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

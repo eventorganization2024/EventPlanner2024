@@ -48,28 +48,25 @@ public class Customer extends User {
    
     
    
-    
-    
-    
-    
-  public  void addCustomerToFile(Customer customer,String filename) throws Exception{
-	  try (RandomAccessFile file = new RandomAccessFile(filename, "rw")) {
-	        long fileLength = file.length();
-	        file.seek(fileLength); // Position the file pointer at the end of the file
+   public void addCustomerToFile(Customer customer) {
+        try {
+            FileWriter customersFile = new FileWriter("customer.txt", true);
+            customersFile.append(customer.getId()).append(" , ")
+                    .append(customer.getUsername()).append(" , ")
+                    .append(customer.getphone()).append(" , ")
+                    .append(customer.getaddress()).append(" , ")
+                    .append(customer.getEmail()).append(" , ")
+                    .append(customer.getPassword())
+                    .append("\n");
 
-	        file.writeBytes(
-	                customer.getId() + " , " +
-	                customer.getUsername() + " , " +
-	                customer.getphone() + " , " +
-	                customer.getaddress() + " , " +
-	                customer.getEmail() + " , " +
-	                customer.getPassword() + ","
-	        );
-
-	        printing.printSomething("added");
-	    } catch (IOException e) {
-	        printing.printSomething("An error occurred: " + e.getMessage());
-	    }}
+            customersFile.close();
+        } catch (IOException e) {
+            printing.printSomething("An error occurred: " + e.getMessage());
+        }
+    }
+    
+    
+ 
     
     
   public static Customer getCustomerFromLine(String line){

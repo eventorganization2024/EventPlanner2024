@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class Functions {
 	    static final String ENTER_PASSWORD= "\nEnter Password ";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
+	    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	    
 	    private String id1;
 		  
@@ -61,30 +63,6 @@ public class Functions {
 	    	password = scanner.next();
 	    	}
 ////////////////////////////////////////////////////////////////////////////////////////	    
-	    
-	    
-	    
-	    public void printCustomers() {
-	        System.out.println("List of Customers:");
-	        for (Customer customer : customers) {
-	            System.out.println(customer);
-	        }
-	    }
-	    public void printProviders() {
-	        System.out.println("List of Providers:");
-	        for (Provider provider : providers) {
-	            System.out.println(provider);
-	        }
-	    }
-
-	    public void printEvents() {
-	        System.out.println("List of Events:");
-	        for (Event event : events) {
-	            System.out.println(event);
-	        }}
-	    
-	    
-//////////////////////////////////////////////////////////////////////////////////////////	    
 	public Event addevent (String filename) throws Exception {
 		          updateEventList("requst.txt");
 		          updateEventList("event.txt");
@@ -111,7 +89,15 @@ public class Functions {
 	               
 	               printing.printSomething("Enter event date (yyyy-MM-dd):");
 	               String dateInput = scanner.next();
-	               event_obj.setDate(dateInput);	               
+	               Date date;
+	               try {
+	                   date = DATE_FORMAT.parse(dateInput);
+	               } catch (ParseException e) {
+
+	                   e.printStackTrace();
+	                   return null;
+	               }
+	               event_obj.setDate(date);	               
 	               printing.printSomething("Enter event time:");
 	               event_obj.setTime(scanner.next());
 	               printing.printSomething("Enter event description:");
@@ -129,26 +115,7 @@ public class Functions {
 	              
 	
 ///////////////////////////////////////////////////////////////////////////////////////////	             
-	public static void searchEventsByCustomer(String customerId) {
-	    String filename = "requst.txt"; 
-
-	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	          
-	            String[] fields = line.split(",\\s*"); 
-	            
-	     
-	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim())) {
-	             
-	                System.out.println(line);
-	            }
-	        }
-	    } catch (IOException e) {
-	        System.err.println("An error occurred while reading the file: " + e.getMessage());
-	    }
-	}
-              
+      
     public void  delete_Event_from_arraylist(String filename,String eventid){
               for (Event e : events) 
 	           if (e.getEID()== eventid) {events.remove(e);} }
@@ -188,7 +155,14 @@ public class Functions {
             {
             	
             	String name = items[0];
-                String  date= items[1];
+            	 Date date=new Date();
+                 try {
+                     date = DATE_FORMAT.parse(items[1]);
+                 } catch (ParseException e) {
+
+                     e.printStackTrace();
+                    
+                 }
                 String time = items[2];
                 String description = items[3];
                 String attendeeCount = items[4];
@@ -422,25 +396,7 @@ public class Functions {
 	    }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-       void addCustomerToFile(Customer customer) {
-           try {
-               FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME, true);
-               customersFile.append(customer.getId()).append(" , ")
-                       .append(customer.getUsername()).append(" , ")
-                       .append(customer.getphone()).append(" , ")
-                       .append(customer.getaddress()).append(" , ")
-                       .append(customer.getEmail()).append(" , ")
-                       .append(customer.getPassword())
-                       .append("\n");
-
-               customersFile.close();
-           } catch (IOException e) {
-               printing.printSomething("An error occurred: " + e.getMessage());
-           }
-       }
-       
-///////////////////////////////////////////////////////////////////////////////////////	    
-       void customerSignUp() throws Exception {
+      void customerSignUp() throws Exception {
            customer_obj = new Customer();
            printing.printSomething("Enter your Id: ");
            id = scanner.next();
@@ -462,7 +418,7 @@ public class Functions {
                customer_obj.setPassword(scanner.next());
                printing.printSomething("\nRegistration done successfully\n");
                customers.add(customer_obj);
-              addCustomerToFile(customer_obj);
+               customer_obj .addCustomerToFile(customer_obj);
            }
        }
 /////////////////////////////////////////////////////////////////////////////
@@ -608,11 +564,6 @@ public class Functions {
 		
 	}
 
-	public void viewallProviders() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	
 	public void viewallVenuesforCoustmer() {
@@ -718,20 +669,7 @@ public class Functions {
         }
     }
   
-  /*  private void updateCustomersListFromViewFile() {
-        customers.clear(); // Clear existing data
-        try (BufferedReader br = new BufferedReader(new FileReader("customer.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                Customer customer = Customer.getCustomerFromLine(line); // Assuming you have a method to create Customer objects from a line
-               
-                customers.add(customer);
-            }
-        } catch (IOException e) {
-            printing.printSomething("Error reading customer data: " + e.getMessage());
-        }
-    } 
-  */  
+ 
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     public void updateCustomerProfile(int n) throws IOException {
         String tmp1;
@@ -1003,9 +941,6 @@ private void EventManagementOptions(int cE) throws Exception {
 }
 
 
-	
-/////////////////////////////////////////////////////////////////////////////////////	    
-	
 	
 //////////////////////////////////////////////////////////////////////////////////
 
