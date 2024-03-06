@@ -30,6 +30,7 @@ public class Functions {
 	    int choice2;
 	    boolean found;
 	    String tmp;
+	    String d;
 	    Admin admin = new Admin();
 	    static Customer customer1 = new Customer();
 	    static Event event1=new Event();
@@ -108,10 +109,34 @@ public class Functions {
 		           event_obj.setTheme(scanner.next());   
 		           printing.printSomething("Enter event category:");
 		           event_obj.setCategory(scanner.next());
+		           viewAllVenuesCustomer("venue.txt");
+		           boolean venueAvailable = false;
+		           String venueName;
+		           do {
+		               // Check venue availability
+		               printing.printSomething("Enter Venue name:");
+		               venueName = scanner.next();
+		               if (checkAvailability(venueName, dateInput)) {
+		                   if (Integer.parseInt(event_obj.getAttendeeCount()) <= getVenueCapacity(venueName)) {
+		                       venueAvailable = true;
+		                       event_obj.setVenuename(venueName);
+		                   } else {
+		                       printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.");
+		                   }
+		               } else {
+		                   printing.printSomething("The venue is not available. Please choose another venue.");
+		               }
+		           } while (!venueAvailable);
+		           
+		           
+		           printing.printSomething("Enter event category:");
+		           event_obj.setCategory(scanner.next());
 	               printing.printSomething("\n done successfully\n");	               
 	               events.add(event_obj);	               	               
 	               event_obj.addEventToFile(event_obj,filename);
-	               return event_obj;}}
+	               addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
+	               return event_obj;}}	               
+	             
 	              
 	
 ///////////////////////////////////////////////////////////////////////////////////////////	             
@@ -151,7 +176,7 @@ public class Functions {
     	{   
             while ((line = reader.readLine()) != null)
             {   String[] items = line.split(" , ");
-            if (items.length >= 9) 
+            if (items.length >= 10) 
             {
             	
             	String name = items[0];
@@ -169,13 +194,14 @@ public class Functions {
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-                String EID=items[8];	   
+                String Venuename=items[8];
+                String EID=items[9];	   
             	   for (Customer customer : customers)   {
       				 C=customer.getId();
       				 
             	   if (UID.equals(C)) {
             		   
-            		   Event Event111=new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
+            		   Event Event111=new Event(name, date, time, description, attendeeCount, UID, theme, cate,Venuename, EID);
             		   customer.Cevents.add(Event111);
             		   break;
             	   }
@@ -850,7 +876,10 @@ void adminPage() throws IOException, Exception
 	            break;
 	        case 4:
 	        	VenueManagementadminList();
+	        	int C=scanner.nextInt();
+	        	VenueManagementOptions(C);
 	            break;
+	         
 	        case 5:
 	        	ProviderManagementAdminPageList();
 	        	int PR=scanner.nextInt();
@@ -877,6 +906,36 @@ void adminPage() throws IOException, Exception
 	    }
 }
 }
+///////////////////////////////////////////////////////////////////////////////////////
+
+private void VenueManagementOptions(int C) {
+	  Scanner scanner = new Scanner(System.in);
+	switch (C)
+	{
+	case 2:
+		  addVenue(scanner, "venue.txt");
+		
+          break;
+	 case 4:
+         editVenuefrom(scanner, "venue.txt");
+         
+         break;
+     case 3:
+         deleteVenueById( scanner,"venue.txt");
+         break;
+     case 1:
+         viewAllVenues("venue.txt");
+         break;
+     case 5:
+         System.out.println("Exiting...");
+         break;
+     default:
+         printing.printSomething(INVALID_CHOICE);
+  	     break;
+		
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////	    
 
 
@@ -1310,8 +1369,430 @@ private void ProviderAdminManagementOptions(int p) throws Exception {
 			
 	}
 	
+
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+public void addBookingVenue(String venid, String custid, String date, String status, String eventid) {
+    try (FileWriter writer = new FileWriter("venuebook.txt", true)) {
+        writer.write(venid + "," + custid + "," + date + "," + status +","+eventid+ "\n");
+        System.out.println("Booking added successfully.");
+    } catch (IOException e) {
+        System.out.println("An error occurred while adding the booking: " + e.getMessage());
+    }
 }
-	
-	
+
+
+public int getVenueCapacity(String venueName) throws IOException {
+    File venueFile = new File("venue.txt");
+    Scanner scanner = new Scanner(venueFile);
+    
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        String[] parts = line.split(",");
+        String name = parts[1];
+        if (name.equalsIgnoreCase(venueName)) {
+            scanner.close();
+            return Integer.parseInt(parts[4]); // Assuming capacity is at index 4
+        }
+    }
+    
+    scanner.close();
+    return -1; // Venue not found
+}
+         
+public static void searchEventsByCustomer(String customerId) {
+String filename = "requst.txt"; 
+
+try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    String line;
+    while ((line = reader.readLine()) != null) {
+      
+        String[] fields = line.split(",\\s*"); 
+        
+ 
+        if (fields.length >= 9 && fields[5].trim().equals(customerId.trim())) {
+         
+            System.out.println(line);
+        }
+    }
+} catch (IOException e) {
+    System.err.println("An error occurred while reading the file: " + e.getMessage());
+}
+}
+//////////////////////////////////////////////////////////////////////////
+
+public boolean checkAvailability(String venueName, String date) throws IOException {
+    // Look up venue ID by name
+    String venueId = getVenueIdByName(venueName);
+    
+    // If venue name doesn't exist or there's an error getting venue ID, return false
+    if (venueId == null) {
+        System.out.println("Venue with name " + venueName + " not found.");
+        return false;
+    }
+    return checkAvailabilityById(venueId, date);
+}
+
+// Function to get venue ID by its name from the venue file
+private String getVenueIdByName(String venueName) throws IOException {
+    File venueFile = new File("venue.txt");
+    Scanner scanner = new Scanner(venueFile);
+    
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        String[] parts = line.split(",");
+        String venueId = parts[0];
+        String name = parts[1];
+        
+        if (name.equalsIgnoreCase(venueName)) {
+            scanner.close();
+            return venueId;
+        }
+    }
+    
+    scanner.close();
+    return null; // Venue not found
+}
+public static void viewAllVenuesCustomer(String filename) {
+    List<Venue> venues = readVenuesFromFile(filename);
+
+    if (venues.isEmpty()) {
+        System.out.println("No venues found.");
+    } else {
+        System.out.println("All Venues:");
+        for (Venue venue : venues) {
+           
+            System.out.print("Name: " + venue.getName());
+            System.out.print("  Address: " + venue.getAddress());
+            System.out.print("  Capacity: " + venue.getCapacity());
+            System.out.println("  Price: " + venue.getPrice());
+          
+            System.out.println();
+        }
+    }}
+
+private boolean checkAvailabilityById(String venueId, String date) throws IOException {
+    File venueBookFile = new File("venuebook.txt");
+    Scanner scanner = new Scanner(venueBookFile);
+
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        String[] parts = line.split(",");
+
+        // Check if the parts array has at least 4 elements
+        if (parts.length >= 4) {
+            String venueIdFromFile = parts[0];
+            String dateFromFile = parts[2];
+            String reserved = parts[3];
+
+            if (venueIdFromFile.equals(venueId) && dateFromFile.equals(date) && reserved.equalsIgnoreCase("Reserved")) {
+                System.out.println("The venue is reserved on " + date + ". Please choose another venue.");
+                scanner.close();
+                return false;
+            }
+        }
+    }
+
+    scanner.close();
+    return true; // Venue available
+}
+
+/////////////////////////////////////////////////////////////////////////
+public void deleteVenueBooking(String eventId, String filename) {
+    List<String> lines = new ArrayList<>();
+    
+    // Read the contents of the file and exclude the line with the specified event ID
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] eventData = line.split(","); // Assuming each line is comma-separated
+            if (eventData.length >= 5 && eventData[4].trim().equals(eventId)) {
+                // Skip the line with the specified event ID
+                continue;
+            }
+            lines.add(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    
+    // Rewrite the file with updated contents (excluding the line with the specified event ID)
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        for (String line : lines) {
+            writer.write(line);
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+  public static void addVenueToFile(String filename, String venueDetails) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(venueDetails);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to interactively add venue details
+  public static boolean isVenueIdExists(String filename, String venueId) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(venueId + ",")) {
+                    return true; // Venue ID exists in the file
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false; // Venue ID does not exist in the file
+    }
+
+    // Method to interactively add venue details
+  public static void addVenue(Scanner scanner, String filename) {
+        System.out.println("Adding a new venue...");
+        
+        // Validate venue ID
+        String venueId;
+        do {
+            System.out.print("Enter venue ID: ");
+            venueId = scanner.nextLine();
+            if (!venueId.matches("\\d+")) {
+                System.out.println("Invalid input. Please enter a valid venue ID (numeric value): ");
+            }
+        } while (!venueId.matches("\\d+"));
+
+        // Validate venue name
+        System.out.print("Enter venue name: ");
+        String name = scanner.nextLine();
+
+        // Validate venue address
+        System.out.print("Enter venue address: ");
+        String address = scanner.nextLine();
+
+        // Validate Image
+        System.out.print("Enter Image : ");
+        String Image = scanner.nextLine();
+
+        // Validate venue capacity
+        int capacity;
+        do {
+            System.out.print("Enter venue capacity: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid venue capacity (numeric value): ");
+                scanner.next(); // Clear the buffer
+            }
+            capacity = scanner.nextInt();
+        } while (capacity <= 0);
+        scanner.nextLine(); // Consume newline
+
+        // Validate venue price
+        double price;
+        do {
+            System.out.print("Enter venue price: ");
+            while (!scanner.hasNextDouble()) {
+                System.out.println("Invalid input. Please enter a valid venue price (numeric value): ");
+                scanner.next(); // Clear the buffer
+            }
+            price = scanner.nextDouble();
+        } while (price <= 0);
+        scanner.nextLine(); // Consume newline
+
+        // Create a new Venue object and add it to the file
+        Venue newVenue = new Venue(venueId, name, address, capacity, price, Image);
+        String venueDetails = newVenue.toFileString();
+        addVenueToFile(filename, venueDetails);
+        System.out.println("Venue successfully added.");
+    }
+    
+    public static void editVenuefrom(Scanner scanner, String filename) {
+        List<Venue> venues = readVenuesFromFile(filename);
+       // List<Venue> venues = readVenuesFromFile(filename);
+
+        if (venues.isEmpty()) {
+            System.out.println("No venues found.");
+        } else {
+            System.out.println("All Venues:");
+            for (Venue venue : venues) {
+                System.out.print("Venue ID: " + venue.getId());
+                System.out.print("  Name: " + venue.getName());
+                System.out.print("  Address: " + venue.getAddress());
+                System.out.print("  Image: " + venue.getImage());
+                System.out.print("  Capacity: " + venue.getCapacity());
+                System.out.println("  Price: " + venue.getPrice());
+              
+                System.out.println();
+            }
+        }
+        System.out.print("Enter the ID of the venue to edit: ");
+        String venueId = scanner.nextLine();
+
+        Venue oldVenue = null;
+        for (Venue venue : venues) {
+            if (venue.getId().equals(venueId)) {
+                oldVenue = venue;
+                break;
+            }
+        }
+
+        if (oldVenue == null) {
+            System.out.println("Venue not found.");
+            return;
+        }
+
+        System.out.println("Enter new venue details:");
+        System.out.print("Venue ID: ");
+        String newVenueId = scanner.nextLine();
+        System.out.print("Venue name: ");
+        String newVenueName = scanner.nextLine();
+        System.out.print("Venue address: ");
+        String newVenueAddress = scanner.nextLine();
+        System.out.print("Image : ");
+        String newImage = scanner.nextLine();
+        System.out.print("Venue capacity: ");
+        int newVenueCapacity = scanner.nextInt();
+        System.out.print("Venue price: ");
+        double newVenuePrice = scanner.nextDouble();
+
+        Venue newVenue = new Venue(newVenueId, newVenueName, newVenueAddress, newVenueCapacity, newVenuePrice,newImage);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (int i = 0; i < venues.size(); i++) {
+                Venue venue = venues.get(i);
+                if (venue.equals(oldVenue)) {
+                    writer.write(newVenue.toFileString());
+                } else {
+                    writer.write(venue.toFileString());
+                }
+                if (i != venues.size() - 1) {
+                    writer.newLine();
+                }
+            }
+            System.out.println("Venue successfully edited.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<Venue> readVenuesFromFile(String filename) {
+        List<Venue> venues = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 6) {
+                    System.out.println("Invalid format in venue file: " + line);
+                    continue; // Skip this line and proceed to the next one
+                }
+                String venueId = parts[0];
+                String venueName = parts[1];
+                String venueAddress = parts[2];
+                String imagePath=parts[3];
+                int venueCapacity = Integer.parseInt(parts[4]);
+                double venuePrice = Double.parseDouble(parts[5]);
+                Venue venue = new Venue(venueId, venueName, venueAddress ,venueCapacity, venuePrice,imagePath);
+                venues.add(venue);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return venues;
+    }
+    public static void deleteVenueById(Scanner scanner, String filename) {
+    	
+    	
+        System.out.println("Removing a venue...");
+        List<Venue> venues = readVenuesFromFile(filename);
+
+        if (venues.isEmpty()) {
+            System.out.println("No venues found.");
+        } else {
+            System.out.println("All Venues:");
+            for (Venue venue : venues) {
+                System.out.print("Venue ID: " + venue.getId());
+                System.out.print("  Name: " + venue.getName());
+                System.out.print("  Address: " + venue.getAddress());
+                System.out.print("  Image: " + venue.getImage());
+                System.out.print("  Capacity: " + venue.getCapacity());
+                System.out.println("  Price: " + venue.getPrice());
+              
+                System.out.println();
+            }
+        }
+        System.out.print("Enter the ID of the venue to remove: ");
+        String venueIdToRemove = scanner.nextLine();
+
+        //List<Venue> venues = readVenuesFromFile(filename);
+        boolean found = false;
+
+        List<Venue> updatedVenues = new ArrayList<>();
+
+        // Iterate over the venues to find and remove the specified venue
+        for (Venue venue : venues) {
+            if (venue.getId().equals(venueIdToRemove)) {
+                found = true;
+                System.out.println("Venue with ID " + venueIdToRemove + " successfully removed.");
+            } else {
+                // Add venues other than the one to be removed to the updated list
+                updatedVenues.add(venue);
+            }
+        }
+
+        // If the venue to remove was found, update the file with the updated list of venues
+        if (found) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                for (int i = 0; i < updatedVenues.size(); i++) {
+                    Venue venue = updatedVenues.get(i);
+                    writer.write(venue.toFileString());
+                    if (i != updatedVenues.size() - 1) {
+                        writer.newLine();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Venue with ID " + venueIdToRemove + " not found.");
+        }
+    }
+
+    private static void deleteVenueFromFile(String filename, List<Venue> venues) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Venue venue : venues) {
+                writer.write(venue.toFileString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void viewAllVenues(String filename) {
+        List<Venue> venues = readVenuesFromFile(filename);
+
+        if (venues.isEmpty()) {
+            System.out.println("No venues found.");
+        } else {
+            System.out.println("All Venues:");
+            for (Venue venue : venues) {
+                System.out.print("Venue ID: " + venue.getId());
+                System.out.print("  Name: " + venue.getName());
+                System.out.print("  Address: " + venue.getAddress());
+                System.out.print("  Image: " + venue.getImage());
+                System.out.print("  Capacity: " + venue.getCapacity());
+                System.out.println("  Price: " + venue.getPrice());
+              
+                System.out.println();
+            }}
+        }
+   
+
+
+
+
+
+}
 	
 

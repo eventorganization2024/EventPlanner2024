@@ -46,9 +46,9 @@ public class event_Management_Steps {
 	}
 	                                                 
 	
-	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},eventid {string}")
-	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
-		Date date=new Date();
+	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
+	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
+	Date date=new Date();
         try {
             date = DATE_FORMAT.parse(string);
         } catch (ParseException e) {
@@ -63,7 +63,8 @@ public class event_Management_Steps {
 	        event.setName(string5);
 	        event.setCategory(string6);
 	        event.setTheme(string7);
-	        event.setEID(string8);
+	        event.setVenuename(string8);
+	        event.setEID(string9);
 	        event.setUID(customer1.getId());
 	   	 Functions.addEmptyLine("event.txt");}
 	
@@ -131,8 +132,8 @@ public class event_Management_Steps {
 	public void theAdministratorIsGoingToCreateAnEvent() {event.creat=true;}
 	   
 
-@When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},eventid {string}")
-public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
+@When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
+public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
 	Date date=new Date();
     try {
         date = DATE_FORMAT.parse(string);
@@ -148,7 +149,8 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setName(string5);
         event.setCategory(string6);
         event.setTheme(string7);
-        event.setEID(string8);
+        event.setVenuename(string8);
+        event.setEID(string9);
         event.setUID("12114777");}
 
 	

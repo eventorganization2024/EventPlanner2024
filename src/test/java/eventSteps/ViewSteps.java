@@ -29,7 +29,7 @@ show_providerlist;
 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 public ViewSteps() {
     try {
-        Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "111");
+        Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference","V1", "111");
     } catch (ParseException ex) {
         ex.printStackTrace(); // Handle the exception
     }}

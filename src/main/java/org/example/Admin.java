@@ -1,6 +1,7 @@
 package org.example;
 
 public class Admin {
+	boolean state;
     public String getEmail() {
         return "yamamahashayer@gmail.com";
     }
@@ -14,8 +15,13 @@ public class Admin {
     public String getEmailPassword() {
         return "YNYN";
     }
-    
-    
+    public boolean getstate() 
+    {
+    	return state;
+    }
+    public void setState(boolean s) {
+		this.state =s;
+	}
     
    // Functions f =new Functions();
 	 

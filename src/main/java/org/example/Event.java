@@ -30,6 +30,7 @@ public class Event {
 	public boolean creat=false;
 	public boolean cancel;
 	public String EVENTID;
+	private String Venuenamee;
 	
    static Printing printing = new Printing();
    Functions f =new Functions();
@@ -38,7 +39,7 @@ public class Event {
    
     public  Event() {}
     
-    public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Eid) {
+  /*  public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Eid) {
         this .UserID=UserID; 
         this.name = name;
         this.date = date;
@@ -49,15 +50,26 @@ public class Event {
         this.theme= theme;
         this .EVENTID=Eid;
     }
-
-   
+*/
+    public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Venuename,String Eid) {
+        this .UserID=UserID; 
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.description = description;
+        this.attendeeCount = attendeeCount;
+        this.category=category;
+        this.theme= theme;
+        this .EVENTID=Eid;
+        this.Venuenamee=Venuename;
+    }
     
     public static Event getEventFromLine(String line) {
         Event event = new Event();
        
         
         String[] items = line.split(",");
-        if (items.length >= 9) {
+        if (items.length >= 10) {
         	 String name = items[0];
         	 Date date;
              try {
@@ -74,7 +86,8 @@ public class Event {
              String theme = items[7];
              String category = items[6];
              String EID = items[8];
-  
+             String Venuename=items[8];
+             
              event.setName(name);
              event.setDate(date);
              event.setTime(time);
@@ -83,7 +96,8 @@ public class Event {
              event.setTheme(theme);
              event.setCategory(category);
              event.setEID(EID);
-             event.setAttendeeCount(attendeeCount);   
+             event.setAttendeeCount(attendeeCount); 
+             event.setVenuename(Venuename);
         }
         return event;
     }
@@ -100,6 +114,7 @@ public class Event {
                     .append(event.getUID()).append(" , ")
                     .append(event.getCategory()).append(" , ")
                     .append(event.getTheme()).append(" , ")
+                    .append(event.getVenuename()).append(" , ")
                     .append(event.getEID()).append("\n");
 
 
@@ -165,7 +180,7 @@ public class Event {
     	{   int currentLine = 1;
             while ((line = reader.readLine()) != null)
             {   String[] items = line.split(" , ");
-            if (items.length >= 9) 
+            if (items.length >= 10) 
             {
                 String name = items[0];
                 Date date;
@@ -182,10 +197,11 @@ public class Event {
                 String UID = items[5];
                 String theme=items[6];
                 String cate=items[7];
-                String EID=items[8];
+                String EID=items[9];
+                String Venuename=items[8];
                
             if (EID.equals(Eid)) 
-            { return new Event(name, date, time, description, attendeeCount, UID,theme,cate,Eid);
+            { return new Event(name, date, time, description, attendeeCount, UID,theme,cate,Venuename,Eid);
             }else currentLine ++; 
         } } }
     	catch (IOException e) {
@@ -201,7 +217,7 @@ public class Event {
             int  currentLine=1;
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
-                if (items.length >= 9) {
+                if (items.length >= 10) {
                 	String name = items[0];
                 	 Date date;
                      try {
@@ -217,12 +233,13 @@ public class Event {
                     String UID = items[5];
                     String theme=items[6];
                     String cate=items[7];
-                    String EID=items[8];
+                    String EID=items[9];
+                    String Venuename=items[8];
                     
                     if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(name)) {
-                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
+                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate,Venuename, EID);
                     } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(items[1])) {
-                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate, EID);
+                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate,Venuename, EID);
                     } else {
                         currentLine++;
                     }
@@ -238,37 +255,49 @@ public class Event {
     
    
 	 	
-    public void delete_event_from_file_and_arraylist(Event e,String filename,String EID)throws Exception 
-    { 
-    	//f. delete_Event_from_arraylist(filename, EID);
-    	
-    	
-        String line;
-    	 StringBuilder sb = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
-    	{   
-            while ((line = reader.readLine()) != null)
-            {   String[] items = line.split(" , ");
-            if (items.length >= 9) 
-            {
-            	  String EVENTID=items[8];
-            	  if (!EVENTID.equals(EID)) {
-                      sb.append(line).append("\n");
-                  } 
-            } 
-            
-          //   else   sb.append(line).append("\n");
+     public void delete_event_from_file_and_arraylist(Event e, String eventFileName, String EID) throws IOException {
+        // Delete event from the event file
+       
+    	 String venueBookFileName = "venuebook.txt";
+    	StringBuilder eventFileContent = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(eventFileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] items = line.split(" , ");
+                if (items.length >= 10) {
+                    String EVENTID = items[9];
+                    if (!EVENTID.equals(EID)) {
+                        eventFileContent.append(line).append("\n");
+                    }
+                }
             }
-            
-           
-         }
-             try (FileOutputStream fos = new FileOutputStream(filename, false)) {
-		            fos.write(sb.toString().getBytes());
-		        }
-			
-             
-                  
-}
+        }
+
+        // Write the modified content back to the event file
+        try (FileOutputStream fos = new FileOutputStream(eventFileName, false)) {
+            fos.write(eventFileContent.toString().getBytes());
+        }
+
+        // Delete event from the venue book file
+        StringBuilder venueBookFileContent = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] items = line.split(",");
+                if (items.length >= 5) {
+                    String eventID = items[4].trim(); // Trim to remove any leading/trailing spaces
+                    if (!eventID.equals(EID)) {
+                        venueBookFileContent.append(line).append("\n");
+                    }
+                }
+            }
+        }
+
+        // Write the modified content back to the venue book file
+        try (FileOutputStream fos = new FileOutputStream(venueBookFileName, false)) {
+            fos.write(venueBookFileContent.toString().getBytes());
+        }
+    }
        
  
    
@@ -294,7 +323,9 @@ public class Event {
                     "4. description :" + toupdatedEvent.description + '\n' +
                     "5. attendeeCount :" + toupdatedEvent.attendeeCount +'\n' +
                     "6. theme :" + toupdatedEvent.theme + '\n' +
-                    "7. category :" + toupdatedEvent.category + '\n'
+                    "7. category :" + toupdatedEvent.category + '\n'+
+                    "8. venue name :" + toupdatedEvent.Venuenamee + '\n'
+                    
                     );
 
             System.out.print("Enter the number of the field you want to update: ");
@@ -318,7 +349,8 @@ public class Event {
   	                 return null;
   	             }
   	               toupdatedEvent.setDate(date);
-                     
+  	             toupdatedEvent.updateVenueInVenueBook(id, date, "venuebook.txt");
+           	   
                     break;
                 case "3":
                 	 printing.printSomething("Enter new event time:");
@@ -340,6 +372,13 @@ public class Event {
                 	 printing.printSomething("Enter new event category:");
 		              toupdatedEvent.setCategory(scanner.next());
 	                break;
+                case "8":
+                    printing.printSomething("Enter new event venue name:");
+                    String newVenueName = scanner.next();
+                    toupdatedEvent.setVenuename(newVenueName);
+                   
+                   // toupdatedEvent.updateVenueInVenueBook(id, newVenueName, "venuebook.txt");
+                    break;
                 default:
                     System.out.println("Invalid choice.");
             }
@@ -362,11 +401,91 @@ public class Event {
 		
  }
 		
-		
+	 public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
+	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+	            StringBuilder sb = new StringBuilder();
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 5 && parts[4].equals(eventId)) {
+	                	 Date date;
+	                     try {
+	                         date = DATE_FORMAT.parse(parts[2]);
+	                     } catch (ParseException e) {
 
-    
-    
-    
+	                         e.printStackTrace();
+	                        
+	                     }
+	                     date=newDate;
+	                    line = String.join(",", parts);
+	                }
+	                sb.append(line).append("\n");
+	            }
+	            // Write the updated content back to the file
+	            try (FileWriter writer = new FileWriter(venueBookFileName)) {
+	                writer.write(sb.toString());
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace(); // Handle or log the exception as needed
+	        }
+	    }
+	    
+	    
+	 public void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
+	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+	            StringBuilder sb = new StringBuilder();
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 5 && parts[4].equals(eventId)) {
+	                	 Date date=new Date();
+	                     try {
+	                         date = DATE_FORMAT.parse(parts[2]);
+	                     } catch (ParseException e) {
+
+	                         e.printStackTrace();
+	                        
+	                     }
+	                     newV= DATE_FORMAT.format(date) ;
+	                    line = String.join(",", parts);
+	                }
+	                sb.append(line).append("\n");
+	            }
+	            // Write the updated content back to the file
+	            try (FileWriter writer = new FileWriter(venueBookFileName)) {
+	                writer.write(sb.toString());
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace(); // Handle or log the exception as needed
+	        }
+	    }
+	    
+	    
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	    public static String findVenueIdByName(String venueName, String filename) {
+	        String id = null;
+	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 5 && parts[1].trim().equals(venueName.trim())) {
+	                    id = parts[0].trim(); // Found the venue name, return its ID
+	                    break; // No need to continue searching
+	                }
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return id;
+	    }
+	    
+	 
     
     
     
@@ -446,7 +565,10 @@ public class Event {
         this.category = category;
     }
 
-	
+    public void setVenuename(String n) {Venuenamee=n; }
+    public String getVenuename(){return Venuenamee;}
+
+
     public String toString3() {
         return  
                 "UserID='" + UserID + '\'' +
@@ -457,7 +579,9 @@ public class Event {
                 ",4. description='" + description + '\'' +
                 ",5. attendeeCount=" + attendeeCount +'\'' +
                 ",6. theme='" + theme + '\'' +
-                ",7. category='" + category + '\''  
+                ",7. category='" + category + '\'' +
+                  ",8. Venue ='" + Venuenamee + '\''
+               
                 ;
     }
 
@@ -476,6 +600,7 @@ public class Event {
         sb.append("- Description: ").append(description).append("\n");
         sb.append("- Attendee Count: ").append(attendeeCount).append("\n");
         sb.append("- Theme: ").append(theme).append("\n");
+        sb.append("-Venue name").append(Venuenamee).append("\n");
         sb.append("- Category: ").append(category).append("\n");
         sb.append("\033[0m"); // Reset text color
         return sb.toString();
@@ -499,6 +624,7 @@ public class Event {
                   ", "+UserID+
                  ", "+ theme  +
                  ", " + category  +
+                  ", " +Venuenamee+
                  ", " + EVENTID ;
  	
     }
