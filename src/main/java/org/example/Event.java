@@ -39,18 +39,7 @@ public class Event {
    
     public  Event() {}
     
-  /*  public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Eid) {
-        this .UserID=UserID; 
-        this.name = name;
-        this.date = date;
-        this.time = time;
-        this.description = description;
-        this.attendeeCount = attendeeCount;
-        this.category=category;
-        this.theme= theme;
-        this .EVENTID=Eid;
-    }
-*/
+
     public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Venuename,String Eid) {
         this .UserID=UserID; 
         this.name = name;
@@ -85,7 +74,7 @@ public class Event {
              String UID = items[5];
              String theme = items[7];
              String category = items[6];
-             String EID = items[8];
+             String EID = items[9];
              String Venuename=items[8];
              
              event.setName(name);
@@ -124,54 +113,7 @@ public class Event {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    /*
-    
-    
-    public  void addEventToFile(Event event,String filename) throws Exception
-    {
-    	
-    	
-    	 RandomAccessFile file = new RandomAccessFile(filename, "rw");
-         long fileLength = file.length();
-         
-         if (fileLength == 0) {
-             // If the file is empty, no need to seek, write directly
-             file.writeBytes(
-                     event.getName() + " , " +
-                     event.getDate() + " , " +
-                     event.getTime() + " , " +
-                     event.getDescription() + " , " +
-                     event.getAttendeeCount() + " , " +
-                     event.getUID() + " , " +
-                     event.getCategory() + " , " +
-                     event.getTheme() + " , " +
-                     event.getEID()
-             );
-         } else {
-             // If the file is not empty, seek to the end and then write
-             file.seek(fileLength-1);
-             file.writeBytes(
-                     event.getName() + " , " +
-                     event.getDate() + " , " +
-                     event.getTime() + " , " +
-                     event.getDescription() + " , " +
-                     event.getAttendeeCount() + " , " +
-                     event.getUID() + " , " +
-                     event.getCategory() + " , " +
-                     event.getTheme() + " , " +
-                     event.getEID()
-             );
-         }
-         file.close();
-         printing.printSomething("added");
-    }
- */
+
     public static  Event findeventID(String Eid,String filename) {
     	String line;
     	 String inputString;
@@ -208,6 +150,8 @@ public class Event {
             printing.printSomething("An error occurred: " + e.getMessage());}
 		   return null; }     
     
+           
+    
    
     
     public static Event findevent(String searchCriteria, String searchType, String filename) {
@@ -217,29 +161,14 @@ public class Event {
             int  currentLine=1;
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
-                if (items.length >= 10) {
-                	String name = items[0];
-                	 Date date;
-                     try {
-                         date = DATE_FORMAT.parse(items[1]);
-                     } catch (ParseException e) {
-
-                         e.printStackTrace();
-                         return null;
-                     }
-                    String time = items[2];
-                    String description = items[3];
-                    String attendeeCount = items[4];
-                    String UID = items[5];
-                    String theme=items[6];
-                    String cate=items[7];
-                    String EID=items[9];
-                    String Venuename=items[8];
-                    
-                    if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(name)) {
-                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate,Venuename, EID);
-                    } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(items[1])) {
-                        return new Event(name, date, time, description, attendeeCount, UID, theme, cate,Venuename, EID);
+                {
+                	Event e=getEventFromLine(line);
+                	
+                	
+                  if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getName())) {
+                        return e;
+                    } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getDate())) {
+                        return e;
                     } else {
                         currentLine++;
                     }

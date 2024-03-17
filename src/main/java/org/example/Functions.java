@@ -72,7 +72,7 @@ public class Functions {
 	               printing.printSomething("\n"+"Enter event Id:");
 		           id1 = scanner.next();	               
 	              
-	               if (searchIdE(id, "requst.txt")|| searchIdE(id, "event.txt")) { found =true ;}else found=false;	              
+	               if (searchIdE(id1, "requst.txt")|| searchIdE(id1, "event.txt")) { found =true ;}else found=false;	              
 	               if (found)
 	               { printing.printSomething("This account is already existed, Please Sign in."); 
 	               addevent( filename);return null; }
@@ -220,9 +220,9 @@ public class Functions {
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
   public boolean viewCostomerevents( String Cid) throws Exception {
-		  boolean found = false; // Initialize found flag
+		  boolean found = false; 
 
-		    updateeventandcustomer(); // Assuming this method updates the customers list
+		    updateeventandcustomer(); 
 
 		    for (Customer customer : customers) {
 		        if (customer.getId().equals(Cid)) {
@@ -237,13 +237,12 @@ public class Functions {
 		                System.out.println("Customer found, but has no events.");
 		            }
 
-		            found = true; // Set found flag to true if customer is found
-		            break; // Exit the loop once the customer is found
+		            found = true;
+		            break; 
 		        }
 		    }
 
-		    // If the loop finishes without finding the customer, print appropriate message
-		    if (!found) {
+		   if (!found) {
 		        System.out.println("Customer not found or has no events.");
 		    }
 
@@ -281,14 +280,14 @@ public class Functions {
 	    }
 	    
 	    
-	    boolean searchIdE(String id2, String filename) {
+	    boolean searchIdE(String id3, String filename) {
 	        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 	            String line;
 	            while ((line = br.readLine()) != null) {
 	                String[] items = line.split(" , ");
-	                if (items.length >= 9) {
-	                    String event_id =items[8].trim();
-	                    if (event_id .equals(id2)) {
+	                if (items.length >= 10) {
+	                    String event_id =items[9].trim();
+	                    if (event_id .equals(id3)) {
 	                        return true; // Return true if the ID is found
 	                    }
 	                }
