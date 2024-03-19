@@ -1,0 +1,2593 @@
+package org.example;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.lang.Package;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Stack;
+import org.example.Paackage.*;
+
+
+import org.example.*;
+
+
+
+public class Functions {
+	  static Printing printing = new Printing();
+	    Scanner scanner = new Scanner(System.in);
+	    Customer customer_obj;
+	    Provider provider_obj;
+	    Event event_obj;
+	    int choice;
+	    int choice2;
+	    boolean found;
+	    String tmp;
+	    String d;
+	    Admin admin = new Admin();
+	    static Customer customer1 = new Customer();
+	    static Event event1=new Event();
+	    static Provider provider1=new Provider();
+	   public final ArrayList<Customer> customers = new ArrayList<>();
+	   private final ArrayList<Provider> providers = new ArrayList<>();
+	   private final ArrayList<Event> events = new ArrayList<>();
+	   public List<ServiceDetails> serviceDetails = new ArrayList<>();
+
+///////////////////////////////////////////////////////////////////////////////////////	    
+	    static final String CUSTOMER_FILE_NAME = "customer.txt";
+	    static final String PROVIDER_FILE_NAME = "provider.txt";
+	    private static final String ENTER_NAME = "Enter New Name: ";
+	    static final String SPACE = "|                                       |";
+	    static final String ENTER_CHOICE = "Enter your choice: ";
+	    static final String ENTER_PASSWORD= "\nEnter Password ";
+	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
+	    static final String LINE = "----------------------------------------";
+	    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	    
+	    private String id1;
+		  double pricee;
+	    private String id;
+	    private String password;
+	    
+///////////////////////////////////////////////////////////////////////////////////////
+	    void inputs(){
+	    	printing.printSomething("Enter Id: ");
+	    	id = scanner.next();
+	    	printing.printSomething(ENTER_PASSWORD);
+	    	password = scanner.next();
+	    	}
+////////////////////////////////////////////////////////////////////////////////////////	    
+              
+	             
+		public Event addevent (String filename) throws Exception {
+	          updateEventList("requst.txt");
+	          updateEventList("event.txt");
+             event_obj = new Event();	            
+            
+             printing.printSomething("\n"+"Enter event Id:");
+	           id1 = scanner.next();	               
+            
+             if (searchIdE(id1, "requst.txt")|| searchIdE(id1, "event.txt")) { found =true ;}else found=false;	              
+             if (found)
+             { printing.printSomething("This account is already existed, Please Sign in."); 
+             addevent( filename);return null; }
+                 
+               
+           else  {   
+          	  
+             event_obj.setEID(id1);
+             event_obj.setUID(this.id);
+             
+             
+             printing.printSomething("Enter event name:");  
+             event_obj.setName(scanner.next());
+             
+             
+             printing.printSomething("Enter event date (yyyy-MM-dd):");
+             String dateInput = scanner.next();
+             Date date;
+             try {
+                 date = DATE_FORMAT.parse(dateInput);
+             } catch (ParseException e) {
+
+                 e.printStackTrace();
+                 return null;
+             }
+             event_obj.setDate(date);	               
+             printing.printSomething("Enter event time:");
+             event_obj.setTime(scanner.next());
+             printing.printSomething("Enter event description:");
+             event_obj.setDescription(scanner.next());
+             printing.printSomething("Enter event attendee count:");
+             event_obj.setAttendeeCount(scanner.next());
+             printing.printSomething("Enter event theme :");
+	           event_obj.setTheme(scanner.next());   
+	           printing.printSomething("Enter event category:");
+	           event_obj.setCategory(scanner.next());
+	           viewAllVenuesCustomer("venue.txt");
+	           boolean venueAvailable = false;
+	           String venueName;
+	           do {
+	               // Check venue availability
+	               printing.printSomething("Enter Venue name:");
+	               venueName = scanner.next();
+	               if (checkAvailability(venueName, dateInput)) {
+	                   if (Integer.parseInt(event_obj.getAttendeeCount()) <= getVenueCapacity(venueName)) {
+	                       venueAvailable = true;
+	                       event_obj.setVenuename(venueName);
+	                   } else {
+	                       printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.");
+	                   }
+	               } else {
+	                   printing.printSomething("The venue is not available. Please choose another venue.");
+	               }
+	           } while (!venueAvailable);
+	           
+	           pricee=getPriceByVenue(venueName);
+	             printing.printSomething("\n Do you have discount code ? [Y or N] : ");	               
+
+	             String yorn = scanner.next();
+	             
+	             String codee;
+	             
+if (yorn.equalsIgnoreCase("y"))
+{
+    printing.printSomething("\n Enter the code  : ");	
+    codee = scanner.next();
+    pricee =applyDiscount(pricee,codee);
+    
+}
+	             printing.printSomething("\n The price is : "+pricee);	               
+	             addToInvoice (id,id1,event_obj.getName(),pricee);
+	        
+             printing.printSomething("\n done successfully\n");	               
+             events.add(event_obj);	               	               
+             event_obj.addEventToFile(event_obj,filename);
+             addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
+             return event_obj;}}	 
+	
+///////////////////////////////////////////////////////////////////////////////////////////	             
+
+		
+		public static double applyDiscount(double price, String code) {
+		    try (BufferedReader br = new BufferedReader(new FileReader("discounts.txt"))) {
+		        String line;
+		        while ((line = br.readLine()) != null) {
+		            String[] parts = line.split(",");
+		            if (parts.length >= 4) { // Ensure parts array has enough elements
+		                String code_ = parts[1];
+		                if (code_.equals(code)) {
+		                    double percentage = Double.parseDouble(parts[2]);
+		                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		                    if (validityDate.isAfter(LocalDate.now())) {
+		                        double discountedPrice = price * (1 - percentage / 100);
+		                        return discountedPrice;
+		                    } else {
+		                    	System.out.println("\nThe code is expired");
+		                    	return price ; // Example: Return -1 for expired discount
+		                    }
+		                }
+		            } else {
+		                System.out.println("Invalid format in discounts file: " + line);
+		            }
+		        }
+		        return price; 
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		        return price;
+		    }
+		}
+
+		
+		/////////////////////////////////      
+    public void  delete_Event_from_arraylist(String filename,String eventid){
+              for (Event e : events) 
+	           if (e.getEID()== eventid) {events.remove(e);} }
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 public void updateEventList( String filename) {
+		  	        String line;
+		  	        events.clear();
+		  	        FileReader eventFileReader;
+		  	        try {
+		  	           eventFileReader = new FileReader(filename);
+		  	            BufferedReader lineReader = new BufferedReader(eventFileReader);
+		  	            while ((line = lineReader.readLine()) != null) {
+		  	                if (line.isEmpty()) continue;
+		  	               events.add(Event.getEventFromLine(line));
+		  	            }
+		  	            lineReader.close();
+		  	           eventFileReader.close();
+		  	        } catch (IOException e){
+		  	            printing.printSomething("An error occurred: " + e.getMessage());
+		  	        }
+      
+		  	    }
+/////////////////////////////
+	 
+	 public static void addToInvoice(String customerId, String eventId, String eventName, double price) {
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter("invoice.txt", true))) {
+	            writer.write(customerId + "," + eventId + "," + eventName + "," + price);
+	            writer.newLine();
+	           
+	        } catch (IOException e) {
+	           
+	            e.printStackTrace();
+	        }
+	    }
+	 
+	 
+	 ///////////////////////////////
+	public void updateeventandcustomer() throws Exception{
+		
+		//updateEventList("event.txt");
+		updateCustomersList();
+		String E=null,C=null;
+		 String line;
+		 
+    	 StringBuilder sb = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader("event.txt"))) 
+    	{   
+            while ((line = reader.readLine()) != null)
+            {   String[] items = line.split(" , ");
+            if (items.length >= 10) 
+            {
+            	
+            	String name = items[0];
+            	 Date date=new Date();
+                 try {
+                     date = DATE_FORMAT.parse(items[1]);
+                 } catch (ParseException e) {
+
+                     e.printStackTrace();
+                    
+                 }
+                String time = items[2];
+                String description = items[3];
+                String attendeeCount = items[4];
+                String UID = items[5];
+                String theme=items[6];
+                String cate=items[7];
+                String Venuename=items[8];
+                String EID=items[9];	   
+            	   for (Customer customer : customers)   {
+      				 C=customer.getId();
+      				 
+            	   if (UID.equals(C)) {
+            		   
+            		   Event Event111=new Event(name, date, time, description, attendeeCount, UID, theme, cate,Venuename, EID);
+            		   customer.Cevents.add(Event111);
+            		   break;
+            	   }
+            	  
+            	   
+            	   }
+            	   
+               } 
+            
+           }
+            
+           
+    	}
+		
+	
+	}
+	
+	
+	
+	///////////////////////////////////////////////////
+
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////	    
+  public boolean viewCostomerevents( String Cid) throws Exception {
+		  boolean found = false; 
+
+		    updateeventandcustomer(); 
+
+		    for (Customer customer : customers) {
+		        if (customer.getId().equals(Cid)) {
+		            List<Event> customerEvents = customer.getEvents();
+
+		            if (!customerEvents.isEmpty()) {
+		                System.out.println("\nHere are all your events:");
+		                for (Event event : customerEvents) {
+		                	   System.out.println(event.toString());
+		                }
+		            } else {
+		                System.out.println("Customer found, but has no events.");
+		            }
+
+		            found = true;
+		            break; 
+		        }
+		    }
+
+		   if (!found) {
+		        System.out.println("Customer not found or has no events.");
+		    }
+
+		    return found;}
+	       
+///////////////////////////////////////////////////////////////////////////////////////	    
+	 
+  public static void editDiscountfrom(Scanner scanner, String filename) {
+	    List<Discount> discounts = readDiscountsFromFile(filename);
+	    if (discounts.isEmpty()) {
+	        System.out.println("No discounts available to edit.");
+	        return;
+	    }
+	    viewAllDiscounts("discounts.txt");
+	    System.out.print("Enter the ID of the discount to edit: ");
+	    int discountId = scanner.nextInt();
+	    scanner.nextLine(); // Consume newline
+
+	    Discount oldDiscount = null;
+	    for (Discount discount : discounts) {
+	        if (discount.getDiscountId() == discountId) {
+	            oldDiscount = discount;
+	            break;
+	        }
+	    }
+
+	    if (oldDiscount == null) {
+	        System.out.println("Discount not found.");
+	        return;
+	    }
+
+	    System.out.println("Enter new discount details:");
+	    System.out.print("Discount ID: ");
+	    int newDiscountId = scanner.nextInt();
+	    scanner.nextLine(); // Consume newline
+	    System.out.print("Discount code: ");
+	    String newDiscountCode = scanner.nextLine();
+	    System.out.print("Discount percentage: ");
+	    double newDiscountPercentage = scanner.nextDouble();
+	    scanner.nextLine(); // Consume newline
+	    System.out.print("Validity period (YYYY-MM-DD): ");
+	    String newValidityPeriod = scanner.nextLine();
+
+	    // Validate inputs before creating the new discount
+	    if (isValidDiscountPercentage(newDiscountPercentage) && isValidDate(newValidityPeriod)) {
+	        Discount newDiscount = new Discount(newDiscountPercentage, newDiscountId, newValidityPeriod, newDiscountCode);
+
+	        discounts.remove(oldDiscount); // Remove old discount
+	        discounts.add(newDiscount);    // Add new discount
+
+	        writeDiscountsToFile(filename, discounts); // Write updated discounts to file
+
+	        System.out.println("Discount successfully edited.");
+	    } else {
+	        System.out.println("Invalid input for discount percentage or validity period.");
+	    }
+	}
+
+	public static boolean isValidDiscountPercentage(double discountPercentage) {
+	    return discountPercentage >= 0 && discountPercentage <= 100;
+	}
+
+
+
+	public static void writeDiscountsToFile(String filename, List<Discount> discounts) {
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+	        for (Discount discount : discounts) {
+	            writer.write(discount.toString());
+	            writer.newLine();
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+  public static void addDiscountToFile(String filename, String discountDetails) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+          writer.write(discountDetails);
+          writer.newLine();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
+
+
+
+
+  public static void deleteDiscountFromFile(String filename, List<Discount> updatedDiscounts) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+          for (Discount discount : updatedDiscounts) {
+              writer.write(discount.toString());
+              writer.newLine();
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
+
+
+
+
+  public static void removeDiscount(Scanner scanner, String filename) {
+      System.out.println("Removing a discount...");
+      System.out.print("Enter the ID of the discount to remove: ");
+      int discountIdToRemove = scanner.nextInt();
+      scanner.nextLine(); 
+
+      List<Discount> discounts = readDiscountsFromFile(filename);
+      boolean found = false;
+
+
+      List<Discount> updatedDiscounts = new ArrayList<>();
+
+      // Iterate over the discounts to find and remove the specified discount
+      for (Discount discount : discounts) {
+          if (discount.getDiscountId() == discountIdToRemove) {
+              found = true;
+              System.out.println("Discount found:");
+              System.out.println(discount);
+          } else {
+              // Add discounts other than the one to be removed to the updated list
+              updatedDiscounts.add(discount);
+          }
+      }
+
+      // If the discount to remove was found, update the file with the updated list of discounts
+      if (found) {
+      	deleteDiscountFromFile(filename, updatedDiscounts);
+          System.out.println("Discount successfully removed.");
+      } else {
+          System.out.println("Discount not found.");
+      }
+  }
+
+
+  public static void addDiscount(Scanner scanner, String filename) {
+      System.out.println("Adding a discount...");
+      System.out.print("Enter discount ID: ");
+      int discountId = scanner.nextInt();
+      scanner.nextLine(); // Consume newline
+      System.out.print("Enter discount code: ");
+      String discountCode = scanner.nextLine();
+      System.out.print("Enter discount percentage: ");
+      double discountPercentage = scanner.nextDouble();
+      scanner.nextLine(); // Consume newline
+      System.out.print("Enter validity period (YYYY-MM-DD): ");
+      String validityPeriod = scanner.nextLine();
+
+
+      Discount newDiscount = new Discount( discountPercentage,discountId, validityPeriod, discountCode);
+      String discountDetails = newDiscount.toString();
+
+      addDiscountToFile(filename, discountDetails);
+      System.out.println("Discount successfully added.");
+  }
+  
+  
+  
+  
+  public static List<Discount> readDiscountsFromFile(String filename) {
+	    List<Discount> discounts = new ArrayList<>();
+	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            String[] parts = line.split(",");
+	            if (parts.length >= 4) {
+	                int discountId = Integer.parseInt(parts[0].trim());
+	                String discountCode = parts[1].trim();
+	                double discountPercentage = Double.parseDouble(parts[2].trim());
+	                String validityPeriod = parts[3].trim();
+
+	                Discount discount = new Discount(discountPercentage, discountId, validityPeriod, discountCode);
+	                discounts.add(discount);
+	            } else {
+	                System.out.println("Invalid format in discounts file: " + line);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return discounts;
+	}
+
+
+  public static boolean isValidDate(String date) {
+      try {
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+          sdf.setLenient(false);
+          sdf.parse(date);
+          return true;
+      } catch (ParseException e) {
+          return false;
+      }
+
+  }
+
+
+  //////////////////////////////////////////////////
+  
+  
+  
+  boolean searchIdU(String id) {
+	        boolean f = false;
+	        try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                if (line.contains(id)) {
+	                    f = true;
+	                }
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething("Error: " + e.getMessage());
+	        }
+	        return f;
+	    }
+
+	    boolean searchIdP(String id) {
+	        boolean f = false;
+	        try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                if (line.contains(id)) {
+	                    f = true;
+	                }
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething("Error: " + e.getMessage());
+	        }
+	        return f;
+	    }
+	    
+	    
+	    boolean searchIdE(String id3, String filename) {
+	        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] items = line.split(" , ");
+	                if (items.length >= 10) {
+	                    String event_id =items[9].trim();
+	                    if (event_id .equals(id3)) {
+	                        return true; // Return true if the ID is found
+	                    }
+	                }
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething("Error: " + e.getMessage());
+	        } catch (NumberFormatException e) {
+	            printing.printSomething("Invalid input: " + e.getMessage());
+	        }
+	        return false; // Return false if the ID is not found in any line
+	    }
+	    
+	    
+	    
+	    
+	    public boolean searchIdS(String serviceID, String fileName) {
+	        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] items = line.split(" , ");
+	                if (items.length >= 7) { 
+	                    String service_id = items[0].trim();
+	                    if (service_id.equals(serviceID)) {
+	                        return true; 
+	                    }
+	                }
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething("Error: " + e.getMessage());
+	        } catch (NumberFormatException e) {
+	            printing.printSomething("Invalid input: " + e.getMessage());
+	        }
+	        return false; // Return false if the ID is not found in any line
+	    }
+
+
+///////////////////////////////////////////////////////////////////////////////////////	    
+       void signInFunction() throws Exception {
+	        int c;
+	        signInPageList();
+	        printing.printSomething(ENTER_CHOICE);
+	        choice = scanner.nextInt();
+	        printing.printSomething("\nEnter Id: ");
+	        id = scanner.next();
+	        printing.printSomething("Enter password: ");
+	        password = scanner.next();
+	        switch (choice){
+	            case 1:
+	                if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) 
+	                {
+	                    adminPage();
+	                } else {
+	                    printing.printSomething("\nSomething went wrong!, Try again.");
+	                    inputs();
+	                }
+	                break;
+	        
+	                
+	            case 2:
+
+		            boolean found1 = false;
+		            updateCustomersList(); // Update method to read from file
+		            try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
+		                String line;
+		                while ((line = br.readLine()) != null) {
+		                    String[] customerData = line.split(",");
+		                    String customerIdFromFile = customerData[0].trim();
+		                    String passwordFromFile = customerData[5].trim(); // Assuming password is at index 5
+		                    if (id.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
+		                        found1 = true;
+		                        break;
+		                    }
+		                }
+		            } catch (IOException e) {
+		                printing.printSomething("Error reading customer data: " + e.getMessage());
+		            }
+
+		            if (found1) {
+		                // Successful customer login
+		                while (x > 0) {
+		                    customerPageList();
+		                    c = scanner.nextInt();
+		                    customerOptions(c);
+		                }
+		            } else {
+		                printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
+		                signInFunction(); // Allow the user to retry login
+		            }
+		           
+	            	break;   
+
+	            	
+	            	
+	             case 3:
+	            	 boolean foundp = false;
+	            	 updateProvidersList(); // Update method to read from file
+			           
+	            	 try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
+			                String line;
+			                while ((line = br.readLine()) != null) {
+			                    String[] ProviderData = line.split(",");
+			                    String ProviderIdFromFile = ProviderData[0].trim();
+			                    String passwordFromFile = ProviderData[5].trim(); // Assuming password is at index 5
+			                    if (id.equals(ProviderIdFromFile) && password.equals(passwordFromFile)) {
+			                        foundp = true;
+			                        break;
+			                    }
+			                }
+			            } catch (IOException e) {
+			                printing.printSomething("Error reading Povider data: " + e.getMessage());
+			            }
+	            	 
+	            	 
+	            	 if (foundp) {
+			                // Successful login
+			                while (x > 0) {
+			                	providerPageList();
+			                    c = scanner.nextInt();
+			                   providerOptions(c);
+			                }
+			            } else {
+			                printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
+			                signInFunction(); // Allow the user to retry login
+			            }
+			           
+		            	break; 
+	            	          
+	            default:    printing.printSomething("\n"+INVALID_CHOICE);
+
+	        }
+	    }
+	    
+	    
+	    
+	 
+
+String i;
+///////////////////////////////////////////////////////////////////////////////////////
+      void customerSignUp() throws Exception {
+           customer_obj = new Customer();
+           printing.printSomething("Enter your Id: ");
+           id = scanner.next();
+           i=id;
+           found = searchIdU(id);
+           if (found) {
+               printing.printSomething("This account is already existed, Please Sign in.");
+               signInFunction();
+           } else {
+               customer_obj.setId(id);
+               printing.printSomething("Enter your Name: ");
+               customer_obj.setName(scanner.next());
+               printing.printSomething("Enter your Phone: ");
+               customer_obj.setPhone(scanner.next());
+               printing.printSomething("Enter your Address: ");
+               customer_obj.setAddress(scanner.next());
+               printing.printSomething("Enter your Email: ");
+               customer_obj.setEmail(scanner.next());
+               printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
+               customer_obj.setPassword(scanner.next());
+               printing.printSomething("\nRegistration done successfully\n");
+               customers.add(customer_obj);
+               customer_obj .addCustomerToFile(customer_obj);
+           }
+       }
+/////////////////////////////////////////////////////////////////////////////
+
+	  public void signInPageList(){
+	        printing.printSomething("\n---------- Sign in Page ----------"+"\n|                                |"+
+	                "\n|        1. Administrator        |"+"\n|        2. Customer             |"+
+	                "\n|        3. Provider             |"+"\n|                                |"+
+	                "\n----------------------------------\n" );
+	    }
+	    
+	  public void adminList() {      
+	        printing.printSomething("\n--------- Welcome to Admin Page --------\n"+SPACE+
+	                "\n|   1. Customer Management             |"+"\n|   2. Discount Management             |"+
+	                "\n|   3. Event Management                |"+"\n|   4. Venue Management                |"+
+	                "\n|   5. Provider Management             |"+"\n|   6. Package Management              |"+
+	                "\n|   7. Calendar and Scheduling         |"+"\n|   8. View Statistics                 |"+
+	                "\n|   9. View Report                     |"+"\n|  10. Notify Customer By Email        |"+ 
+	                "\n|  11. Log Out                                                                      |"+
+	                "\n \n"
+	        );}
+	  public void customerPageList(){
+	        printing.printSomething("\n------- Welcome to Customer Page -------\n"+SPACE+"\n|        1. Update My Profile          |"+
+	                "\n|        2. Make An Event              |"+"\n|        3. Packages                   |"+
+	                "\n|        4. Update  Event              |"+"\n|        5. Cancel Event               |"+
+	                "\n|        6. Invoices                   |"+"\n|        7. Delete My Profile          |"+
+	                "\n|        8. Log Out                                                                 |\n"+SPACE+"\n"+LINE+"\n"
+	                +ENTER_CHOICE );
+	    }
+	        
+	        
+	  public void providerPageList() {
+		    printing.printSomething("\n-------- Welcome to Providers Page --------\n" + SPACE +
+		            "\n|        1. Update My Profile           |" + "\n|        2. Add Service                 |" +
+		            "\n|        3. Update Service              |" + "\n|        4. Delete Service              |" +
+		            "\n|        5. View Bookings               |" + "\n|        6. View Payments               |" +
+		            "\n|        7. Log Out                    |\n" +
+		            SPACE + "\n----------------------------------------\n" + ENTER_CHOICE);
+		}
+   
+     public void EventManagementAdminPageList() {
+    	    printing.printSomething(
+    	        "\n\033[1;33m"+
+    	        "---- Welcome to EventManagement Page ----\n" +
+    	        "\033[1;33m"+
+    	        "|   1. IN requst                        |\n" +
+    	        "|   2. All events                       |\n" +
+    	        "|   3. ADD EVENT                        |\n" +
+    	        "|   4. DELETE                           |\n" +
+    	        "|   5. EDIT                             |\n" +
+    	        "|   6. Log Out                          |\n" +
+    	        "\033[1;36m" + "\n"  + "\n\033[0m"
+    	    );
+    	}
+
+     public void UserManagementAdminPageList() {
+    	    printing.printSomething(
+    	        "\n\033[1;33m" +
+    	        "---- Welcome to User Management Page ----\n" +
+    	        "\033[1;33m" +
+    	        "|   1. View All                         |\n" +
+    	        "|   2. ADD                              |\n" +
+    	        "|   3. DELETE                           |\n" +
+    	        "|   4. EDIT                             |\n" +
+    	        "|   5.                                  |\n" +
+    	        "|   6.                                  |\n" +
+    	        "|   7. Log Out                          |\n" +
+    	        "\033[1;36m" + "\n" + "\n\033[0m"
+    	    );
+    	}
+
+     public void PackagesManegmentuserPageList() {
+// 	    printing.printSomething(
+// 	        "\n\033[1;33m" +
+// 	        "---- Welcome to User Management Page ----\n" +
+// 	        "\033[1;33m" +
+// 	        "|   1. View All                         |\n" +
+//  	        "\033[1;36m" + "\n" + "\n\033[0m"
+// 	    );
+ 	}
+     
+     
+     public void VenueManagementadminList() {
+    	    printing.printSomething(
+    	        "\n\033[1;33m" +
+    	        "---- Welcome to Venue Management Page ----\n" +
+    	        "\033[1;33m" +
+    	        "|   1. VIEW ALL                         |\n" +
+    	        "|   2. ADD                              |\n" +
+    	        "|   3. DELETE                           |\n" +
+    	        "|   4. EDIT                             |\n" +
+    	        "|   5.                                  |\n" +
+    	        "|   6.                                  |\n" +
+    	        "|   7. Log Out                          |\n" +
+    	        "\033[1;36m" +"\n" + "\n\033[0m"
+    	    );}
+     
+     public void ProviderManagementAdminPageList() {
+         printing.printSomething(
+	        "\n\033[1;33m" +
+	        "---- Welcome to Provider Management Page ----\n" +
+	        "\033[1;33m" +
+	        "|   1. VIEW ALL                         |\n" +
+	        "|   2. DELETE Provider                            |\n" +
+	        "|   3.  Log Out                         |\n" +
+	  
+	        "\033[1;36m" +"\n" + "\n\033[0m"
+	    );}
+////////////////////////////////////////////////////////////////////////////////////
+
+	public boolean viewalleventsforAdmin(String filename) {
+		 List<Event> events2 = new ArrayList<>();
+		//  String filename = "event.txt";
+		  Event event2 = new Event();
+		  
+		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+		        String line;
+		       while ((line = reader.readLine()) != null) {
+		           
+		          event2=event2.getEventFromLine(line);
+		           
+		           events2.add(event2);
+		        }
+		    } catch (Exception e) {
+		       e.printStackTrace();
+		    }
+		    if (events2.isEmpty()) {
+		        printing.printSomething("No events found.\n");
+		        return false;
+		    }
+		    
+		    printing.printSomething("List of Events: \n");
+		    
+		    for (Event event22 : events2) {
+		        System.out.println(event22); 
+		    }
+		    
+		    return true;
+			
+	}
+	
+/////////////////////////////////////////////////////////////////////////////////
+   public static void addEmptyLine(String filename) {
+		        try (FileWriter fileWriter = new FileWriter(filename, true)) {
+		            fileWriter.write("\n");
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            // Handle exception as needed
+		        }
+		    
+////////////////////////////////////////////////////////////////
+	
+	}
+
+	public void viewallVenuesforAdmin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+	public void viewallVenuesforCoustmer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	    
+      
+///////////////////////////////////////////////////////////////////////////////////////	    
+  
+    public void viewCustomers() {
+        updateCustomersList();
+        printing.printSomething("List of Customers: \n");
+        for (Customer customer1 : customers) {
+           
+            tmp = customer1.getId() + "\t  "+customer1.getUsername() + "  "+customer1.getaddress() + "  "+customer1.getphone() + "  "+customer1.getEmail()  + "  \n";
+            printing.printSomething(tmp);
+        }
+
+        printing.printSomething("Please enter the ID of the customer you want to delete:");
+        String customerIdToDelete = scanner.next();
+
+        if (deleteCustomer(customerIdToDelete)) {
+            printing.printSomething("Customer deleted successfully.");
+        
+            updateCustomerFile();
+        } else {
+            printing.printSomething("Customer not found.");
+        }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+  
+    public boolean deleteCustomer(String id) {
+        String trimmedId = id.trim();
+        for (int i = 0; i < customers.size(); i++) {
+            String customerId = customers.get(i).getId().trim(); 
+            if (customerId.equals(trimmedId)) {
+                customers.remove(i);
+                try {
+                    deleteLineByValue(CUSTOMER_FILE_NAME, id); 
+                } catch (IOException e) {
+                    printing.printSomething("An error occurred while deleting the customer from the file: " + e.getMessage());
+                }
+                return true;
+            }
+        }
+        return false; 
+    }
+
+    public static void deleteLineByValue(String filePath, String value) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.contains(value)) {
+                    sb.append(line).append("\n");
+                }
+            }
+
+            writer.write(sb.toString());
+        }
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void updateCustomerFile() {
+        try {
+            FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME);
+            for (Customer customer : customers) {
+                customersFile.write(customer.getId() + " , "
+                        + customer.getUsername() + " , "
+                        + customer.getphone() + " , "
+                        + customer.getaddress() + " , "
+                        + customer.getEmail() + " , "
+                        + customer.getPassword() + " \n ");
+                  
+            }
+            customersFile.close();
+        } catch (IOException e) {
+            printing.printSomething("An error occurred while updating the customer file: " + e.getMessage());
+        }
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    void updateCustomersList() {
+        String line;
+        customers.clear();
+        FileReader customersFileReader;
+        try {
+            customersFileReader = new FileReader(CUSTOMER_FILE_NAME);
+            BufferedReader lineReader = new BufferedReader(customersFileReader);
+            while ((line = lineReader.readLine()) != null) {
+                if (line.isEmpty()) continue;
+                customers.add(Customer.getCustomerFromLine(line));
+            }
+            lineReader.close();
+            customersFileReader.close();
+        } catch (IOException e) {
+            printing.printSomething("An error occurred: " + e.getMessage());
+        }
+    }
+  
+ 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+    public void updateCustomerProfile(int n) throws IOException {
+        String tmp1;
+        for (Customer customer1 : customers) {
+            if (customer1.getId().equals(id)) {
+                switch (n){
+                    case 1:
+                        printing.printSomething(ENTER_NAME);
+                        tmp1 = scanner.next();
+                        updateFile("customer.txt", customer1.getUsername(), tmp1);
+                        customer1.setName(tmp1);
+                        break;
+                    case 2:
+                        printing.printSomething("Enter New Phone: ");
+                        tmp1 = scanner.next();
+                        updateFile("customer.txt", customer1.getphone(), tmp1);
+                        customer1.setPhone(tmp1);
+                        break;
+                    case 3:
+                        printing.printSomething("Enter New Address: ");
+                        tmp1= scanner.next();
+                        updateFile("customer.txt", customer1.getaddress(), tmp1);
+                        customer1.setAddress(tmp1);
+                        break;
+                    case 4:
+                        printing.printSomething("Enter New Email: ");
+                        tmp1 = scanner.next();
+                        updateFile("customer.txt", customer1.getEmail(), tmp1);
+                        customer1.setEmail(tmp1);
+                        break;
+                    default:    printing.printSomething(INVALID_CHOICE);
+                }
+            }
+        }
+    }
+    
+    public void deleteCustomerProfile(String val) throws IOException {
+        if (val.equalsIgnoreCase("yes")) {
+            File inputFile = new File(CUSTOMER_FILE_NAME);
+            File tempFile = new File("temp.txt");
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+                String lineToRemove = id;
+                String currentLine;
+
+                while ((currentLine = reader.readLine()) != null) {
+                    // Check if the current line contains the ID to be deleted
+                    if (currentLine.contains(lineToRemove)) {
+                        // Skip writing this line to the temporary file
+                        continue;
+                    }
+                    // Write all other lines to the temporary file
+                    writer.write(currentLine + System.getProperty("line.separator"));
+                }
+            }
+
+            // Delete the original file
+            if (!inputFile.delete()) {
+                printing.printSomething("Could not delete the original file.");
+                return;
+            }
+
+            // Rename the temporary file to the original file name
+            if (!tempFile.renameTo(inputFile)) {
+                printing.printSomething("Could not rename the temporary file.");
+            }
+
+            printing.printSomething("\nAccount Successfully Deleted\n\n");
+        }
+    }
+
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////   
+    public static void updateFile(String filePath, String oldValue, String newValue) throws IOException {
+        RandomAccessFile file = new RandomAccessFile(filePath, "rw");
+        String line;
+        long lastPos = 0;
+        while ((line = file.readLine()) != null) {
+            if (line.contains(oldValue)) {
+                String updatedLine = line.replace(oldValue, newValue);
+                file.seek(lastPos);
+                file.writeBytes(updatedLine);
+            }
+            lastPos = file.getFilePointer();
+        }
+        file.close();
+    }
+    
+  
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void customerOptions(int x) throws Exception {
+    	
+        switch (x){
+            case 1:
+                updateCustomersList();
+                printing.printSomething("Which info you want to update?\n1. Name  2.Phone  3. Address  4. Email"+"\n"+ENTER_CHOICE);
+                updateCustomerProfile(scanner.nextInt());
+                break;
+            case 2:
+               updateCustomersList(); 
+               addevent("requst.txt");
+               break;
+                
+            case 3:
+            	viewAllPackagesFromFile("package.txt");
+            	selectpackagee();
+            	break;
+                
+            case 4:
+             boolean f=  viewCostomerevents(id);
+             if (f)
+             {   
+        	    printing.printSomething("Please enter the Event ID you want to update: ");
+               String eventid=scanner.next();
+               event1.updateEvent(eventid, "event.txt");    /////////"event.txt"
+              viewCostomerevents(id);         
+               }
+                
+               break;
+            
+            
+               case 5:
+                printing.printSomething("\n");   
+                if (viewCostomerevents(id)) {
+                printing.printSomething("\n"+"Please enter the Event ID of the event you want to delete: ");
+                String eventidd=scanner.next();
+               event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventidd);/////////"event.txt"
+               printing.printSomething("\n ");
+               viewCostomerevents(id); }        
+                break;
+                
+                
+                
+           /*  case 5:
+                updateCustomersList();
+                for (Customer customer1 : customers) {
+                    if (customer1.getId().equals(id)) {
+                        printing.printSomething(LINE+"\n|                INVOICE               |\n"+LINE);
+                        Invoice invoice = new Invoice(customer1);
+                        invoice.invoiceRes(customer1);
+                        printing.printSomething(LINE);
+                    }
+                }
+                break;*/
+                
+               case 6:
+            	  readInvoiceFile("invoice.txt",id);
+            	   break;
+          case 7:
+                printing.printSomething("\t\t\n--- Delete profile! ---\n\nUr info will be Deleted & ur orders will be cancelled!!\nAre you sure? ");
+                String str = scanner.next();
+                deleteCustomerProfile(str);
+                break;
+            case 8:
+                signInFunction();
+                break;
+            default: printing.printSomething(INVALID_CHOICE);
+        }
+    }
+    
+  
+  ///////////////////////////////////
+    
+    
+    public void PackageManagementadminList() {
+ 	    printing.printSomething(
+ 	        "\n\033[1;33m" +
+ 	        "---- Welcome to Package Management Page ----\n" +
+ 	        "\033[1;33m" +
+ 	        "|   1. VIEW ALL                         |\n" +
+ 	        "|   2. ADD                              |\n" +
+ 	        "|   3. DELETE                           |\n" +
+ 	        "|   4. EDIT                             |\n" +
+ 	        "|   5. Log Out                          |\n" +
+ 	        "\033[1;36m" +"\n" + "\n\033[0m"
+ 	    );}
+    
+    
+    
+    public void DiscountManagementadminList() {
+ 	    printing.printSomething(
+ 	        "\n\033[1;33m" +
+ 	        "---- Welcome to Discount Management Page ----\n" +
+ 	        "\033[1;33m" +
+ 	        "|   1. VIEW ALL                         |\n" +
+ 	        "|   2. ADD                              |\n" +
+ 	        "|   3. DELETE                           |\n" +
+ 	        "|   4. EDIT                             |\n" +
+ 	        "|   5. Log Out                          |\n" +
+ 	        "\033[1;36m" +"\n" + "\n\033[0m"
+ 	    );}
+    
+    
+    
+   
+/////////////////////////////////////////////////////////////////////////////////////	    
+
+int x =1;
+void adminPage() throws IOException, Exception
+{ 
+
+	while (x > 0) {
+	    adminList();
+	    printing.printSomething(ENTER_CHOICE);
+	    int c = scanner.nextInt();
+
+	    switch (c) {
+	        case 1:
+	        	 UserManagementAdminPageList();
+	            break;
+	        case 2:
+	        	DiscountManagementadminList();
+	        	int l = scanner.nextInt();
+	        	DiscountManagementOptions(l);
+	        	
+	            break;
+	        case 3:
+	        	EventManagementAdminPageList();
+	        	int CE=scanner.nextInt();
+	        	EventManagementOptions(CE);
+	            break;
+	        case 4:
+	        	VenueManagementadminList();
+	        	int C=scanner.nextInt();
+	        	VenueManagementOptions(C);
+	            break;
+	        case 5:
+	            //  Provider Management
+	            break;
+	        case 6:
+	        	PackageManagementadminList();
+	        	int Cr=scanner.nextInt();
+	        	PackageManagementOptions(Cr);
+	            break;
+	        case 7:
+	           // calendar
+	            break;
+	        case 8:
+	            //  View Statistics
+	            break;
+	        case 9:
+	            //  View Report
+	            break;
+	        case 10:
+	        	signInFunction();
+	            break;
+	        default:
+	        	printing.printSomething(INVALID_CHOICE);
+	     	    
+	    }
+}
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+private void PackageManagementOptions(int r)
+{
+	
+	Scanner scanner = new Scanner(System.in);
+	switch (r)
+	{
+	case 1:
+		viewAllPackagesFromFile( "package.txt");
+	    
+		
+          break;
+	 case 2:
+         addPackage(scanner, "package.txt");
+         
+         break;
+     case 3:
+    	 deletePackageById( scanner,"package.txt");
+         break;
+     case 4:
+         updatePackage(scanner,"package.txt");
+         break;
+     case 5:
+         System.out.println("Exiting...");
+         break;
+     default:
+         printing.printSomething(INVALID_CHOICE);
+  	     break;
+		
+	}
+
+}
+///////////////////////////////////////////
+private void VenueManagementOptions(int C) {
+	  Scanner scanner = new Scanner(System.in);
+	switch (C)
+	{
+	case 2:
+		  addVenue(scanner, "venue.txt");
+		
+          break;
+	 case 4:
+         editVenuefrom(scanner, "venue.txt");
+         
+         break;
+     case 3:
+         deleteVenueById( scanner,"venue.txt");
+         break;
+     case 1:
+         viewAllVenues("venue.txt");
+         break;
+     case 5:
+         System.out.println("Exiting...");
+         break;
+     default:
+         printing.printSomething(INVALID_CHOICE);
+  	     break;
+		
+	}
+}
+
+
+
+
+//////////////////////////
+
+
+private void DiscountManagementOptions(int C) {
+	  Scanner scanner = new Scanner(System.in);
+	switch (C)
+	{
+	case 2:
+		addDiscount(scanner, "discounts.txt");
+		
+        break;
+	 case 4:
+		 editDiscountfrom(scanner, "discounts.txt");
+       
+       break;
+   case 3:
+	   removeDiscount( scanner,"discounts.txt");
+       break;
+   case 1:
+	   viewAllDiscounts("discounts.txt");
+       break;
+   case 5:
+       System.out.println("Exiting...");
+       break;
+   default:
+       printing.printSomething(INVALID_CHOICE);
+	     break;
+		
+	}
+}
+
+public static void viewAllDiscounts(String filename) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] data = line.split(",");
+            if (data.length == 4) {
+                String discountId = data[0];
+                String discountCode = data[1];
+                String discountPercentage = data[2];
+                String validityPeriod = data[3];
+                System.out.println("ID: " + discountId +
+                        "\t Code: " + discountCode +
+                        "\t Percentage: " + discountPercentage +
+                        "\t Period: " + validityPeriod);
+ }else {
+                System.err.println("Invalid discount entry: " + line);
+            }
+        }
+    } catch (IOException e) {
+        System.err.println("Error reading file: " + e.getMessage());
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////	    
+
+
+private void EventManagementOptions(int cE) throws Exception {
+    switch (cE) {
+        case 1:
+           if( viewalleventsforAdmin("requst.txt")) {
+            printing.printSomething("\nEnter the Event ID of the event you want to accept or reject: ");
+            String eventID = scanner.next();
+            
+            printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
+            String choice = scanner.next().toUpperCase();
+            if (choice.equals("Y")) {
+                event1= event1.findeventID(eventID, "requst.txt");
+            	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+            	event1.addEventToFile(event1, "event.txt");
+               printing.printSomething("\nEvent accepted.");
+                ///to send notifation
+               
+               
+            } else if (choice.equals("N")) {
+            	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+            	printing.printSomething("\nEvent rejected.");
+               
+            } else {
+                
+            	printing.printSomething(INVALID_CHOICE);
+         	     }}
+           
+            break;        
+        case 2:
+        	 viewalleventsforAdmin("event.txt");
+            break;
+        case 3:
+           addevent("event.txt");
+            break;
+        case 4:
+        	if( viewalleventsforAdmin("event.txt")) {
+                printing.printSomething("\nEnter the Event ID of the event you want to delete : ");
+                String eventID = scanner.next();
+                event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
+        	  printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");}
+
+        	break;
+        case 5:
+        	 if (viewalleventsforAdmin("event.txt")) {   
+         	    printing.printSomething("Please enter the Event ID you want to update: ");
+                String eventid=scanner.next();
+                event1.updateEvent(eventid, "event.txt");    
+                viewalleventsforAdmin("event.txt"); 
+                printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
+
+                }
+        	
+        	
+            break;
+        case 6:adminPage();
+        default:
+            printing.printSomething(INVALID_CHOICE);
+     	     break;
+    }
+}
+
+
+	
+//////////////////////////////////////////////////////////////////////////////////
+
+void addProviderToFile(Provider provider) {
+    try {
+        FileWriter ProvidersFile = new FileWriter(PROVIDER_FILE_NAME, true);
+        ProvidersFile.append(provider.getId()).append(" , ")
+                .append(provider.getUsername()).append(" , ")
+                .append(provider.getphone()).append(" , ")
+                .append(provider.getaddress()).append(" , ")
+                .append(provider.getEmail()).append(" , ")
+                .append(provider.getPassword())
+                .append("\n");
+
+                
+
+        ProvidersFile.close();
+    } catch (IOException e) {
+        printing.printSomething("An error occurred: " + e.getMessage());
+    }
+}
+
+
+
+
+void addServiceToFile(ServiceDetails service) {
+    try {
+        FileWriter serviceFile = new FileWriter("service.txt", true);
+        serviceFile.append(service.getServiceID()).append(" , ")
+                   .append(service.getProviderID()).append(" , ")
+                   .append(service.getServiceType()).append(" , ")
+                   .append(service.getServiceName()).append(" , ")
+                   .append(service.getDescription()).append(" , ")
+                   .append(String.valueOf(service.getPrice())).append(" , ")
+                   .append(service.getAvailability())
+                   .append("\n");
+
+        serviceFile.close();
+    } catch (IOException e) {
+        printing.printSomething("An error occurred: " + e.getMessage());
+    }
+}
+
+
+//////////////////  
+
+public  void providerSignUp() throws Exception {
+provider_obj = new Provider();
+printing.printSomething("Enter your Id: ");
+id = scanner.next();
+found = searchIdP(id);
+if (found) {
+printing.printSomething("This account is already existed, Please Sign in.");
+signInFunction();
+} else {
+provider_obj.setId(id);
+printing.printSomething("Enter your Name: ");
+provider_obj.setName(scanner.next());
+printing.printSomething("Enter your Phone: ");
+provider_obj.setPhone(scanner.next());
+printing.printSomething("Enter your Address: ");
+provider_obj.setAddress(scanner.next());
+printing.printSomething("Enter your Email: ");
+provider_obj.setEmail(scanner.next());
+printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
+provider_obj.setPassword(scanner.next());
+printing.printSomething("\nRegistration done successfully\n");
+providers.add(provider_obj);
+addProviderToFile(provider_obj);
+}
+}
+
+/////////////////////////////////////////////////	
+	
+private void updateProvidersList() {
+    providers.clear(); // Clear existing data
+    try (BufferedReader br = new BufferedReader(new FileReader("provider.txt"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            Provider provider = Provider.getProviderFromLine(line); // Assuming you have a method to create Provider objects from a line
+
+            providers.add(provider);
+        }
+    } catch (IOException e) {
+        printing.printSomething("Error reading provider data: " + e.getMessage());
+    }
+}
+
+//////////
+public void updateServiceList() {
+    try (BufferedReader br = new BufferedReader(new FileReader("service.txt"))) {
+        String line;
+        serviceDetails.clear(); // Clear existing data
+        
+        while ((line = br.readLine()) != null) {
+            if (line.isEmpty()) continue;
+            ServiceDetails service = ServiceDetails.getServiceFromLine(line);
+            serviceDetails.add(service);
+        }
+    } catch (IOException e) {
+        // Handle IOException
+        printing.printSomething("An error occurred: " + e.getMessage());
+    }
+}
+/////////
+
+public void updateProviderAndServiceList() throws FileNotFoundException, IOException {
+	
+	
+			updateProvidersList();
+			 updateServiceList();
+			String P=null,S1=null;
+			 String line;
+			
+	    	 StringBuilder sb = new StringBuilder();
+			try (BufferedReader reader = new BufferedReader(new FileReader("service.txt"))) 
+	    	{   
+	            while ((line = reader.readLine()) != null)
+	            {   String[] items = line.split(" , ");
+	            if (items.length >= 7) 
+	            {
+	            	
+	            	 if (items.length >= 7) {
+	            		 String sID = items[0];
+	            		 String providerID = items[1];
+	            		 String serviceType = items[2];
+	            		 String serviceName = items[3];
+	            		 String description = items[4];
+	            		 double price = Double.parseDouble(items[5]);
+	            		 String availability = items[6];
+	                
+	            	   for (Provider  Prov :  providers)   {
+	      				   P=Prov.getId();
+	      				 
+	            	   if (providerID.equals(P)) {
+	            		   
+	            		   ServiceDetails newService = new ServiceDetails( serviceType, serviceName, description, availability,sID, price, providerID);
+	            		   Prov.serviceDetailsList.add(newService);
+	            		   break;
+	            	   }
+	            	  
+	            	   
+	            	   }
+	            	   
+	               } 
+	            	 
+	            
+	            }
+	            
+	           }
+	            
+	           
+	    	}
+			
+	
+	
+	
+}
+////////
+
+private boolean viewproviderservice(String id2) throws FileNotFoundException, IOException {
+	 boolean found = false; 
+
+	  updateProviderAndServiceList(); 
+
+	    for (Provider PROV  : providers) {
+	        if ( PROV.getId().equals(id2)) {
+	            List<ServiceDetails> providersservices = PROV.getServiceDetailsList();
+
+	            if (! providersservices .isEmpty()) {
+	               
+	            	 PROV. displayServiceDetails() ;
+	                
+	            } else {
+	                System.out.println("provider found, but has Servics no .");
+	            }
+
+	            found = true; 
+	            break; 
+	        }
+	    }
+
+	   if (!found) {
+	        System.out.println("provider not found or has Servics no .");
+	    }
+
+	    return found;
+}
+
+////////////////////////////////////
+public void providerOptions(int choice) throws Exception {
+    switch (choice) {
+        case 1:
+        	updateProvidersList();
+            printing.printSomething("Which info you want to update?\n1. Name  2.Phone  3. Address  4. Email"+"\n"+ENTER_CHOICE);
+           updateProviderProfile(scanner.nextInt());
+          
+            break;
+        case 2:
+        	 updateProvidersList();
+        	addService();
+            break;
+        case 3:
+        	 printing.printSomething("\n");   
+        	 if (viewproviderservice(id)) {
+                 printing.printSomething("\n"+"Please enter the Event ID of the service you want to update : ");
+                 String Sid=scanner.next();
+            	
+                 updateProviderAndServiceList();
+                 updateServiceList();
+                provider1.updateServiceDetails(Sid,"service.txt");
+                printing.printSomething("\nService updated successfully.");
+                viewproviderservice(id);
+                 }
+        	
+            break;
+        case 4:
+        	 printing.printSomething("\n");   
+             if (viewproviderservice(id)) {
+             printing.printSomething("\n"+"Please enter the Event ID of the service you want to delete: ");
+             String Sid=scanner.next();
+             provider1.deleteService(Sid);
+             printing.printSomething("\nService deleted successfully.");
+             }
+            break;
+        case 5:
+           
+            break;
+        case 6:
+            
+            break;
+        default:
+            printing.printSomething("Invalid choice.");
+            break;
+    }
+}
+
+
+////////////////////////
+public ServiceDetails addService() throws Exception {
+     updateServiceList();
+    ServiceDetails service = new ServiceDetails();
+
+    printing.printSomething("\n"+"Enter event Id:");
+    id1 = scanner.next();	               
+   
+    if (searchIdS(id,"service.txt" )) { found =true ;}else found=false;	              
+    if (found)
+    { printing.printSomething("This account is already existed, Please Sign in."); 
+    addService( );return null; }
+   else  {   
+ 	  
+	   service.setServiceID(id1);
+	   service.setProviderID(id);
+	   
+     printing.printSomething("Enter service type:");
+    service.setServiceType(scanner.next());
+
+    printing.printSomething("Enter service name:");
+    service.setServiceName(scanner.next());
+
+    printing.printSomething("Enter service description:");
+    service.setDescription(scanner.next());
+
+    printing.printSomething("Enter service price:");
+    double price = scanner.nextDouble();
+    service.setPrice(price);
+
+    printing.printSomething("Enter service availability:");
+    service.setAvailability(scanner.next());
+
+   
+    serviceDetails.add(service);
+   addServiceToFile(service);
+   printing.printSomething("\nService added successfully.");
+    return service;}
+    
+    
+}
+
+/////////////////
+
+private void updateProviderProfile(int n) throws IOException {
+    String tmp1;
+    for (Provider provider1 : providers) {
+        if (provider1.getId().equals(id)) {
+            switch (n){
+                case 1:
+                    printing.printSomething(ENTER_NAME);
+                    tmp1 = scanner.next();
+                    updateFile("provider.txt", provider1.getUsername(), tmp1);
+                    provider1.setName(tmp1);
+                    break;
+                case 2:
+                    printing.printSomething("Enter New Phone: ");
+                    tmp1 = scanner.next();
+                    updateFile("provider.txt", provider1.getphone(), tmp1);
+                    provider1.setPhone(tmp1);
+                    break;
+                case 3:
+                    printing.printSomething("Enter New Address: ");
+                    tmp1= scanner.next();
+                    updateFile("provider.txt", provider1.getaddress(), tmp1);
+                    provider1.setAddress(tmp1);
+                    break;
+                case 4:
+                    printing.printSomething("Enter New Email: ");
+                    tmp1 = scanner.next();
+                    updateFile("provider.txt", provider1.getEmail(), tmp1);
+                    provider1.setEmail(tmp1);
+                    break;
+                default:    printing.printSomething(INVALID_CHOICE);
+            }
+        }
+    }
+
+	
+}
+//////////////////
+
+
+
+public static double getPriceByVenue(String venueName) {
+    try (BufferedReader reader = new BufferedReader(new FileReader("venue.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] data = line.split(",");
+            if (data.length >= 6 && data[1].trim().equals(venueName)) {
+                return Double.parseDouble(data[5]);
+            }
+        }
+    } catch (IOException e) {
+        System.err.println("Error reading file: " + e.getMessage());
+    } catch (NumberFormatException e) {
+        System.err.println("Error parsing price: " + e.getMessage());
+    }
+    return 0; // Venue name not found or error occurred
+}
+///////////////
+private void ProviderAdminManagementOptions(int p) throws Exception {
+	switch (p) {
+    case 1:
+    	 viewallprovider("provider.txt");
+    	 break;
+    case 2:
+    	  if(  viewallprovider("provider.txt")) {
+              printing.printSomething("\nEnter the Provider ID  you want to delete it: ");
+              String providerID = scanner.next();  
+             provider1.delete_provider_from_file_and_arraylist(provider1, "provider.txt", providerID);
+      	  printing.printSomething("\nProvider with ID " + providerID + " successfully deleted .");}
+
+      	break;    
+  
+	}}
+	
+///////////////////////
+
+	public boolean viewallprovider(String filename) {
+		 List<Provider> prov = new ArrayList<>();
+	
+		  Provider provider2 = new Provider();
+		  
+		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+		        String line;
+		       while ((line = reader.readLine()) != null) {
+		           
+		         provider2=provider2.getProviderFromLine(line);
+		           
+		           prov.add(provider2);
+		        }
+		    } catch (Exception e) {
+		       e.printStackTrace();
+		    }
+		    if (prov.isEmpty()) {
+		        printing.printSomething("No provider found.\n");
+		        return false;
+		    }
+		    
+		    printing.printSomething("List of providers: \n");
+		    
+		    for (Provider providers2 : prov) {
+		        System.out.println(providers2); 
+		    }
+		    
+		    return true;
+			
+	}
+	
+	
+	
+	public void selectpackagee() throws Exception {
+	    Scanner scanner = new Scanner(System.in);
+
+	    try {
+	        System.out.print("Enter the ID for the package you want: ");
+	        int packageId = scanner.nextInt();
+	        scanner.nextLine(); // Consume newline character
+
+	        // Check if the package ID exists
+	        if (!Paackage.isPackageIdExists("package.txt", packageId)) {
+	            System.out.println("Package ID doesn't exist.");
+	            return;
+	        }
+
+	        addevent("requst.txt");
+
+	        System.out.println("Request successfully saved.");
+	    } catch (InputMismatchException e) {
+	        System.out.println("Invalid input. Please enter a valid integer.");
+	    }
+	}
+
+
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+
+
+	
+	 public static void readInvoiceFile(String fileName, String customerId) {
+	        double totalPrice = 0.0; // Variable to store the total price
+	        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 4) {
+	                    String invoiceCustomerId = parts[0].trim();
+	                    if (invoiceCustomerId.equals(customerId)) {
+	                        String eventName = parts[2].trim();
+	                        double price = Double.parseDouble(parts[3].trim());
+	                        System.out.println("Event Name: " + eventName + "  , Price: " + price);
+	                        totalPrice += price; // Accumulate the price
+	                    }
+	                } else {
+	                    System.out.println("Invalid format in invoice file: " + line);
+	                }
+	            }
+	            System.out.println("Total Price: " + totalPrice); // Print the total price
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	
+	
+/////////////////////////////	
+	
+	public void addBookingVenue(String venid, String custid, String date, String status, String eventid) {
+    try (FileWriter writer = new FileWriter("venuebook.txt", true)) {
+        writer.write(venid + "," + custid + "," + date + "," + status +","+eventid+ "\n");
+        System.out.println("Booking added successfully.");
+    } catch (IOException e) {
+        System.out.println("An error occurred while adding the booking: " + e.getMessage());
+    }
+}
+
+
+public int getVenueCapacity(String venueName) throws IOException {
+    File venueFile = new File("venue.txt");
+    Scanner scanner = new Scanner(venueFile);
+    
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        String[] parts = line.split(",");
+        String name = parts[1];
+        if (name.equalsIgnoreCase(venueName)) {
+            scanner.close();
+            return Integer.parseInt(parts[4]); // Assuming capacity is at index 4
+        }
+    }
+    
+    scanner.close();
+    return -1; // Venue not found
+}
+         
+public static void searchEventsByCustomer(String customerId) {
+String filename = "requst.txt"; 
+
+try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    String line;
+    while ((line = reader.readLine()) != null) {
+      
+        String[] fields = line.split(",\\s*"); 
+        
+ 
+        if (fields.length >= 9 && fields[5].trim().equals(customerId.trim())) {
+         
+            System.out.println(line);
+        }
+    }
+} catch (IOException e) {
+    System.err.println("An error occurred while reading the file: " + e.getMessage());
+}
+}
+//////////////////////////////////////////////////////////////////////////
+
+public boolean checkAvailability(String venueName, String date) throws IOException {
+    // Look up venue ID by name
+    String venueId = getVenueIdByName(venueName);
+    
+    // If venue name doesn't exist or there's an error getting venue ID, return false
+    if (venueId == null) {
+        System.out.println("Venue with name " + venueName + " not found.");
+        return false;
+    }
+    return checkAvailabilityById(venueId, date);
+}
+
+// Function to get venue ID by its name from the venue file
+private String getVenueIdByName(String venueName) throws IOException {
+    File venueFile = new File("venue.txt");
+    Scanner scanner = new Scanner(venueFile);
+    
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        String[] parts = line.split(",");
+        String venueId = parts[0];
+        String name = parts[1];
+        
+        if (name.equalsIgnoreCase(venueName)) {
+            scanner.close();
+            return venueId;
+        }
+    }
+    
+    scanner.close();
+    return null; // Venue not found
+}
+public static void viewAllVenuesCustomer(String filename) {
+    List<Venue> venues = readVenuesFromFile(filename);
+
+    if (venues.isEmpty()) {
+        System.out.println("No venues found.");
+    } else {
+        System.out.println("All Venues:");
+        for (Venue venue : venues) {
+           
+            System.out.print("Name: " + venue.getName());
+            System.out.print("  Address: " + venue.getAddress());
+            System.out.print("  Capacity: " + venue.getCapacity());
+            System.out.println("  Price: " + venue.getPrice());
+          
+            System.out.println();
+        }
+    }}
+
+private boolean checkAvailabilityById(String venueId, String date) throws IOException {
+    File venueBookFile = new File("venuebook.txt");
+    Scanner scanner = new Scanner(venueBookFile);
+
+    while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        String[] parts = line.split(",");
+
+        // Check if the parts array has at least 4 elements
+        if (parts.length >= 4) {
+            String venueIdFromFile = parts[0];
+            String dateFromFile = parts[2];
+            String reserved = parts[3];
+
+            if (venueIdFromFile.equals(venueId) && dateFromFile.equals(date) && reserved.equalsIgnoreCase("Reserved")) {
+                System.out.println("The venue is reserved on " + date + ". Please choose another venue.");
+                scanner.close();
+                return false;
+            }
+        }
+    }
+
+    scanner.close();
+    return true; // Venue available
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+
+Paackage p = new Paackage();
+
+public static void viewAllPackagesFromFile(String filename) {
+    List<Paackage> paackages = readPackagesFromFile(filename);
+
+    if (paackages.isEmpty()) {
+        System.out.println("No packages found in the file.");
+        return;
+    }
+
+    System.out.println("All Packages:");
+    for (Paackage p : paackages) {
+        System.out.println("ID: " + p.getId() +
+                "  Name: " + p.getTitle() +
+                "  Description: " + p.getDescription() +
+                "  Price: " + p.getPrice() +
+                "  Validity Date: " + p.getValidityPeriod());
+    }
+}
+
+
+public static void savePackagesToFile(String filename, List<Paackage> packages) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        for (Paackage p : packages) {
+            writer.write(p.toFileString());
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+
+public static List<Paackage> readPackagesFromFile(String filename) {
+    List<Paackage> packages = new ArrayList<>();
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            int id = Integer.parseInt(parts[0]);
+            String title = parts[1];
+            String description = parts[2];
+            double price = Double.parseDouble(parts[3]);
+            String validityDate = parts[4];
+            Paackage p = new Paackage();
+            p.setTitle(title); // Set the title
+            p.setDescription(description);
+            p.setId(id);
+            p.setPrice(price);
+            p.setValidityPeriod(validityDate);
+            packages.add(p);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return packages;
+}
+
+
+
+public static void deletePackageById(Scanner scanner, String filename) {
+
+    List<Paackage> packages = readPackagesFromFile(filename);
+
+    if (packages.isEmpty()) {
+        System.out.println("No packages found.");
+        return;
+    }
+
+    System.out.println("All Packages:");
+    for (Paackage p : packages) {
+        System.out.println("Package ID: " + p.getId() + " Name: " + p.getTitle());
+    }
+
+    while (true) {
+        System.out.print("Enter the ID of the package to remove: ");
+        int packageIdToRemove = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        boolean found = false;
+
+        for (Paackage p : packages) {
+            if (p.getId() == packageIdToRemove) {
+                found = true;
+                packages.remove(p);
+                System.out.println("Package with ID " + packageIdToRemove + " successfully removed.");
+                break;
+            }
+        }
+
+        if (found) {
+            break; // Exit the loop if the package is found and removed
+        } else {
+            System.out.println("Package with ID " + packageIdToRemove + " not found.");
+            System.out.println("Please insert a new ID.");
+        }
+    }
+
+    savePackagesToFile(filename, packages);
+}
+
+
+
+
+
+public static void updatePackage(Scanner scanner, String filename) {
+    List<Paackage> packages = readPackagesFromFile(filename);
+
+    if (packages.isEmpty()) {
+        System.out.println("No packages found.");
+        return;
+    }
+
+    while (true) {
+        System.out.println("All Packages:");
+        viewAllPackagesFromFile("package.txt");
+        
+
+        System.out.print("\nEnter ID for package you want to update (or 'exit' to quit): ");
+        String userInput = scanner.nextLine();
+
+        if (userInput.equalsIgnoreCase("exit")) {
+            break;
+        }
+
+        int packageId = Integer.parseInt(userInput);
+
+        // Find the package with the specified ID
+        Paackage packageToUpdate = null;
+        for (Paackage p : packages) {
+            if (p.getId() == packageId) {
+                packageToUpdate = p;
+                break;
+            }
+        }
+
+        if (packageToUpdate == null) {
+            System.out.println("Package with ID " + packageId + " not found.");
+            continue; // Prompt for another ID
+        } else {
+            System.out.println("1. ID");
+            System.out.println("2. Title");
+            System.out.println("3. Price");
+            System.out.println("4. Validity Date");
+            System.out.println("5. Description");
+            System.out.println("6. Exit");
+
+            System.out.print("Select a number: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    int newId;
+                    do {
+                        System.out.print("Enter a new ID: ");
+                        newId = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline character
+
+                        if (isPackageIdExists(filename, newId)) {
+                            System.out.println("ID already exists in the file. Please enter a new ID.");
+                        } else {
+                            packageToUpdate.setId(newId);
+                            System.out.println("ID is updating successfully.");
+                            break;
+                        }
+                    } while (true);
+                    break;
+                case 2:
+                    System.out.print("Enter a new title: ");
+                    String newTitle = scanner.nextLine();
+                    packageToUpdate.setTitle(newTitle);
+                    System.out.println("The title is updating successfully.");
+                    break;
+                case 3:
+                    System.out.print("Enter a new price: ");
+                    double newPrice = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline character
+                    packageToUpdate.setPrice(newPrice);
+                    System.out.println("Price is updating successfully.");
+                    break;
+                case 4:
+                    System.out.print("Enter a new validity date: ");
+                    String newValidityDate = scanner.nextLine();
+                    packageToUpdate.setValidityPeriod(newValidityDate);
+                    System.out.println("Validity date is updating successfully.");
+                    break;
+                case 5:
+                    System.out.print("Enter a new description: ");
+                    String newDescription = scanner.nextLine();
+                    packageToUpdate.setDescription(newDescription);
+                    System.out.println("Description is updating successfully.");
+                    break;
+                case 6:
+                    System.out.println("Exit.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
+            // Save updated packages to file
+            savePackagesToFile(filename, packages);
+
+            System.out.print("Do you want to update another package? (yes/no): ");
+            userInput = scanner.nextLine();
+            if (!userInput.equalsIgnoreCase("yes")) {
+                break;
+            }
+        }}
+    }
+
+
+
+public static boolean isPackageIdExists(String filename, int id) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length > 0 && Integer.parseInt(parts[0]) == id) {
+                return true;
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+
+
+
+public static void addPackage(Scanner scanner, String filename) {
+    System.out.println("Adding a new package...");
+    int id;
+    while (true) {
+        System.out.print("Enter package ID: ");
+        id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        if (!isPackageIdExists(filename, id)) {
+            break;
+        }
+
+        System.out.println("Package ID already exists in the file. Please enter a new ID.");
+    }
+
+    System.out.print("Enter package name: ");
+    String name = scanner.nextLine();
+
+    System.out.print("Enter package description: ");
+    String description = scanner.nextLine();
+
+    System.out.print("Enter package price: ");
+    double price = scanner.nextDouble();
+    scanner.nextLine(); // Consume newline character
+
+    System.out.print("Enter package validity period (YYYY-MM-DD): ");
+    String validityPeriod = scanner.nextLine();
+
+    String packageDetails = String.format("%d,%s,%s,%.2f,%s", id, name, description, price, validityPeriod);
+    addPackageToFile(filename, packageDetails);
+    System.out.println("Package successfully added.");
+}
+
+
+
+
+public static void addPackageToFile(String filename, String packageDetails) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+        writer.write(packageDetails);
+        writer.newLine();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////
+public void deleteVenueBooking(String eventId, String filename) {
+    List<String> lines = new ArrayList<>();
+    
+    // Read the contents of the file and exclude the line with the specified event ID
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] eventData = line.split(","); // Assuming each line is comma-separated
+            if (eventData.length >= 5 && eventData[4].trim().equals(eventId)) {
+                // Skip the line with the specified event ID
+                continue;
+            }
+            lines.add(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    
+    // Rewrite the file with updated contents (excluding the line with the specified event ID)
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        for (String line : lines) {
+            writer.write(line);
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+  public static void addVenueToFile(String filename, String venueDetails) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(venueDetails);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to interactively add venue details
+  public static boolean isVenueIdExists(String filename, String venueId) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(venueId + ",")) {
+                    return true; // Venue ID exists in the file
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false; // Venue ID does not exist in the file
+    }
+
+    // Method to interactively add venue details
+  public static void addVenue(Scanner scanner, String filename) {
+        System.out.println("Adding a new venue...");
+        
+        // Validate venue ID
+        String venueId;
+        do {
+            System.out.print("Enter venue ID: ");
+            venueId = scanner.nextLine();
+            if (!venueId.matches("\\d+")) {
+                System.out.println("Invalid input. Please enter a valid venue ID (numeric value): ");
+            }
+        } while (!venueId.matches("\\d+"));
+
+        // Validate venue name
+        System.out.print("Enter venue name: ");
+        String name = scanner.nextLine();
+
+        // Validate venue address
+        System.out.print("Enter venue address: ");
+        String address = scanner.nextLine();
+
+        // Validate Image
+        System.out.print("Enter Image : ");
+        String Image = scanner.nextLine();
+
+        // Validate venue capacity
+        int capacity;
+        do {
+            System.out.print("Enter venue capacity: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid venue capacity (numeric value): ");
+                scanner.next(); // Clear the buffer
+            }
+            capacity = scanner.nextInt();
+        } while (capacity <= 0);
+        scanner.nextLine(); // Consume newline
+
+        // Validate venue price
+        double price;
+        do {
+            System.out.print("Enter venue price: ");
+            while (!scanner.hasNextDouble()) {
+                System.out.println("Invalid input. Please enter a valid venue price (numeric value): ");
+                scanner.next(); // Clear the buffer
+            }
+            price = scanner.nextDouble();
+        } while (price <= 0);
+        scanner.nextLine(); // Consume newline
+
+        // Create a new Venue object and add it to the file
+        Venue newVenue = new Venue(venueId, name, address, capacity, price, Image);
+        String venueDetails = newVenue.toFileString();
+        addVenueToFile(filename, venueDetails);
+        System.out.println("Venue successfully added.");
+    }
+    
+    public static void editVenuefrom(Scanner scanner, String filename) {
+        List<Venue> venues = readVenuesFromFile(filename);
+       // List<Venue> venues = readVenuesFromFile(filename);
+
+        if (venues.isEmpty()) {
+            System.out.println("No venues found.");
+        } else {
+            System.out.println("All Venues:");
+            for (Venue venue : venues) {
+                System.out.print("Venue ID: " + venue.getId());
+                System.out.print("  Name: " + venue.getName());
+                System.out.print("  Address: " + venue.getAddress());
+                System.out.print("  Image: " + venue.getImage());
+                System.out.print("  Capacity: " + venue.getCapacity());
+                System.out.println("  Price: " + venue.getPrice());
+              
+                System.out.println();
+            }
+        }
+        System.out.print("Enter the ID of the venue to edit: ");
+        String venueId = scanner.nextLine();
+
+        Venue oldVenue = null;
+        for (Venue venue : venues) {
+            if (venue.getId().equals(venueId)) {
+                oldVenue = venue;
+                break;
+            }
+        }
+
+        if (oldVenue == null) {
+            System.out.println("Venue not found.");
+            return;
+        }
+
+        System.out.println("Enter new venue details:");
+        System.out.print("Venue ID: ");
+        String newVenueId = scanner.nextLine();
+        System.out.print("Venue name: ");
+        String newVenueName = scanner.nextLine();
+        System.out.print("Venue address: ");
+        String newVenueAddress = scanner.nextLine();
+        System.out.print("Image : ");
+        String newImage = scanner.nextLine();
+        System.out.print("Venue capacity: ");
+        int newVenueCapacity = scanner.nextInt();
+        System.out.print("Venue price: ");
+        double newVenuePrice = scanner.nextDouble();
+
+        Venue newVenue = new Venue(newVenueId, newVenueName, newVenueAddress, newVenueCapacity, newVenuePrice,newImage);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (int i = 0; i < venues.size(); i++) {
+                Venue venue = venues.get(i);
+                if (venue.equals(oldVenue)) {
+                    writer.write(newVenue.toFileString());
+                } else {
+                    writer.write(venue.toFileString());
+                }
+                if (i != venues.size() - 1) {
+                    writer.newLine();
+                }
+            }
+            System.out.println("Venue successfully edited.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<Venue> readVenuesFromFile(String filename) {
+        List<Venue> venues = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 6) {
+                    System.out.println("Invalid format in venue file: " + line);
+                    continue; // Skip this line and proceed to the next one
+                }
+                String venueId = parts[0];
+                String venueName = parts[1];
+                String venueAddress = parts[2];
+                String imagePath=parts[3];
+                int venueCapacity = Integer.parseInt(parts[4]);
+                double venuePrice = Double.parseDouble(parts[5]);
+                Venue venue = new Venue(venueId, venueName, venueAddress ,venueCapacity, venuePrice,imagePath);
+                venues.add(venue);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return venues;
+    }
+    public static void deleteVenueById(Scanner scanner, String filename) {
+    	
+    	
+        System.out.println("Removing a venue...");
+        List<Venue> venues = readVenuesFromFile(filename);
+
+        if (venues.isEmpty()) {
+            System.out.println("No venues found.");
+        } else {
+            System.out.println("All Venues:");
+            for (Venue venue : venues) {
+                System.out.print("Venue ID: " + venue.getId());
+                System.out.print("  Name: " + venue.getName());
+                System.out.print("  Address: " + venue.getAddress());
+                System.out.print("  Image: " + venue.getImage());
+                System.out.print("  Capacity: " + venue.getCapacity());
+                System.out.println("  Price: " + venue.getPrice());
+              
+                System.out.println();
+            }
+        }
+        System.out.print("Enter the ID of the venue to remove: ");
+        String venueIdToRemove = scanner.nextLine();
+
+        //List<Venue> venues = readVenuesFromFile(filename);
+        boolean found = false;
+
+        List<Venue> updatedVenues = new ArrayList<>();
+
+        // Iterate over the venues to find and remove the specified venue
+        for (Venue venue : venues) {
+            if (venue.getId().equals(venueIdToRemove)) {
+                found = true;
+                System.out.println("Venue with ID " + venueIdToRemove + " successfully removed.");
+            } else {
+                // Add venues other than the one to be removed to the updated list
+                updatedVenues.add(venue);
+            }
+        }
+
+        // If the venue to remove was found, update the file with the updated list of venues
+        if (found) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                for (int i = 0; i < updatedVenues.size(); i++) {
+                    Venue venue = updatedVenues.get(i);
+                    writer.write(venue.toFileString());
+                    if (i != updatedVenues.size() - 1) {
+                        writer.newLine();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Venue with ID " + venueIdToRemove + " not found.");
+        }
+    }
+
+    private static void deleteVenueFromFile(String filename, List<Venue> venues) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Venue venue : venues) {
+                writer.write(venue.toFileString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void viewAllVenues(String filename) {
+        List<Venue> venues = readVenuesFromFile(filename);
+
+        if (venues.isEmpty()) {
+            System.out.println("No venues found.");
+        } else {
+            System.out.println("All Venues:");
+            for (Venue venue : venues) {
+                System.out.print("Venue ID: " + venue.getId());
+                System.out.print("  Name: " + venue.getName());
+                System.out.print("  Address: " + venue.getAddress());
+                System.out.print("  Image: " + venue.getImage());
+                System.out.print("  Capacity: " + venue.getCapacity());
+                System.out.println("  Price: " + venue.getPrice());
+              
+                System.out.println();
+            }}
+        }
+   
+
+
+
+
+
+}
+	
+

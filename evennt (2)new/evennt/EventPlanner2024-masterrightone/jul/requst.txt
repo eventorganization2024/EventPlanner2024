@@ -1,0 +1,16 @@
+rr , 2042-09-02 , rr , f , 4 , 333 , r , r , J , 444444
+jullnarparty , 2022-09-08 , 5 , yyy , 50 , 22 , uu , jl , nn , 3
+jll , 2023-08-09 , 5 , yyy , 70 , 22 , uu , yyy , j , 5
+oom , 2012-08-09 , 5 , yyy , 70 , 22 , mm , yyy , j , 8
+jjk , 2025-09-08 , 7 , hfgfg , 20 , 22 , bb , uututu , nn , 9
+nnnnnn , 2025-07-08 , 5 , tttt , 300 , 22 , bb , uuu , j , 56
+ruba , 2022-03-04 , 5 , yyy , 30 , 22 , nn , thhh , j , 44
+456 , 2024-02-03 , 7 , yyy , 60 , 22 , nn , yy , nn , 22
+jo , 2025-09-09 , 7 , yyyy , 50 , 22 , bb , uuu , nn , 678
+hhh , 2028-12-12 , 7 , uu , 60 , 22 , bb , tt , nn , 15
+hhhh , 2013-03-12 , 7 , uuu , 70 , 22 , nnn , uuu , j , 44444
+bb , 2012-03-04 , 7 , uuu , 60 , 22 , nn , nn , nn , 777
+ooo , 2024-09-01 , 5 , eee , 30 , 22 , bb , yyy , nn , 346
+ramm , 2024-11-11 , 7 , uuu , 80 , 22 , bb , jjj , j , 77
+jullnarandgg , 2029-12-10 , 8 , uuu , 70 , 22 , oo , uu , j , 888
+ju , 2022-12-11 , 7 , uu , 80 , 22 , nn , uu , nn , 89
