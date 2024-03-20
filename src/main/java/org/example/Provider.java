@@ -12,10 +12,10 @@ import java.io.IOException;
 import org.example.*;
 
 public class Provider extends User  {
-   public List<ServiceDetails> serviceDetailsList;
+   public static List<ServiceDetails> serviceDetailsList;
     private String email;
     static Printing printing = new Printing();
-    private static List<Provider> providers = new ArrayList<>(); 
+    static List<Provider> providers = new ArrayList<>(); 
     Functions f=new Functions();
    
 ///////////////////////////////////////////////////////////////////////
@@ -161,8 +161,8 @@ public class Provider extends User  {
         
     }
 
-    public boolean displayServiceDetails() {
-        printing.printSomething("\n   =====================================================================================================================\n");
+    public static boolean displayServiceDetails() {
+        printing.printSomething("\n    =====================================================================================================================\n");
         printing.printSomething("   |Service ID   | ServiceType | ServiceName            | Description                         | Price    | Availability   |\n");
         printing.printSomething("   |-------------|-------------|------------------------|-------------------------------------|----------|----------------|\n");
 
@@ -172,7 +172,7 @@ public class Provider extends User  {
                     service.getDescription(), service.getPrice(), service.getAvailability()));
         }
 
-        printing.printSomething("   ====================================================================================================================\n");
+        printing.printSomething("    ====================================================================================================================\n");
         return true;
     }
 

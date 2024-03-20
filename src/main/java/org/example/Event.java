@@ -1,5 +1,7 @@
 
 package org.example;
+import static org.example.Functions.printing;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,11 +14,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Stack;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class Event {
 	private String UserID;
@@ -31,6 +36,9 @@ public class Event {
 	public boolean cancel;
 	public String EVENTID;
 	private String Venuenamee;
+	private List<String> serviceIds = new ArrayList<>(); // ArrayList to store service IDs
+	
+	int numberOfServices=0;
 	
    static Printing printing = new Printing();
    Functions f =new Functions();
@@ -51,14 +59,42 @@ public class Event {
         this.theme= theme;
         this .EVENTID=Eid;
         this.Venuenamee=Venuename;
+        this.numberOfServices=0;
+        }
+    
+    public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Venuename,List<String> serviceIds,String Eid) {
+     
+    	  this(name, date, time, description, attendeeCount, UserID, theme, category, Venuename, Eid);
+    	  this.serviceIds.addAll(serviceIds);
+    
+    	
     }
     
+    
+    public void setNumberOfServices(int num) {
+    	 if(serviceIds.isEmpty()) num = 0;
+        this.numberOfServices = num;
+    }
+
+   public int getNumberOfServices() {
+        return numberOfServices;
+    }
+   
+   public List<String> getServiceIds() {
+       return serviceIds;
+   }
+
+   public void setServiceIds(List<String> serviceIds) {
+       this.serviceIds = serviceIds;
+   }
+   
+ /////////////////////////////////////////////////////////////////////////////////   
     public static Event getEventFromLine(String line) {
         Event event = new Event();
        
         
-        String[] items = line.split(",");
-        if (items.length >= 10) {
+        String[] items = line.split(" , ");
+        if (items.length >= 11) {
         	 String name = items[0];
         	 Date date;
              try {
@@ -72,10 +108,17 @@ public class Event {
              String description = items[3];
              String attendeeCount=items[4];
              String UID = items[5];
-             String theme = items[7];
+             
              String category = items[6];
-             String EID = items[9];
+             String theme = items[7];
              String Venuename=items[8];
+          
+             String EID = items[10];
+             
+             List<String> serviceIds = new ArrayList<>();
+             for (int i = 9; i < items.length - 1; i++) {
+                 serviceIds.add(items[i]);
+             }
              
              event.setName(name);
              event.setDate(date);
@@ -87,6 +130,7 @@ public class Event {
              event.setEID(EID);
              event.setAttendeeCount(attendeeCount); 
              event.setVenuename(Venuename);
+             event.setServiceIds(serviceIds);
         }
         return event;
     }
@@ -104,6 +148,7 @@ public class Event {
                     .append(event.getCategory()).append(" , ")
                     .append(event.getTheme()).append(" , ")
                     .append(event.getVenuename()).append(" , ")
+                    .append(String.valueOf(event.getNumberOfServices())).append(" , ") // Write number of services
                     .append(event.getEID()).append("\n");
 
 
@@ -114,41 +159,25 @@ public class Event {
     }
     
 
-    public static  Event findeventID(String Eid,String filename) {
+    public static  Event findeventID(String Eid,String filename) throws IOException {
     	String line;
     	 String inputString;
          
 		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
     	{   int currentLine = 1;
             while ((line = reader.readLine()) != null)
-            {   String[] items = line.split(" , ");
-            if (items.length >= 10) 
-            {
-                String name = items[0];
-                Date date;
-                try {
-                    date = DATE_FORMAT.parse(items[1]);
-                } catch (ParseException e) {
-
-                    e.printStackTrace();
-                    return null;
-                }
-                String time = items[2];
-                String description = items[3];
-                String attendeeCount = items[4];
-                String UID = items[5];
-                String theme=items[6];
-                String cate=items[7];
-                String EID=items[9];
-                String Venuename=items[8];
-               
-            if (EID.equals(Eid)) 
-            { return new Event(name, date, time, description, attendeeCount, UID,theme,cate,Venuename,Eid);
-            }else currentLine ++; 
-        } } }
-    	catch (IOException e) {
-            printing.printSomething("An error occurred: " + e.getMessage());}
-		   return null; }     
+            {  
+                   
+            	Event e=getEventFromLine (line);
+            	String eventid=e. getEID();
+            	if
+            	(eventid. equals (Eid))
+            	{
+            	return e;
+            	}
+            	else currentLine ++;
+        }}
+            	return null;}     
     
            
     
@@ -497,6 +526,7 @@ public class Event {
     public void setVenuename(String n) {Venuenamee=n; }
     public String getVenuename(){return Venuenamee;}
 
+    
 
     public String toString3() {
         return  
@@ -510,6 +540,7 @@ public class Event {
                 ",6. theme='" + theme + '\'' +
                 ",7. category='" + category + '\'' +
                   ",8. Venue ='" + Venuenamee + '\''
+                  
                
                 ;
     }
@@ -559,6 +590,5 @@ public class Event {
     }
     
     
-    
-
+   
 }

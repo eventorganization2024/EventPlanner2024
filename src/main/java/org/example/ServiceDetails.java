@@ -101,10 +101,22 @@ public class ServiceDetails {
 	    return service;
 	}
 
-  
-
+ 
    
-  
+   
+   
+
+   public String toString() {
+       return 
+    		   
+    		   serviceID + ", " +
+              
+               serviceType + ", " +
+               serviceName + ", " +
+               description + ", " +
+               price + ", " +
+               availability+"\n";
+   }
 
    
    
