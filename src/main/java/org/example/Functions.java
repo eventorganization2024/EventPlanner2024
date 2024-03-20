@@ -128,38 +128,48 @@ public class Functions {
                          }
 		           } while (!venueAvailable && scanner.next().equalsIgnoreCase("yes"));
  
-	               printing.printSomething("\n done successfully\n");	               
-	               events.add(event_obj);	               	               
+	             //  printing.printSomething("\n done successfully\n");	               
+	              // events.add(event_obj);	               	               
 	               addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
 	               
 ///////////////////////	               
-	               List<String> service_IDs_List = new ArrayList<>(); 
- 
-	               printing.printSomething("\n Do you want to add a service to your event? (yes/no)\n");
+	               List<String> service_IDs_List = new ArrayList<>();
+                   ServiceDetails service =new ServiceDetails();
+	               printing.printSomething("\nDo you want to add a service to your event? (yes/no)\n");
 	               if (scanner.next().equalsIgnoreCase("yes"))
-	               { 
-	            	do {   
-	               viewallservice("service.txt");
-                   printing.printSomething("\nEnter service ID you wont:\n ");     
-	               String SID=scanner.next();                   
-	               ServiceDetails s=  Provider.findServiceByID(SID, "service.txt");
-	               if( s.getAvailability().equals("available"))
-	               {  
-	            	   service_IDs_List.add(SID);
-	            	   event_obj.setServiceIds(service_IDs_List);
-                       events.add(event_obj);	               	               
-	               }                 
-	               else  printing.printSomething("The service is not available.\n");
-                   printing.printSomething("\nDo you want to add another service? (yes/no)\n");
-	                } 
-                  while (scanner.next().equalsIgnoreCase("yes"));
-	               printing.printSomething("\n done successfully\n");	               		              	               
+	               {
+	                   do {
+	                       viewallservice("service.txt");
+	                       printing.printSomething("\nEnter service ID you want:\n");
+	                       String SID = scanner.next();
+	                       ServiceDetails s = Provider.findServiceByID(SID, "service.txt");
+	                       if (s.getAvailability().equals("available"))
+	                       {
+	                           service_IDs_List.add(SID);
+	                           event_obj.setServiceIds(service_IDs_List);
+	                           events.add(event_obj);
+	                       }
+	                       else 
+	                       {
+	                           printing.printSomething("The service is not available.\n");
+	                       }
+	                       printing.printSomething("\nDo you want to add another service? (yes/no)\n");
+	                       }
+	                   while (scanner.next().equalsIgnoreCase("yes"));
+	                   printing.printSomething("\nDone successfully\n");
+	                   double price=service.calculateTotalPrice(service_IDs_List);
+	                   printing.printSomething("the price is :"+price);
+	               } else
+	               {
+	                  // event_obj.addEventToFile(event_obj, filename);
 	               }
-	              else 
-	             event_obj.addEventToFile(event_obj,filename);
-	               }
-	               event_obj.addEventToFile(event_obj,filename);
-				  return event_obj;}	               
+	             }
+	        ///////////////////////////////////////////////////////////////////   
+	           
+	               
+	           event_obj.addEventToFile(event_obj, filename);
+	           return event_obj;
+	       }               
 	             
 	              
 	
@@ -188,27 +198,30 @@ public class Functions {
       
 		  	    }
 /////////////////////////////		  	     
-	public void updateeventandcustomer() throws Exception{
-		
-		updateEventList("event.txt");
-		updateCustomersList();
-		
-		String E=null,C=null;
-			
-		for (Event event : events) {
-			E=event. getUID();
-			for (Customer customer : customers) {
-			C=customer.getId();
-			if (E. equals (C))
-			customer. Cevents.add (event); }}
-		} 
-		
+	 public void updateeventandcustomer() throws Exception {
+		    updateEventList("event.txt");
+		    updateCustomersList();
+
+		    String E = null;
+		    String C = null;
+
+		    for (Event event : events) {
+		        E = event.getUID();
+		        for (Customer customer : customers) {
+		            C = customer.getId();
+		            if (E != null && C != null && E.equals(C)) {
+		    			customer. Cevents.add (event); 
+		            }
+		        }
+		    }
+		}
+
 	
 	
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
-  public boolean viewCostomerevents( String Cid) throws Exception {
-		  boolean foundd = false; 
+	 public boolean viewCostomerevents( String Cid) throws Exception {
+		 boolean foundd = false; 
 
 		    updateeventandcustomer(); 
 
@@ -226,10 +239,11 @@ public class Functions {
 		            else { System.out.println("Customer found, but has no events.");}
 		            
 		           }
-            else  { System.out.println("Customer not found or has no events."); }
+         else  { System.out.println("Customer not found or has no events."); }
 
 		    return foundd;}
 			return foundd;}
+
 	       
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    boolean searchIdU(String id) {
@@ -308,7 +322,7 @@ public class Functions {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////	    
-       void signInFunction() throws Exception {
+	    void signInFunction() throws Exception {
 	        int c;
 	        signInPageList();
 	        printing.printSomething(ENTER_CHOICE);
@@ -530,7 +544,7 @@ public class Functions {
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public boolean viewalleventsforAdmin(String filename) {
-		  updateEventList("event.txt");
+		  updateEventList(filename);
 		    if (events.isEmpty()) {
 		        printing.printSomething("No events found.\n");
 		        return false;
@@ -539,13 +553,45 @@ public class Functions {
 		    printing.printSomething("List of Events: \n");
 		    
 		    for (Event event22 : events) {
-		        System.out.println(event22.toString()); 
+		        System.out.println(event22.toString2()); 
 		    }
 		    
 		    return true;
 			
 	}
-	
+	/*
+     public boolean viewalleventsforAdmin(String filename) {
+		 List<Event> events2 = new ArrayList<>();
+		//  String filename = "event.txt";
+		  Event event2 = new Event();
+		  
+		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+		        String line;
+		       while ((line = reader.readLine()) != null) {
+		           
+		          event2=event2.getEventFromLine(line);
+		           
+		           events2.add(event2);
+		        }
+		    } catch (Exception e) {
+		       e.printStackTrace();
+		    }
+		    if (events2.isEmpty()) {
+		        printing.printSomething("No events found.\n");
+		        return false;
+		    }
+		    
+		    printing.printSomething("List of Events: \n");
+		    
+		    for (Event event22 : events2) {
+		        System.out.println(event22); 
+		    }
+		    
+		    return true;
+			
+	}
+
+	*/
 /////////////////////////////////////////////////////////////////////////////////
    public static void addEmptyLine(String filename) {
 		        try (FileWriter fileWriter = new FileWriter(filename, true)) {
@@ -761,7 +807,7 @@ public class Functions {
     
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void customerOptions(int x) throws Exception {
+public void customerOptions(int x) throws Exception {
     	
         switch (x){
             case 1:
@@ -776,16 +822,17 @@ public class Functions {
                 
                 
             case 3:
-             
-             if (viewCostomerevents(id))
-             {   
-        	    printing.printSomething("Please enter the Event ID you want to update: ");
-               String eventid=scanner.next();
-               event1.updateEvent(eventid, "event.txt");    /////////"event.txt"
-              viewCostomerevents(id);         
-               }
-              
-               break;
+            	  boolean f=  viewCostomerevents(id);
+                  if (f)
+                  {   
+             	    printing.printSomething("Please enter the Event ID you want to update: ");
+                    String eventid=scanner.next();
+                    event1.updateEvent(eventid, "event.txt");    /////////"event.txt"
+                   viewCostomerevents(id);         
+                    }
+                     
+                    break;
+
             
             
                case 4:
@@ -847,6 +894,8 @@ public class Functions {
         }
     }
     
+  
+
   
   
 /////////////////////////////////////////////////////////////////////////////////////	    
@@ -946,73 +995,76 @@ private void VenueManagementOptions(int C) {
 
 private void EventManagementOptions(int cE) throws Exception {
     switch (cE) {
-        case 1:
-           if( viewalleventsforAdmin("requst.txt")) {
-        	
-            printing.printSomething("\nEnter the Event ID of the event you want to accept or reject: ");
-            String eventID = scanner.next();
+    case 1:
+        if( viewalleventsforAdmin("requst.txt")) {
+     	
+         printing.printSomething("\nEnter the Event ID of the event you want to accept or reject: ");
+         String eventID = scanner.next();
+         
+         printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
+         String choice = scanner.next().toUpperCase();
+         
+         if (choice.equals("Y")) {
+         	
+             event1= event1.findeventID(eventID, "requst.txt");
+         	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+         	event1.addEventToFile(event1, "event.txt");
+            printing.printSomething("\nEvent accepted.");             
+             ///to send Notification:
+            SendmsgtoCustomer("has been approved",event1);
+         
             
-            printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
-            String choice = scanner.next().toUpperCase();
             
-            if (choice.equals("Y")) {
-            	
-                event1= event1.findeventID(eventID, "requst.txt");
-            	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
-            	event1.addEventToFile(event1, "event.txt");
-               printing.printSomething("\nEvent accepted.");             
-                ///to send Notification:
-               SendmsgtoCustomer("has been approved",event1);
-            
-               
-               
-            } else if (choice.equals("N")) {
-            	  ///to send Notification:
-            	  event1= event1.findeventID(eventID, "requst.txt");
-            	SendmsgtoCustomer("has been Rejected",event1);
-            	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
-            	printing.printSomething("\nEvent rejected.");
-            	
-            
+         } else if (choice.equals("N")) {
+         	  ///to send Notification:
+         	  event1= event1.findeventID(eventID, "requst.txt");
+         	SendmsgtoCustomer("has been Rejected",event1);
+         	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+         	printing.printSomething("\nEvent rejected.");
+         	
+         
 
-               
-            } else {
-                
-            	printing.printSomething(INVALID_CHOICE);
-         	     }}
-           
-            break;        
-        case 2:
-        	 viewalleventsforAdmin("event.txt");
-            break;
-        case 3:
-           addevent("event.txt");
-            break;
-        case 4:
-        	if( viewalleventsforAdmin("event.txt")) {
-                printing.printSomething("\nEnter the Event ID of the event you want to delete : ");
-                String eventID = scanner.next();
-                event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
-        	  printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");}
+            
+         } else {
+             
+         	printing.printSomething(INVALID_CHOICE);
+      	     }}
+        
+         break;        
 
-        	break;
-        case 5:
-        	 if (viewalleventsforAdmin("event.txt")) {   
-         	    printing.printSomething("Please enter the Event ID you want to update: ");
-                String eventid=scanner.next();
-                event1.updateEvent(eventid, "event.txt");    
-                viewalleventsforAdmin("event.txt"); 
-                printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
+     case 2:
+     	 viewalleventsforAdmin("event.txt");
+         break;
+     case 3:
+       addevent("event.txt");
+    	
+         break;
+     case 4:
+     	if( viewalleventsforAdmin("event.txt")) {
+             printing.printSomething("\nEnter the Event ID of the event you want to delete : ");
+             String eventID = scanner.next();
+             event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
+     	  printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");}
 
-                }
-        	
-        	
-            break;
-        case 6:adminPage();
-        default:
-            printing.printSomething(INVALID_CHOICE);
-     	     break;
-    }
+     	break;
+     case 5:
+     	 if (viewalleventsforAdmin("event.txt")) {   
+      	    printing.printSomething("Please enter the Event ID you want to update: ");
+             String eventid=scanner.next();
+             event1.updateEvent(eventid, "event.txt");    
+             viewalleventsforAdmin("event.txt"); 
+             printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
+
+             }
+     	
+     	
+         break;
+     case 6:adminPage();
+     default:
+         printing.printSomething(INVALID_CHOICE);
+  	     break;
+ }
+
 }
 
 
@@ -1192,7 +1244,8 @@ public void updateServiceList() {
 
 
 public void updateProviderAndServiceList() throws FileNotFoundException, IOException {
-             updateProvidersList();
+            
+	updateProvidersList();
 			 updateServiceList();
 			String P=null,S=null;
 			for (Provider  Prov :  providers)  
@@ -1200,7 +1253,7 @@ public void updateProviderAndServiceList() throws FileNotFoundException, IOExcep
 	      			for (ServiceDetails Serv : serviceDetails)
 	      			{S=Serv.getProviderID();
 	      				if (P.equals(S)) 
-	      				{Prov.serviceDetailsList.add(Serv);}
+	      				{Prov.serviceDetailsList.add(Serv); break;}
 	      				}
 	            	  }
 			}
@@ -1294,8 +1347,8 @@ public ServiceDetails addService() throws Exception {
    
     if (searchIdS(id,"service.txt" )) { found =true ;}else found=false;	              
     if (found)
-    { printing.printSomething("This account is already existed, Please Sign in."); 
-    addService( );return null; }
+    { printing.printSomething("This service ID is already in use. Please enter a different Service ID.");
+     addService( );return null; }
    else  {   
  	  
 	   service.setServiceID(id1);
@@ -1314,15 +1367,17 @@ public ServiceDetails addService() throws Exception {
     double price = scanner.nextDouble();
     service.setPrice(price);
 
-    printing.printSomething("Enter service availability (available/not available): ");
-    String availabilityInput = scanner.next().toLowerCase();
-    if (availabilityInput.equals("available") || availabilityInput.equals("not available")) {
-        service.setAvailability(availabilityInput);
-    } else {
-        // Handle invalid input
-        printing.printSomething("Invalid input. Please enter either 'available' or 'not available'.");
+    while (true) {
+        printing.printSomething("\nEnter service availability (available/not_available): ");
+        String availabilityInput = scanner.next().toLowerCase();
+        if (availabilityInput.equals("available") || availabilityInput.equals("not_available")) {
+            service.setAvailability(availabilityInput);
+            break;
+        } else {
+            // Handle invalid input
+            printing.printSomething("Invalid input. Please enter either 'available' or 'not available'.");
+        }
     }
-   
     serviceDetails.add(service);
    addServiceToFile(service);
    printing.printSomething("\nService added successfully.");
@@ -1895,4 +1950,3 @@ public void deleteVenueBooking(String eventId, String filename) {
 
 }
 	
-

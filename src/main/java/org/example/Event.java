@@ -13,6 +13,7 @@ import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -71,14 +72,14 @@ public class Event {
     }
     
     
-    public void setNumberOfServices(int num) {
+   /* public void setNumberOfServices(int num) {
     	 if(serviceIds.isEmpty()) num = 0;
         this.numberOfServices = num;
     }
 
    public int getNumberOfServices() {
         return numberOfServices;
-    }
+    }*/
    
    public List<String> getServiceIds() {
        return serviceIds;
@@ -113,13 +114,27 @@ public class Event {
              String theme = items[7];
              String Venuename=items[8];
           
-             String EID = items[10];
+             String EID = items[9];
+           /*
+             String serviceIdsString = items[10]; 
+             String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*");
+             // Create a list to store serviceIds
+             List<String> serviceIds = new ArrayList<>();
+             for (String serviceId : serviceIdsArray) {
+                 serviceIds.add(serviceId);
+             }*/
+             
              
              List<String> serviceIds = new ArrayList<>();
-             for (int i = 9; i < items.length - 1; i++) {
-                 serviceIds.add(items[i]);
+             if (items.length > 10) {
+                 String serviceIdsString = items[10];
+                 String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*");
+                 for (String serviceId : serviceIdsArray) {
+                     serviceIds.add(serviceId);
+                 }
+             } else {
+                 serviceIds.add("0");
              }
-             
              event.setName(name);
              event.setDate(date);
              event.setTime(time);
@@ -137,51 +152,55 @@ public class Event {
     
     
     public void addEventToFile(Event event, String filename) {
-        try {
-            FileWriter  eventFile = new FileWriter(filename, true);
-            eventFile.append(event.getName()).append(" , ")
-                    .append(DATE_FORMAT.format(event.getDate())).append(" , ")
-                    .append(event.getTime()).append(" , ")
-                    .append(event.getDescription()).append(" , ")
-                    .append(event.getAttendeeCount()).append(" , ")
-                    .append(event.getUID()).append(" , ")
-                    .append(event.getCategory()).append(" , ")
-                    .append(event.getTheme()).append(" , ")
-                    .append(event.getVenuename()).append(" , ")
-                    .append(String.valueOf(event.getNumberOfServices())).append(" , ") // Write number of services
-                    .append(event.getEID()).append("\n");
+        try (FileWriter eventFile = new FileWriter(filename, true)) { // Open the file in append mode
+            eventFile.write(event.getName() + " , " +
+                            DATE_FORMAT.format(event.getDate()) + " , " +
+                            event.getTime() + " , " +
+                            event.getDescription() + " , " +
+                            event.getAttendeeCount() + " , " +
+                            event.getUID() + " , " +
+                            event.getCategory() + " , " +
+                            event.getTheme() + " , " +
+                            event.getVenuename() + " , " +
+                            event.getEID() + " , ");
 
-
-          eventFile.close();
+            
+            
+            
+            List<String> serviceIds = event.getServiceIds();
+            
+            String formattedServiceIds = serviceIds.isEmpty() ? "No service" : "[" + String.join(", ", serviceIds) + "]";
+            eventFile.write(formattedServiceIds + "\n");
         } catch (IOException e) {
             printing.printSomething("An error occurred: " + e.getMessage());
         }
+ 
+   
     }
+
+
+    public static Event findeventID(String Eid, String filename) throws IOException {
+        String line;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            int currentLine = 1;
+            while ((line = reader.readLine()) != null) {
+                Event e = getEventFromLine(line);
+                if (e != null) {
+                    String eventid = e.getEID();
+                    if (eventid != null && eventid.equals(Eid)) {
+                        return e;
+                    }
+                }
+                currentLine++;
+            }
+        }
+
+        return null;
+    }
+
     
 
-    public static  Event findeventID(String Eid,String filename) throws IOException {
-    	String line;
-    	 String inputString;
-         
-		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
-    	{   int currentLine = 1;
-            while ((line = reader.readLine()) != null)
-            {  
-                   
-            	Event e=getEventFromLine (line);
-            	String eventid=e. getEID();
-            	if
-            	(eventid. equals (Eid))
-            	{
-            	return e;
-            	}
-            	else currentLine ++;
-        }}
-            	return null;}     
-    
-           
-    
-   
     
     public static Event findevent(String searchCriteria, String searchType, String filename) {
         String line;
@@ -222,7 +241,7 @@ public class Event {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
-                if (items.length >= 10) {
+                if (items.length >= 11) {
                     String EVENTID = items[9];
                     if (!EVENTID.equals(EID)) {
                         eventFileContent.append(line).append("\n");
@@ -261,103 +280,113 @@ public class Event {
    
 	     
     	
-	public Event updateEvent(String id, String filename)throws Exception {
-		
-		
-		Event toupdatedEvent = findeventID(id, filename);
-	   delete_event_from_file_and_arraylist(toupdatedEvent, filename, id);
-		
-		if (toupdatedEvent != null) 
-		{
-           Scanner scanner = new Scanner(System.in);
-           
-            
-           toupdatedEvent.printing.printSomething('\n'+
-                    "UserID :" + toupdatedEvent.UserID + '\n' +
-                    "event id :" + toupdatedEvent.EVENTID+'\n' +
-                    "1. name :" + toupdatedEvent.name + '\n' +
-                    "2. date :" + toupdatedEvent.date +'\n' +
-                    "3. time :" + toupdatedEvent.time + '\n' +
-                    "4. description :" + toupdatedEvent.description + '\n' +
-                    "5. attendeeCount :" + toupdatedEvent.attendeeCount +'\n' +
-                    "6. theme :" + toupdatedEvent.theme + '\n' +
-                    "7. category :" + toupdatedEvent.category + '\n'+
-                    "8. venue name :" + toupdatedEvent.Venuenamee + '\n'
-                    
-                    );
+     public Event updateEvent(String id, String filename) throws Exception {
+    	    Event toupdatedEvent = findeventID(id, filename);
 
-            System.out.print("Enter the number of the field you want to update: ");
-            String choice = scanner.next();
-            
-            switch (choice) {
-                case "1":
-                	printing.printSomething("Enter new event name:");                  
-                   toupdatedEvent.setName(scanner.next());
- 	               
-                    break;
-                case "2":
-                	 printing.printSomething("Enter new event date (yyyy-MM-dd):");
-  	               String dateInput = scanner.next();
-  	             Date date;
-  	             try {
-  	                 date = DATE_FORMAT.parse(dateInput);
-  	             } catch (ParseException e) {
+    	    if (toupdatedEvent != null) {
+    	        Scanner scanner = new Scanner(System.in);
 
-  	                 e.printStackTrace();
-  	                 return null;
-  	             }
-  	               toupdatedEvent.setDate(date);
-  	             toupdatedEvent.updateVenueInVenueBook(id, date, "venuebook.txt");
-           	   
-                    break;
-                case "3":
-                	 printing.printSomething("Enter new event time:");
-  	                toupdatedEvent.setTime(scanner.next());
-                    break;
-                case "4":
-                	printing.printSomething("Enter new event description:");
- 	                toupdatedEvent.setDescription(scanner.next());
-                    break;
-                case "5":
-                	 printing.printSomething("Enter  new event attendee count:");
-  	                toupdatedEvent.setAttendeeCount(scanner.next());
-  	               break;
-                case "6":
-                	 printing.printSomething("Enter new event theme :");
-  		             toupdatedEvent.setTheme(scanner.next());   
-  		            break;
-                case "7":
-                	 printing.printSomething("Enter new event category:");
-		              toupdatedEvent.setCategory(scanner.next());
-	                break;
-                case "8":
-                    printing.printSomething("Enter new event venue name:");
-                    String newVenueName = scanner.next();
-                    toupdatedEvent.setVenuename(newVenueName);
-                   
-                   // toupdatedEvent.updateVenueInVenueBook(id, newVenueName, "venuebook.txt");
-                    break;
-                default:
-                    System.out.println("Invalid choice.");
-            }
-		
-		
-		
-           addEventToFile(toupdatedEvent, filename);
-           //f.updateEventListFromFile( filename);
-            
-           
-        } 
-          
-            
-            
-            
-            
-            
-            
-  return toupdatedEvent ;          
-		
- }
+    	        toupdatedEvent.printing.printSomething('\n' +
+    	                "UserID: " + toupdatedEvent.UserID + '\n' +
+    	                "Event ID: " + toupdatedEvent.EVENTID + '\n' +
+    	                "1. Name: " + toupdatedEvent.name + '\n' +
+    	                "2. Date: " + DATE_FORMAT.format(toupdatedEvent.date) + '\n' +
+    	                "3. Time: " + toupdatedEvent.time + '\n' +
+    	                "4. Description: " + toupdatedEvent.description + '\n' +
+    	                "5. Attendee Count: " + toupdatedEvent.attendeeCount + '\n' +
+    	                "6. Theme: " + toupdatedEvent.theme + '\n' +
+    	                "7. Category: " + toupdatedEvent.category + '\n' +
+    	                "8. Venue Name: " + toupdatedEvent.Venuenamee + '\n' +
+    	                "9. Service IDs: " + toupdatedEvent.getServiceIds() + '\n'
+    	        );
+
+    	        System.out.print("Enter the number of the field you want to update: ");
+    	        String choice = scanner.next();
+
+    	        switch (choice) {
+    	            case "1":
+    	                printing.printSomething("Enter new event name:");
+    	                toupdatedEvent.setName(scanner.next());
+    	                break;
+    	            case "2":
+    	                printing.printSomething("Enter new event date (yyyy-MM-dd):");
+    	                String dateInput = scanner.next();
+    	                Date date;
+    	                try {
+    	                    date = DATE_FORMAT.parse(dateInput);
+    	                } catch (ParseException e) {
+    	                    e.printStackTrace();
+    	                    return null;
+    	                }
+    	                toupdatedEvent.setDate(date);
+    	                toupdatedEvent.updateVenueInVenueBook(id, date, "venuebook.txt");
+    	                break;
+    	            case "3":
+    	                printing.printSomething("Enter new event time:");
+    	                toupdatedEvent.setTime(scanner.next());
+    	                break;
+    	            case "4":
+    	                printing.printSomething("Enter new event description:");
+    	                toupdatedEvent.setDescription(scanner.next());
+    	                break;
+    	            case "5":
+    	                printing.printSomething("Enter new event attendee count:");
+    	                toupdatedEvent.setAttendeeCount(scanner.next());
+    	                break;
+    	            case "6":
+    	                printing.printSomething("Enter new event theme :");
+    	                toupdatedEvent.setTheme(scanner.next());
+    	                break;
+    	            case "7":
+    	                printing.printSomething("Enter new event category:");
+    	                toupdatedEvent.setCategory(scanner.next());
+    	                break;
+    	            case "8":
+    	                printing.printSomething("Enter new event venue name:");
+    	                String newVenueName = scanner.next();
+    	                toupdatedEvent.setVenuename(newVenueName);
+    	                // toupdatedEvent.updateVenueInVenueBook(id, newVenueName, "venuebook.txt");
+    	                break;
+    	            case "9":
+    	                printing.printSomething("Enter new service IDs (comma-separated):");
+    	                String serviceIdsInput = scanner.next();
+    	                List<String> serviceIds = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
+    	                toupdatedEvent.setServiceIds(serviceIds);
+    	                break;
+    	            default:
+    	                System.out.println("Invalid choice.");
+    	        }
+
+    	        // Read all events from the file
+    	        List<Event> events = new ArrayList<>();
+    	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    	            String line;
+    	            while ((line = reader.readLine()) != null) {
+    	                Event event = Event.getEventFromLine(line);
+    	                if (event != null) {
+    	                    if (event.getEID().equals(toupdatedEvent.getEID())) {
+    	                        // Replace the old event with the updated one
+    	                        events.add(toupdatedEvent);
+    	                    } else {
+    	                        events.add(event);
+    	                    }
+    	                }
+    	            }
+    	        }
+
+    	        // Write all events back to the file
+    	        try (FileWriter writer = new FileWriter(filename, false)) {
+    	            for (Event event : events) {
+    	                writer.write(event.toString() + "\n");
+    	            }
+    	        } catch (IOException e) {
+    	            printing.printSomething("An error occurred: " + e.getMessage());
+    	        }
+    	    }
+
+    	    return toupdatedEvent;
+    	}
+
 		
 	 public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
 	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
@@ -527,7 +556,7 @@ public class Event {
     public String getVenuename(){return Venuenamee;}
 
     
-
+/*
     public String toString3() {
         return  
                 "UserID='" + UserID + '\'' +
@@ -539,56 +568,55 @@ public class Event {
                 ",5. attendeeCount=" + attendeeCount +'\'' +
                 ",6. theme='" + theme + '\'' +
                 ",7. category='" + category + '\'' +
-                  ",8. Venue ='" + Venuenamee + '\''
+                ",8. Venue ='" + Venuenamee + '\''
                   
                
                 ;
     }
-
+*/
   
-    
     public String toString2() {
         StringBuilder sb = new StringBuilder();
         sb.append("\033[0;36m"); // Set text color to cyan
         sb.append("Event Details:\n");
         sb.append("\033[0;33m"); // Set text color to yellow for attribute names
         sb.append("- UserID: ").append(UserID).append("\n");
-        sb.append("- Event ID: ").append(EVENTID).append("\n");
         sb.append("- Name: ").append(name).append("\n");
-        sb.append("- Date: ").append(date).append("\n");
+        sb.append("- Date: ").append(DATE_FORMAT.format(date)).append("\n");
         sb.append("- Time: ").append(time).append("\n");
         sb.append("- Description: ").append(description).append("\n");
         sb.append("- Attendee Count: ").append(attendeeCount).append("\n");
         sb.append("- Theme: ").append(theme).append("\n");
-        sb.append("-Venue name").append(Venuenamee).append("\n");
+        sb.append("- Venue name: ").append(Venuenamee).append("\n");
         sb.append("- Category: ").append(category).append("\n");
+        sb.append("- Event ID: ").append(EVENTID).append("\n");
+        sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n "); // Moved service IDs to the end
+
         sb.append("\033[0m"); // Reset text color
         return sb.toString();
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
 
+        sb.append("Name: ").append(name).append(", ")
+          .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
+          .append("Time: ").append(time).append(", ")
+          .append("Description: ").append(description).append(", ")
+          .append("Attendee Count: ").append(attendeeCount).append(", ")
+          .append("User ID: ").append(UserID).append(", ")
+          .append("Theme: ").append(theme).append(", ")
+          .append("Category: ").append(category).append(", ")
+          .append("Venue Name: ").append(Venuenamee).append(", ")
+          .append("Event ID: ").append(EVENTID).append(", "); // Moved event ID to the end
 
+        if (!serviceIds.isEmpty()) {
+            String serviceIdsString = String.join(", ", serviceIds) ;
+            sb.append("Service IDs: ").append(serviceIdsString);
+        }
 
-
-
-
-
-
-    public String toString() 
-    {
-    	 return	   name +
-                 ", " + date +
-                 "," + time + 
-                 ", " + description +
-                 ", " + attendeeCount +
-                  ", "+UserID+
-                 ", "+ theme  +
-                 ", " + category  +
-                  ", " +Venuenamee+
-                 ", " + EVENTID ;
- 	
+        return sb.toString();
     }
-    
-    
+
    
 }

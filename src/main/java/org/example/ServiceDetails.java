@@ -3,6 +3,9 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ServiceDetails {
     private String serviceID;
@@ -101,16 +104,50 @@ public class ServiceDetails {
 	    return service;
 	}
 
- 
-   
-   
+ public static double calculateTotalPrice(List<String> serviceIds) {
+       // Map to store service IDs and their corresponding prices
+       Map<String, Double> servicePrices = getServicePricesFromFile("service.txt");
+       double totalPrice = 0.0;
+
+       // Iterate through the chosen service IDs and sum up their prices
+       for (String serviceId : serviceIds) {
+           if (servicePrices.containsKey(serviceId)) {
+               totalPrice += servicePrices.get(serviceId);
+           } else {
+               System.out.println("Price for service ID " + serviceId + " not found.");
+           }
+       }
+
+       return totalPrice;
+   }
+
+   // Helper method to read service prices from file and store them in a map
+   private static Map<String, Double> getServicePricesFromFile(String filename) {
+       Map<String, Double> servicePrices = new HashMap<>();
+
+       try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+           String line;
+           while ((line = reader.readLine()) != null) {
+               String[] parts = line.split(",");
+               if (parts.length >= 2) {
+                   String serviceId = parts[0].trim();
+                   double price = Double.parseDouble(parts[5].trim()); // Assuming price is at index 5
+                   servicePrices.put(serviceId, price);
+               }
+           }
+       } catch (IOException | NumberFormatException e) {
+           e.printStackTrace(); // Handle or log the exception as needed
+       }
+
+       return servicePrices;
+   }
+
    
 
    public String toString() {
        return 
     		   
     		   serviceID + ", " +
-              
                serviceType + ", " +
                serviceName + ", " +
                description + ", " +
@@ -121,42 +158,3 @@ public class ServiceDetails {
    
    
 }
-
-/*package org.example;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import org.example.*;
-public class Provider extends User {
-  
- 
-    private String email;
-  
-    public Provider(String id, String password, String name, String phone,String email) 
-    {
-        super( name, password,  "Provider");    
-        this.phone=phone;
-        this.id=id;
-        this .email=email;      
-    }
-    
-    public Provider() {}
-    public String getEmail() { return email;  }
-    public void setEmail(String email) { this.email = email;}
-    
-    
-    
-    public static Provider getProviderFromLine(String line) {
-        String[] items = line.split(" , ");
-        String id = items[0];
-        String name = items[1];
-        String phone = items[2];
-        String address = items[3];
-        String email = items[4];
-        String password=items[5];
-
-        return new Provider(id, password, name, phone, email);
-    }
- 
-    
-}*/
