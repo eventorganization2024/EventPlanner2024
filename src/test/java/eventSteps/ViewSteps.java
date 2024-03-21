@@ -79,7 +79,7 @@ Functions F=new Functions();
    }
 	@Then("the list of venues  displayed")
 	public void theListOfVenuesDisplayed() {
-		 assertTrue(show_VenueforAdmin); F.viewallVenuesforAdmin();    /////////////////////////////////////////////////////          
+		 assertTrue(show_VenueforAdmin); F.viewAllVenues("venue.txt");    /////////////////////////////////////////////////////          
 	}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ Functions F=new Functions();
 		}
 	@Then("the list of available venues  displayed")
 	public void theListOfAvailableVenuesDisplayed() {
-		 assertTrue(show_Venueforcustomer); F.viewallVenuesforCoustmer();         //////////////////////////////
+		 assertTrue(show_Venueforcustomer); F.viewAllVenuesCustomer("venue.txt");         //////////////////////////////
 			}
 
 	

@@ -17,7 +17,7 @@ public class NotifyCustomerSteps {
 	@Given("there is an existing event request for a customer")
 	public void thereIsAnExistingEventRequestForACustomer() {
 		
-        Functions.addEmptyLine("requst.txt");
+       // Functions.addEmptyLine("requst.txt");
 	}
 	@When("the event request is accepted by the administrator")
 	public void theEventRequestIsAcceptedByTheAdministrator() {

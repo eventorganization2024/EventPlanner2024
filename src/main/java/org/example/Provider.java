@@ -416,7 +416,7 @@ public class Provider extends User  {
  	   
  	   
  		}
- 		f.addServiceToFile(toupdatedService);
+ 		ServiceDetails.addServiceToFile(toupdatedService);
  	  // editServiceDetails( toupdatedService);
  			
  			
@@ -428,7 +428,24 @@ public class Provider extends User  {
 
 ////    
 	
-    
+    public static void addProviderToFile(Provider provider) {
+  	    try {
+  	        FileWriter ProvidersFile = new FileWriter("provider.txt", true);
+  	        ProvidersFile.append(provider.getId()).append(" , ")
+  	                .append(provider.getUsername()).append(" , ")
+  	                .append(provider.getphone()).append(" , ")
+  	                .append(provider.getaddress()).append(" , ")
+  	                .append(provider.getEmail()).append(" , ")
+  	                .append(provider.getPassword())
+  	                .append("\n");
+
+  	                
+
+  	        ProvidersFile.close();
+  	    } catch (IOException e) {
+  	        printing.printSomething("An error occurred: " + e.getMessage());
+  	    }
+  	}
 	
 	
 	

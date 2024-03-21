@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -155,6 +156,22 @@ public class ServiceDetails {
                availability+"\n";
    }
 
-   
+	public static void addServiceToFile(ServiceDetails service) {
+  	    try {
+  	        FileWriter serviceFile = new FileWriter("service.txt", true);
+  	        serviceFile.append(service.getServiceID()).append(" , ")
+  	                   .append(service.getProviderID()).append(" , ")
+  	                   .append(service.getServiceType()).append(" , ")
+  	                   .append(service.getServiceName()).append(" , ")
+  	                   .append(service.getDescription()).append(" , ")
+  	                   .append(String.valueOf(service.getPrice())).append(" , ")
+  	                   .append(service.getAvailability())
+  	                   .append("\n");
+
+  	        serviceFile.close();
+  	    } catch (IOException e) {
+  	        printing.printSomething("An error occurred: " + e.getMessage());
+  	    }
+  	}
    
 }

@@ -66,7 +66,9 @@ public class event_Management_Steps {
 	        event.setVenuename(string8);
 	        event.setEID(string9);
 	        event.setUID(customer1.getId());
-	   	 Functions.addEmptyLine("event.txt");}
+	   	// Functions.addEmptyLine("event.txt");s
+	        event.addEventToFile(event, "event.txt");
+	}
 	
 	
 	@Then("the event is added to admin requst")
