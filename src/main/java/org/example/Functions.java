@@ -10,8 +10,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
@@ -31,6 +34,7 @@ public class Functions {
 	    boolean found;
 	    String tmp;
 	    String d;
+	    double pricee;
 	    Admin admin = new Admin();
 	    static Customer customer1 = new Customer();
 	    static Event event1=new Event();
@@ -126,11 +130,27 @@ public class Functions {
 		               } else {
 		            	   printing.printSomething("\nDo you want to choose another venue? (yes/no)\n");
                          }
-		           } while (!venueAvailable && scanner.next().equalsIgnoreCase("yes"));
+		           } while (!venueAvailable );
  
-	             //  printing.printSomething("\n done successfully\n");	               
-	              // events.add(event_obj);	               	               
-	               addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
+		           pricee=getPriceByVenue(venueName);
+		             printing.printSomething("\n Do you have discount code ? [Y or N] : ");	               
+                    String yorn = scanner.next();
+                   String codee;
+		           if (yorn.equalsIgnoreCase("y"))
+	               {
+	                 printing.printSomething("\n Enter the code  : ");	
+	                 codee = scanner.next();
+	                 pricee =applyDiscount(pricee,codee);
+	    
+	                }
+		             printing.printSomething("\n The price is : "+pricee);	               
+		             addToInvoice (id,id1,event_obj.getName(),pricee);
+	                printing.printSomething("\n done successfully\n");	 
+		           
+		           
+		           
+		           
+	             addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
 	               
 ///////////////////////	               
 	               List<String> service_IDs_List = new ArrayList<>();
@@ -456,15 +476,19 @@ public class Functions {
 	        printing.printSomething("\n--------- Welcome to Admin Page --------\n"+SPACE+
 	                "\n|   1. Customer Management             |"+"\n|   2. Discount Management             |"+
 	                "\n|   3. Event Management                |"+"\n|   4. Venue Management                |"+
-	                "\n|   5. Provider Management             |"+"\n|   6. Calendar and Scheduling         |"+
-	                "\n|   7. View Statistics                 |"+"\n|   8. View Report                     |"+
-	                "\n|   9. Log Out                         |\n"+"\n"
+	                "\n|   5. Provider Management             |"+"\n|   6. Package Management              |"+
+	                "\n|   7. Calendar and Scheduling         |"+"\n|   8. View Statistics                 |"+
+	                "\n|   9. View Report                     |"+"\n|  10. Notify Customer By Email        |"+ 
+	                "\n|  11. Log Out                                                                      |"+
+	                "\n \n"
 	        );}
 	  public void customerPageList(){
 	        printing.printSomething("\n------- Welcome to Customer Page -------\n"+SPACE+"\n|        1. Update My Profile          |"+
 	                "\n|        2. Make An Event              |"+"\n|        3. Update Event               |"+
 	                "\n|        4. Cancel Event               |"+"\n|        5. Search                     |"+
-	                "\n|        6. Delete My Profile          |"+"\n|        7. Show Admin MSG             |"+"\n|        8. Log out                    |\n"+SPACE+"\n"+LINE+"\n"
+	                "\n|        6. Delete My Profile          |"+"\n|        7. Show Admin MSG             |"+
+	                "\n|        8. Packages                   |"+
+	                "\n|        9. Log out                    |\n"+SPACE+"\n"+LINE+"\n"
 	                +ENTER_CHOICE );
 	    }
 	        
@@ -541,6 +565,41 @@ public class Functions {
 	  
 	        "\033[1;36m" +"\n" + "\n\033[0m"
 	    );}
+     
+     
+     
+     
+     public void PackageManagementadminList() {
+  	    printing.printSomething(
+  	        "\n\033[1;33m" +
+  	        "---- Welcome to Package Management Page ----\n" +
+  	        "\033[1;33m" +
+  	        "|   1. VIEW ALL                         |\n" +
+  	        "|   2. ADD                              |\n" +
+  	        "|   3. DELETE                           |\n" +
+  	        "|   4. EDIT                             |\n" +
+  	        "|   5. Log Out                          |\n" +
+  	        "\033[1;36m" +"\n" + "\n\033[0m"
+  	    );}
+     
+     
+     
+     public void DiscountManagementadminList() {
+  	    printing.printSomething(
+  	        "\n\033[1;33m" +
+  	        "---- Welcome to Discount Management Page ----\n" +
+  	        "\033[1;33m" +
+  	        "|   1. VIEW ALL                         |\n" +
+  	        "|   2. ADD                              |\n" +
+  	        "|   3. DELETE                           |\n" +
+  	        "|   4. EDIT                             |\n" +
+  	        "|   5. Log Out                          |\n" +
+  	        "\033[1;36m" +"\n" + "\n\033[0m"
+  	    );}
+     
+     
+     
+    
 ////////////////////////////////////////////////////////////////////////////////////
 
 	public boolean viewalleventsforAdmin(String filename) {
@@ -845,19 +904,7 @@ public void customerOptions(int x) throws Exception {
                viewCostomerevents(id); }        
                 break;
                 
-                
-                
-           /*  case 5:
-                updateCustomersList();
-                for (Customer customer1 : customers) {
-                    if (customer1.getId().equals(id)) {
-                        printing.printSomething(LINE+"\n|                INVOICE               |\n"+LINE);
-                        Invoice invoice = new Invoice(customer1);
-                        invoice.invoiceRes(customer1);
-                        printing.printSomething(LINE);
-                    }
-                }
-                break;*/
+
                case 5:
             	   printing.printSomething("\n");   
             	   UserSearchPageList();
@@ -884,10 +931,14 @@ public void customerOptions(int x) throws Exception {
           case 7:
         	  printing.printSomething("\n");   
         	  showAdminMessage(id);
-              
-              
-              break;
+               break;
+               
             case 8:
+            	viewAllPackagesFromFile("package.txt");
+            	selectpackagee();
+            	break;
+            	
+            case 9:	
                 signInFunction();
                 break;
             default: printing.printSomething(INVALID_CHOICE);
@@ -923,7 +974,9 @@ void adminPage() throws IOException, Exception
 	            }
 	            break;
 	        case 2:
-	           //discount
+	        	DiscountManagementadminList();
+	        	int l = scanner.nextInt();
+	        	DiscountManagementOptions(l);
 	            break;
 	        case 3:
 	        	EventManagementAdminPageList();
@@ -942,18 +995,25 @@ void adminPage() throws IOException, Exception
 	        	ProviderAdminManagementOptions(PR);
 	            break;
 	        case 6:
-	        	   // calendar
+	        	PackageManagementadminList();
+	        	int Cr=scanner.nextInt();
+	        	PackageManagementOptions(Cr);
+	            
 	            break;
 	        case 7:
+		           // calendar
+		            break;
+	        case 8:
 	            //  View Statistics
 	            break;
-	        case 8:
-	        	viewBusinessReports();
-	            break;
+	        
 	        case 9:
 	        	signInFunction();
 	            break;
 	        
+	        case 10:
+	        	signInFunction();
+	            break;
 	        default:
 	        	printing.printSomething(INVALID_CHOICE);
 	     	    
@@ -1946,7 +2006,640 @@ public void deleteVenueBooking(String eventId, String filename) {
 			
 	} 
     
-    
+///////////////////////////////////////
+    public static double getPriceByVenue(String venueName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("venue.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length >= 6 && data[1].trim().equals(venueName)) {
+                    return Double.parseDouble(data[5]);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing price: " + e.getMessage());
+        }
+        return 0; // Venue name not found or error occurred
+    }
+////////////////////////////////////
+    public static double applyDiscount(double price, String code) {
+	    try (BufferedReader br = new BufferedReader(new FileReader("discounts.txt"))) {
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            String[] parts = line.split(",");
+	            if (parts.length >= 4) { // Ensure parts array has enough elements
+	                String code_ = parts[1];
+	                if (code_.equals(code)) {
+	                    double percentage = Double.parseDouble(parts[2]);
+	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	                    if (validityDate.isAfter(LocalDate.now())) {
+	                        double discountedPrice = price * (1 - percentage / 100);
+	                        return discountedPrice;
+	                    } else {
+	                    	System.out.println("\nThe code is expired");
+	                    	return price ; // Example: Return -1 for expired discount
+	                    }
+	                }
+	            } else {
+	                System.out.println("Invalid format in discounts file: " + line);
+	            }
+	        }
+	        return price; 
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return price;
+	    }
+	}
+///////////////////////////////////////
+    public static void addToInvoice(String customerId, String eventId, String eventName, double price) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("invoice.txt", true))) {
+            writer.write(customerId + "," + eventId + "," + eventName + "," + price);
+            writer.newLine();
+           
+        } catch (IOException e) {
+           
+            e.printStackTrace();
+        }
+    }
+    ///////////////////////////////////////////////
+    public static void editDiscountfrom(Scanner scanner, String filename) {
+	    List<Discount> discounts = readDiscountsFromFile(filename);
+	    if (discounts.isEmpty()) {
+	        System.out.println("No discounts available to edit.");
+	        return;
+	    }
+	    viewAllDiscounts("discounts.txt");
+	    System.out.print("Enter the ID of the discount to edit: ");
+	    int discountId = scanner.nextInt();
+	    scanner.nextLine(); // Consume newline
+
+	    Discount oldDiscount = null;
+	    for (Discount discount : discounts) {
+	        if (discount.getDiscountId() == discountId) {
+	            oldDiscount = discount;
+	            break;
+	        }
+	    }
+
+	    if (oldDiscount == null) {
+	        System.out.println("Discount not found.");
+	        return;
+	    }
+
+	    System.out.println("Enter new discount details:");
+	    System.out.print("Discount ID: ");
+	    int newDiscountId = scanner.nextInt();
+	    scanner.nextLine(); // Consume newline
+	    System.out.print("Discount code: ");
+	    String newDiscountCode = scanner.nextLine();
+	    System.out.print("Discount percentage: ");
+	    double newDiscountPercentage = scanner.nextDouble();
+	    scanner.nextLine(); // Consume newline
+	    System.out.print("Validity period (YYYY-MM-DD): ");
+	    String newValidityPeriod = scanner.nextLine();
+
+	    // Validate inputs before creating the new discount
+	    if (isValidDiscountPercentage(newDiscountPercentage) && isValidDate(newValidityPeriod)) {
+	        Discount newDiscount = new Discount(newDiscountPercentage, newDiscountId, newValidityPeriod, newDiscountCode);
+
+	        discounts.remove(oldDiscount); // Remove old discount
+	        discounts.add(newDiscount);    // Add new discount
+
+	        writeDiscountsToFile(filename, discounts); // Write updated discounts to file
+
+	        System.out.println("Discount successfully edited.");
+	    } else {
+	        System.out.println("Invalid input for discount percentage or validity period.");
+	    }
+	}
+
+	public static boolean isValidDiscountPercentage(double discountPercentage) {
+	    return discountPercentage >= 0 && discountPercentage <= 100;
+	}
+
+
+
+	public static void writeDiscountsToFile(String filename, List<Discount> discounts) {
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+	        for (Discount discount : discounts) {
+	            writer.write(discount.toString());
+	            writer.newLine();
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+  public static void addDiscountToFile(String filename, String discountDetails) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+          writer.write(discountDetails);
+          writer.newLine();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
+
+
+
+
+  public static void deleteDiscountFromFile(String filename, List<Discount> updatedDiscounts) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+          for (Discount discount : updatedDiscounts) {
+              writer.write(discount.toString());
+              writer.newLine();
+          }
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
+
+
+
+
+  public static void removeDiscount(Scanner scanner, String filename) {
+      System.out.println("Removing a discount...");
+      System.out.print("Enter the ID of the discount to remove: ");
+      int discountIdToRemove = scanner.nextInt();
+      scanner.nextLine(); 
+
+      List<Discount> discounts = readDiscountsFromFile(filename);
+      boolean found = false;
+
+
+      List<Discount> updatedDiscounts = new ArrayList<>();
+
+      // Iterate over the discounts to find and remove the specified discount
+      for (Discount discount : discounts) {
+          if (discount.getDiscountId() == discountIdToRemove) {
+              found = true;
+              System.out.println("Discount found:");
+              System.out.println(discount);
+          } else {
+              // Add discounts other than the one to be removed to the updated list
+              updatedDiscounts.add(discount);
+          }
+      }
+
+      // If the discount to remove was found, update the file with the updated list of discounts
+      if (found) {
+      	deleteDiscountFromFile(filename, updatedDiscounts);
+          System.out.println("Discount successfully removed.");
+      } else {
+          System.out.println("Discount not found.");
+      }
+  }
+
+
+  public static void addDiscount(Scanner scanner, String filename) {
+      System.out.println("Adding a discount...");
+      System.out.print("Enter discount ID: ");
+      int discountId = scanner.nextInt();
+      scanner.nextLine(); // Consume newline
+      System.out.print("Enter discount code: ");
+      String discountCode = scanner.nextLine();
+      System.out.print("Enter discount percentage: ");
+      double discountPercentage = scanner.nextDouble();
+      scanner.nextLine(); // Consume newline
+      System.out.print("Enter validity period (YYYY-MM-DD): ");
+      String validityPeriod = scanner.nextLine();
+
+
+      Discount newDiscount = new Discount( discountPercentage,discountId, validityPeriod, discountCode);
+      String discountDetails = newDiscount.toString();
+
+      addDiscountToFile(filename, discountDetails);
+      System.out.println("Discount successfully added.");
+  }
+  
+  
+  
+  
+  public static List<Discount> readDiscountsFromFile(String filename) {
+	    List<Discount> discounts = new ArrayList<>();
+	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            String[] parts = line.split(",");
+	            if (parts.length >= 4) {
+	                int discountId = Integer.parseInt(parts[0].trim());
+	                String discountCode = parts[1].trim();
+	                double discountPercentage = Double.parseDouble(parts[2].trim());
+	                String validityPeriod = parts[3].trim();
+
+	                Discount discount = new Discount(discountPercentage, discountId, validityPeriod, discountCode);
+	                discounts.add(discount);
+	            } else {
+	                System.out.println("Invalid format in discounts file: " + line);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return discounts;
+	}
+
+
+  public static boolean isValidDate(String date) {
+      try {
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+          sdf.setLenient(false);
+          sdf.parse(date);
+          return true;
+      } catch (ParseException e) {
+          return false;
+      }
+
+  }
+
+
+  //////////////////////////////////////////////////
+
+private void DiscountManagementOptions(int C) {
+	  Scanner scanner = new Scanner(System.in);
+	switch (C)
+	{
+	case 2:
+		addDiscount(scanner, "discounts.txt");
+		
+        break;
+	 case 4:
+		 editDiscountfrom(scanner, "discounts.txt");
+       
+       break;
+   case 3:
+	   removeDiscount( scanner,"discounts.txt");
+       break;
+   case 1:
+	   viewAllDiscounts("discounts.txt");
+       break;
+   case 5:
+       System.out.println("Exiting...");
+       break;
+   default:
+       printing.printSomething(INVALID_CHOICE);
+	     break;
+		
+	}
+}
+
+public static void viewAllDiscounts(String filename) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] data = line.split(",");
+            if (data.length == 4) {
+                String discountId = data[0];
+                String discountCode = data[1];
+                String discountPercentage = data[2];
+                String validityPeriod = data[3];
+                System.out.println("ID: " + discountId +
+                        "\t Code: " + discountCode +
+                        "\t Percentage: " + discountPercentage +
+                        "\t Period: " + validityPeriod);
+ }else {
+                System.err.println("Invalid discount entry: " + line);
+            }
+        }
+    } catch (IOException e) {
+        System.err.println("Error reading file: " + e.getMessage());
+    }
+}
+///////////////////////
+private void PackageManagementOptions(int r)
+{
+	
+	Scanner scanner = new Scanner(System.in);
+	switch (r)
+	{
+	case 1:
+		viewAllPackagesFromFile( "package.txt");
+	    
+		
+          break;
+	 case 2:
+         addPackage(scanner, "package.txt");
+         
+         break;
+     case 3:
+    	 deletePackageById( scanner,"package.txt");
+         break;
+     case 4:
+         updatePackage(scanner,"package.txt");
+         break;
+     case 5:
+         System.out.println("Exiting...");
+         break;
+     default:
+         printing.printSomething(INVALID_CHOICE);
+  	     break;
+		
+	}
+}
+/////////////////////////////
+Paackage p = new Paackage();
+
+public static void viewAllPackagesFromFile(String filename) {
+    List<Paackage> paackages = readPackagesFromFile(filename);
+
+    if (paackages.isEmpty()) {
+        System.out.println("No packages found in the file.");
+        return;
+    }
+
+    System.out.println("All Packages:");
+    for (Paackage p : paackages) {
+        System.out.println("ID: " + p.getId() +
+                "  Name: " + p.getTitle() +
+                "  Description: " + p.getDescription() +
+                "  Price: " + p.getPrice() +
+                "  Validity Date: " + p.getValidityPeriod());
+    }
+}
+
+
+public static void savePackagesToFile(String filename, List<Paackage> packages) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        for (Paackage p : packages) {
+            writer.write(p.toFileString());
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+
+public static List<Paackage> readPackagesFromFile(String filename) {
+    List<Paackage> packages = new ArrayList<>();
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            int id = Integer.parseInt(parts[0]);
+            String title = parts[1];
+            String description = parts[2];
+            double price = Double.parseDouble(parts[3]);
+            String validityDate = parts[4];
+            Paackage p = new Paackage();
+            p.setTitle(title); // Set the title
+            p.setDescription(description);
+            p.setId(id);
+            p.setPrice(price);
+            p.setValidityPeriod(validityDate);
+            packages.add(p);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return packages;
+}
+
+
+
+public static void deletePackageById(Scanner scanner, String filename) {
+
+    List<Paackage> packages = readPackagesFromFile(filename);
+
+    if (packages.isEmpty()) {
+        System.out.println("No packages found.");
+        return;
+    }
+
+    System.out.println("All Packages:");
+    for (Paackage p : packages) {
+        System.out.println("Package ID: " + p.getId() + " Name: " + p.getTitle());
+    }
+
+    while (true) {
+        System.out.print("Enter the ID of the package to remove: ");
+        int packageIdToRemove = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        boolean found = false;
+
+        for (Paackage p : packages) {
+            if (p.getId() == packageIdToRemove) {
+                found = true;
+                packages.remove(p);
+                System.out.println("Package with ID " + packageIdToRemove + " successfully removed.");
+                break;
+            }
+        }
+
+        if (found) {
+            break; // Exit the loop if the package is found and removed
+        } else {
+            System.out.println("Package with ID " + packageIdToRemove + " not found.");
+            System.out.println("Please insert a new ID.");
+        }
+    }
+
+    savePackagesToFile(filename, packages);
+}
+
+
+
+
+
+public static void updatePackage(Scanner scanner, String filename) {
+    List<Paackage> packages = readPackagesFromFile(filename);
+
+    if (packages.isEmpty()) {
+        System.out.println("No packages found.");
+        return;
+    }
+
+    while (true) {
+        System.out.println("All Packages:");
+        viewAllPackagesFromFile("package.txt");
+        
+
+        System.out.print("\nEnter ID for package you want to update (or 'exit' to quit): ");
+        String userInput = scanner.nextLine();
+
+        if (userInput.equalsIgnoreCase("exit")) {
+            break;
+        }
+
+        int packageId = Integer.parseInt(userInput);
+
+        // Find the package with the specified ID
+        Paackage packageToUpdate = null;
+        for (Paackage p : packages) {
+            if (p.getId() == packageId) {
+                packageToUpdate = p;
+                break;
+            }
+        }
+
+        if (packageToUpdate == null) {
+            System.out.println("Package with ID " + packageId + " not found.");
+            continue; // Prompt for another ID
+        } else {
+            System.out.println("1. ID");
+            System.out.println("2. Title");
+            System.out.println("3. Price");
+            System.out.println("4. Validity Date");
+            System.out.println("5. Description");
+            System.out.println("6. Exit");
+
+            System.out.print("Select a number: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    int newId;
+                    do {
+                        System.out.print("Enter a new ID: ");
+                        newId = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline character
+
+                        if (isPackageIdExists(filename, newId)) {
+                            System.out.println("ID already exists in the file. Please enter a new ID.");
+                        } else {
+                            packageToUpdate.setId(newId);
+                            System.out.println("ID is updating successfully.");
+                            break;
+                        }
+                    } while (true);
+                    break;
+                case 2:
+                    System.out.print("Enter a new title: ");
+                    String newTitle = scanner.nextLine();
+                    packageToUpdate.setTitle(newTitle);
+                    System.out.println("The title is updating successfully.");
+                    break;
+                case 3:
+                    System.out.print("Enter a new price: ");
+                    double newPrice = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline character
+                    packageToUpdate.setPrice(newPrice);
+                    System.out.println("Price is updating successfully.");
+                    break;
+                case 4:
+                    System.out.print("Enter a new validity date: ");
+                    String newValidityDate = scanner.nextLine();
+                    packageToUpdate.setValidityPeriod(newValidityDate);
+                    System.out.println("Validity date is updating successfully.");
+                    break;
+                case 5:
+                    System.out.print("Enter a new description: ");
+                    String newDescription = scanner.nextLine();
+                    packageToUpdate.setDescription(newDescription);
+                    System.out.println("Description is updating successfully.");
+                    break;
+                case 6:
+                    System.out.println("Exit.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
+            // Save updated packages to file
+            savePackagesToFile(filename, packages);
+
+            System.out.print("Do you want to update another package? (yes/no): ");
+            userInput = scanner.nextLine();
+            if (!userInput.equalsIgnoreCase("yes")) {
+                break;
+            }
+        }}
+    }
+
+
+
+public static boolean isPackageIdExists(String filename, int id) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length > 0 && Integer.parseInt(parts[0]) == id) {
+                return true;
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+
+
+
+public static void addPackage(Scanner scanner, String filename) {
+    System.out.println("Adding a new package...");
+    int id;
+    while (true) {
+        System.out.print("Enter package ID: ");
+        id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        if (!isPackageIdExists(filename, id)) {
+            break;
+        }
+
+        System.out.println("Package ID already exists in the file. Please enter a new ID.");
+    }
+
+    System.out.print("Enter package name: ");
+    String name = scanner.nextLine();
+
+    System.out.print("Enter package description: ");
+    String description = scanner.nextLine();
+
+    System.out.print("Enter package price: ");
+    double price = scanner.nextDouble();
+    scanner.nextLine(); // Consume newline character
+
+    System.out.print("Enter package validity period (YYYY-MM-DD): ");
+    String validityPeriod = scanner.nextLine();
+
+    String packageDetails = String.format("%d,%s,%s,%.2f,%s", id, name, description, price, validityPeriod);
+    addPackageToFile(filename, packageDetails);
+    System.out.println("Package successfully added.");
+}
+
+
+
+
+public static void addPackageToFile(String filename, String packageDetails) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+        writer.write(packageDetails);
+        writer.newLine();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+public void selectpackagee() throws Exception {
+    Scanner scanner = new Scanner(System.in);
+
+    try {
+        System.out.print("Enter the ID for the package you want: ");
+        int packageId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        // Check if the package ID exists
+        if (!Paackage.isPackageIdExists("package.txt", packageId)) {
+            System.out.println("Package ID doesn't exist.");
+            return;
+        }
+
+        addevent("requst.txt");
+
+        System.out.println("Request successfully saved.");
+    } catch (InputMismatchException e) {
+        System.out.println("Invalid input. Please enter a valid integer.");
+    }
+}
+
 
 }
 	
