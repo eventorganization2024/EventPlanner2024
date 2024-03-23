@@ -1,1 +1,5 @@
 11,1,ahamd_party,1500.0
+11,3,yamamh_party,1500.0
+11,00,tt,1200.0
+22,2,ali_party,2000.0
+22,4,ahmad_party,1600.0

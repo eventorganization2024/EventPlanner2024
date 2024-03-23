@@ -71,15 +71,7 @@ public class Event {
     	
     }
     
-    
-   /* public void setNumberOfServices(int num) {
-    	 if(serviceIds.isEmpty()) num = 0;
-        this.numberOfServices = num;
-    }
 
-   public int getNumberOfServices() {
-        return numberOfServices;
-    }*/
    
    public List<String> getServiceIds() {
        return serviceIds;
@@ -115,16 +107,16 @@ public class Event {
              String Venuename=items[8];
           
              String EID = items[9];
-           /*
+           
              String serviceIdsString = items[10]; 
              String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*");
              // Create a list to store serviceIds
              List<String> serviceIds = new ArrayList<>();
              for (String serviceId : serviceIdsArray) {
                  serviceIds.add(serviceId);
-             }*/
+             }
              
-             
+             /*
              List<String> serviceIds = new ArrayList<>();
              if (items.length > 10) {
                  String serviceIdsString = items[10];
@@ -135,6 +127,7 @@ public class Event {
              } else {
                  serviceIds.add("0");
              }
+             */
              event.setName(name);
              event.setDate(date);
              event.setTime(time);
@@ -169,7 +162,7 @@ public class Event {
             
             List<String> serviceIds = event.getServiceIds();
             
-            String formattedServiceIds = serviceIds.isEmpty() ? "No service" : "[" + String.join(", ", serviceIds) + "]";
+            String formattedServiceIds = serviceIds.isEmpty() ? "[No service]" : "[" + String.join(", ", serviceIds) + "]";
             eventFile.write(formattedServiceIds + "\n");
         } catch (IOException e) {
             printing.printSomething("An error occurred: " + e.getMessage());
@@ -348,7 +341,9 @@ public class Event {
     	                // toupdatedEvent.updateVenueInVenueBook(id, newVenueName, "venuebook.txt");
     	                break;
     	            case "9":
-    	                printing.printSomething("Enter new service IDs (comma-separated):");
+    	            	f.updateServiceList();
+    	            	f.viewallservice("service.txt");
+    	                printing.printSomething("\nEnter new service IDs (comma-separated):\n");
     	                String serviceIdsInput = scanner.next();
     	                List<String> serviceIds = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
     	                toupdatedEvent.setServiceIds(serviceIds);
@@ -524,9 +519,7 @@ public class Event {
     public void setUID(String ID) {
         this.UserID = ID;
     }
-    
-    
-    
+           
     public String getEID() {
         return EVENTID;
     }
@@ -543,7 +536,6 @@ public class Event {
         this.theme = theme;
     }
 
-    // Getter and setter for category
     public String getCategory() {
         return category;
     }
@@ -556,25 +548,7 @@ public class Event {
     public String getVenuename(){return Venuenamee;}
 
     
-/*
-    public String toString3() {
-        return  
-                "UserID='" + UserID + '\'' +
-                ", event id=" + EVENTID+'\'' +
-                ",1. name='" + name + '\'' +
-                ",2. date=" + date +'\'' +
-                ",3. time='" + time + '\'' +
-                ",4. description='" + description + '\'' +
-                ",5. attendeeCount=" + attendeeCount +'\'' +
-                ",6. theme='" + theme + '\'' +
-                ",7. category='" + category + '\'' +
-                ",8. Venue ='" + Venuenamee + '\''
-                  
-               
-                ;
-    }
-*/
-  
+
     public String toString2() {
         StringBuilder sb = new StringBuilder();
         sb.append("\033[0;36m"); // Set text color to cyan
@@ -590,17 +564,25 @@ public class Event {
         sb.append("- Venue name: ").append(Venuenamee).append("\n");
         sb.append("- Category: ").append(category).append("\n");
         sb.append("- Event ID: ").append(EVENTID).append("\n");
-       sb.append("- Service IDs: ").append(String.join(", ", serviceIds)); // Moved service IDs to the end
+       sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n"); // Moved service IDs to the end
 
         
-        /*
-        if (!serviceIds.isEmpty()) {
-            f.view_service_accordingIDs("service.txt",serviceIds);
-             // String serviceIdsString = String.join(", ", serviceIds) ;
-              //sb.append("Service IDs: ").append(serviceIdsString);
-          }
-
-        */
+       f. updateServiceList();
+       for (String serviceId : serviceIds) {
+	        serviceId = serviceId.replaceAll("\\[|\\]", "");
+	       
+	        for (ServiceDetails service : f.serviceDetails) {
+	        	if (serviceId.equalsIgnoreCase("[No service]")) {
+	        		sb.append("No service");
+	        	    break;
+	        	}
+	        	
+	            if (service.getServiceID().equals(serviceId)) {
+	            	sb.append("- Service Names: ").append(service.getServiceName()).append(".");
+	                break;
+	            }
+	        }
+	    }
         sb.append("\033[0m"); // Reset text color
         return sb.toString();
     }
@@ -610,23 +592,35 @@ public class Event {
     
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("\033[0;32m");
+          sb.append(EVENTID).append(", ") 
+          .append(name).append(", ")
+          .append(DATE_FORMAT.format(date)).append(", ")
+          .append(UserID).append(", ");
+          
+          
+          
+          
+         /* 
+          f. updateServiceList();
+           for (String serviceId : serviceIds) {
+  	        serviceId = serviceId.replaceAll("\\[\\[|\\]\\]", "");
+  	       
+  	        for (ServiceDetails service : f.serviceDetails) {
+  	        	if (serviceId.equalsIgnoreCase("[No service]")) {
+  	        		sb.append("No service");
+  	        	    break;
+  	        	}
+  	        	
+  	            if (service.getServiceID().equals(serviceId)) {
+  	            	sb.append(service.getServiceName()).append(".");
+  	                break;
+  	            }
+  	        }
+  	    }
 
-        sb.append("Name: ").append(name).append(", ")
-          .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
-          .append("Time: ").append(time).append(", ")
-          .append("Description: ").append(description).append(", ")
-          .append("Attendee Count: ").append(attendeeCount).append(", ")
-          .append("User ID: ").append(UserID).append(", ")
-          .append("Theme: ").append(theme).append(", ")
-          .append("Category: ").append(category).append(", ")
-          .append("Venue Name: ").append(Venuenamee).append(", ")
-          .append("Event ID: ").append(EVENTID).append(", "); // Moved event ID to the end
-
-        if (!serviceIds.isEmpty()) {
-          f.view_service_accordingIDs("service.txt",serviceIds);
-           // String serviceIdsString = String.join(", ", serviceIds) ;
-            //sb.append("Service IDs: ").append(serviceIdsString);
-        }
+          */
+          sb.append("\033[0m");
 
         return sb.toString();
     }

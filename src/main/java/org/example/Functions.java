@@ -227,24 +227,49 @@ public class Functions {
 	               addevent("requst.txt");
 	               break;
 	            case 3:
-	            	  boolean f=  viewCostomerevents(id);
-	                  if (f)
-	                  {   
-	             	    printing.printSomething("Please enter the Event ID you want to update: ");
-	                    String eventid=scanner.next();
-	                    event1.updateEvent(eventid, "event.txt");    
-	                    viewCostomerevents(id);         
-	                  }	                     
-	              break;
-	            case 4:
-	                printing.printSomething("\n");   
-	                if (viewCostomerevents(id)) {
-	                printing.printSomething("\n"+"Please enter the Event ID of the event you want to delete: ");
-	                String eventidd=scanner.next();
-	                event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventidd);/////////"event.txt"
-	                printing.printSomething("\n ");
-	                viewCostomerevents(id); }        
+	            	printing.printSomething("\n");
+	                boolean f = viewCostomerevents(id, "event.txt");
+	                if (f) {
+	                    boolean continueUpdating = true;
+	                    while (continueUpdating) {
+	                        printing.printSomething("Please enter the Event ID you want to update (or enter 'done' to finish): ");
+	                        String eventid = scanner.next();
+	                        
+	                        if ("done".equalsIgnoreCase(eventid)) {
+	                            continueUpdating = false; // Exit the loop if the user enters 'done'
+	                        } else {
+	                            event1.updateEvent(eventid, "event.txt");
+	                           // viewCostomerevents(id, "event.txt");
+	                            printing.printSomething("Event updated successfully.\n");
+	                        }
+	                    }
+	                }
 	                break;
+                   
+	             
+	            case 4:
+	                printing.printSomething("\n");
+	                boolean f2 = viewCostomerevents(id, "event.txt");
+	                if (f2) {
+	                    boolean continueDeleting = true;
+	                    while (continueDeleting) {
+	                        printing.printSomething("\n Please enter the Event ID of the event you want to delete (or enter 'done' to finish): ");
+	                        String eventidd = scanner.next();
+	                        
+	                        if ("done".equalsIgnoreCase(eventidd)) {
+	                            continueDeleting = false; // Exit the loop if the user enters 'done'
+	                        } else {
+	                            event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventidd);
+	                            printing.printSomething("\n");
+	                            continueDeleting = false;
+	                            printing.printSomething("Event deleted successfully.\n");
+	 	                       
+	                            // viewCostomerevents(id, "event.txt");
+	                        }
+	                    }
+	                }
+	                break;
+
 	           case 5:
 	            	   printing.printSomething("\n");   
 	            	   UserSearchPageList();
@@ -277,9 +302,50 @@ public class Functions {
 	            	 
 	            	break;
 	        case 9:
-	        	  viewCostomerevents(id);
-	        	   break;
-	       case 10:	
+	        	 printing.printSomething("\n");   
+	        	  
+	        	if(  viewCostomerevents(id,"event.txt")) { /// to String 
+		          	 boolean show=true;
+	          	 while (show) {
+	          		 
+	          		 printing.printSomething("\n \n Enter the Event ID you want to view details for (or enter 'done' to finish):\n ");
+	          	     String eventIDToView = scanner.next();
+	          	    if ("done".equalsIgnoreCase(eventIDToView)) {
+	          	       break;
+	          	    } else {
+	          	    	  updateEventList("event.txt");
+	          			   Event e=Event.findeventID(eventIDToView,"event.txt");
+	          	    	
+	          			  System.out.println(e.toString2());// to String2
+	          	    	 show =false;
+	          	    	break;
+	          	       }
+	              	 }
+	        	}
+	              break;
+	        	 	        	 	        		        	  	        	   	        	   
+	        case 10: 
+	        	 printing.printSomething("\n");   	        	  
+	        	if(viewCostomerevents(id,"requst.txt")){/// to String
+	        	boolean show2=true;
+          	     while (show2) {
+          		 
+          		 printing.printSomething("\nEnter the Event ID you want to view details for (or enter 'done' to finish): ");
+          	     String eventIDToView = scanner.next();
+          	    if ("done".equalsIgnoreCase(eventIDToView)) {
+          	       break;
+          	    } else {
+          	    	  updateEventList("requst.txt");
+          			   Event e=Event.findeventID(eventIDToView,"requst.txt");
+          	    	
+          			  System.out.println(e.toString2());// to String2
+          	    	 show2 =false;
+          	    	break;
+          	       }
+              	 }
+	        	}
+              break;
+	       case 11:	
 	    	   
 	                signInFunction();
 	                break;
@@ -365,9 +431,16 @@ public class Functions {
        switch (cE) {
         case 1:
         if( viewalleventsforAdmin("requst.txt")) {
-         printing.printSomething("\nEnter the Event ID of the event you want to accept or reject: ");
-         String eventID = scanner.next();         
-         printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
+      	boolean continuee = true;
+        while (continuee) {     	
+        printing.printSomething("\nEnter the Event ID of the event you want to accept or reject (or enter 'done' to finish): ");
+         String eventID = scanner.next();
+         if ("done".equalsIgnoreCase(eventID)) {
+        	continuee = false; // Exit the loop if the user enters 'done'
+          break; // Exit the switch case
+        	}
+        		     
+          printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
          String choice = scanner.next().toUpperCase();        
          if (choice.equals("Y")) {         	
              event1= event1.findeventID(eventID, "requst.txt");
@@ -375,38 +448,77 @@ public class Functions {
          	event1.addEventToFile(event1, "event.txt");
             printing.printSomething("\nEvent accepted.");             
              ///to send Notification:
-            SendmsgtoCustomer("has been approved",event1);                               
+            SendmsgtoCustomer("has been approved",event1);  
+            break;
             } else if (choice.equals("N")) {
          	  ///to send Notification:
          	  event1= event1.findeventID(eventID, "requst.txt");
          	SendmsgtoCustomer("has been Rejected",event1);
          	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
          	printing.printSomething("\nEvent rejected.");
+         	break;
         } else {
            printing.printSomething(INVALID_CHOICE);
-      	     }}
+      	     }
+         
+        	}
+        }
         break;        
      case 2:
-     	 viewalleventsforAdmin("event.txt");
+     	 viewalleventsforAdmin("event.txt"); /// to String 
+     	 boolean show=true;
+     	 while (show) {
+     		 
+     		 printing.printSomething("\nEnter the Event ID you want to view details for (or enter 'done' to finish): ");
+     	     String eventIDToView = scanner.next();
+     	    if ("done".equalsIgnoreCase(eventIDToView)) {
+     	       break;
+     	    } else {
+     	    	 updateEventList("event.txt");
+     			   Event e=Event.findeventID(eventIDToView,"event.txt");
+     	    	
+     			  System.out.println(e.toString2());// to String2
+     	    	 show =false;
+     	    	break;
+     	       }
+         	 }
+     	 
          break;
      case 3:
        addevent("event.txt");
        break;
      case 4:
      	if( viewalleventsforAdmin("event.txt")) {
-             printing.printSomething("\nEnter the Event ID of the event you want to delete : ");
-             String eventID = scanner.next();
-             event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
-     	  printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");}
+     		boolean continueDeleting = true;
+            while (continueDeleting) {
+            	
+            	 printing.printSomething("\nEnter the Event ID of the event you want to delete (or enter 'done' to finish): ");
+                  String eventID = scanner.next();
+                  if ("done".equalsIgnoreCase(eventID)) {
+                      continueDeleting = false; // Exit the loop if the user enters 'done'
+                  } 
+                  else {
+                      event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
+     	              printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");
+     	              continueDeleting = false;
+                  }
+     	       }
+            }
      	break;
      case 5:
-     	 if (viewalleventsforAdmin("event.txt")) {   
+     	 if (viewalleventsforAdmin("event.txt")) {
+     		 boolean continueUpdating = true;
+             while (continueUpdating) {
       	    printing.printSomething("Please enter the Event ID you want to update: ");
              String eventid=scanner.next();
-             event1.updateEvent(eventid, "event.txt");    
+             if ("done".equalsIgnoreCase(eventid)) {
+                 continueUpdating = false; // Exit the loop if the user enters 'done'
+             } else {
+             event1.updateEvent(eventid, "event.txt"); 
+             continueUpdating = false;            
              viewalleventsforAdmin("event.txt"); 
              printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
-             }
+             }}}
         break;
      case 6:adminPage();
      default:
@@ -540,7 +652,9 @@ public class Functions {
   		       }
   		     return true;}
                     /////////////////////////////////////////////////////////////////////////			
-      public  boolean view_service_accordingIDs(String filename,List<String> serviceIds) {
+  
+      /*
+       * public  boolean view_service_accordingIDs(String filename,List<String> serviceIds) {
     	  updateServiceList();
     	    if (serviceDetails.isEmpty()) {
     	        printing.printSomething("No Services found.\n");
@@ -548,25 +662,26 @@ public class Functions {
     	    }
     	    
     	    StringBuilder sb = new StringBuilder();
-    	    sb.append("\033[0;33m"); // Set text color to cyan
-    	    sb.append("-Service Names:");
-    	    sb.append("\033[0;33m"); // Set text color to yellow for service names
-    	    
-    	    for (String serviceId : serviceIds) {
+    	  for (String serviceId : serviceIds) {
     	        serviceId = serviceId.replaceAll("\\[\\[|\\]\\]", "");
-    	        
+    	       
     	        for (ServiceDetails service : serviceDetails) {
+    	        	if (serviceId.equalsIgnoreCase("[No service]")) {
+    	        		sb.append("No service");
+    	        	    break;
+    	        	}
+    	        	
     	            if (service.getServiceID().equals(serviceId)) {
-    	                sb.append(service.getServiceName()).append("\n");
+    	            	sb.append(service.getServiceName()).append(".");
     	                break;
     	            }
     	        }
     	    }
     	    
-    	    sb.append("\033[0m"); // Reset text color
     	    printing.printSomething(sb.toString());
     	    
     	    return true;}
+      */
 
                       /////////////////////////////////////////////////////////////////////////			
       public boolean viewalleventsforAdmin(String filename) {
@@ -576,7 +691,7 @@ public class Functions {
 		        return false; }
 		    printing.printSomething("List of Events: \n");		    
 		    for (Event event22 : events) {
-		   System.out.println(event22.toString2());} 
+		   System.out.println(event22.toString());} 
            return true;}
                      /////////////////////////////////////////////////////////////////////////			
       public static void viewAllVenues(String filename) {
@@ -603,36 +718,37 @@ public class Functions {
     	    if (venues.isEmpty()) {
     	        System.out.println("No venues found.");
     	    } else {
-    	        System.out.println("All Venues:");
-    	        for (Venue venue : venues) {  	           
-    	            System.out.print("Name: " + venue.getName());
-    	            System.out.print("  Address: " + venue.getAddress());
-    	            System.out.print("  Capacity: " + venue.getCapacity());
-    	            System.out.println("  Price: " + venue.getPrice());   	          
-    	            System.out.println();
+    	    	System.out.println("\033[0;35mAll Venues:\033[0m");
+                for (Venue venue : venues) {  	           
+                	  System.out.print("\033[0;35mName: \033[0m" + venue.getName() + ", ");
+                      System.out.print("\033[0;35mAddress: \033[0m" + venue.getAddress() + ", ");
+                      System.out.print("\033[0;35mCapacity: \033[0m" + venue.getCapacity() + ", ");
+                       System.out.println("\033[0;35m  Price: \033[0m" + venue.getPrice());
+                    System.out.println();
     	        }
     	    }}
  	                  //////////////////////////////////////////////////////////////////////
-    public boolean viewCostomerevents( String Cid) throws Exception {
+    public boolean viewCostomerevents( String Cid,String filename) throws Exception {
 		 boolean foundd = false; 
-		    updateeventandcustomer(); 
+		    updateeventandcustomer(filename); 
 		    for (Customer customer : customers) {
 		        if (customer.getId().equals(Cid)) {
 		            List<Event> customerEvents = customer.getEvents();
-		            if (!customerEvents.isEmpty())
-		            {
+		           
+		               if (!customerEvents.isEmpty()){
 		                System.out.println("\nHere are all your events:");
 		                for (Event event : customerEvents)
-		                {System.out.println(event.toString2());
-		                view_service_accordingIDs(Cid, event.getServiceIds());
-		                
+		                {System.out.println(event.toString());
+		               // view_service_accordingIDs(Cid, event.getServiceIds());
+		                foundd=true;}
 		                }
-		                
-		            }
-		            else { System.out.println("Customer found, but has no events.");}
-		            }
-        else  { System.out.println("Customer not found or has no events."); }
-		    return foundd;}
+		                		                
+		                else { System.out.println("Customer found, but has no events.");}
+		       }
+                       // else  { System.out.println("Customer not found or has no events."); }
+		               //return foundd;
+		    }
+		    
 			return foundd;}
                  //////////////////////////////////////////////////////////////////////////
   	private boolean viewproviderservice(String id2) throws FileNotFoundException, IOException {
@@ -853,7 +969,7 @@ public class Functions {
                      printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
                  }
              } else {
-          	   printing.printSomething("\nDo you want to choose another venue? (yes/no)\n");
+          	  // printing.printSomething("\n choose another venue \n");
                }
          } while (!venueAvailable );
 
@@ -868,7 +984,7 @@ public class Functions {
            pricee =applyDiscount(pricee,codee);
 
           }
-           printing.printSomething("\n The price is : "+pricee);	               
+         //  printing.printSomething("\n The price is : "+pricee);	               
            addToInvoice (id,id1,event_obj.getName(),pricee);
           printing.printSomething("\n done successfully\n");	 		           		          		           
         addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
@@ -2158,8 +2274,8 @@ public void updateCustomersList() {
         catch (IOException e) { printing.printSomething("An error occurred: " + e.getMessage());}}
 
 //////////////////////////////////////
-public void updateeventandcustomer() throws Exception {
-    updateEventList("event.txt");
+public void updateeventandcustomer(String filename) throws Exception {
+    updateEventList(filename);
     updateCustomersList();
 
     String E,C = null;
@@ -2234,7 +2350,7 @@ public void customerPageList(){
             "\n|        4. Cancel Event               |"+"\n|        5. Search                     |"+
             "\n|        6. Delete My Profile          |"+"\n|        7. Show Admin MSG             |"+
             "\n|        8. Packages                   |"+"\n|        9. view all my events         |"+
-            "\n|       10. Log out                    |\n"+SPACE+"\n"+LINE+"\n"
+            "\n|        10.view my requst             |"+"\n|        11. Log out                   |\n"+SPACE+"\n"+LINE+"\n"
             +ENTER_CHOICE );
 }
     public void providerPageList() {

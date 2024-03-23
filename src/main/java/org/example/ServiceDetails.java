@@ -159,6 +159,8 @@ public class ServiceDetails {
 	public static void addServiceToFile(ServiceDetails service) {
   	    try {
   	        FileWriter serviceFile = new FileWriter("service.txt", true);
+  	      serviceFile.append("\033[0;33m");
+
   	        serviceFile.append(service.getServiceID()).append(" , ")
   	                   .append(service.getProviderID()).append(" , ")
   	                   .append(service.getServiceType()).append(" , ")
@@ -167,6 +169,7 @@ public class ServiceDetails {
   	                   .append(String.valueOf(service.getPrice())).append(" , ")
   	                   .append(service.getAvailability())
   	                   .append("\n");
+  	      serviceFile.append("\033[0m");
 
   	        serviceFile.close();
   	    } catch (IOException e) {
