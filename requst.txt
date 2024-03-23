@@ -1,4 +1,2 @@
-yamamah2 , 2024-2-4 , 6:00 , *** , 60 , 11 , theme , cat , 2
-reemparty , 2024-5-6 , 6:00 , ***** , 49 , 11 , t , c , 7
-yaraparty , 2024-5-6 , 7:00 , * , 70 , 22 , c , t , 6
-aliparty , 333 , 4 , 8 , 68 , 33 , cc , tt , 99
+ali_party , 2024-05-06 , 5:00 , *** , 30 , 22 , cat , Hollywood , Bethlehem_Event_Hall , 2 , [No service]
+ahmad_party , 2024-09-04 , 5:00 , *** , 30 , 22 , cat , Harmony , Jenin_Banquet_Hall , 4 , [100]

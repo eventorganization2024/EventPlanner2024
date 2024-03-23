@@ -9,6 +9,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.example.Customer;
 import org.example.Event;
 import org.example.Functions;
@@ -20,39 +24,51 @@ import io.cucumber.java.en.When;
 
 public class event_Management_Steps {
 	 
-	
+	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	    
 	Event event =new Event();
     boolean cancel;
     boolean found;
     boolean update;
     boolean existe;
-    Customer customer = new Customer();
+    Customer customer1 = new Customer();
 	
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
-		customer.setId("12029026");
-        customer.setName("Ahmad");
-        customer.setEmail("AhmadHH334@gmail.com");
-        customer.setPhone("0599897846");
-        customer.setAddress("Nablus");
-        event.setUID(customer.getId());
+		customer1.setId("12029026");
+        customer1.setName("Ahmad");
+        customer1.setEmail("AhmadHH334@gmail.com");
+        customer1.setPhone("0599897846");
+        customer1.setAddress("Nablus");
+        event.setUID(customer1.getId());
 
 	}
 	                                                 
 	
-	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},eventid {string}")
-	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
-       event.setDate(string);
+	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
+	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
+	Date date=new Date();
+        try {
+            date = DATE_FORMAT.parse(string);
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+           
+        }
+		    event.setDate(date);
 	        event.setTime(string2);
 	        event.setDescription(string3);
 	        event.setAttendeeCount(string4);
 	        event.setName(string5);
 	        event.setCategory(string6);
 	        event.setTheme(string7);
-	        event.setEID(string8);
-	        event.setUID(customer.getId());
-	   	 Functions.addEmptyLine("event.txt");}
+	        event.setVenuename(string8);
+	        event.setEID(string9);
+	        event.setUID(customer1.getId());
+	   	// Functions.addEmptyLine("event.txt");s
+	        event.addEventToFile(event, "event.txt");
+	}
 	
 	
 	@Then("the event is added to admin requst")
@@ -118,17 +134,26 @@ public class event_Management_Steps {
 	public void theAdministratorIsGoingToCreateAnEvent() {event.creat=true;}
 	   
 
-@When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},eventid {string}")
-public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
- 	event.setDate(string);
+@When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
+public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
+	Date date=new Date();
+    try {
+        date = DATE_FORMAT.parse(string);
+    } catch (ParseException e) {
+
+        e.printStackTrace();
+       
+    }
+	    event.setDate(date);
         event.setTime(string2);
         event.setDescription(string3);
         event.setAttendeeCount(string4);
         event.setName(string5);
         event.setCategory(string6);
         event.setTheme(string7);
-        event.setEID(string8);
-        event.setUID(customer.getId());}
+        event.setVenuename(string8);
+        event.setEID(string9);
+        event.setUID("12114777");}
 
 	
 	@Then("the event is successfully created in the system")

@@ -2,6 +2,10 @@ package eventSteps;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.example.Event;
 import org.example.Functions;
 
@@ -22,9 +26,13 @@ show_Venueforcustomer,
 show_providerlist;
 
 
-
-Event e  = new Event("Conference", "2024-03-15", "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "111");
-
+private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+public ViewSteps() {
+    try {
+        Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference","V1", "111");
+    } catch (ParseException ex) {
+        ex.printStackTrace(); // Handle the exception
+    }}
 Functions F=new Functions();
 
 	@Given("the Administrator has selected show Adminlist")
@@ -71,7 +79,7 @@ Functions F=new Functions();
    }
 	@Then("the list of venues  displayed")
 	public void theListOfVenuesDisplayed() {
-		 assertTrue(show_VenueforAdmin); F.viewallVenuesforAdmin();    /////////////////////////////////////////////////////          
+		 assertTrue(show_VenueforAdmin); F.viewAllVenues("venue.txt");    /////////////////////////////////////////////////////          
 	}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +91,7 @@ Functions F=new Functions();
 	}
 	@Then("the list of  providers  displayed")
 	public void theListOfProvidersDisplayed() {
-		 assertTrue(show_allProviders); F.viewallProviders();    /////////////////////////////////////////////////////          
+		 assertTrue(show_allProviders); F. viewallprovider("provider.txt");            
 			
 	}
 
@@ -122,7 +130,7 @@ Functions F=new Functions();
 		}
 	@Then("the list of available venues  displayed")
 	public void theListOfAvailableVenuesDisplayed() {
-		 assertTrue(show_Venueforcustomer); F.viewallVenuesforCoustmer();         //////////////////////////////
+		 assertTrue(show_Venueforcustomer); F.viewAllVenuesCustomer("venue.txt");         //////////////////////////////
 			}
 
 	
@@ -142,14 +150,12 @@ Functions F=new Functions();
 	}
 	@Then("the list  providerlist  displayed")
 	public void theListProviderlistDisplayed() {
-		 assertTrue(show_providerlist); F.ProviderPageList();              
+		 assertTrue(show_providerlist); F.providerPageList();              
 
 	}
 
 
 
 
-	
-	
 
 }
