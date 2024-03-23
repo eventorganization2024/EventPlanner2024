@@ -272,10 +272,15 @@ public class Functions {
 	        	  showAdminMessage(id);
 	               break;	               
 	          case 8:
-	            	viewAllPackagesFromFile("package.txt");
+	            	 if (viewAllPackagesFromFile("package.txt"))
 	            	selectpackagee();
-	            	break;	            	
-	            case 9:	
+	            	 
+	            	break;
+	        case 9:
+	        	  viewCostomerevents(id);
+	        	   break;
+	       case 10:	
+	    	   
 	                signInFunction();
 	                break;
 	            default: printing.printSomething(INVALID_CHOICE);
@@ -534,6 +539,35 @@ public class Functions {
   		    	printing.printSomething(service.toString ());
   		       }
   		     return true;}
+                    /////////////////////////////////////////////////////////////////////////			
+      public  boolean view_service_accordingIDs(String filename,List<String> serviceIds) {
+    	  updateServiceList();
+    	    if (serviceDetails.isEmpty()) {
+    	        printing.printSomething("No Services found.\n");
+    	        return false;
+    	    }
+    	    
+    	    StringBuilder sb = new StringBuilder();
+    	    sb.append("\033[0;33m"); // Set text color to cyan
+    	    sb.append("-Service Names:");
+    	    sb.append("\033[0;33m"); // Set text color to yellow for service names
+    	    
+    	    for (String serviceId : serviceIds) {
+    	        serviceId = serviceId.replaceAll("\\[\\[|\\]\\]", "");
+    	        
+    	        for (ServiceDetails service : serviceDetails) {
+    	            if (service.getServiceID().equals(serviceId)) {
+    	                sb.append(service.getServiceName()).append("\n");
+    	                break;
+    	            }
+    	        }
+    	    }
+    	    
+    	    sb.append("\033[0m"); // Reset text color
+    	    printing.printSomething(sb.toString());
+    	    
+    	    return true;}
+
                       /////////////////////////////////////////////////////////////////////////			
       public boolean viewalleventsforAdmin(String filename) {
 		  updateEventList(filename);
@@ -589,7 +623,10 @@ public class Functions {
 		            {
 		                System.out.println("\nHere are all your events:");
 		                for (Event event : customerEvents)
-		                {System.out.println(event.toString());}
+		                {System.out.println(event.toString2());
+		                view_service_accordingIDs(Cid, event.getServiceIds());
+		                
+		                }
 		                
 		            }
 		            else { System.out.println("Customer found, but has no events.");}
@@ -660,12 +697,12 @@ public class Functions {
   	    }
   	}
   	           /////////////////////////////////////////////////////////////////////////////
-    public static void viewAllPackagesFromFile(String filename) {
+    public static boolean viewAllPackagesFromFile(String filename) {
   	    List<Paackage> paackages = readPackagesFromFile(filename);
 
   	    if (paackages.isEmpty()) {
   	        System.out.println("No packages found in the file.");
-  	        return;
+  	        return false;
   	    }
 
   	    System.out.println("All Packages:");
@@ -676,6 +713,8 @@ public class Functions {
   	                "  Price: " + p.getPrice() +
   	                "  Validity Date: " + p.getValidityPeriod());
   	    }
+		return true;
+  	    
   	}
               //////////////////////////////////////////////////////////////////////////////
     public void showAdminMessage(String userId) {
@@ -860,7 +899,7 @@ public class Functions {
              while (scanner.next().equalsIgnoreCase("yes"));
              printing.printSomething("\nDone successfully\n");
              double price=service.calculateTotalPrice(service_IDs_List);
-             printing.printSomething("the price is :"+price);
+            // printing.printSomething("the price is :"+price);
          } else
          {
             // event_obj.addEventToFile(event_obj, filename);
@@ -2194,8 +2233,8 @@ public void customerPageList(){
             "\n|        2. Make An Event              |"+"\n|        3. Update Event               |"+
             "\n|        4. Cancel Event               |"+"\n|        5. Search                     |"+
             "\n|        6. Delete My Profile          |"+"\n|        7. Show Admin MSG             |"+
-            "\n|        8. Packages                   |"+
-            "\n|        9. Log out                    |\n"+SPACE+"\n"+LINE+"\n"
+            "\n|        8. Packages                   |"+"\n|        9. view all my events         |"+
+            "\n|       10. Log out                    |\n"+SPACE+"\n"+LINE+"\n"
             +ENTER_CHOICE );
 }
     public void providerPageList() {

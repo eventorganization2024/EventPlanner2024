@@ -590,12 +590,24 @@ public class Event {
         sb.append("- Venue name: ").append(Venuenamee).append("\n");
         sb.append("- Category: ").append(category).append("\n");
         sb.append("- Event ID: ").append(EVENTID).append("\n");
-        sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n "); // Moved service IDs to the end
+       sb.append("- Service IDs: ").append(String.join(", ", serviceIds)); // Moved service IDs to the end
 
+        
+        /*
+        if (!serviceIds.isEmpty()) {
+            f.view_service_accordingIDs("service.txt",serviceIds);
+             // String serviceIdsString = String.join(", ", serviceIds) ;
+              //sb.append("Service IDs: ").append(serviceIdsString);
+          }
+
+        */
         sb.append("\033[0m"); // Reset text color
         return sb.toString();
     }
 
+   
+
+    
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
@@ -611,8 +623,9 @@ public class Event {
           .append("Event ID: ").append(EVENTID).append(", "); // Moved event ID to the end
 
         if (!serviceIds.isEmpty()) {
-            String serviceIdsString = String.join(", ", serviceIds) ;
-            sb.append("Service IDs: ").append(serviceIdsString);
+          f.view_service_accordingIDs("service.txt",serviceIds);
+           // String serviceIdsString = String.join(", ", serviceIds) ;
+            //sb.append("Service IDs: ").append(serviceIdsString);
         }
 
         return sb.toString();
