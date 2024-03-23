@@ -10,10 +10,16 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Stack;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Event {
 	private String UserID;
@@ -43,6 +49,7 @@ public class Event {
         this.category=category;
         this.theme= theme;
         this .EVENTID=Eid;
+
     }
 
    
@@ -51,7 +58,7 @@ public class Event {
         Event event = new Event();
        
         
-        String[] items = line.split(",");
+        String[] items = line.split(" , ");
         if (items.length >= 9) {
         	 String name = items[0];
              String date = items[1];
@@ -472,4 +479,43 @@ public class Event {
     
     
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   /////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
+    
+    
+    public LocalDate getDateAsLocalDate() {
+        try {
+            // Assuming date is in the format "yyyy-MM-dd"
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            // Print error details
+            e.printStackTrace();
+            // You can handle the error here, such as returning a default date or null
+            return null;
+        }
+    }
+    
+    public String getDateTime() {
+        return date + " " + time;
+    }
+    
+    
+    
+
+    
+    
+    
+   
+    
+    
+    
 }

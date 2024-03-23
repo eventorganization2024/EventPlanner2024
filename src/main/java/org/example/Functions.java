@@ -9,13 +9,47 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+////////////////////////////////////////////
 import org.example.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+//////////////////////////////////////////
+import java.util.Properties;
+import org.example.Calendar;
 
 
 public class Functions {
@@ -248,8 +282,6 @@ public class Functions {
 		
 	*/	
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////	    
-	  
 
 	  public boolean viewCostomerevents( String Cid) throws Exception {
 		  boolean found = false; // Initialize found flag
@@ -532,14 +564,15 @@ addProviderToFile(provider_obj);
 	                "\n|   1. Customer Management             |"+"\n|   2. Discount Management             |"+
 	                "\n|   3. Event Management                |"+"\n|   4. Venue Management                |"+
 	                "\n|   5. Provider Management             |"+"\n|   6. Notify Customer By Email        |"+
-	                "\n|   7. Calendar and Scheduling         |"+"\n|   8. View Statistics                 |"+
-	                "\n|   9. View Report                     |"+"\n|  10. Log Out                         |\n"+"\n"
+	                "\n|   7. View Statistics                 |"+"\n|   8. View Report                     |"+
+	                "\n|   9. Log Out                         |\n"+"\n"
 	        );}
 	  public void customerPageList(){
 	        printing.printSomething("\n------- Welcome to Customer Page -------\n"+SPACE+"\n|        1. Update My Profile          |"+
 	                "\n|        2. Make An Event              |"+"\n|        3. Update Event               |"+
 	                "\n|        4. Cancel Event               |"+"\n|        5. Invoices                   |"+
-	                "\n|        6. Delete My Profile          |"+"\n|        7. Log Out                    |\n"+SPACE+"\n"+LINE+"\n"
+	                "\n|        6. Delete My Profile          |"+"\n|        7. Calendar and Scheduling    |"+
+	                "\n|        8. Log Out                    |\n"+SPACE+"\n"+LINE+"\n"
 	                +ENTER_CHOICE );
 	    }
 	        
@@ -747,8 +780,8 @@ addProviderToFile(provider_obj);
             BufferedReader lineReader = new BufferedReader(customersFileReader);
             while ((line = lineReader.readLine()) != null) {
                 if (line.isEmpty()) continue;
-                customers.add(Customer.getCustomerFromLine(line));
-            }
+                customers.add(Customer.getCustomerFromLine(line)); 
+                }
             lineReader.close();
             customersFileReader.close();
         } catch (IOException e) {
@@ -917,6 +950,13 @@ addProviderToFile(provider_obj);
                 deleteCustomerProfile(str);
                 break;
             case 7:
+            	
+            	// Load events from the event.txt file
+            	Calendar calendar =loadEventsForCustomerInCalendar(id);
+                displayAllCustomerEvents(calendar);
+
+            	
+            case 8:
                 signInFunction();
                 break;
             default: printing.printSomething(INVALID_CHOICE);
@@ -1042,19 +1082,354 @@ private void EventManagementOptions(int cE) throws Exception {
 	
 /////////////////////////////////////////////////////////////////////////////////////	    
 	
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
+public List<Event> makeListofEvent(String Cid) throws Exception {
+updateeventandcustomer();
+
+List<Event> customerEvents = new ArrayList<>();
+
+for (Customer customer : customers) {
+if (customer.getId().equals(Cid)) {
+customerEvents = customer.getEvents();
+}
+}
+
+// Check if events are found for the customer
+if (customerEvents.isEmpty()) {
+return null;
+} else {
+return customerEvents;
+}
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+// method to load events for a specific customer in calendar
+public Calendar loadEventsForCustomerInCalendar(String customerId) {
+    List<Event> customerEvents;
+	try {
+		customerEvents = makeListofEvent(customerId);
+	
+    
+    if (customerEvents != null && !customerEvents.isEmpty()) {
+        Calendar calendar = new Calendar();
+        
+        for (Event event : customerEvents) {
+            calendar.addEvent(event);
+        }return calendar ;
+    } else {
+    	 printing.printSomething( "No events found for customer with ID: " + customerId);
+    	
+    }
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} return null ;
+	
+}
+
+
+
+
+public void displayAllCustomerEvents(Calendar calendar) {
+    // Keep track of displayed months
+    Set<String> displayedMonths = new HashSet<>();
+
+    // Collect all unique year-month combinations from events and sort them chronologically
+    List<String> eventYearMonths = new ArrayList<>();
+    for (Event event : calendar.getEvents()) {
+        LocalDate eventDate = event.getDateAsLocalDate();
+        String yearMonthKey = eventDate.getYear() + "-" + eventDate.getMonthValue();
+        if (!eventYearMonths.contains(yearMonthKey)) {
+            eventYearMonths.add(yearMonthKey);
+        }
+    }
+    Collections.sort(eventYearMonths);
+
+    // Iterate over all unique year-month combinations
+    for (String yearMonthKey : eventYearMonths) {
+        String[] parts = yearMonthKey.split("-");
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+
+        // Set the current year and month to the calendar
+        calendar.setYear(year);
+        calendar.setMonth(month);
+
+        // Print the events for the current year and month
+        displayCalendarEvents(calendar);
+        printing.printInColor("\n\n+************************************************************************************************************************************************************************+\n", Printing.ANSI_BLACK);
+
+        // Add the displayed month to the set
+        displayedMonths.add(yearMonthKey);
+    }
+}
+  // 
+
+public void displayCalendarEvents(Calendar calendar) {
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+    DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
+
+    // Print year and month with appropriate color
+    YearMonth yearMonth = YearMonth.of(calendar.getYear(), calendar.getMonth());
+    if (yearMonth.isBefore(YearMonth.now())) {
+        printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_GRAY);
+    } else if (yearMonth.equals(YearMonth.now())) {
+        printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_ORANGE);
+    } else {
+        printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_BLUE);
+    }
+
+    // Print the header for days of the week
+    printing.printInColor("\n+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+    printing.printInColor("|          Mon          |          Tue          |          Wed          |          Thu          |          Fri          |          Sat          |          Sun          |\n", Printing.ANSI_GREEN);
+
+    // Get the first day of the month
+    LocalDate firstDayOfMonth = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
+
+    int frow = 0;
+    boolean inFirstRow = false;
+    // Set the current date to the first day of the month
+    LocalDate currentDate = firstDayOfMonth;
+
+    int currentDayOfMonth = 1;
+    // Print the days of the month
+    while (currentDayOfMonth <= yearMonth.lengthOfMonth()) {//currentDate.getMonthValue() == calendar.getMonth()
+        printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+
+        StringBuilder dayRow = new StringBuilder("|");
+        inFirstRow = false;
+        // Print the current week
+        for (int i = 0; i < 7; i++) {
+        	currentDayOfMonth++;
+            if (currentDate.format(dayFormatter).compareTo("01") == 0 &&currentDate.getMonthValue()==calendar.getMonth()) {
+                inFirstRow = true;
+                // Print the calendar grid
+                for (int k = 0; k < firstDayOfMonth.getDayOfWeek().getValue() - 1; k++) {
+                    dayRow.append("                       |");
+                    frow = k + 2;
+                }
+            }
+
+            if (inFirstRow && i > 7 - frow) {
+                break;
+            }
+            String dayString = currentDate.format(dayFormatter);
+            if (currentDate.equals(LocalDate.now())) {
+                dayString = "[" + dayString + "]";
+                dayRow.append(String.format("********* %s ********|", dayString));
+            } else if(currentDate.getMonthValue()==calendar.getMonth()) {
+                        dayRow.append(String.format("          %s           ", dayString));dayRow.append("|");
+            } else{
+                        dayRow.append(String.format("                       ", dayString));dayRow.append("|");
+    }   
+            
+            currentDate = currentDate.plusDays(1);
+
+        }
+
+        printing.printInColor(dayRow.toString(), Printing.ANSI_GREEN);
+        printing.printInColor("\n", Printing.ANSI_GREEN);
+        printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+
+        // Print events for each day
+        printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1), dayFormatter);
+    }
+
+    // Print the footer for the days of the week
+    printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+}
+
+
+
+private void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay, DateTimeFormatter dayFormatter) {
+
+    for (int i = 0; i < 7; i++) {
+        for (LocalDate currentDate = startDay; currentDate.isBefore(endDay.plusDays(1)); currentDate = currentDate.plusDays(1)) {
+            final LocalDate currentDate2 = currentDate;  // Declare currentDate2 as final
+            
+           
+            StringBuilder eventRow = new StringBuilder("|");
+
+            Event eventForDay = calendar.getEvents().stream()
+                    .filter(event -> event.getDateAsLocalDate().isEqual(currentDate2))
+                    .findFirst()
+                    .orElse(null);
+
+            // Display the event with appropriate color
+            if (eventForDay != null && currentDate.getMonthValue()==calendar.getMonth()) {
+                String eventColor = "";
+                YearMonth eventYearMonth = YearMonth.of(eventForDay.getDateAsLocalDate().getYear(), eventForDay.getDateAsLocalDate().getMonth());
+                if (eventYearMonth.isBefore(YearMonth.now())) {
+                    eventColor = Printing.ANSI_GRAY;
+                } else if (eventYearMonth.equals(YearMonth.now())) {
+                    eventColor = Printing.ANSI_ORANGE;
+                }else  eventColor = Printing.ANSI_BLUE;
+                
+                
+                eventRow.append(eventColor).append(String.format("[%-6s] %-14s", eventForDay.getEID(), eventForDay.getName()));
+                calendar.deleteEvent(eventForDay);
+                
+            } else {
+                eventRow.append("                       ");
+            }
+
+            printing.printInColor(eventRow.toString(), Printing.ANSI_LIME);
+
+        }
+        printing.printInColor("|\n", Printing.ANSI_LIME);
+
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	  
+
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+		//Initialize a set to keep track of event IDs for which notifications have been sent
+		private Set<String> notifiedEvents = new HashSet<>();
+		
+		//Initialize a scheduled executor service
+		private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+		
+		public void startApproachingUpcomingEvents() {
+		 // Schedule the approachUpcomingEvents method to run every hour
+		 executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
+		}
+		
+		public void stopApproachingUpcomingEvents() {
+		 // Shutdown the executor service when you want to stop checking for upcoming events
+		 executor.shutdown();
+		}
+		
+		public void approachUpcomingEvents() {
+		    LocalDateTime now = LocalDateTime.now();
+		    updateEventList("event.txt");
+
+		    List<Event> upcomingEvents = events.stream()
+		            .filter(event -> {
+		                LocalDate eventDate = LocalDate.parse(event.getDate().trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		                return eventDate.isEqual(now.toLocalDate());
+		            })
+		            .collect(Collectors.toList());
+
+		    for (Event event : upcomingEvents) {
+		        LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
+		        LocalTime currentTime = LocalTime.now();
+		        long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
+		        
+		      //  System.out.println("test: "+notifiedEvents.contains(event.getEID())+timeDifferenceMinutes );
+		        if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
+		            String customerId = event.getUID();
+		            String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
+		            String[] details = recipientDetails.split("-");
+		            String recipientName = details[1];		            
+		            String messageContent = generateMessageContent(customerId,recipientName, event.getTime(), 60-timeDifferenceMinutes);
+		            String subject = "Notification for Upcoming Event: " + event.getName();
+		            
+		            sendNotificationsToParticipants(details[0], subject, messageContent);
+		            notifiedEvents.add(event.getEID());
+		        }
+		    }
+		}
+
+
+		 private String getEmailAndNameFromCustomerFile(String customerId) {
+			    // Update the customers list
+			    updateCustomersList();
+
+
+
+			    // Search for the customer with the specified ID
+			    for (Customer customer1 : customers) {
+			        if (customer1.getId().equals(customerId)) { 	            
+
+			            return customer1.getEmail()+"-"+customer1.getUsername();
+			        }
+			    }
+
+			    // If customer not found, return null or throw an exception
+			    return null;
+			}
+
+		 private String generateMessageContent(String customerId, String customerName, String eventTime, long hoursDifference) {
+			    // Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
+			    return "Dear " + customerName + ",\n\n"
+			            + "We are pleased to confirm your registration for the upcoming event.\n\n"
+			            + "Event Details:\n"
+			            + "Event Time: " + eventTime + "\n"
+			            + "Event Start Time: " + hoursDifference + " hours from now\n\n"
+			            + "Thank you for your participation. We look forward to seeing you at the event.\n\n"
+			            + "Best regards,\n"
+			            + "The Event Management Team";
+			}
+
+
+
+		    private void sendNotificationsToParticipants(String recipientEmail, String subject, String messageContent) {
+		        try {
+
+		            String senderEmail = "royasmine05@gmail.com";
+		            String password = "igun bclo kbti fzno";
+
+		            Properties properties = new Properties();
+		            properties.put("mail.smtp.auth", "true");
+		            properties.put("mail.smtp.starttls.enable", "true");
+		            properties.put("mail.smtp.host", "smtp.gmail.com");
+		            properties.put("mail.smtp.port", "587");
+
+		            Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+		                protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+		                    return new javax.mail.PasswordAuthentication(senderEmail, password);
+		                }
+		            });
+
+		            MimeMessage message = new MimeMessage(session);
+		            message.setFrom(new InternetAddress(senderEmail));
+		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+		            message.setSubject(subject);
+		            message.setText(messageContent);
+
+		            Transport.send(message);
+
+		        //    System.out.println("Email sent successfully to " + recipientEmail);
+		        } catch (MessagingException mex) {
+		            mex.printStackTrace();
+		        }
+		    }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }
 	
 	

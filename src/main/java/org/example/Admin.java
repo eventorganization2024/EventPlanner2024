@@ -2,7 +2,7 @@ package org.example;
 
 public class Admin {
     public String getEmail() {
-        return "yamamahashayer@gmail.com";
+        return "royasmine05@gmail.com";
     }
     public String getAdminId() {
         return "111";
@@ -12,7 +12,7 @@ public class Admin {
     }
 
     public String getEmailPassword() {
-        return "YNYN";
+        return "igun bclo kbti fzno";
     }
     
     
