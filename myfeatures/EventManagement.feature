@@ -2,7 +2,7 @@ Feature: Event Management
 
 Scenario: Customer Creates an Event 
 Given the customer is going to create an event 
-When the customer enters the event details such as Date "2024-12-27", time "5:00pm", description "A_celebration", attendeeCount "300", name "omar_party",category "Birthday" ,theme "Decades_Theme",Venue "V1",eventid "2000"
+When the customer enters the event details such as Date "2024-4-14", time "5:00pm", description "A_celebration", attendeeCount "300", name "omar_party",category "Birthday" ,theme "Decades_Theme",Venue "V1",eventid "2000"
 Then the event is added to admin requst
 
 Scenario: Cancels an Existing Event 

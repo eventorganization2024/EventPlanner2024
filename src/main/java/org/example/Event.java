@@ -334,9 +334,30 @@ private String Venuenamee;
     	            case "8":
     	            	f.viewAllVenuesCustomer("venue.txt");
     	                printing.printSomething("\nEnter new event venue name:");
-    	                String newVenueName = scanner.next();
-    	                toupdatedEvent.setVenuename(newVenueName);
-    	                toupdatedEvent.updateVenueInVenueBook(id, newVenueName, "venuebook.txt");
+    	             //   String newVenueName = scanner.next();
+    	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	                String eventDateString = dateFormat.format(toupdatedEvent.getDate());
+    	               boolean venueAvailable=false;
+    	                
+    	                do {
+    	                    // Check venue availability
+    	                    printing.printSomething("Enter Venue name:");
+    	                    venueName = scanner.next();
+    	                    if (f.checkAvailability(venueName,eventDateString )) {
+    	                        if (Integer.parseInt(toupdatedEvent.getAttendeeCount()) <= f.getVenueCapacity(venueName)) {
+    	                            venueAvailable = true;
+    	                            toupdatedEvent.setVenuename(venueName);
+    	                        } else {
+    	                            printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
+    	                        }
+    	                    } else {
+    	                 	  // printing.printSomething("\n choose another venue \n");
+    	                      }
+    	                } while (!venueAvailable );
+
+    	                
+    	                toupdatedEvent.setVenuename(venueName);
+    	                toupdatedEvent.updateVenueInVenueBook(id, venueName, "venuebook.txt");
     	                break;
     	            case "9":
     	            	f.updateServiceList();

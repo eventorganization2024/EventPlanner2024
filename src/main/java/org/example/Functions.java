@@ -52,6 +52,8 @@ public class Functions {
 	    boolean found;
 	    String tmp;
 	    String d;
+	    double price;
+
 	    double pricee;
 	    Admin admin = new Admin();
 	    Paackage p = new Paackage();
@@ -217,10 +219,8 @@ public class Functions {
 	    	        case 7:
 	    		          viewBusinessReports();
 	    		            break;
-	    	        case 8:
-	    	            
-	    	            break;
-                    case 9:
+	    	       
+                    case 8:
 	    	        	signInFunction();
 	    	            break;
 	    	        
@@ -367,7 +367,10 @@ public class Functions {
             	Calendar calendar =loadEventsForCustomerInCalendar(id);
                 displayAllCustomerEvents(calendar);	        	
 	        	break;
-	       case 12:	
+	        case 12:
+	        	readInvoiceFile("invoice.txt",  id) ;
+	   	     break;
+	       case 13:	
 	    	   
 	                signInFunction();
 	                break;
@@ -1005,20 +1008,10 @@ public class Functions {
          } while (!venueAvailable );
 
          pricee=getPriceByVenue(venueName);
-           printing.printSomething("\n Do you have discount code ? [Y or N] : ");	               
-          String yorn = scanner.next();
-         String codee;
-         if (yorn.equalsIgnoreCase("y"))
-         {
-           printing.printSomething("\n Enter the code  : ");	
-           codee = scanner.next();
-           pricee =applyDiscount(pricee,codee);
-
-          }
-         //  printing.printSomething("\n The price is : "+pricee);	               
-           addToInvoice (id,id1,event_obj.getName(),pricee);
-          printing.printSomething("\n done successfully\n");	 		           		          		           
-        addBookingVenue(getVenueIdByName(event_obj.getVenuename()),d,dateInput,"Reserved",id1);
+           
+        
+         
+        addBookingVenue(getVenueIdByName(event_obj.getVenuename()),id,dateInput,"Reserved",id1);
          
 ///////////////////////	               
          List<String> service_IDs_List = new ArrayList<>();
@@ -1045,13 +1038,27 @@ public class Functions {
                  }
              while (scanner.next().equalsIgnoreCase("yes"));
              printing.printSomething("\nDone successfully\n");
-             double price=service.calculateTotalPrice(service_IDs_List);
+              price=service.calculateTotalPrice(service_IDs_List);
             // printing.printSomething("the price is :"+price);
          } else
          {
             // event_obj.addEventToFile(event_obj, filename);
          }
-       }
+       }	     
+         
+         pricee +=price;
+         printing.printSomething("\n Do you have discount code ? [Y or N] : ");	               
+         String yorn = scanner.next();
+        String codee;
+        if (yorn.equalsIgnoreCase("y"))
+        {
+          printing.printSomething("\n Enter the code  : ");	
+          codee = scanner.next();
+          pricee =applyDiscount(pricee,codee);
+
+         }
+         printing.printSomething("\n The price is : "+pricee);	               
+           addToInvoice (id,id1,event_obj.getName(),pricee);
          
      event_obj.addEventToFile(event_obj, filename);
      return event_obj;
@@ -1842,6 +1849,30 @@ public static List<Discount> readDiscountsFromFile(String filename) {
 	    }
 	    return discounts;
 	}
+public static void readInvoiceFile(String fileName, String customerId) {
+    double totalPrice = 0.0; // Variable to store the total price
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length >= 4) {
+                String invoiceCustomerId = parts[0].trim();
+                if (invoiceCustomerId.equals(customerId)) {
+                    String eventName = parts[2].trim();
+                    double price = Double.parseDouble(parts[3].trim());
+                    System.out.println("Event Name: " + eventName + "  , Price: " + price);
+                    totalPrice += price; // Accumulate the price
+                }
+            } else {
+                System.out.println("Invalid format in invoice file: " + line);
+            }
+        }
+        System.out.println("Total Price: " + totalPrice); // Print the total price
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public static void deleteDiscountFromFile(String filename, List<Discount> updatedDiscounts) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
@@ -2371,8 +2402,7 @@ public void adminList() {
             "\n|   1. Customer Management             |"+"\n|   2. Discount Management             |"+
             "\n|   3. Event Management                |"+"\n|   4. Venue Management                |"+
             "\n|   5. Provider Management             |"+"\n|   6. Package Management              |"+
-            "\n|   7. View Report                     |"+"\n|   8. Notify Customer By Email        |"+ 
-            "\n|   9. Log Out                                                                      |"+
+            "\n|   7. View Report                     |"+"\n|   8. Log Out                         |"+            
             "\n \n"
     );}
 public void customerPageList(){
@@ -2381,7 +2411,9 @@ public void customerPageList(){
             "\n|        4. Cancel Event               |"+"\n|        5. Search                     |"+
             "\n|        6. Delete My Profile          |"+"\n|        7. Show Admin MSG             |"+
             "\n|        8. Packages                   |"+"\n|        9. view all my events         |"+
-            "\n|        10.view my requst             |"+"\n|       11. Calendar and Scheduling    |"+"\n|        12. Log out                   |\n"+SPACE+"\n"+LINE+"\n"
+            "\n|        10.view my requst             |"+"\n|        11. Calendar and Scheduling   |"+
+            "\n|        12. Invoice                   |"+
+            "\n|        13. Log out                   |\n"+SPACE+"\n"+LINE+"\n"
             +ENTER_CHOICE );}
 
     public void providerPageList() {
