@@ -19,7 +19,7 @@ public class CustomerActionSteps {
 	    static boolean deleteProfile = false;
 	    Printing printing = new Printing();
 	    Event event=new Event();
-        invoice invoice ;
+       // invoice invoice ;
 	  
 	    
 	    
@@ -68,7 +68,7 @@ public class CustomerActionSteps {
 		  @When("I navigate to Invoices")
 		    public void i_navigate_to_invoices()  {
 		        //printing.printSomething("\nNumber of orders:"+ customer.getNumOfEvents());
-		        //invoice = new Invoice(customer);
+		       //invoice = new Invoice(customer);
 		        //invoice.invoiceRes(customer);
 		    }
 		    @Then("I should see a my invoice")

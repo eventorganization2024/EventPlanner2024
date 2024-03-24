@@ -1,3 +1,2 @@
-11 , yamamah , 058936756 , tulkarm , yamamah@gmail.com , 123
-22 , naya , 0694857643 , nablus , naya@gamil.com , 456
-33 , ali , 0494785433 , tulkarm , ali2gamil.com , 678
+11 , yamamah , 058936756 , tulkarm , yamamah@gmail.com , 123  
+12 , yamamah , 058936756 , tulkarm , yamamah@gmail.com , 123   

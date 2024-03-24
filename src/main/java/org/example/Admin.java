@@ -23,14 +23,6 @@ public class Admin {
 		this.state =s;
 	}
     
-   // Functions f =new Functions();
-	 
-	/* 
-    public void Admainaddevent( String filename) throws Exception {
-       Event e= f.addevent(getAdminId(), filename);    	
-    	e.addEventToFile(e, filename );
-    	 }
-    
-    */
+ 
 }
 
