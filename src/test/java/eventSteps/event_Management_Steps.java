@@ -52,7 +52,7 @@ public class event_Management_Steps {
         customer1.setEmail("AhmadHH334@gmail.com");
         customer1.setPhone("0599897846");
         customer1.setAddress("Nablus");
-        event.setUID(customer1.getId());
+        event.setUserId(customer1.getId());
 
 	}
 	                                                 
@@ -207,7 +207,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setTheme(string7);
         event.setVenuename(string8);
         event.setEID(string9);
-        event.setUID("12114777");}
+        event.setUserId("12114777");}
 
 	
 	@Then("the event is successfully created in the system")
