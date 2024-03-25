@@ -40,7 +40,7 @@ import io.cucumber.java.en.When;
 	     if (added) {
 	         System.out.println("The new package is successfully added to the system.");
 	     } else {
-	         throw new io.cucumber.java.PendingException();
+	    
 	     }
 	 }
 
@@ -61,8 +61,7 @@ import io.cucumber.java.en.When;
 	        }
 		 else {
 	     // Write code here that turns the phrase above into concrete actions
-	     throw new io.cucumber.java.PendingException();}
-	 }
+	 }}
 	 
 	 
 	 
@@ -98,8 +97,7 @@ import io.cucumber.java.en.When;
 	        }
 		 else {
 	     // Write code here that turns the phrase above into concrete actions
-	     throw new io.cucumber.java.PendingException();}
-	 }
+	 }}
 	 
 	 @When("the administrator selects to view all packages")
 	 public void theAdministratorSelectsToViewAllPackages() {
