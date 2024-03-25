@@ -29,16 +29,13 @@ public class Event {
     private String category;
     private String eventId;
     private String venueName;
-   
-	
-	public String EVENTID;
     private List<String> serviceIds = new ArrayList<>();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 
 	
    static Printing printing = new Printing();
-   Functions f =new Functions();
+    Functions f =new Functions();
     private String Venuenamee;
 
    
@@ -106,7 +103,7 @@ public class Event {
 	        event.setTime(time);
 	        event.setDescription(description);
 	        event.setAttendeeCount(attendeeCount);
-	        event.setUID(userId);
+	        event.setUserId(userId);
 	        event.setCategory(category);
 	        event.setTheme(theme);
 	        event.setVenuename(venueName);
@@ -132,17 +129,17 @@ public class Event {
 	                        event.getTime() + " , " +
 	                        event.getDescription() + " , " +
 	                        event.getAttendeeCount() + " , " +
-	                        event.getUID() + " , " +
+	                        event.getUsrTd() + " , " +
 	                        event.getCategory() + " , " +
 	                        event.getTheme() + " , " +
 	                        event.getVenuename() + " , " +
 	                        event.getEID() + " , ");
 
-	        List<String> serviceIds = event.getServiceIds();
+	        List<String> otherServiceIds = event.getServiceIds();
 	        StringBuilder formattedServiceIds = new StringBuilder("[");
-	        for (int i = 0; i < serviceIds.size(); i++) {
-	            formattedServiceIds.append(serviceIds.get(i));
-	            if (i < serviceIds.size() - 1) {
+	        for (int i = 0; i <  otherServiceIds.size(); i++) {
+	            formattedServiceIds.append( otherServiceIds.get(i));
+	            if (i <  otherServiceIds.size() - 1) {
 	                formattedServiceIds.append(", ");
 	            }
 	        }
@@ -155,7 +152,7 @@ public class Event {
 
 
 
-    public static Event findeventID(String Eid, String filename) throws IOException {
+    public static Event findeventID(String eventId2, String filename) throws IOException {
         String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -164,7 +161,7 @@ public class Event {
                 Event e = getEventFromLine(line);
                 if (e != null) {
                     String eventid = e.getEID();
-                    if (eventid != null && eventid.equals(Eid)) {
+                    if (eventid != null && eventid.equals(eventId2)) {
                         return e;
                     }
                 }
@@ -184,19 +181,18 @@ public class Event {
         String line;
      
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            int  currentLine=1;
+           
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
                 {
-                	Event e=getEventFromLine(line);
-                	
-                	
-                  if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getName())) {
-                        return e;
-                    } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getDate())) {
-                        return e;
-                    } else {
-                        currentLine++;
+                    Event e = getEventFromLine(line);
+                    
+                    if (e != null) { // Check if "e" is not null
+                        if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getName())) {
+                            return e;
+                        } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getDate())) {
+                            return e;
+                        }
                     }
                 }
             }
@@ -206,11 +202,12 @@ public class Event {
         return null;
     }
 
+
    
     
    
 	 	
-     public void delete_event_from_file_and_arraylist(Event e, String eventFileName, String EID) throws IOException {
+     public void delete_event_from_file_and_arraylist(Event e, String eventFileName, String eventId2) throws IOException {
         // Delete event from the event file
        
     	 String venueBookFileName = "venuebook.txt";
@@ -220,8 +217,8 @@ public class Event {
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split(" , ");
                 if (items.length >= 11) {
-                    String EVENTID = items[9];
-                    if (!EVENTID.equals(EID)) {
+                    String eventid = items[9];
+                    if (!eventid.equals(eventId2)) {
                         eventFileContent.append(line).append("\n");
                     }
                 }
@@ -241,7 +238,7 @@ public class Event {
                 String[] items = line.split(",");
                 if (items.length >= 5) {
                     String eventID = items[4].trim(); // Trim to remove any leading/trailing spaces
-                    if (!eventID.equals(EID)) {
+                    if (!eventID.equals(eventId2)) {
                         venueBookFileContent.append(line).append("\n");
                     }
                 }
@@ -258,7 +255,7 @@ public class Event {
    
 	     
     	
-     public Event updateEvent(String id, String filename) throws Exception {
+     public Event updateEvent(String id, String filename) throws IOException  {
     	    Event toupdatedEvent = findeventID(id, filename);
 
     	    if (toupdatedEvent != null && toupdatedEvent.getEID() != null) {
@@ -525,12 +522,12 @@ public class Event {
         this.attendeeCount = attendeeCount;
     }
     
-    public String getUID() {
+    public String getUsrTd() {
         return userId;
     }
 
-    public void setUID(String ID) {
-        this.userId = ID;
+    public void setUserId(String UserId) {
+        this.userId = UserId;
     }
            
     public String getEID() {

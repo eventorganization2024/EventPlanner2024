@@ -931,7 +931,7 @@ static /////////////////////////////////////////////////////////////////////////
          addevent( filename);return null; }
     	    else  {   	            	  
          event_obj.setEID(id1);
-         event_obj.setUID(id);
+         event_obj.setUserId(id);
          printing.printSomething("Enter event name:");  
          event_obj.setName(scanner.next());
          printing.printSomething("Enter event date (yyyy-MM-dd):");
@@ -1204,7 +1204,7 @@ static /////////////////////////////////////////////////////////////////////////
           File.append("The Event ")
           .append(event.getName()).append(" ")
                     .append(msg).append(" , ")
-                    .append(event.getUID()).append("\n");
+                    .append(event.getUsrTd()).append("\n");
                    File.close();
         } catch (IOException e) {
             printing.printSomething("An error occurred: " + e.getMessage());
@@ -2311,7 +2311,7 @@ public  static void updateeventandcustomer(String filename) throws Exception {
 
     String E,C = null;
     for (Event event : events) {
-        E = event.getUID();
+        E = event.getUsrTd();
         for (Customer customer : customers) {
             C = customer.getId();
             if (E != null && C != null && E.equals(C)) {
@@ -2739,7 +2739,7 @@ long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.Chr
 
 //  System.out.println("test: "+notifiedEvents.contains(event.getEID())+timeDifferenceMinutes );
 if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
-String customerId = event.getUID();
+String customerId = event.getUsrTd();
 String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
 String[] details = recipientDetails.split("-");
 String recipientName = details[1];		            
