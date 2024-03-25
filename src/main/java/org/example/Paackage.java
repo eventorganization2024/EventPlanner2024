@@ -280,7 +280,7 @@ public static void updatePackageDetails(Scanner scanner, Paackage packageToUpdat
 
     switch (choice) {
         case 1:
-            updatePackageId(scanner, packageToUpdate, filename, packages);
+        	 updatePackageId(scanner, packageToUpdate, filename);
             break;
         case 2:
             updatePackageTitle(scanner, packageToUpdate, filename, packages);
@@ -332,22 +332,24 @@ public static void updatePackagePrice(Scanner scanner, Paackage packageToUpdate,
     savePackagesToFile(filename, packages);
 }
 
-public static void updatePackageId(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
+public static void updatePackageId(Scanner scanner, Paackage packageToUpdate, String filename) {
     int newId;
     do {
-    	print.printSomething("Enter a new ID: ");
+    	 print.printSomething("Enter a new ID: ");
         newId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        scanner.nextLine(); 
 
         if (!isPackageIdExists(filename, newId)) {
             packageToUpdate.setId(newId);
             print.printSomething("ID is updating successfully.");
             break;
         } else {
-        	print.printSomething("ID already exists in the file. Please enter a new ID.");
+        	 print.printSomething("ID already exists in the file. Please enter a new ID.");
         }
     } while (true);
 }
+
+
 
 
 public static void viewAllPackages(List<Paackage> packages) {
