@@ -7,7 +7,6 @@ public class Discount {
     private double discountPercentage;
     private String validityPeriod;
  
-
     public Discount(  double discountPercentage,int discountId, String validityPeriod,String discountCode) {
         this.discountId = discountId;
         this.discountCode = discountCode;
