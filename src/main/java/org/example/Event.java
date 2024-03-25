@@ -39,35 +39,32 @@ public class Event {
 	
    static Printing printing = new Printing();
    Functions f =new Functions();
-   //private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-private String Venuenamee;
+    private String Venuenamee;
 
    
    
     public  Event() {}
     
-
-    public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Venuename,String Eid) {
-        this .userId=UserID; 
-        this.name = name;
-        this.date = date;
-        this.time = time;
-        this.description = description;
-        this.attendeeCount = attendeeCount;
-        this.category=category;
-        this.theme= theme;
-        this .eventId=Eid;
-        this.Venuenamee=Venuename;
-      
-        }
-    
-    public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Venuename,List<String> serviceIds,String Eid) {
-     
-    	  this(name, date, time, description, attendeeCount, UserID, theme, category, Venuename, Eid);
-    	  this.serviceIds.addAll(serviceIds);
-    
-    	
+    public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, String eventId) {
+        this.userId = userId; 
+        this.name = eventName;
+        this.date = eventDate;
+        this.time = eventTime;
+        this.description = eventDescription;
+        this.attendeeCount = eventAttendeeCount;
+        this.category = eventCategory;
+        this.theme = eventTheme;
+        this.eventId = eventId;
+        this.venueName = venueName;
     }
+
+    public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, List<String> serviceIds, String eventId) {
+        this(eventName, eventDate, eventTime, eventDescription, eventAttendeeCount, userId, eventTheme, eventCategory, venueName, eventId);
+        this.serviceIds.addAll(serviceIds);
+    }
+
+    
+   
     
 
    
