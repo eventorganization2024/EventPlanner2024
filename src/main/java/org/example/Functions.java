@@ -2317,7 +2317,7 @@ public  static void updateeventandcustomer(String filename) throws Exception {
         for (Customer customer : customers) {
             C = customer.getId();
             if (E != null && C != null && E.equals(C)) {
-    			customer. Cevents.add (event); 
+    		customer.getCevents().add (event); 
             }
         }
     }
