@@ -92,7 +92,7 @@ public class Event {
 	        try {
 	            date = DATE_FORMAT.parse(items[1]);
 	        } catch (ParseException e) {
-	            e.printStackTrace();
+	        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
 	            return null;
 	        }
 	        String time = items[2];
@@ -233,63 +233,7 @@ public class Event {
  
    
 	   
-		
-	 public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
-		 Date date2;
-		 try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
-	            StringBuilder sb = new StringBuilder();
-	            String line;
-	            while ((line = reader.readLine()) != null) {
-	                String[] parts = line.split(",");
-	                if (parts.length >= 5 && parts[4].equals(eventId)) {
-	                	 
-	                     try {
-	                         date2 = DATE_FORMAT.parse(parts[2]);
-	                     } catch (ParseException e) {
-
-	                         e.printStackTrace();
-	                        
-	                     }
-	                     date2=newDate;
-	                    line = String.join(",", parts);
-	                }
-	                sb.append(line).append("\n");
-	            }
-	            // Write the updated content back to the file
-	            try (FileWriter writer = new FileWriter(venueBookFileName)) {
-	                writer.write(sb.toString());
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace(); // Handle or log the exception as needed
-	        }
-	    }
-	    
-	    
-	 public void updateVenueInVenueBook(String eventId, String newVenue, String venueBookFileName) throws ParseException {
-	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
-	            StringBuilder sb = new StringBuilder();
-	            String line;
-	            while ((line = reader.readLine()) != null) {
-	                String[] parts = line.split(",");
-	                if (parts.length >= 5 && parts[4].equals(eventId)) {
-	                	
-	                	Date dateNew = DATE_FORMAT.parse(parts[2]);
-	                     String formattedDate = DATE_FORMAT.format(dateNew);
-	                     newVenue = formattedDate;
-	                    line = String.join(",", parts);
-	                }
-	                sb.append(line).append("\n");
-	            }
-	            // Write the updated content back to the file
-	            try (FileWriter writer = new FileWriter(venueBookFileName)) {
-	                writer.write(sb.toString());
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace(); // Handle or log the exception as needed
-	        }
-	    }
-	    
-	    
+	
 	 
 	 
 	 
@@ -297,23 +241,7 @@ public class Event {
 	 
 	 
 	 
-	    public static String findVenueIdByName(String venueName, String filename) {
-	        String id = null;
-	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-	            String line;
-	            while ((line = reader.readLine()) != null) {
-	                String[] parts = line.split(",");
-	                if (parts.length >= 5 && parts[1].trim().equals(venueName.trim())) {
-	                    id = parts[0].trim(); // Found the venue name, return its ID
-	                    break; // No need to continue searching
-	                }
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return id;
-	    }
-	    
+	  
 	 
     
     
@@ -544,7 +472,7 @@ public class Event {
          try {
              newdate = DATE_FORMAT.parse(dateInput);
          } catch (ParseException e) {
-             e.printStackTrace();
+        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
              return null;
          }
          eventt.setDate(newdate);
@@ -650,16 +578,95 @@ public class Event {
 	        }
 	    }
 	   
-}
+
     
  /////////////////////////////////////////////////////////////////////////////////////////////
 
+
+public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
+       try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+           StringBuilder sb = new StringBuilder();
+           String line;
+           while ((line = reader.readLine()) != null) {
+               String[] parts = line.split(",");
+               if (parts.length >= 5 && parts[4].equals(eventId)) {
+               	 Date date;
+                    try {
+                        date = DATE_FORMAT.parse(parts[2]);
+                    } catch (ParseException e) {
+
+                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
+                       
+                    }
+                    date=newDate;
+                   line = String.join(",", parts);
+               }
+               sb.append(line).append("\n");
+           }
+           // Write the updated content back to the file
+           try (FileWriter writer = new FileWriter(venueBookFileName)) {
+               writer.write(sb.toString());
+           }
+       } catch (IOException e) {
+    	   printing.printSomething( ERROR_PREFIX + e.getMessage());
+       }
+   }
+   
+   
+public void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
+       try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+           StringBuilder sb = new StringBuilder();
+           String line;
+           while ((line = reader.readLine()) != null) {
+               String[] parts = line.split(",");
+               if (parts.length >= 5 && parts[4].equals(eventId)) {
+               	 Date date=new Date();
+                    try {
+                        date = DATE_FORMAT.parse(parts[2]);
+                    } catch (ParseException e) {
+
+                        e.printStackTrace();
+                       
+                    }
+                    newV= DATE_FORMAT.format(date) ;
+                   line = String.join(",", parts);
+               }
+               sb.append(line).append("\n");
+           }
+           // Write the updated content back to the file
+           try (FileWriter writer = new FileWriter(venueBookFileName)) {
+               writer.write(sb.toString());
+           }
+       } catch (IOException e) {
+    	   printing.printSomething( ERROR_PREFIX + e.getMessage());
+       }
+   }
+   
+   
+public static String findVenueIdByName(String venueName, String filename) {
+    String id = null;
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length >= 5 && parts[1].trim().equals(venueName.trim())) {
+                id = parts[0].trim(); // Found the venue name, return its ID
+                break; // No need to continue searching
+            }
+        }
+    } catch (IOException e) {
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
+    }
+    return id;
+}
+
+
+ 
     
     
     
     
-    
-    
+}
     
     
     
