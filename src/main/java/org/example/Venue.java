@@ -6,11 +6,11 @@ public class Venue {
     private String address;
     private int capacity;
     private double price;
-    private String availability; 
+    private String availability; // Corrected spelling
     private String imagepath;
     private String date;
 
-    
+    // Constructor
     public Venue(String name, String address, int capacity, double price, String availability, String id, String image) {
         this.name = name;
         this.address = address;
@@ -22,7 +22,7 @@ public class Venue {
     }
 
     public Venue() {
-       
+        // Empty constructor
     }
 
     public Venue(String venueId, String name, String address, int capacity, double price, String image) {
@@ -44,7 +44,7 @@ public class Venue {
         this.availability = availability;
     }
 
-   
+    // Getters and Setters
     public String getId() {
         return venueId;
     }
