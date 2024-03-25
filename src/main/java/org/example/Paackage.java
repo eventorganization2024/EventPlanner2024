@@ -20,6 +20,7 @@ private String title;
 	
 public Paackage(){}
 private static final String PACKAGE_WITH_ID = "Package with ID ";
+private static final String ALL_PACKAGES = "All Packages:";
 static Printing print=new Printing ();
 public void setId(int id) {
     this.id = id;
@@ -140,12 +141,12 @@ public static void updatePackage(Scanner scanner, String filename) {
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
-    	print.printSomething("No packages found.");
+        print.printSomething("No packages found.");
         return;
     }
 
     while (true) {
-    	print.printSomething("All Packages:");
+        print.printSomething(ALL_PACKAGES);
         viewAllPackages(packages);
 
         print.printSomething("\nEnter ID for package you want to update (or 'exit' to quit): ");
@@ -159,13 +160,14 @@ public static void updatePackage(Scanner scanner, String filename) {
         Paackage packageToUpdate = findPackageById(packages, packageId);
 
         if (packageToUpdate == null) {
-        	print.printSomething("Package with ID " + packageId + " not found.");
+            print.printSomething(PACKAGE_WITH_ID + packageId + " not found.");
             continue;
         }
 
         updatePackageDetails(scanner, packageToUpdate, filename, packages);
     }
 }
+
 
 public static void deletePackageById(Scanner scanner, String filename) {
     List<Paackage> packages = readPackagesFromFile(filename);
@@ -175,7 +177,7 @@ public static void deletePackageById(Scanner scanner, String filename) {
         return;
     }
 
-    print.printSomething("All Packages:");
+    print.printSomething(ALL_PACKAGES);
     for (Paackage p : packages) {
         print.printSomething("Package ID: " + p.getId() + " Name: " + p.getTitle());
     }
@@ -252,19 +254,20 @@ public static void viewAllPackagesFromFile(String filename) {
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
-    	print.printSomething("No packages found in the file.");
+        print.printSomething("No packages found in the file.");
         return;
     }
 
-   print.printSomething("All Packages:");
+    print.printSomething(ALL_PACKAGES);
     for (Paackage p : packages) {
-    	print.printSomething("ID: " + p.getId() +
+        print.printSomething("ID: " + p.getId() +
                 "  Name: " + p.getTitle() +
                 "  Description: " + p.getDescription() +
                 "  Price: " + p.getPrice() +
                 "  Validity Date: " + p.getValidityPeriod());
     }
 }
+
 
 public static void updatePackageDetails(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
 	print.printSomething("1. ID");
@@ -358,7 +361,7 @@ public static void viewAllPackages(List<Paackage> packages) {
         return;
     }
 
-    print.printSomething("All Packages:");
+    print.printSomething(ALL_PACKAGES);
     for (Paackage p : packages) {
     	print.printSomething("ID: " + p.getId() +
                 "  Name: " + p.getTitle() +
