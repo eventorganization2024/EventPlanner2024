@@ -3,17 +3,20 @@ package org.example;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.example.*;
+import java.util.logging.Logger;
+
+
 
 
 
 public class Customer extends User {
     private String email;
-    
+    private static final Logger logger = Logger.getLogger(Customer.class.getName());
+
    public List<Event> Cevents = new ArrayList<>();
    
    
@@ -81,7 +84,7 @@ public class Customer extends User {
           customer1.setPassword(items[5]);
      } else {
       
-          System.err.println("Invalid line format: " + line);
+    	 logger.warning("Invalid line format: " + line);
 
       }
       return customer1;
