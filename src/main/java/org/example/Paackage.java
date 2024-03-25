@@ -161,12 +161,12 @@ public static void updatePackage(Scanner scanner, String filename) {
 
         if (packageToUpdate == null) {
             print.printSomething(PACKAGE_WITH_ID + packageId + " not found.");
-            continue;
+        } else {
+            updatePackageDetails(scanner, packageToUpdate, filename, packages);
         }
-
-        updatePackageDetails(scanner, packageToUpdate, filename, packages);
     }
 }
+
 
 
 public static void deletePackageById(Scanner scanner, String filename) {
