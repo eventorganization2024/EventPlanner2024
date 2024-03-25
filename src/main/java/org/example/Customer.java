@@ -28,7 +28,10 @@ public class Customer extends User {
         return Cevents;
     }
     
-  public static List<Event> getEvents() { return Cevents; }
+public static List<Event> getEvents() {
+    return new ArrayList<>(Cevents);
+}
+
     public static void addEvent(Event event) { Cevents.add(event); }
 	
     
