@@ -1,6 +1,5 @@
 Feature: View 
 
-
 Scenario: Administrator views hislist 
 Given the Administrator has selected show Adminlist
 Then the list Adminlist  displayed
@@ -21,6 +20,9 @@ Scenario: Administrator views list of  providers
 Given the Administrator has selected show providers
 Then the list of  providers  displayed
 
+Scenario: Administrator views pages
+Given the Administrator has selected show Mangementpages
+Then the pages displayed 
 
 
 
@@ -35,8 +37,6 @@ Then the list of Myevents  displayed
 Scenario: User views list of available venues
 Given the USer has selected show available venues
 Then the list of available venues  displayed
-
-
 
 
  Scenario:  provider views hislist 

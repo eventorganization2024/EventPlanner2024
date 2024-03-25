@@ -16,8 +16,7 @@ public class User {
     public User()
     {
         User.users1.add(new User(" yamamah ","1234","admin"));
-        User.users1.add(new User(" yara ","321","admin"));
-
+     
 
     }
    

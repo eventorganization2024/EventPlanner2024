@@ -1,4 +1,5 @@
 package eventSteps;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.logging.Level;
@@ -13,15 +14,13 @@ import eventSteps.*;
 
 public class CustomerActionSteps {
 	 User user = new User();
-	    Customer customer = new Customer("12114555","Ansam","057806241","Nablus","123456","ansam@gmail.com");
+	    Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456","ansam@gmail.com");
 	    Functions functions = new Functions();
 	    static boolean updated = false;
 	    static boolean deleteProfile = false;
 	    Printing printing = new Printing();
 	    Event event=new Event();
-       // invoice invoice ;
-	  
-	    
+     
 	    
 	    @Given("customer log in with true {string} and {string}")
 	    public void customerLogInWithTrueAnd(String arg0, String arg1) {
@@ -31,8 +30,12 @@ public class CustomerActionSteps {
 	        }
 	    }
 	    @Given("I am logged in")
-	    public void i_am_logged_in() {
+	    public void i_am_logged_in() throws Exception {
 	        user.setLogstate(true);
+	       
+	        functions.updateCustomerFile();
+	        functions.updateEventList("event.txt");
+	        functions.updateeventandcustomer("event.txt");
 	    }
 	    @When("I navigate to My Profile")
 	    public void i_navigate_to_my_profile() {
@@ -43,7 +46,7 @@ public class CustomerActionSteps {
 
 	    @When("I update my profile information depends on {int} and {string}")
 	    public void i_update_my_profile_information_depends_on_and(Integer i, String val) {
-	        if( i == 1){
+        if( i == 1){
 	            customer.setName(val);
 	            updated = true;
 	        } else if (i == 2) {
@@ -56,6 +59,7 @@ public class CustomerActionSteps {
 	            customer.setEmail(val);
 	            updated = true;
 	        }
+	       
 	    }
 	    @Then("my profile should be updated successfully")
 	    public void my_profile_should_be_updated_successfully() {

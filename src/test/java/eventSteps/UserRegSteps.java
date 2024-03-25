@@ -15,10 +15,8 @@ public class UserRegSteps {
 	    Logger logger = Logger.getLogger(UserRegSteps.class.getName());
 
 
-	    @Given("customers")
-	    public void customers(io.cucumber.datatable.DataTable dataTable) {
-
-	    }
+	 @Given("customers")
+	  
 	
 	@Given("there is a User with User ID {string} ,NAME {string} , PASSWORD {string} , phone {string}, address {string}")
 	public void thereIsAUserWithUserIDNAMEPASSWORDPhoneAddress(String string, String string2, String string3, String string4, String string5) {

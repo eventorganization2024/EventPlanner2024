@@ -43,27 +43,27 @@ import org.example.*;
 
 public class Functions {
 	  static Printing printing = new Printing();
-	    Scanner scanner = new Scanner(System.in);
+	    static Scanner scanner = new Scanner(System.in);
 	    Customer customer_obj;
 	    Provider provider_obj;
-	    Event event_obj;
-	    int choice;
+	    static Event event_obj;
+	    static int choice;
 	    int choice2;
-	    boolean found;
-	    String tmp;
+	    static boolean found;
+	    static String tmp;
 	    String d;
-	    double price;
+	    static double price;
 
-	    double pricee;
-	    Admin admin = new Admin();
-	    Paackage p = new Paackage();
+	    static double pricee;
+	    static Admin admin = new Admin();
+	    static Paackage p = new Paackage();
 	    static Customer customer1 = new Customer();
 	    static Event event1=new Event();
 	    static Provider provider1=new Provider();
-	   public final ArrayList<Customer> customers = new ArrayList<>();
-	   private final ArrayList<Provider> providers = new ArrayList<>();
-	   private final ArrayList<Event> events = new ArrayList<>();
-	   public List<ServiceDetails> serviceDetails = new ArrayList<>();
+	   public final static ArrayList<Customer> customers = new ArrayList<>();
+	   private final static ArrayList<Provider> providers = new ArrayList<>();
+	   private final static ArrayList<Event> events = new ArrayList<>();
+	   public static List<ServiceDetails> serviceDetails = new ArrayList<>();
 
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    static final String CUSTOMER_FILE_NAME = "customer.txt";
@@ -76,12 +76,12 @@ public class Functions {
 	    static final String LINE = "----------------------------------------";
 	    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	    
-	    private String id1;
+	    private static String id1;
 		  
-	    private String id;
-	    private String password;
+	    private static  String id;
+	    private static String password;
 	    
-///////////////////////////////////////////////////////////////////////////////////////
+static ///////////////////////////////////////////////////////////////////////////////////////
 	    void inputs(){
 	    	printing.printSomething("Enter Id: ");
 	    	id = scanner.next();
@@ -89,7 +89,7 @@ public class Functions {
 	    	password = scanner.next();
 	    	}
 ///////////////////////////////////////////////////////////////////////////////////////
-	    void signInFunction() throws Exception {
+	    static void signInFunction() throws Exception {
 	        int c;
 	        signInPageList();
 	        printing.printSomething(ENTER_CHOICE);
@@ -165,8 +165,8 @@ public class Functions {
 	            default:printing.printSomething("\n"+INVALID_CHOICE);}}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    int x =1;
-	    void adminPage() throws IOException, Exception
+	    static  int x =1;
+	  public static  void adminPage() throws IOException, Exception
 	    { 
 
 	    	while (x > 0) {
@@ -232,7 +232,7 @@ public class Functions {
 	         }
 	      }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    public void customerOptions(int x) throws Exception {
+	    public static void customerOptions(int x) throws Exception {
 	    	
 	        switch (x){
 	            case 1:
@@ -378,7 +378,7 @@ public class Functions {
 	        }
 	    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    public void providerOptions(int choice) throws Exception {
+	    public static void providerOptions(int choice) throws Exception {
 	        switch (choice) {
 	            case 1:
 	            	updateProvidersList();
@@ -424,7 +424,7 @@ public class Functions {
 	        }
 	    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	   private void VenueManagementOptions(int C) {
+	   private static void VenueManagementOptions(int C) {
 	  	  Scanner scanner = new Scanner(System.in);
 	  	switch (C)
 	  	{
@@ -452,7 +452,7 @@ public class Functions {
 	  	}
 	  }     
                             /////////////////////////////////////////////////////////////////////
-       private void EventManagementOptions(int cE) throws Exception {
+       private static void EventManagementOptions(int cE) throws Exception {
        switch (cE) {
         case 1:
         if( viewalleventsforAdmin("requst.txt")) {
@@ -552,7 +552,7 @@ public class Functions {
  }
 }
                            /////////////////////////////////////////////////////////////////////// 
-      private void ProviderAdminManagementOptions(int p) throws Exception {
+      private static void ProviderAdminManagementOptions(int p) throws Exception {
     		switch (p) {
     	    case 1:
     	    	 viewallprovider("provider.txt");
@@ -567,7 +567,7 @@ public class Functions {
     	      	break;    
             }}    
                           /////////////////////////////////////////////////////////////////////// 
-      private void DiscountManagementOptions(int C) {
+      private static void DiscountManagementOptions(int C) {
     	  Scanner scanner = new Scanner(System.in);
     	switch (C)
     	{
@@ -595,7 +595,7 @@ public class Functions {
     	}
     }
 	                     ///////////////////////////////////////////////////////////////////////    
-      private void PackageManagementOptions(int r)
+      private static void PackageManagementOptions(int r)
       {
       	
       	Scanner scanner = new Scanner(System.in);
@@ -623,7 +623,7 @@ public class Functions {
       }
                         /////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      public void viewCustomersanddelete() {
+      public static void viewCustomersanddelete() {
           updateCustomersList();
           printing.printSomething("List of Customers: \n");
           for (Customer customer1 : customers) {            
@@ -642,7 +642,7 @@ public class Functions {
           }
       }
       
-      public void viewCustomer() {
+      public static void viewCustomer() {
           updateCustomersList();
           printing.printSomething("List of Customers: \n");
           for (Customer customer1 : customers) {            
@@ -651,7 +651,7 @@ public class Functions {
           }}
       
                         /////////////////////////////////////////////////////////////////////////
-      public boolean viewallprovider(String filename) {
+      public static boolean viewallprovider(String filename) {
  		 List<Provider> prov = new ArrayList<>();
  	 		  Provider provider2 = new Provider();
  		   		    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -675,7 +675,7 @@ public class Functions {
  		    }
  		   return true;}
                        /////////////////////////////////////////////////////////////////////////			
-      public boolean viewallservice(String filename) {
+      public static boolean viewallservice(String filename) {
       	updateServiceList();
   		    if (serviceDetails.isEmpty()) {
   		        printing.printSomething("No Services found.\n");
@@ -686,39 +686,7 @@ public class Functions {
   		       }
   		     return true;}
                     /////////////////////////////////////////////////////////////////////////			
-  
-      /*
-       * public  boolean view_service_accordingIDs(String filename,List<String> serviceIds) {
-    	  updateServiceList();
-    	    if (serviceDetails.isEmpty()) {
-    	        printing.printSomething("No Services found.\n");
-    	        return false;
-    	    }
-    	    
-    	    StringBuilder sb = new StringBuilder();
-    	  for (String serviceId : serviceIds) {
-    	        serviceId = serviceId.replaceAll("\\[\\[|\\]\\]", "");
-    	       
-    	        for (ServiceDetails service : serviceDetails) {
-    	        	if (serviceId.equalsIgnoreCase("[No service]")) {
-    	        		sb.append("No service");
-    	        	    break;
-    	        	}
-    	        	
-    	            if (service.getServiceID().equals(serviceId)) {
-    	            	sb.append(service.getServiceName()).append(".");
-    	                break;
-    	            }
-    	        }
-    	    }
-    	    
-    	    printing.printSomething(sb.toString());
-    	    
-    	    return true;}
-      */
-
-                      /////////////////////////////////////////////////////////////////////////			
-      public boolean viewalleventsforAdmin(String filename) {
+     public static boolean viewalleventsforAdmin(String filename) {
 		  updateEventList(filename);
 		    if (events.isEmpty()) {
 		        printing.printSomething("No events found.\n");
@@ -762,7 +730,7 @@ public class Functions {
     	        }
     	    }}
  	                  //////////////////////////////////////////////////////////////////////
-    public boolean viewCostomerevents( String Cid,String filename) throws Exception {
+    public static boolean viewCostomerevents( String Cid,String filename) throws Exception {
 		 boolean foundd = false; 
 		    updateeventandcustomer(filename); 
 		    for (Customer customer : customers) {
@@ -785,7 +753,7 @@ public class Functions {
 		    
 			return foundd;}
                  //////////////////////////////////////////////////////////////////////////
-  	private boolean viewproviderservice(String id2) throws FileNotFoundException, IOException {
+  	private static boolean viewproviderservice(String id2) throws FileNotFoundException, IOException {
   		 boolean found = false; 
 
   		  updateProviderAndServiceList(); 
@@ -814,7 +782,7 @@ public class Functions {
   		    return found;
   	}
                  //////////////////////////////////////////////////////////////////////////
-  	private void viewBusinessReports() {
+  	private static void viewBusinessReports() {
   	    updateCustomersList();
   	    updateEventList("event.txt");
   	    tmp = "=================Reports================="+"\nThe  number of Customers " + customers.size()+
@@ -867,7 +835,7 @@ public class Functions {
   	    
   	}
               //////////////////////////////////////////////////////////////////////////////
-    public void showAdminMessage(String userId) {
+    public static void showAdminMessage(String userId) {
         try (BufferedReader reader = new BufferedReader(new FileReader("Msg.txt"))) {
             String line;
             boolean found = false;
@@ -934,7 +902,7 @@ public class Functions {
 
   } 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
-    public int countLines(String filePath) {
+    public static int countLines(String filePath) {
         int count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             while (reader.readLine() != null) {
@@ -951,7 +919,7 @@ public class Functions {
 
 
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
-    public Event addevent (String filename) throws Exception {
+    public static Event addevent (String filename) throws Exception {
         updateEventList("requst.txt");
         updateEventList("event.txt");
          event_obj = new Event();	            
@@ -963,7 +931,7 @@ public class Functions {
          addevent( filename);return null; }
     	    else  {   	            	  
          event_obj.setEID(id1);
-         event_obj.setUID(this.id);
+         event_obj.setUID(id);
          printing.printSomething("Enter event name:");  
          event_obj.setName(scanner.next());
          printing.printSomething("Enter event date (yyyy-MM-dd):");
@@ -1064,7 +1032,7 @@ public class Functions {
      return event_obj;
  }               
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public ServiceDetails addService() throws Exception {
+    public static ServiceDetails addService() throws Exception {
         updateServiceList();
        ServiceDetails service = new ServiceDetails();
 
@@ -1207,7 +1175,7 @@ public class Functions {
         addVenueToFile(filename, venueDetails);
         System.out.println("Venue successfully added.");
         }
-    public void addBookingVenue(String venid, String custid, String date, String status, String eventid) {
+    public static void addBookingVenue(String venid, String custid, String date, String status, String eventid) {
         try (FileWriter writer = new FileWriter("venuebook.txt", true)) {
             writer.write(venid + "," + custid + "," + date + "," + status +","+eventid+ "\n");
             System.out.println("Booking added successfully.");
@@ -1230,7 +1198,7 @@ public class Functions {
 
 
 /////////////////////////////////////////////////////////////////////////////////
-     private void SendmsgtoCustomer(String msg,Event event) {
+     private static void SendmsgtoCustomer(String msg,Event event) {
   	  try {
   		  FileWriter  File = new FileWriter("Msg.txt", true);
           File.append("The Event ")
@@ -1583,9 +1551,9 @@ public class Functions {
 	    }
 	}
 
-    public boolean checkAvailability(String venueName, String date) throws IOException {
+    public static boolean checkAvailability(String venueName, String date) throws IOException {
         // Look up venue ID by name
-        String venueId = getVenueIdByName(venueName);
+        String venueId = new String();
         
         // If venue name doesn't exist or there's an error getting venue ID, return false
         if (venueId == null) {
@@ -1594,7 +1562,7 @@ public class Functions {
         }
         return checkAvailabilityById(venueId, date);
     }
-    private boolean checkAvailabilityById(String venueId, String date) throws IOException {
+    private static boolean checkAvailabilityById(String venueId, String date) throws IOException {
         File venueBookFile = new File("venuebook.txt");
         Scanner scanner = new Scanner(venueBookFile);
 
@@ -1636,7 +1604,7 @@ public class Functions {
         }
         return 0; // Venue name not found or error occurred
     }
-    private String getVenueIdByName(String venueName) throws IOException {
+    private static String getVenueIdByName(String venueName) throws IOException {
         File venueFile = new File("venue.txt");
         Scanner scanner = new Scanner(venueFile);
         
@@ -1655,7 +1623,7 @@ public class Functions {
         scanner.close();
         return null; // Venue not found
     }
-    public int getVenueCapacity(String venueName) throws IOException {
+    public static int getVenueCapacity(String venueName) throws IOException {
         File venueFile = new File("venue.txt");
         Scanner scanner = new Scanner(venueFile);
         
@@ -1673,7 +1641,7 @@ public class Functions {
         return -1; // Venue not found
     }
 ////////////////////////////////////////////////////////////////////////////         
-public void selectpackagee() throws Exception {
+public static void selectpackagee() throws Exception {
     Scanner scanner = new Scanner(System.in);
 
     try {
@@ -2086,7 +2054,7 @@ void customerSignUp() throws Exception {
         customer_obj .addCustomerToFile(customer_obj);
     }
 }
-public void updateCustomerProfile(int n) throws IOException {
+public static void updateCustomerProfile(int n) throws IOException {
     String tmp1;
     for (Customer customer1 : customers) {
         if (customer1.getId().equals(id)) {
@@ -2120,7 +2088,7 @@ public void updateCustomerProfile(int n) throws IOException {
         }
     }
 }
-public void deleteCustomerProfile(String val) throws IOException {
+public static void deleteCustomerProfile(String val) throws IOException {
     if (val.equalsIgnoreCase("yes")) {
         File inputFile = new File(CUSTOMER_FILE_NAME);
         File tempFile = new File("temp.txt");
@@ -2145,7 +2113,7 @@ public void deleteCustomerProfile(String val) throws IOException {
         printing.printSomething("\nAccount Successfully Deleted\n\n");
     }
 }
-public boolean deleteCustomer(String id) {
+public static boolean deleteCustomer(String id) {
     String trimmedId = id.trim();
     for (int i = 0; i < customers.size(); i++) {
         String customerId = customers.get(i).getId().trim(); 
@@ -2188,7 +2156,7 @@ public  void providerSignUp() throws Exception {
           Provider. addProviderToFile(provider_obj);
         }
 }
-public void updateProviderProfile(int n) throws IOException {
+public static void updateProviderProfile(int n) throws IOException {
     String tmp1;
     for (Provider provider1 : providers) {
         if (provider1.getId().equals(id)) {
@@ -2225,7 +2193,7 @@ public void updateProviderProfile(int n) throws IOException {
 	
 }
 /////////////////////////////////////
-public void updateCustomerFile() {
+public static void updateCustomerFile() {
     try {
         FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME);
         for (Customer customer : customers) {
@@ -2242,7 +2210,7 @@ public void updateCustomerFile() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                            //SEARCH IDS//
-boolean searchIdU(String id) {
+static boolean searchIdU(String id) {
     boolean f = false;
     try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
         String line;
@@ -2253,7 +2221,7 @@ boolean searchIdU(String id) {
     return f;
 }
 
-boolean searchIdP(String id) {
+static boolean searchIdP(String id) {
     boolean f = false;
     try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
         String line;
@@ -2264,7 +2232,7 @@ boolean searchIdP(String id) {
     return f;
 }
 
-boolean searchIdE(String id3, String filename) {
+static boolean searchIdE(String id3, String filename) {
     try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
         String line;
         while ((line = br.readLine()) != null) {
@@ -2284,7 +2252,7 @@ boolean searchIdE(String id3, String filename) {
     return false; // Return false if the ID is not found in any line
 }
 
-boolean searchIdS(String serviceID, String fileName) {
+static boolean searchIdS(String serviceID, String fileName) {
     try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
         String line;
         while ((line = br.readLine()) != null) {
@@ -2306,7 +2274,7 @@ boolean searchIdS(String serviceID, String fileName) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                    //UPDATE ON LISTS//
-public void updateEventList( String filename) {
+public static void updateEventList( String filename) {
       String line;
       events.clear();
       FileReader eventFileReader;
@@ -2321,7 +2289,7 @@ public void updateEventList( String filename) {
          eventFileReader.close(); }
          catch (IOException e){ printing.printSomething("An error occurred: " + e.getMessage()); }}
 //////////////////////////////////////
-public void updateCustomersList() {
+public static void updateCustomersList() {
     String line;
     customers.clear();
     FileReader customersFileReader;
@@ -2337,7 +2305,7 @@ public void updateCustomersList() {
         catch (IOException e) { printing.printSomething("An error occurred: " + e.getMessage());}}
 
 //////////////////////////////////////
-public void updateeventandcustomer(String filename) throws Exception {
+public  static void updateeventandcustomer(String filename) throws Exception {
     updateEventList(filename);
     updateCustomersList();
 
@@ -2353,7 +2321,7 @@ public void updateeventandcustomer(String filename) throws Exception {
     }
 }
 //////////////////////////////////////
-public void updateProvidersList() {
+public static void updateProvidersList() {
     providers.clear(); 
     try (BufferedReader br = new BufferedReader(new FileReader("provider.txt"))) {
         String line;
@@ -2363,7 +2331,7 @@ public void updateProvidersList() {
         }}
       catch (IOException e) {printing.printSomething("Error reading provider data: " + e.getMessage()); }}
 //////////////////////////////////////
-public void updateServiceList() {
+public static void updateServiceList() {
     try (BufferedReader br = new BufferedReader(new FileReader("service.txt"))) {
         String line;
         serviceDetails.clear();
@@ -2374,7 +2342,7 @@ public void updateServiceList() {
             }}
              catch (IOException e) { printing.printSomething("An error occurred: " + e.getMessage());}}
 /////////////////////////////////////
-public void updateProviderAndServiceList() throws FileNotFoundException, IOException {
+public  static void updateProviderAndServiceList() throws FileNotFoundException, IOException {
              updateProvidersList();
 			 updateServiceList();
 			String P=null,S=null;
@@ -2390,14 +2358,14 @@ public void updateProviderAndServiceList() throws FileNotFoundException, IOExcep
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //==========================================================================================================================================
                                                      //PAGE LISTS//
-public void signInPageList(){
+public static void signInPageList(){
     printing.printSomething("\n---------- Sign in Page ----------"+"\n|                                |"+
             "\n|        1. Administrator        |"+"\n|        2. Customer             |"+
             "\n|        3. Provider             |"+"\n|                                |"+
             "\n----------------------------------\n" );
 }
 
-public void adminList() {      
+public static void adminList() {      
     printing.printSomething("\n--------- Welcome to Admin Page --------\n"+SPACE+
             "\n|   1. Customer Management             |"+"\n|   2. Discount Management             |"+
             "\n|   3. Event Management                |"+"\n|   4. Venue Management                |"+
@@ -2405,7 +2373,7 @@ public void adminList() {
             "\n|   7. View Report                     |"+"\n|   8. Log Out                         |"+            
             "\n \n"
     );}
-public void customerPageList(){
+public  static void customerPageList(){
     printing.printSomething("\n------- Welcome to Customer Page -------\n"+SPACE+"\n|        1. Update My Profile          |"+
             "\n|        2. Make An Event              |"+"\n|        3. Update Event               |"+
             "\n|        4. Cancel Event               |"+"\n|        5. Search                     |"+
@@ -2416,7 +2384,7 @@ public void customerPageList(){
             "\n|        13. Log out                   |\n"+SPACE+"\n"+LINE+"\n"
             +ENTER_CHOICE );}
 
-    public void providerPageList() {
+    public  static void providerPageList() {
     printing.printSomething("\n-------- Welcome to Providers Page --------\n" + SPACE +
             "\n|        1. Update My Profile           |" + "\n|        2. Add Service                 |" +
             "\n|        3. Update Service              |" + "\n|        4. Delete Service              |" +
@@ -2424,7 +2392,7 @@ public void customerPageList(){
             "\n|        7. Log Out                    |\n" +
             SPACE + "\n----------------------------------------\n" + ENTER_CHOICE);
 }
-    public void EventManagementAdminPageList() {
+    public static void EventManagementAdminPageList() {
     printing.printSomething(
         "\n\033[1;33m"+
         "---- Welcome to EventManagement Page ----\n" +
@@ -2439,7 +2407,7 @@ public void customerPageList(){
     );
 }
 
-public void UserManagementAdminPageList() {
+public static void UserManagementAdminPageList() {
     printing.printSomething(
         "\n\033[1;33m" +
         "---- Welcome to User Management Page ----\n" +
@@ -2450,7 +2418,7 @@ public void UserManagementAdminPageList() {
         "\033[1;36m" + "\n" + "\n\033[0m"
     );
 }
-public void UserSearchPageList() {
+public static void UserSearchPageList() {
  printing.printSomething(
      "\n\033[1;33m" +
      "---- Welcome to User Search Page ----\n" +
@@ -2462,7 +2430,7 @@ public void UserSearchPageList() {
  );
 }
 
-public void VenueManagementadminList() {
+public static void VenueManagementadminList() {
     printing.printSomething(
         "\n\033[1;33m" +
         "---- Welcome to Venue Management Page ----\n" +
@@ -2477,7 +2445,7 @@ public void VenueManagementadminList() {
         "\033[1;36m" +"\n" + "\n\033[0m"
     );}
 
-public void ProviderManagementAdminPageList() {
+public static void ProviderManagementAdminPageList() {
  printing.printSomething(
     "\n\033[1;33m" +
     "---- Welcome to Provider Management Page ----\n" +
@@ -2489,7 +2457,7 @@ public void ProviderManagementAdminPageList() {
     "\033[1;36m" +"\n" + "\n\033[0m"
 );}
 
-public void PackageManagementadminList() {
+public static void PackageManagementadminList() {
   printing.printSomething(
       "\n\033[1;33m" +
       "---- Welcome to Package Management Page ----\n" +
@@ -2502,7 +2470,7 @@ public void PackageManagementadminList() {
       "\033[1;36m" +"\n" + "\n\033[0m"
   );}
 
-public void DiscountManagementadminList() {
+public static void DiscountManagementadminList() {
   printing.printSomething(
       "\n\033[1;33m" +
       "---- Welcome to Discount Management Page ----\n" +
@@ -2530,7 +2498,7 @@ public void DiscountManagementadminList() {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
-public List<Event> makeListofEvent(String Cid) throws Exception {
+public static List<Event> makeListofEvent(String Cid) throws Exception {
 updateeventandcustomer("event.txt");
 
 List<Event> customerEvents = new ArrayList<>();
@@ -2551,7 +2519,7 @@ return customerEvents;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //method to load events for a specific customer in calendar
-public Calendar loadEventsForCustomerInCalendar(String customerId) {
+public static Calendar loadEventsForCustomerInCalendar(String customerId) {
 List<Event> customerEvents;
 try {
 customerEvents = makeListofEvent(customerId);
@@ -2577,7 +2545,7 @@ e.printStackTrace();
 
 
 
-public void displayAllCustomerEvents(Calendar calendar) {
+public static void displayAllCustomerEvents(Calendar calendar) {
 // Keep track of displayed months
 Set<String> displayedMonths = new HashSet<>();
 
@@ -2612,7 +2580,7 @@ displayedMonths.add(yearMonthKey);
 }
 // 
 
-public void displayCalendarEvents(Calendar calendar) {
+public static void displayCalendarEvents(Calendar calendar) {
 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
 DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
 
@@ -2688,7 +2656,7 @@ printing.printInColor("+--------------------------------------------------------
 
 
 
-private void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay, DateTimeFormatter dayFormatter) {
+private static void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay, DateTimeFormatter dayFormatter) {
 
 for (int i = 0; i < 7; i++) {
 for (LocalDate currentDate = startDay; currentDate.isBefore(endDay.plusDays(1)); currentDate = currentDate.plusDays(1)) {

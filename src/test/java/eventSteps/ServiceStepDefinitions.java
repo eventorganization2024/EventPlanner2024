@@ -25,6 +25,7 @@ public class ServiceStepDefinitions {
     @Before
     public void setUp() {
         serviceProviderService = new Provider();
+        ServiceDetails service =new ServiceDetails(); ///////////
     }
 
     

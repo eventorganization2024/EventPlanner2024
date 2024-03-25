@@ -38,13 +38,13 @@ public class Event {
     private String category;
     private String eventId;
     private String venueName;
-    public boolean creat=false;
-	public boolean cancel;
+   
+	
 	public String EVENTID;
     private List<String> serviceIds = new ArrayList<>();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-	int numberOfServices=0;
+
 	
    static Printing printing = new Printing();
    Functions f =new Functions();
@@ -67,7 +67,7 @@ private String Venuenamee;
         this.theme= theme;
         this .eventId=Eid;
         this.Venuenamee=Venuename;
-        this.numberOfServices=0;
+      
         }
     
     public Event(String name, Date date, String time,  String description, String attendeeCount, String UserID, String theme ,String category,String Venuename,List<String> serviceIds,String Eid) {
@@ -171,7 +171,7 @@ private String Venuenamee;
         String line;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            int currentLine = 1;
+           
             while ((line = reader.readLine()) != null) {
                 Event e = getEventFromLine(line);
                 if (e != null) {
@@ -180,11 +180,13 @@ private String Venuenamee;
                         return e;
                     }
                 }
-                currentLine++;
+                
+               
             }
         }
+		return null;
 
-        return null;
+       
     }
 
     
