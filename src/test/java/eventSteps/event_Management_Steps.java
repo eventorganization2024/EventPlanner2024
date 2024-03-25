@@ -87,8 +87,8 @@ public class event_Management_Steps {
 	        event.setUID(customer1.getId());
 	        */
 		  customer1.addEvent(event);
-        assertEquals(1, customer1.getEvents().size());
-        assertNotNull(customer1.Cevents);
+         assertEquals(1, customer1.getEvents().size());
+        assertNotNull(customer1.getCevents());
         assertTrue(customer1.getEvents().contains(event));
 	   	    event.addEventToFile(event, "event.txt");
 	   	
