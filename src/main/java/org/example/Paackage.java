@@ -62,11 +62,11 @@ public String getTitle() {
 }
 
 
-Paackage(int id2, String name,String description,double price, String validityDate)
+Paackage(int id2, String name,String description,double price)
 {
-	this.id=id2; this.description=description;this.price=price; this.validityPeriod=validityPeriod;
-	this.title=name;
-	}
+	this.id=id2; this.description=description;this.price=price; 
+	
+}
 
 @Override
 public String toString() {
