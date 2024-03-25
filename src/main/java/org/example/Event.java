@@ -42,8 +42,7 @@ public class Event {
     static Scanner scannerr = new Scanner(System.in);
 	   
     static Printing printing = new Printing();
-    static Functions func =new Functions();
-     
+    
     
    
    
@@ -408,7 +407,7 @@ public class Event {
         	    + RESET_COLOR // Reset text color to default
         	    );} 
 	
-    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException {
+    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException ,NullPointerException{
        Event eventToUpdated = findeventID(eventidd, filename);
 
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
@@ -512,7 +511,7 @@ public class Event {
     }
     private Event updateEventServices(Event eventt) {
     	Functions.updateServiceList();
-    	func.viewallservice("service.txt");
+    	Functions.viewallservice("service.txt");
         printing.printSomething("\nEnter new service IDs (comma-separated):\n");
         String serviceIdsInput = scannerr.next();
         List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
@@ -522,7 +521,7 @@ public class Event {
     }
  
     
-    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException, ParseException {
+    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
         printing.printSomething("\nEnter new event venue name:");
        String newVenueName = scannerr.next();
@@ -533,8 +532,8 @@ public class Event {
         do {
             printing.printSomething("Enter Venue name:");
             venueName = scannerr.next();
-            if (func.checkAvailability(venueName,eventDateString )) {
-                if (Integer.parseInt(eventt.getAttendeeCount()) <= func.getVenueCapacity(venueName)) {
+            if (Functions.checkAvailability(venueName,eventDateString )) {
+                if (Integer.parseInt(eventt.getAttendeeCount()) <= Functions.getVenueCapacity(venueName)) {
                     venueAvailable = true;
                     eventt.setVenuename(venueName);
                 } else {
@@ -547,7 +546,7 @@ public class Event {
 
         
         eventt.setVenuename(venueName);
-       eventt.updateVenueInVenueBook(eventidd, venueName, VENUEBOOK_FILE_NAME);
+       eventt.updateVenueInVenueBook(eventidd, venueName, filename);
           }
 //////////////////////////////////////////////////////////
     private void updateEventInFile(Event event2, String filename) throws IOException {
@@ -625,8 +624,7 @@ public void updateVenueInVenueBook(String eventId, String newV, String venueBook
                         date = DATE_FORMAT.parse(parts[2]);
                     } catch (ParseException e) {
 
-                        e.printStackTrace();
-                       
+                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
                     }
                     newV= DATE_FORMAT.format(date) ;
                    line = String.join(",", parts);
