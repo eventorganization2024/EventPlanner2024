@@ -31,13 +31,16 @@ public class Event {
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+   
     private static final String ERROR_PREFIX = "An error occurred: ";
-
+    static final String VENUE_FILE_NAME = "venue.txt";
+	   
 
 	static Event eventToUpdated ;
     static Printing printing = new Printing();
     static Functions func =new Functions();
-   
+     static Scanner scanner = new Scanner(System.in);
+    
    
    
     public  Event() {}
@@ -247,29 +250,29 @@ public class Event {
        
  
    
-	     
+	    void printUpdateList() {
+	    	printing.printSomething("\033[0;35m" + // Set text color to magenta
+	        	    '\n' +
+	        	    "UserID: " + eventToUpdated.userId + '\n' +
+	        	    "Event ID: " + eventToUpdated.eventId + '\n' +
+	        	    "1. Name: " + eventToUpdated.name + '\n' +
+	        	    "2. Date: " + DATE_FORMAT.format(eventToUpdated.date) + '\n' +
+	        	    "3. Time: " + eventToUpdated.time + '\n' +
+	        	    "4. Description: " + eventToUpdated.description + '\n' +
+	        	    "5. Attendee Count: " + eventToUpdated.attendeeCount + '\n' +
+	        	    "6. Theme: " + eventToUpdated.theme + '\n' +
+	        	    "7. Category: " + eventToUpdated.category + '\n' +
+	        	    "8. Venue Name: " + eventToUpdated.venueName + '\n' +
+	        	    "9. Service IDs: " + eventToUpdated.getServiceIds() + '\n'
+	        	    + "\033[0m" // Reset text color to default
+	        	    );} 
     	
-     public Event updateEvent(String id, String filename) throws IOException  {
+      public Event updateEvent(String id, String filename) throws IOException  {
     	     eventToUpdated = findeventID(id, filename);
 
     	    if (eventToUpdated != null && eventToUpdated.getEID() != null) {
-    	        Scanner scanner = new Scanner(System.in);
-
-    	        eventToUpdated.printing.printSomething("\033[0;35m" + // Set text color to magenta
-    	        	    '\n' +
-    	        	    "UserID: " + eventToUpdated.userId + '\n' +
-    	        	    "Event ID: " + eventToUpdated.eventId + '\n' +
-    	        	    "1. Name: " + eventToUpdated.name + '\n' +
-    	        	    "2. Date: " + DATE_FORMAT.format(eventToUpdated.date) + '\n' +
-    	        	    "3. Time: " + eventToUpdated.time + '\n' +
-    	        	    "4. Description: " + eventToUpdated.description + '\n' +
-    	        	    "5. Attendee Count: " + eventToUpdated.attendeeCount + '\n' +
-    	        	    "6. Theme: " + eventToUpdated.theme + '\n' +
-    	        	    "7. Category: " + eventToUpdated.category + '\n' +
-    	        	    "8. Venue Name: " + eventToUpdated.venueName + '\n' +
-    	        	    "9. Service IDs: " + eventToUpdated.getServiceIds() + '\n'
-    	        	    + "\033[0m" // Reset text color to default
-    	        	    );
+    	        printUpdateList();
+    	        
 
     	        printing.printSomething ("\nEnter the number of the field you want to update: ");
     	        String choice = scanner.next();
@@ -313,15 +316,14 @@ public class Event {
     	                eventToUpdated.setCategory(scanner.next());
     	                break;
     	            case "8":
-    	            	func.viewAllVenuesCustomer("venue.txt");
+    	            	func.viewAllVenuesCustomer(VENUE_FILE_NAME);
     	                printing.printSomething("\nEnter new event venue name:");
-    	             //   String newVenueName = scanner.next();
+    	               String newVenueName = scanner.next();
     	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	                String eventDateString = dateFormat.format(eventToUpdated.getDate());
     	               boolean venueAvailable=false;
     	                
     	                do {
-    	                    // Check venue availability
     	                    printing.printSomething("Enter Venue name:");
     	                    venueName = scanner.next();
     	                    if (func.checkAvailability(venueName,eventDateString )) {
