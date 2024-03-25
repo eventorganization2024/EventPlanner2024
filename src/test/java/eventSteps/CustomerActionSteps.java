@@ -20,7 +20,7 @@ public class CustomerActionSteps {
 	    static boolean deleteProfile = false;
 	    Printing printing = new Printing();
 	    Event event=new Event();
-     
+      
 	    
 	    @Given("customer log in with true {string} and {string}")
 	    public void customerLogInWithTrueAnd(String arg0, String arg1) {

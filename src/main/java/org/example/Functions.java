@@ -54,6 +54,8 @@ public class Functions {
 	    String d;
 	    static double price;
 
+	    /////
+	    
 	    static double pricee;
 	    static Admin admin = new Admin();
 	    static Paackage p = new Paackage();
@@ -277,7 +279,7 @@ static /////////////////////////////////////////////////////////////////////////
 	                        if ("done".equalsIgnoreCase(eventidd)) {
 	                            continueDeleting = false; // Exit the loop if the user enters 'done'
 	                        } else {
-	                            event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventidd);
+	                            event1.deleteEvent( "event.txt", eventidd);
 	                            printing.printSomething("\n");
 	                            continueDeleting = false;
 	                            printing.printSomething("Event deleted successfully.\n");
@@ -469,7 +471,7 @@ static /////////////////////////////////////////////////////////////////////////
          String choice = scanner.next().toUpperCase();        
          if (choice.equals("Y")) {         	
              event1= event1.findeventID(eventID, "requst.txt");
-         	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+         	event1.deleteEvent( "requst.txt", eventID);
          	event1.addEventToFile(event1, "event.txt");
             printing.printSomething("\nEvent accepted.");             
              ///to send Notification:
@@ -479,7 +481,7 @@ static /////////////////////////////////////////////////////////////////////////
          	  ///to send Notification:
          	  event1= event1.findeventID(eventID, "requst.txt");
          	SendmsgtoCustomer("has been Rejected",event1);
-         	event1.delete_event_from_file_and_arraylist(event1, "requst.txt", eventID);
+         	event1.deleteEvent("requst.txt", eventID);
          	printing.printSomething("\nEvent rejected.");
          	break;
         } else {
@@ -523,7 +525,7 @@ static /////////////////////////////////////////////////////////////////////////
                       continueDeleting = false; // Exit the loop if the user enters 'done'
                   } 
                   else {
-                      event1.delete_event_from_file_and_arraylist(event1, "event.txt", eventID);
+                      event1.deleteEvent( "event.txt", eventID);
      	              printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");
      	              continueDeleting = false;
                   }

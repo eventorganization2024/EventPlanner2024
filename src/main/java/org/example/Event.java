@@ -55,6 +55,8 @@ public class Event {
         this.venueName = venueName;
     }
 
+    
+    //////
     public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, List<String> serviceIds, String eventId) {
         this(eventName, eventDate, eventTime, eventDescription, eventAttendeeCount, userId, eventTheme, eventCategory, venueName, eventId);
         this.serviceIds.addAll(serviceIds);
@@ -177,23 +179,21 @@ public class Event {
     
 
     
-    public static Event findevent(String searchCriteria, String searchType, String filename) {
+    public  Event findevent(String searchCriteria, String searchType, String filename) {
         String line;
      
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
            
             while ((line = reader.readLine()) != null) {
-               {
-                    Event e = getEventFromLine(line);
-                    
-                    if (e != null) { // Check if "e" is not null
+            	Event e = getEventFromLine(line);
+                      if (e != null) { // Check if "e" is not null
                         if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getName())) {
                             return e;
                         } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getDate())) {
                             return e;
                         }
                     }
-                }
+               
             }
         } catch (IOException e) {
             printing.printSomething( ERROR_PREFIX  + e.getMessage());
@@ -206,10 +206,8 @@ public class Event {
     
    
 	 	
-     public void delete_event_from_file_and_arraylist(Event e, String eventFileName, String eventId2) throws IOException {
-        // Delete event from the event file
-       
-    	 String venueBookFileName = "venuebook.txt";
+     public void deleteEvent(String eventFileName, String eventId2) throws IOException {
+       String venueBookFileName = "venuebook.txt";
     	StringBuilder eventFileContent = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(eventFileName))) {
             String line;
@@ -284,15 +282,15 @@ public class Event {
     	            case "2":
     	                printing.printSomething("Enter new event date (yyyy-MM-dd):");
     	                String dateInput = scanner.next();
-    	                Date date;
+    	                Date newdate;
     	                try {
-    	                    date = DATE_FORMAT.parse(dateInput);
+    	                    newdate = DATE_FORMAT.parse(dateInput);
     	                } catch (ParseException e) {
     	                    e.printStackTrace();
     	                    return null;
     	                }
-    	                eventToUpdated.setDate(date);
-    	                eventToUpdated.updateVenueInVenueBook(id, date, "venuebook.txt");
+    	                eventToUpdated.setDate(newdate);
+    	                eventToUpdated.updateVenueInVenueBook(id, newdate, "venuebook.txt");
     	                break;
     	            case "3":
     	                printing.printSomething("Enter new event time:");
@@ -359,7 +357,7 @@ public class Event {
     	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
     	            String line;
     	            while ((line = reader.readLine()) != null) {
-    	                Event event = Event.getEventFromLine(line);
+    	                Event event =getEventFromLine(line) ;
     	                if (event != null) {
     	                	if (event.getEID() != null && event.getEID().equals(eventToUpdated.getEID())) {
     	                		  event.setDate(eventToUpdated.getDate());
@@ -419,7 +417,7 @@ public class Event {
 	    }
 	    
 	    
-	 public void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
+	 public void updateVenueInVenueBook(String eventId, String newVenue, String venueBookFileName) {
 	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
 	            StringBuilder sb = new StringBuilder();
 	            String line;
@@ -434,7 +432,7 @@ public class Event {
 	                         e.printStackTrace();
 	                        
 	                     }
-	                     newV= DATE_FORMAT.format(date) ;
+	                     newVenue= DATE_FORMAT.format(date) ;
 	                    line = String.join(",", parts);
 	                }
 	                sb.append(line).append("\n");
@@ -522,8 +520,8 @@ public class Event {
         return userId;
     }
 
-    public void setUserId(String UserId) {
-        this.userId = UserId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
            
     public String getEID() {
