@@ -1,11 +1,14 @@
 package eventSteps;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 import java.util.Map;
 
 import org.example.*;
-
+import org.junit.Test;
 import io.cucumber.datatable.DataTable;
 //import event.Venue;
 import io.cucumber.java.en.Given;
@@ -34,7 +37,19 @@ public class venueTest {
         System.out.println("Administrator is logged into the system.");
     }
 
-
+   @Test
+    public void testVenueCreation() {
+        Venue venue = new Venue("Venue Name", "Venue Address", 100, 150.0, "Available", "VenueID123", "image.jpg");
+        
+        assertNotNull(venue);
+        assertEquals("Venue Name", venue.getName());
+        assertEquals("Venue Address", venue.getAddress());
+        assertEquals(100, venue.getCapacity());
+        assertEquals(150.0, venue.getPrice(), 0.01);
+        assertEquals("Available", venue.getAvailavility());
+        assertEquals("VenueID123", venue.getId());
+        assertEquals("image.jpg", venue.getImage());
+    }
     
     @When("select to add a new venue such as details {string}, {double}, {string}, {string}, {string}, {int}")
     public void selectToAddANewVenueSuchAsDetails(String string, Double double1, String string2, String string3, String string4, Integer int1) {
