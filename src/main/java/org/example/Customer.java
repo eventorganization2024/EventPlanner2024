@@ -17,7 +17,7 @@ public class Customer extends User {
     private String email;
     private static final Logger logger = Logger.getLogger(Customer.class.getName());
 
-    static final List<Event> Cevents = new ArrayList<>();
+    static List<Event> Cevents = new ArrayList<>();
    
    
     static Printing printing = new Printing();
