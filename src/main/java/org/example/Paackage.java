@@ -65,6 +65,7 @@ public String getTitle() {
 Paackage(int id2, String name,String description,double price, String validityDate)
 {
 	this.id=id2; this.description=description;this.price=price; this.validityPeriod=validityPeriod;
+	this.title=name;
 	}
 
 @Override
