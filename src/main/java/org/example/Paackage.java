@@ -62,7 +62,7 @@ public String getTitle() {
 }
 
 
-Paackage(int id2, String name,String description,double price)
+Paackage(int id2, String description,double price)
 {
 	this.id=id2; this.description=description;this.price=price; 
 	
