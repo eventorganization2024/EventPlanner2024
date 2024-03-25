@@ -17,18 +17,19 @@ public class Customer extends User {
     private String email;
     private static final Logger logger = Logger.getLogger(Customer.class.getName());
 
-    static List<Event> Cevents = new ArrayList<>();
+   private static final List<Event> Cevents = new ArrayList<>();
    
    
     static Printing printing = new Printing();
 	Functions f =new Functions();
 	 
 	
-  
+   public static List<Event> getCevents() {
+        return Cevents;
+    }
     
-    public List<Event> getEvents() { return this.Cevents; }
-    public void addEvent(Event event) { this.Cevents.add(event); }
-    
+   public List<Event> getEvents() { return this.getCevents(); }
+    public void addEvent(Event event) { this.getCevents().add(event); }
     
 	
     
