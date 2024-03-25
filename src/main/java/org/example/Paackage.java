@@ -19,6 +19,7 @@ private String title;
 	
 	
 public Paackage(){}
+private static final String PACKAGE_WITH_ID = "Package with ID ";
 static Printing print=new Printing ();
 public void setId(int id) {
     this.id = id;
@@ -167,21 +168,20 @@ public static void updatePackage(Scanner scanner, String filename) {
 }
 
 public static void deletePackageById(Scanner scanner, String filename) {
-
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
-    	print.printSomething("No packages found.");
+        print.printSomething("No packages found.");
         return;
     }
 
     print.printSomething("All Packages:");
     for (Paackage p : packages) {
-    	print.printSomething("Package ID: " + p.getId() + " Name: " + p.getTitle());
+        print.printSomething("Package ID: " + p.getId() + " Name: " + p.getTitle());
     }
 
     while (true) {
-    	print.printSomething("Enter the ID of the package to remove: ");
+        print.printSomething("Enter the ID of the package to remove: ");
         int packageIdToRemove = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
@@ -191,22 +191,21 @@ public static void deletePackageById(Scanner scanner, String filename) {
             if (p.getId() == packageIdToRemove) {
                 found = true;
                 packages.remove(p);
-                print.printSomething("Package with ID " + packageIdToRemove + " successfully removed.");
+                print.printSomething(PACKAGE_WITH_ID + packageIdToRemove + " successfully removed.");
                 break;
             }
         }
 
         if (found) {
-            break; 
+            break;
         } else {
-        	print.printSomething("Package with ID " + packageIdToRemove + " not found.");
-        	print.printSomething("Please insert a new ID.");
+            print.printSomething(PACKAGE_WITH_ID + packageIdToRemove + " not found.");
+            print.printSomething("Please insert a new ID.");
         }
     }
 
     savePackagesToFile(filename, packages);
 }
-
 public static List<Paackage> readPackagesFromFile(String filename) {
     List<Paackage> packages = new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -257,7 +256,7 @@ public static void viewAllPackagesFromFile(String filename) {
         return;
     }
 
-    System.out.println("All Packages:");
+   print.printSomething("All Packages:");
     for (Paackage p : packages) {
     	print.printSomething("ID: " + p.getId() +
                 "  Name: " + p.getTitle() +
