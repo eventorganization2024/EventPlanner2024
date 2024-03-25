@@ -6,6 +6,9 @@ package eventSteps;
 
 import static org.junit.Assert.assertFalse;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -16,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import org.junit.Test;
 
 import org.example.Customer;
 import org.example.Event;
@@ -83,9 +86,30 @@ public class event_Management_Steps {
 	        event.setEID(string9);
 	        event.setUID(customer1.getId());
 	        */
+		  customer1.addEvent(event);
+        assertEquals(1, customer1.getEvents().size());
+        assertNotNull(customer1.Cevents);
+        assertTrue(customer1.getEvents().contains(event));
 	   	    event.addEventToFile(event, "event.txt");
+	   	
 	   	   }
-	
+
+
+	 @Test
+	    public void testGetEvents() {
+	      
+	       
+	        customer1.addEvent(event);
+	        customer1.addEvent(event);
+	        assertEquals(2, customer1.getEvents().size());
+	    }
+
+	    @Test
+	    public void testGetEventsEmpty() {
+	       
+	        assertTrue(customer1.getEvents().isEmpty());
+	    }
+
 	
 	@Then("the event is added to admin requst")
 	public void theEventIsAddedToAdminRequst() throws Exception {  event.addEventToFile(event,"event.txt");
