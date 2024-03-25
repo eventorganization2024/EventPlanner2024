@@ -549,7 +549,7 @@ public class Event {
        eventt.updateVenueInVenueBook(eventidd, venueName, filename);
           }
 //////////////////////////////////////////////////////////
-    private void updateEventInFile(Event event2, String filename) throws IOException {
+    private void updateEventInFile(Event event2, String filename) throws IOException,NullPointerException {
     	 List<Event> events = new ArrayList<>();
 	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 	            String line;
