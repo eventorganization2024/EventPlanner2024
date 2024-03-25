@@ -186,29 +186,7 @@ public class Event {
 
     
 
-    
-    public  Event findevent(String searchCriteria, String searchType, String filename) {
-        String line;
-     
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-           
-            while ((line = reader.readLine()) != null) {
-            	Event e = getEventFromLine(line);
-                      if (e != null) { 
-                        if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getName())) {
-                            return e;
-                        } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getDate())) {
-                            return e;
-                        }
-                    }
-               
-            }
-        } catch (IOException e) {
-            printing.printSomething( ERROR_PREFIX  + e.getMessage());
-        }
-        return null;
-    }
-
+ 
 
    
     
@@ -264,15 +242,15 @@ public class Event {
 	            while ((line = reader.readLine()) != null) {
 	                String[] parts = line.split(",");
 	                if (parts.length >= 5 && parts[4].equals(eventId)) {
-	                	 Date date;
+	                	 Date date2;
 	                     try {
-	                         date = DATE_FORMAT.parse(parts[2]);
+	                         date2 = DATE_FORMAT.parse(parts[2]);
 	                     } catch (ParseException e) {
 
 	                         e.printStackTrace();
 	                        
 	                     }
-	                     date=newDate;
+	                     date2=newDate;
 	                    line = String.join(",", parts);
 	                }
 	                sb.append(line).append("\n");
@@ -287,22 +265,17 @@ public class Event {
 	    }
 	    
 	    
-	 public void updateVenueInVenueBook(String eventId, String newVenue, String venueBookFileName) {
+	 public void updateVenueInVenueBook(String eventId, String newVenue, String venueBookFileName) throws ParseException {
 	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
 	            StringBuilder sb = new StringBuilder();
 	            String line;
 	            while ((line = reader.readLine()) != null) {
 	                String[] parts = line.split(",");
 	                if (parts.length >= 5 && parts[4].equals(eventId)) {
-	                	 Date date=new Date();
-	                     try {
-	                         date = DATE_FORMAT.parse(parts[2]);
-	                     } catch (ParseException e) {
-
-	                         e.printStackTrace();
-	                        
-	                     }
-	                     newVenue= DATE_FORMAT.format(date) ;
+	                	
+	                	Date dateNew = DATE_FORMAT.parse(parts[2]);
+	                     String formattedDate = DATE_FORMAT.format(dateNew);
+	                     newVenue = formattedDate;
 	                    line = String.join(",", parts);
 	                }
 	                sb.append(line).append("\n");
@@ -507,7 +480,7 @@ public class Event {
         	    + RESET_COLOR // Reset text color to default
         	    );} 
 	
-    public Event updateEvent(String eventidd, String filename) throws IOException {
+    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException {
        Event eventToUpdated = findeventID(eventidd, filename);
 
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
@@ -622,7 +595,7 @@ public class Event {
     }
  
     
-    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException {
+    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException, ParseException {
     	func.viewAllVenuesCustomer(VENUE_FILE_NAME);
         printing.printSomething("\nEnter new event venue name:");
        String newVenueName = scannerr.next();
@@ -680,7 +653,8 @@ public class Event {
 	   
 }
     
-    
+ /////////////////////////////////////////////////////////////////////////////////////////////
+
     
     
     

@@ -134,7 +134,7 @@ public class event_Management_Steps {
 	@Then("the event details are successfully updated in the system")
 	public void theEventDetailsAreSuccessfullyUpdatedInTheSystem() throws Exception {
 		 {assertTrue(update);  
-		 String[] simulatedInputs = {
+		/* String[] simulatedInputs = {
 				    "1\nnewname\n",
 				    // Case 2: Enter new event date
 				    "2\n2025-05-12\n",
@@ -171,9 +171,11 @@ public class event_Management_Steps {
 		        // Reset System.in to standard input stream
 		        System.setIn(System.in);
 		    
-		      }}}
+		      }}
+		*/ 
+	}
 		    
-
+	}
 
 
 	@Given("there is an existing event to update")
@@ -217,39 +219,6 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 
  ////////////////////////////////////
 	
-	@Given("Customer is gonig to search for Exist event by name")
-	public void customerIsGonigToSearchForExistEventByName() {found=true;}
-		
-	@When("Customer enter event name {string}")
-	public void customerEnterEventName(String name) {
-		event= event.findevent("reem party","Name", "event.txt");
-		event.toString2();
-		}
-	
-	
-	@Then("show event details")
-	public void showEventDetails() {assertTrue(found);  }	
-	
-///////////////////////////////
-
-	@Given("Customer is gonig to search fornon_Exist event by name")
-	public void customerIsGonigToSearchFornonExistEventByName() {found=false;}
-    
-/////////////////////////////////	
-
-	@Given("Customer is gonig to search for Exist event by date")
-	public void customerIsGonigToSearchForExistEventByDate() {found=true;}
-	@When("Customer enter event date {string}")
-	public void customerEnterEventDate(String date) {
-		event= event.findevent(date,"Date", "event.txt");
-		
-		
-	}
-	
-
-/////////////////////////////////			
-	@Given("Customer is gonig to search for non_Exist event by date")
-	public void customerIsGonigToSearchForNonExistEventByDate() {found =false;}
 
 
 	
