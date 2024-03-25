@@ -55,22 +55,19 @@ public static List<Event> getEvents() {
     
    
    public static void addCustomerToFile(Customer customer) {
-        try {
-            FileWriter customersFile = new FileWriter("customer.txt", true);
-            customersFile.append(customer.getId()).append(" , ")
-                    .append(customer.getUsername()).append(" , ")
-                    .append(customer.getphone()).append(" , ")
-                    .append(customer.getaddress()).append(" , ")
-                    .append(customer.getEmail()).append(" , ")
-                    .append(customer.getPassword())
-                    .append("\n");
-
-            customersFile.close();
-        } catch (IOException e) {
-            printing.printSomething("An error occurred: " + e.getMessage());
-        }
+    try (FileWriter customersFile = new FileWriter("customer.txt", true)) {
+        customersFile.append(customer.getId()).append(" , ")
+                .append(customer.getUsername()).append(" , ")
+                .append(customer.getphone()).append(" , ")
+                .append(customer.getaddress()).append(" , ")
+                .append(customer.getEmail()).append(" , ")
+                .append(customer.getPassword())
+                .append("\n");
+    } catch (IOException e) {
+        printing.printSomething("An error occurred: " + e.getMessage());
     }
-    
+}
+
     
  
     
