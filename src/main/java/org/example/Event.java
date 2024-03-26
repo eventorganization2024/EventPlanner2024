@@ -401,7 +401,7 @@ public class Event {
     }
     public static Event updateEventServices(Event eventt) {
     	Functions.updateServiceList();
-    	Functions.viewallservice("service.txt");
+    	Functions.viewallservice();
         printing.printSomething("\nEnter new service IDs (comma-separated):\n");
         Scanner scannerServ = new Scanner(System.in);
         String newServ=scannerServ.next();
