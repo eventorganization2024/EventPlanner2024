@@ -35,12 +35,14 @@ public class Event {
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
     static final String VENUEBOOK_FILE_NAME = "venuebook.txt";
-	   
-
+    private static final String RESET_COLOR = "\033[0m";
+    private static final String MAGENTA_COLOR = "\033[0;35m";
+    private static final String CYAN_COLOR = "\033[0;36m"; 
+    private static final String YELLOW_COLOR = "\033[0;33m"; 
 	static Event eventToUpdated ;
     static Printing printing = new Printing();
     static Functions func =new Functions();
-     static Scanner scanner = new Scanner(System.in);
+     
     
    
    
@@ -190,7 +192,7 @@ public class Event {
            
             while ((line = reader.readLine()) != null) {
             	Event e = getEventFromLine(line);
-                      if (e != null) { // Check if "e" is not null
+                      if (e != null) { 
                         if ("Name".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getName())) {
                             return e;
                         } else if ("Date".equalsIgnoreCase(searchType) && searchCriteria.equals(e.getDate())) {
@@ -252,7 +254,7 @@ public class Event {
  
    
 	    void printUpdateList() {
-	    	printing.printSomething("\033[0;35m" + // Set text color to magenta
+	    	printing.printSomething(MAGENTA_COLOR + // Set text color to magenta
 	        	    '\n' +
 	        	    "UserID: " + eventToUpdated.userId + '\n' +
 	        	    "Event ID: " + eventToUpdated.eventId + '\n' +
@@ -265,7 +267,7 @@ public class Event {
 	        	    "7. Category: " + eventToUpdated.category + '\n' +
 	        	    "8. Venue Name: " + eventToUpdated.venueName + '\n' +
 	        	    "9. Service IDs: " + eventToUpdated.getServiceIds() + '\n'
-	        	    + "\033[0m" // Reset text color to default
+	        	    + RESET_COLOR // Reset text color to default
 	        	    );} 
     	
       public Event updateEvent(String id, String filename) throws IOException  {
@@ -273,7 +275,7 @@ public class Event {
 
     	    if (eventToUpdated != null && eventToUpdated.getEID() != null) {
     	        printUpdateList();
-    	        
+    	        Scanner scanner = new Scanner(System.in);
 
     	        printing.printSomething ("\nEnter the number of the field you want to update: ");
     	        String choice = scanner.next();
@@ -558,9 +560,9 @@ public class Event {
 
     public String toString2() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\033[0;36m"); // Set text color to cyan
+        sb.append(CYAN_COLOR); // Set text color to cyan
         sb.append("Event Details:\n");
-        sb.append("\033[0;33m"); // Set text color to yellow for attribute names
+        sb.append(YELLOW_COLOR); // Set text color to yellow for attribute names
         sb.append("- UserID: ").append(userId).append("\n");
         sb.append("- Name: ").append(name).append("\n");
         sb.append("- Date: ").append(DATE_FORMAT.format(date)).append("\n");
@@ -590,7 +592,7 @@ public class Event {
 	            }
 	        }
 	    }
-        sb.append("\033[0m"); // Reset text color
+        sb.append(RESET_COLOR); // Reset text color
         return sb.toString();
     }
 
@@ -598,12 +600,12 @@ public class Event {
 
     public String toString() {
     	StringBuilder sb = new StringBuilder();
-        sb.append("\033[0;35m"); // Set text color to magenta
+        sb.append(MAGENTA_COLOR); // Set text color to magenta
         sb.append("Name: ").append(name).append(", ")
           .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
           .append("User ID: ").append(userId).append(", ")
           .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
-        sb.append("\033[0m"); // Reset text color
+        sb.append(RESET_COLOR); // Reset text color
 
         return sb.toString();
     }

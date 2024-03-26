@@ -3,10 +3,9 @@ package eventSteps;
 
 
 
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -17,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
+
 
 import org.example.Customer;
 import org.example.Event;
@@ -72,7 +71,7 @@ public class event_Management_Steps {
        List<String> serviceIds = new ArrayList<>();
         serviceIds.add("100");
         event = new Event(string5, date, string2, string3, string4, customer1.getId(), string7, string6, string8, serviceIds, string9);
-    /*
+           /*
 		    event.setDate(date);
 	        event.setTime(string2);
 	        event.setDescription(string3);
