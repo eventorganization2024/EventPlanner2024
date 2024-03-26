@@ -12,10 +12,11 @@ public class User {
     String phone;
     String type;
     private boolean logged;
-    public static final List<User> users1 = new ArrayList<>();
+    private static List<User> users1 = new ArrayList<>();
+
     public User()
     {
-        User.users1.add(new User(" yamamah ","1234","admin"));
+        User.getUsers1().add(new User(" yamamah ","1234","admin"));
      
 
     }
@@ -57,7 +58,7 @@ public class User {
         User u =new User();
         if(u.getLogstate())
         {
-            users1.add(l);
+            getUsers1().add(l);
 
         }
      //   else
@@ -65,12 +66,20 @@ public class User {
     }
     public boolean isRegest(String string) {
 
-        for (User user : users1) {
+        for (User user : getUsers1()) {
             if (user.getUsername().equals(string))
                 return false;
         }
         return true;
     }
+
+	public static List<User> getUsers1() {
+		return users1;
+	}
+
+	public static void setUsers1(List<User> users1) {
+		User.users1 = users1;
+	}
     
     
     
