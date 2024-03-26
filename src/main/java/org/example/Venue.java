@@ -10,7 +10,7 @@ public class Venue {
 	    private String imagepath;
 	    private String date;
 
-	    // Constructor
+	   
 	    public Venue(String name, String address, int capacity, double price,String Availability,String Id,String Image) {
 	        this.name = name;
 	        this.address = address;
@@ -22,7 +22,7 @@ public class Venue {
 	    }
 
 	    public Venue() {
-			// TODO Auto-generated constructor stub
+			
 		}
 
 		public Venue(String venueId2, String name2, String address2, int capacity2, double price2,String Image) {
