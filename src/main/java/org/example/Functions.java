@@ -85,15 +85,12 @@ public class Functions {
 		  
 	    private static  String id;
 	  
-static ///////////////////////////////////////////////////////////////////////////////////////
-	    void inputs(){
-	  String password;
-	    
-	    	printing.printSomething("Enter Id: ");
-	    	id = scanner.next();
-	    	printing.printSomething(ENTER_PASSWORD);
-	    	password = scanner.next();
-	    	}
+   static void inputs() {
+	        printing.printSomething("Enter Id: ");
+	        id = scanner.next();
+	        printing.printSomething(ENTER_PASSWORD);
+	        scanner.next(); 
+	    }
 ///////////////////////////////////////////////////////////////////////////////////////
 static void signInFunction() throws Exception {
     signInPageList();
