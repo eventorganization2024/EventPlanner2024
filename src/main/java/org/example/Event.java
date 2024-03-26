@@ -30,7 +30,7 @@ public class Event {
     private String eventId;
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private  final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
    
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
@@ -89,7 +89,7 @@ public class Event {
 	        String name = items[0];
 	        Date date;
 	        try {
-	            date = DATE_FORMAT.parse(items[1]);
+	            date = event.DATE_FORMAT.parse(items[1]);
 	        } catch (ParseException e) {
 	        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
 	            return null;
