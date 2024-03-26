@@ -26,26 +26,6 @@ Given the administrator is going to create an event
 When the administrator enters the event details such as Date "2024-06-24", time "5:00 pm", description "A celebration", attendeeCount "200", name "reem party",category "Birthday" ,theme "Decades Theme",Venue "Palestine_Convention_Center",eventid "1000"
 Then the event is successfully created in the system
 
-Scenario: search for Existing event
-Given Customer is gonig to search for Exist event by name
-When Customer enter event name " reem party " 
-Then show event details
-
-Scenario: search for Existing event
-Given Customer is gonig to search for Exist event by date
-When Customer enter event date " 2024-06-24 " 
-Then show event details 
-
-
-Scenario: search for non_Existing event
-Given Customer is gonig to search fornon_Exist event by name
-When Customer enter event name " amal party " 
-Then  non_Existing massage
-
-Scenario: search for non_Existing event
-Given Customer is gonig to search for non_Exist event by date
-When Customer enter event date " 2024-07-25 " 
-Then non_Existing massage
 
 
 
