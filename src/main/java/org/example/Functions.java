@@ -24,12 +24,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -37,16 +35,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.example.*;
+
 
 
 
 public class Functions {
 	  static Printing printing = new Printing();
 	    static Scanner scanner = new Scanner(System.in);
-	    Customer customer_obj;
-	    Provider provider_obj;
-	    static Event event_obj;
+	    Customer customerObj;
+	    Provider providerObj;
+	    static Event eventObj;
 	    static int choice;
 	    int choice2;
 	    static boolean found;
@@ -922,9 +920,11 @@ static /////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
     public static Event addevent (String filename) throws Exception {
+    	
         updateEventList("requst.txt");
         updateEventList("event.txt");
-         event_obj = new Event();	            
+         eventObj = new Event();	
+        
          printing.printSomething("\n"+"Enter event Id:");
          id1 = scanner.next();	               	              
          if (searchIdE(id1, "requst.txt")|| searchIdE(id1, "event.txt")) { found =true ;}else found=false;	              
@@ -932,10 +932,10 @@ static /////////////////////////////////////////////////////////////////////////
          { printing.printSomething("This account is already existed, Please Sign in."); 
          addevent( filename);return null; }
     	    else  {   	            	  
-         event_obj.setEID(id1);
-         event_obj.setUserId(id);
+         eventObj.setEID(id1);
+         eventObj.setUserId(id);
          printing.printSomething("Enter event name:");  
-         event_obj.setName(scanner.next());
+         eventObj.setName(scanner.next());
          printing.printSomething("Enter event date (yyyy-MM-dd):");
          String dateInput = scanner.next();
          Date date;
@@ -946,34 +946,34 @@ static /////////////////////////////////////////////////////////////////////////
              e.printStackTrace();
              return null;
          }
-         event_obj.setDate(date);	               
+         eventObj.setDate(date);	               
          printing.printSomething("Enter event time:");
-         event_obj.setTime(scanner.next());
+         eventObj.setTime(scanner.next());
          printing.printSomething("Enter event description:");
-         event_obj.setDescription(scanner.next());
+         eventObj.setDescription(scanner.next());
          printing.printSomething("Enter event attendee count:");
-         event_obj.setAttendeeCount(scanner.next());
+         eventObj.setAttendeeCount(scanner.next());
          printing.printSomething("Enter event theme :");
-         event_obj.setTheme(scanner.next());   
+         eventObj.setTheme(scanner.next());   
          printing.printSomething("Enter event category:");
-         event_obj.setCategory(scanner.next());		           		           
+         eventObj.setCategory(scanner.next());		           		           
 //////////////////////         
          viewAllVenuesCustomer("venue.txt");
          boolean venueAvailable = false;
          String venueName;
          do {
-             // Check venue availability
+             
              printing.printSomething("Enter Venue name:");
              venueName = scanner.next();
              if (checkAvailability(venueName, dateInput)) {
-                 if (Integer.parseInt(event_obj.getAttendeeCount()) <= getVenueCapacity(venueName)) {
+                 if (Integer.parseInt(eventObj.getAttendeeCount()) <= getVenueCapacity(venueName)) {
                      venueAvailable = true;
-                     event_obj.setVenuename(venueName);
+                     eventObj.setVenuename(venueName);
                  } else {
                      printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
                  }
              } else {
-          	  // printing.printSomething("\n choose another venue \n");
+          
                }
          } while (!venueAvailable );
 
@@ -981,7 +981,7 @@ static /////////////////////////////////////////////////////////////////////////
            
         
          
-        addBookingVenue(getVenueIdByName(event_obj.getVenuename()),id,dateInput,"Reserved",id1);
+        addBookingVenue(getVenueIdByName(eventObj.getVenuename()),id,dateInput,"Reserved",id1);
          
 ///////////////////////	               
          List<String> service_IDs_List = new ArrayList<>();
@@ -997,8 +997,8 @@ static /////////////////////////////////////////////////////////////////////////
                  if (s.getAvailability().equals("available"))
                  {
                      service_IDs_List.add(SID);
-                     event_obj.setServiceIds(service_IDs_List);
-                     events.add(event_obj);
+                     eventObj.setServiceIds(service_IDs_List);
+                     events.add(eventObj);
                  }
                  else 
                  {
@@ -1009,10 +1009,10 @@ static /////////////////////////////////////////////////////////////////////////
              while (scanner.next().equalsIgnoreCase("yes"));
              printing.printSomething("\nDone successfully\n");
               price=service.calculateTotalPrice(service_IDs_List);
-            // printing.printSomething("the price is :"+price);
+           
          } else
          {
-            // event_obj.addEventToFile(event_obj, filename);
+       
          }
        }	     
          
@@ -1028,11 +1028,11 @@ static /////////////////////////////////////////////////////////////////////////
 
          }
          printing.printSomething("\n The price is : "+pricee);	               
-           addToInvoice (id,id1,event_obj.getName(),pricee);
+           addToInvoice (id,id1,eventObj.getName(),pricee);
          
-     event_obj.addEventToFile(event_obj, filename);
-     return event_obj;
- }               
+     eventObj.addEventToFile(eventObj, filename);
+     return eventObj;
+ }            
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static ServiceDetails addService() throws Exception {
         updateServiceList();
@@ -2032,7 +2032,7 @@ public void deleteVenueBooking(String eventId, String filename) {
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                      //SINGUP + UPDATE +DELETE ON profiles&FILES//
 void customerSignUp() throws Exception {
-    customer_obj = new Customer();
+    customerObj = new Customer();
     printing.printSomething("Enter your Id: ");
     id = scanner.next();
     found = searchIdU(id);
@@ -2040,20 +2040,20 @@ void customerSignUp() throws Exception {
         printing.printSomething("This account is already existed, Please Sign in.");
         signInFunction();
     } else {
-        customer_obj.setId(id);
+    	customerObj.setId(id);
         printing.printSomething("Enter your Name: ");
-        customer_obj.setName(scanner.next());
+        customerObj.setName(scanner.next());
         printing.printSomething("Enter your Phone: ");
-        customer_obj.setPhone(scanner.next());
+        customerObj.setPhone(scanner.next());
         printing.printSomething("Enter your Address: ");
-        customer_obj.setAddress(scanner.next());
+        customerObj.setAddress(scanner.next());
         printing.printSomething("Enter your Email: ");
-        customer_obj.setEmail(scanner.next());
+        customerObj.setEmail(scanner.next());
         printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
-        customer_obj.setPassword(scanner.next());
+        customerObj.setPassword(scanner.next());
         printing.printSomething("\nRegistration done successfully\n");
-        customers.add(customer_obj);
-        customer_obj .addCustomerToFile(customer_obj);
+        customers.add(customerObj);
+        customerObj .addCustomerToFile(customerObj);
     }
 }
 public static void updateCustomerProfile(int n) throws IOException {
@@ -2134,7 +2134,7 @@ public static boolean deleteCustomer(String id) {
 
 //////////////////////////////////////
 public  void providerSignUp() throws Exception {
-      provider_obj = new Provider();
+      providerObj = new Provider();
       printing.printSomething("Enter your Id: ");
       id = scanner.next();
       found = searchIdP(id);
@@ -2142,20 +2142,20 @@ public  void providerSignUp() throws Exception {
       printing.printSomething("This account is already existed, Please Sign in.");
       signInFunction();
       } else {
-          provider_obj.setId(id);
+    	  providerObj.setId(id);
           printing.printSomething("Enter your Name: ");
-          provider_obj.setName(scanner.next());
+          providerObj.setName(scanner.next());
           printing.printSomething("Enter your Phone: ");
-          provider_obj.setPhone(scanner.next());
+          providerObj.setPhone(scanner.next());
           printing.printSomething("Enter your Address: ");
-          provider_obj.setAddress(scanner.next());
+          providerObj.setAddress(scanner.next());
           printing.printSomething("Enter your Email: ");
-          provider_obj.setEmail(scanner.next());
+          providerObj.setEmail(scanner.next());
           printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
-          provider_obj.setPassword(scanner.next());
+          providerObj.setPassword(scanner.next());
           printing.printSomething("\nRegistration done successfully\n");
-          providers.add(provider_obj);
-          Provider. addProviderToFile(provider_obj);
+          providers.add(providerObj);
+          Provider. addProviderToFile(providerObj);
         }
 }
 public static void updateProviderProfile(int n) throws IOException {
@@ -2317,7 +2317,7 @@ public  static void updateeventandcustomer(String filename) throws Exception {
         for (Customer customer : customers) {
             C = customer.getId();
             if (E != null && C != null && E.equals(C)) {
-    		customer.getCevents().add (event); 
+    			customer.getCevents().add (event); 
             }
         }
     }
