@@ -61,8 +61,6 @@ public class User {
             getUsers1().add(l);
 
         }
-     //   else
-         //   printing.printSomething("you Should login first");
     }
     public boolean isRegest(String string) {
 
