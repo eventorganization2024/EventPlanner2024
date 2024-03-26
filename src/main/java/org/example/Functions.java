@@ -76,8 +76,8 @@ public class Functions {
 	    static final String ENTER_PASSWORD= "\nEnter Password ";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
-	    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	    
+	 private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
+	    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 	    private static String id1;
 		  
 	    private static  String id;
