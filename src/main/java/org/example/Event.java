@@ -549,34 +549,41 @@ public class Event {
        eventt.updateVenueInVenueBook(eventidd, venueName, filename);
           }
 //////////////////////////////////////////////////////////
-    private void updateEventInFile(Event event2, String filename) throws IOException,NullPointerException {
-    	 List<Event> events = new ArrayList<>();
-	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-	            String line;
-	            while ((line = reader.readLine()) != null) {
-	                Event event1 =getEventFromLine(line) ;
-	                if (event1 != null) {
-	                	if (event1.getEID() != null && event1.getEID().equals(event2.getEID())) {
-	                		  event1.setDate(event2.getDate());
-	                        // Replace the old event with the updated one
-	                        events.add(event2);
-	                    } else {
-	                        events.add(event1);
-	                    }
-	                }
-	            }
-	        }
+    private void updateEventInFile(Event event2, String filename) throws IOException, NullPointerException {
+        // Check if event2 is null
+        if (event2 == null) {
+            // Handle the null case (printing an error message, throwing an exception, etc.)
+            printing.printSomething(ERROR_PREFIX + "Event to update is null.");
+            return;
+        }
 
-	        // Write all events back to the file
-	        try (FileWriter writer = new FileWriter(filename, false)) {
-	            for (Event e : events) {
-	            	addEventToFile(e,"event.txt");
-	            }
-	        } catch (IOException e) {
-	            printing.printSomething( ERROR_PREFIX  + e.getMessage());
-	        }
-	    }
-	   
+        List<Event> events = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Event event1 = getEventFromLine(line);
+                if (event1 != null) {
+                    if (event1.getEID() != null && event1.getEID().equals(event2.getEID())) {
+                        event1.setDate(event2.getDate());
+                        // Replace the old event with the updated one
+                        events.add(event2);
+                    } else {
+                        events.add(event1);
+                    }
+                }
+            }
+        }
+
+        // Write all events back to the file
+        try (FileWriter writer = new FileWriter(filename, false)) {
+            for (Event e : events) {
+                addEventToFile(e, "event.txt");
+            }
+        } catch (IOException e) {
+            printing.printSomething(ERROR_PREFIX + e.getMessage());
+        }
+    }
+
 
     
  /////////////////////////////////////////////////////////////////////////////////////////////
