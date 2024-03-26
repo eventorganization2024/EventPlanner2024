@@ -70,10 +70,10 @@ public class Functions {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////	    
-	    static final String customerFile = "customer.txt";
-	    static final String providerFile = "provider.txt";
-	    static final String requestFile = "requst.txt";
-	    static final String eventFile= "event.txt";
+	    static final String CUSTOMER_FILE_NAME = "customer.txt";
+	    static final String PROVIDER_FILE_NAME = "provider.txt";
+	    static final String REQUEST_FILE_NAME = "requst.txt";
+	    static final String EVENT_FILE_NAME = "event.txt";
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    static final String ENTER_CHOICE = "Enter your choice: ";
@@ -135,7 +135,7 @@ static void signInCustomer(String id) throws Exception {
     updateCustomersList(); 
     printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
-    try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             String[] customerData = line.split(",");
@@ -168,7 +168,7 @@ static void signInProvider(String id) throws Exception {
     updateProvidersList(); 
     printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
-    try (BufferedReader br = new BufferedReader(new FileReader(providerFile))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             String[] providerData = line.split(",");
@@ -273,11 +273,11 @@ static void signInProvider(String id) throws Exception {
 	                break;
 	            case 2:
 	               updateCustomersList(); 
-	               addevent(requestFile);
+	               addevent(REQUEST_FILE_NAME);
 	               break;
 	            case 3:
 	            	printing.printSomething("\n");
-	                boolean f = viewCostomerevents(id, eventFile);
+	                boolean f = viewCostomerevents(id, EVENT_FILE_NAME);
 	                if (f) {
 	                    boolean continueUpdating = true;
 	                    while (continueUpdating) {
@@ -287,7 +287,7 @@ static void signInProvider(String id) throws Exception {
 	                        if ("done".equalsIgnoreCase(eventid)) {
 	                            continueUpdating = false; // Exit the loop if the user enters 'done'
 	                        } else {
-	                            event1.updateEvent(eventid, eventFile);
+	                            event1.updateEvent(eventid, EVENT_FILE_NAME);
 	                        
 	                            printing.printSomething("Event updated successfully.\n");
 	                        }
@@ -298,7 +298,7 @@ static void signInProvider(String id) throws Exception {
 	             
 	            case 4:
 	                printing.printSomething("\n");
-	                boolean f2 = viewCostomerevents(id, eventFile);
+	                boolean f2 = viewCostomerevents(id, EVENT_FILE_NAME);
 	                if (f2) {
 	                    boolean continueDeleting = true;
 	                    while (continueDeleting) {
@@ -308,7 +308,7 @@ static void signInProvider(String id) throws Exception {
 	                        if ("done".equalsIgnoreCase(eventidd)) {
 	                            continueDeleting = false; // Exit the loop if the user enters 'done'
 	                        } else {
-	                            event1.deleteEvent( eventFile, eventidd);
+	                            event1.deleteEvent( EVENT_FILE_NAME, eventidd);
 	                            printing.printSomething("\n");
 	                            continueDeleting = false;
 	                            printing.printSomething("Event deleted successfully.\n");
@@ -319,23 +319,25 @@ static void signInProvider(String id) throws Exception {
 	                }
 	                break;
 
-	           case 5:
-	            	   printing.printSomething("\n");   
-	            	   UserSearchPageList();
-	            	   int s=scanner.nextInt();
-	            	   switch(s) {
-	            	   case 1: printing.printSomething("\n"+"Please enter the Event Name you want to see it : ");
-	            	   String EventN=scanner.next();
-	                   String usId=id;
-	                   searchEvent(usId, EventN, 0);
-	                   break;
-	            	   case 2:  printing.printSomething("\n");   
-	                   printing.printSomething("\n"+"Please enter the Venue Name of the event you want to see it : ");
-	                   String VenueN=scanner.next();
-	                   String userId=id;
-	                   searchEvent(userId, VenueN, 8);
-	            	   }
-	            	 break;	                 
+	            case 5:
+	                printing.printSomething("\n");
+	                UserSearchPageList();
+	                int s = scanner.nextInt();
+	                
+	                if (s == 1) {
+	                    printing.printSomething("\n" + "Please enter the Event Name you want to see it : ");
+	                    String eventN = scanner.next();
+	                    String usId = id;
+	                    searchEvent(usId, eventN, 0);
+	                } else if (s == 2) {
+	                    printing.printSomething("\n");
+	                    printing.printSomething("\n" + "Please enter the Venue Name of the event you want to see it : ");
+	                    String venueN = scanner.next();
+	                    String userId = id;
+	                    searchEvent(userId, venueN, 8);
+	                }
+	                break;
+                
 	          case 6:
 	                printing.printSomething("\t\t\n--- Delete profile! ---\n\nUr info will be Deleted & ur orders will be cancelled!!\nAre you sure? ");
 	                String str = scanner.next();
@@ -352,7 +354,7 @@ static void signInProvider(String id) throws Exception {
 	            	break;
 	        case 9:
 	        	  
-	        	if(  viewCostomerevents(id,eventFile)) { 
+	        	if(  viewCostomerevents(id,EVENT_FILE_NAME)) { 
 		          	 boolean show=true;
 	          	 while (show) {
 	          		 
@@ -361,8 +363,8 @@ static void signInProvider(String id) throws Exception {
 	          	    if ("done".equalsIgnoreCase(eventIDToView)) {
 	          	       break;
 	          	    } else {
-	          	    	  updateEventList(eventFile);
-	          			   Event e=Event.findeventID(eventIDToView,eventFile);
+	          	    	  updateEventList(EVENT_FILE_NAME);
+	          			   Event e=Event.findeventID(eventIDToView,EVENT_FILE_NAME);
 	          	    	
 	          			  System.out.println(e.toString2());
 	          	    	 show =false;
@@ -374,7 +376,7 @@ static void signInProvider(String id) throws Exception {
 	        	 	        	 	        		        	  	        	   	        	   
 	        case 10: 
 	        	 printing.printSomething("\n");   	        	  
-	        	if(viewCostomerevents(id,requestFile)){
+	        	if(viewCostomerevents(id,REQUEST_FILE_NAME)){
 	        	boolean show2=true;
           	     while (show2) {
           		 
@@ -383,8 +385,8 @@ static void signInProvider(String id) throws Exception {
           	    if ("done".equalsIgnoreCase(eventIDToView)) {
           	       break;
           	    } else {
-          	    	  updateEventList(requestFile);
-          			   Event e=Event.findeventID(eventIDToView,requestFile);
+          	    	  updateEventList(REQUEST_FILE_NAME);
+          			   Event e=Event.findeventID(eventIDToView,REQUEST_FILE_NAME);
           	    	
           			 printing.printSomething(e.toString2());
           	    	 show2 =false;
@@ -2123,7 +2125,7 @@ public static void updateCustomerProfile(int n) throws IOException {
 }
 public static void deleteCustomerProfile(String val) throws IOException {
     if (val.equalsIgnoreCase("yes")) {
-        File inputFile = new File(customerFile);
+        File inputFile = new File(CUSTOMER_FILE_NAME);
         File tempFile = new File("temp.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
@@ -2153,7 +2155,7 @@ public static boolean deleteCustomer(String id) {
         if (customerId.equals(trimmedId)) {
             customers.remove(i);
             try {
-                deleteLineByValue(customerFile, id); 
+                deleteLineByValue(CUSTOMER_FILE_NAME, id); 
             } catch (IOException e) {
                 printing.printSomething("An error occurred while deleting the customer from the file: " + e.getMessage());
             }
@@ -2228,7 +2230,7 @@ public static void updateProviderProfile(int n) throws IOException {
 /////////////////////////////////////
 public static void updateCustomerFile() {
     try {
-        FileWriter customersFile = new FileWriter(customerFile);
+        FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME);
         for (Customer customer : customers) {
             customersFile.write(customer.getId() + " , "
                     + customer.getUsername() + " , "
@@ -2245,7 +2247,7 @@ public static void updateCustomerFile() {
                                                            //SEARCH IDS//
 static boolean searchIdU(String id) {
     boolean f = false;
-    try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             if (line.contains(id)) {f = true;}
@@ -2256,7 +2258,7 @@ static boolean searchIdU(String id) {
 
 static boolean searchIdP(String id) {
     boolean f = false;
-    try (BufferedReader br = new BufferedReader(new FileReader(providerFile))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             if (line.contains(id)) { f = true;}
@@ -2327,7 +2329,7 @@ public static void updateCustomersList() {
     customers.clear();
     FileReader customersFileReader;
     try {
-        customersFileReader = new FileReader(customerFile);
+        customersFileReader = new FileReader(CUSTOMER_FILE_NAME);
         BufferedReader lineReader = new BufferedReader(customersFileReader);
         while ((line = lineReader.readLine()) != null) {
             //if (line.isEmpty()) continue;
@@ -2851,28 +2853,6 @@ mex.printStackTrace();
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
 
 	
