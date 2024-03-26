@@ -75,6 +75,7 @@ public class Functions {
 	    static final String REQUEST_FILE_NAME = "requst.txt";
 	    static final String EVENT_FILE_NAME = "event.txt";
 	    static final String PACKAGE_FILE_NAME = "package.txt";
+	    static final String VENUE_FILE_NAME = "venue.txt";
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    private static final String ERROR_PREFIX = "An error occurred: ";
@@ -467,18 +468,18 @@ static void signInProvider(String id) throws Exception {
 	  	switch (C)
 	  	{
 	  	case 2:
-	  		  addVenue(scanner, "venue.txt");
+	  		  addVenue(scanner, VENUE_FILE_NAME);
 	  		
 	            break;
 	  	 case 4:
-	           editVenuefrom(scanner, "venue.txt");
+	           editVenuefrom(scanner, VENUE_FILE_NAME);
 	           
 	           break;
 	       case 3:
-	           deleteVenueById( scanner,"venue.txt");
+	           deleteVenueById( scanner,VENUE_FILE_NAME);
 	           break;
 	       case 1:
-	           viewAllVenues("venue.txt");
+	           viewAllVenues(VENUE_FILE_NAME);
 	           break;
 	       case 5:
 	           System.out.println("Exiting...");
@@ -493,7 +494,7 @@ static void signInProvider(String id) throws Exception {
        private static void EventManagementOptions(int cE) throws Exception {
        switch (cE) {
         case 1:
-        if( viewalleventsforAdmin("requst.txt")) {
+        if( viewalleventsforAdmin(REQUEST_FILE_NAME)) {
       	boolean continuee = true;
         while (continuee) {     	
         printing.printSomething("\nEnter the Event ID of the event you want to accept or reject (or enter 'done' to finish): ");
@@ -506,18 +507,18 @@ static void signInProvider(String id) throws Exception {
           printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
          String choice = scanner.next().toUpperCase();        
          if (choice.equals("Y")) {         	
-             event1= event1.findeventID(eventID, "requst.txt");
-         	event1.deleteEvent( "requst.txt", eventID);
-         	event1.addEventToFile(event1, "event.txt");
+             event1= event1.findeventID(eventID, REQUEST_FILE_NAME);
+         	event1.deleteEvent( REQUEST_FILE_NAME, eventID);
+         	event1.addEventToFile(event1, EVENT_FILE_NAME);
             printing.printSomething("\nEvent accepted.");             
              ///to send Notification:
             SendmsgtoCustomer("has been approved",event1);  
             break;
             } else if (choice.equals("N")) {
          	  ///to send Notification:
-         	  event1= event1.findeventID(eventID, "requst.txt");
+         	  event1= event1.findeventID(eventID, REQUEST_FILE_NAME);
          	SendmsgtoCustomer("has been Rejected",event1);
-         	event1.deleteEvent("requst.txt", eventID);
+         	event1.deleteEvent(REQUEST_FILE_NAME, eventID);
          	printing.printSomething("\nEvent rejected.");
          	break;
         } else {
@@ -528,7 +529,7 @@ static void signInProvider(String id) throws Exception {
         }
         break;        
      case 2:
-     	 viewalleventsforAdmin("event.txt"); /// to String 
+     	 viewalleventsforAdmin(EVENT_FILE_NAME); /// to String 
      	 boolean show=true;
      	 while (show) {
      		 
@@ -537,8 +538,8 @@ static void signInProvider(String id) throws Exception {
      	    if ("done".equalsIgnoreCase(eventIDToView)) {
      	       break;
      	    } else {
-     	    	 updateEventList("event.txt");
-     			   Event e=Event.findeventID(eventIDToView,"event.txt");
+     	    	 updateEventList(EVENT_FILE_NAME);
+     			   Event e=Event.findeventID(eventIDToView,EVENT_FILE_NAME);
      	    	
      			  System.out.println(e.toString2());// to String2
      	    	 show =false;
@@ -548,10 +549,10 @@ static void signInProvider(String id) throws Exception {
      	 
          break;
      case 3:
-       addevent("event.txt");
+       addevent(EVENT_FILE_NAME);
        break;
      case 4:
-     	if( viewalleventsforAdmin("event.txt")) {
+     	if( viewalleventsforAdmin(EVENT_FILE_NAME)) {
      		boolean continueDeleting = true;
             while (continueDeleting) {
             	
@@ -561,7 +562,7 @@ static void signInProvider(String id) throws Exception {
                       continueDeleting = false; // Exit the loop if the user enters 'done'
                   } 
                   else {
-                      event1.deleteEvent( "event.txt", eventID);
+                      event1.deleteEvent( EVENT_FILE_NAME, eventID);
      	              printing.printSomething("\nEvent with ID " + eventID + " successfully deleted .");
      	              continueDeleting = false;
                   }
@@ -569,7 +570,7 @@ static void signInProvider(String id) throws Exception {
             }
      	break;
      case 5:
-     	 if (viewalleventsforAdmin("event.txt")) {
+     	 if (viewalleventsforAdmin(EVENT_FILE_NAME)) {
      		 boolean continueUpdating = true;
              while (continueUpdating) {
       	    printing.printSomething("Please enter the Event ID you want to update: ");
@@ -577,9 +578,9 @@ static void signInProvider(String id) throws Exception {
              if ("done".equalsIgnoreCase(eventid)) {
                  continueUpdating = false; // Exit the loop if the user enters 'done'
              } else {
-             event1.updateEvent(eventid, "event.txt"); 
+             event1.updateEvent(eventid, EVENT_FILE_NAME); 
              continueUpdating = false;            
-             viewalleventsforAdmin("event.txt"); 
+             viewalleventsforAdmin(EVENT_FILE_NAME); 
              printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
              }}}
         break;
@@ -822,10 +823,10 @@ static void signInProvider(String id) throws Exception {
                  //////////////////////////////////////////////////////////////////////////
   	private static void viewBusinessReports() {
   	    updateCustomersList();
-  	    updateEventList("event.txt");
+  	    updateEventList(EVENT_FILE_NAME);
   	    tmp = "=================Reports================="+"\nThe  number of Customers " + customers.size()+
   	            "\nThe  number of Event " + events.size()+ "\nThe  number of Provider " + Provider.providers.size()+
-  	            "\nThe  number of Venues " + countLines("venue.txt")+
+  	            "\nThe  number of Venues " + countLines(VENUE_FILE_NAME)+
   	            "\n==========================================\n\n";
   	    printing.printSomething(tmp);
   	} 
@@ -957,13 +958,13 @@ static void signInProvider(String id) throws Exception {
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
     public static Event addevent (String filename) throws Exception {
     	
-        updateEventList("requst.txt");
-        updateEventList("event.txt");
+        updateEventList(REQUEST_FILE_NAME);
+        updateEventList(EVENT_FILE_NAME);
          eventObj = new Event();	
         
          printing.printSomething("\n"+"Enter event Id:");
          id1 = scanner.next();	               	              
-         if (searchIdE(id1, "requst.txt")|| searchIdE(id1, "event.txt")) { found =true ;}else found=false;	              
+         if (searchIdE(id1, REQUEST_FILE_NAME)|| searchIdE(id1, EVENT_FILE_NAME)) { found =true ;}else found=false;	              
          if (found)
          { printing.printSomething("This account is already existed, Please Sign in."); 
          addevent( filename);return null; }
@@ -994,7 +995,7 @@ static void signInProvider(String id) throws Exception {
          printing.printSomething("Enter event category:");
          eventObj.setCategory(scanner.next());		           		           
 //////////////////////         
-         viewAllVenuesCustomer("venue.txt");
+         viewAllVenuesCustomer(VENUE_FILE_NAME);
          boolean venueAvailable = false;
          String venueName;
          do {
@@ -1496,7 +1497,7 @@ static void signInProvider(String id) throws Exception {
 
 ///////////////////////////////////////////////////////////////////////////////////////
     public static void searchEventsByCustomer(String customerId) {
-    	String filename = "requst.txt"; 
+    	String filename = REQUEST_FILE_NAME; 
 
     	try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
     	    String line;
@@ -1516,7 +1517,7 @@ static void signInProvider(String id) throws Exception {
     	}
 
   	public static void searchEvent(String customerId, String searchTerm, int searchFieldIndex) {
-    	    String filename = "event.txt";
+    	    String filename = EVENT_FILE_NAME;
 
     	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
     	        String line;
@@ -1627,7 +1628,7 @@ static void signInProvider(String id) throws Exception {
     }
 
     public static double getPriceByVenue(String venueName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("venue.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(VENUE_FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
@@ -1643,7 +1644,7 @@ static void signInProvider(String id) throws Exception {
         return 0; // Venue name not found or error occurred
     }
     private static String getVenueIdByName(String venueName) throws IOException {
-        File venueFile = new File("venue.txt");
+        File venueFile = new File(VENUE_FILE_NAME);
         Scanner scanner = new Scanner(venueFile);
         
         while (scanner.hasNextLine()) {
@@ -1662,7 +1663,7 @@ static void signInProvider(String id) throws Exception {
         return null; // Venue not found
     }
     public static int getVenueCapacity(String venueName) throws IOException {
-        File venueFile = new File("venue.txt");
+        File venueFile = new File(VENUE_FILE_NAME);
         Scanner scanner = new Scanner(venueFile);
         
         while (scanner.hasNextLine()) {
@@ -1693,7 +1694,7 @@ public static void selectpackagee() throws Exception {
             return;
         }
 
-        addevent("requst.txt");
+        addevent(REQUEST_FILE_NAME);
 
         System.out.println("Request successfully saved.");
     } catch (InputMismatchException e) {
@@ -2537,7 +2538,7 @@ public static void DiscountManagementadminList() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
 public static List<Event> makeListofEvent(String Cid) throws Exception {
-updateeventandcustomer("event.txt");
+updateeventandcustomer(EVENT_FILE_NAME);
 
 List<Event> customerEvents = new ArrayList<>();
 
@@ -2575,7 +2576,7 @@ printing.printSomething( "No events found for customer with ID: " + customerId);
 }
 } catch (Exception e) {
 // TODO Auto-generated catch block
-e.printStackTrace();
+	 printing.printSomething( ERROR_PREFIX + e.getMessage());
 } return null ;
 
 }
@@ -2761,7 +2762,7 @@ executor.shutdown();
 
 public void approachUpcomingEvents() {
 LocalDateTime now = LocalDateTime.now();
-updateEventList("event.txt");
+updateEventList(EVENT_FILE_NAME);
 
 List<Event> upcomingEvents = events.stream()
 .filter(event -> {
@@ -2851,7 +2852,7 @@ Transport.send(message);
 
 //    System.out.println("Email sent successfully to " + recipientEmail);
 } catch (MessagingException mex) {
-mex.printStackTrace();
+	 printing.printSomething( ERROR_PREFIX + mex.getMessage());
 }
 }
 
