@@ -93,81 +93,98 @@ static /////////////////////////////////////////////////////////////////////////
 	    	password = scanner.next();
 	    	}
 ///////////////////////////////////////////////////////////////////////////////////////
-	    static void signInFunction() throws Exception {
-	        int c;
-	        signInPageList();
-	        printing.printSomething(ENTER_CHOICE);
-	        choice = scanner.nextInt();
-	        printing.printSomething("\nEnter Id: ");
-	        id = scanner.next();
-	        printing.printSomething("Enter password: ");
-	        password = scanner.next();
-	        switch (choice){
-	            case 1:
-	                if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) 
-	                {
-	                    adminPage();
-	                } else {
-	                    printing.printSomething("\nSomething went wrong!, Try again.");
-	                    inputs();
-	                }
-	                break;
-               case 2:
-                    boolean found1 = false;
-		            updateCustomersList(); // Update method to read from file
-		            try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
-		                String line;
-		                while ((line = br.readLine()) != null) {
-		                    String[] customerData = line.split(",");
-		                    String customerIdFromFile = customerData[0].trim();
-		                    String passwordFromFile = customerData[5].trim(); // Assuming password is at index 5
-		                    if (id.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
-		                        found1 = true;
-		                        break;
-		                    }
-		                }
-		            } catch (IOException e) { printing.printSomething("Error reading customer data: " + e.getMessage()); }
-                      if (found1) {
-		                while (x > 0) {
-		                    customerPageList();
-		                    c = scanner.nextInt();
-		                    customerOptions(c);
-		                }
-		            } else {
-		                printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
-		                signInFunction(); // Allow the user to retry login
-		            }
-                   break;    
-               case 3:
-	            	 boolean foundp = false;
-	            	 updateProvidersList(); // Update method to read from file
-                            try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
-			                String line;
-			                while ((line = br.readLine()) != null) {
-			                    String[] ProviderData = line.split(",");
-			                    String ProviderIdFromFile = ProviderData[0].trim();
-			                    String passwordFromFile = ProviderData[5].trim(); // Assuming password is at index 5
-			                    if (id.equals(ProviderIdFromFile) && password.equals(passwordFromFile)) {
-			                        foundp = true;
-			                        break;
-			                    }
-			                }
-			            } catch (IOException e) { printing.printSomething("Error reading Povider data: " + e.getMessage());}
-			            if (foundp) {
-			                while (x > 0) {
-			                	providerPageList();
-			                    c = scanner.nextInt();
-			                   providerOptions(c);
-			                }
-			            } else {
-			                printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
-			                signInFunction(); // Allow the user to retry login
-			            }
-			           
-		            	break; 
-	            	          
-	            default:printing.printSomething("\n"+INVALID_CHOICE);}}
+	  static void signInFunction() throws Exception {
+    signInPageList();
+    printing.printSomething(ENTER_CHOICE);
+    int choice = scanner.nextInt();
+    printing.printSomething("\nEnter Id: ");
+    String id = scanner.next();
+    printing.printSomething("Enter password: ");
+    String password = scanner.next();
 
+    switch (choice) {
+        case 1:
+            signInAdmin(id, password);
+            break;
+        case 2:
+            signInCustomer(id, password);
+            break;
+        case 3:
+            signInProvider(id, password);
+            break;
+        default:
+            printing.printSomething("\n" + INVALID_CHOICE);
+    }
+}
+
+static void signInAdmin(String id, String password) throws IOException, Exception {
+    if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) {
+        adminPage();
+    } else {
+        printing.printSomething("\nSomething went wrong!, Try again.");
+        signInFunction();
+    }
+}
+
+static void signInCustomer(String id, String password) throws Exception {
+    boolean found = false;
+    updateCustomersList(); // Update method to read from file
+    try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] customerData = line.split(",");
+            String customerIdFromFile = customerData[0].trim();
+            String passwordFromFile = customerData[5].trim(); // Assuming password is at index 5
+            if (id.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
+                found = true;
+                break;
+            }
+        }
+    } catch (IOException e) {
+        printing.printSomething("Error reading customer data: " + e.getMessage());
+    }
+
+    if (found) {
+        while (x > 0) {
+            customerPageList();
+            int c = scanner.nextInt();
+            customerOptions(c);
+        }
+    } else {
+        printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
+        signInFunction(); // Allow the user to retry login
+    }
+}
+
+static void signInProvider(String id, String password) throws Exception {
+    boolean found = false;
+    updateProvidersList(); // Update method to read from file
+    try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] providerData = line.split(",");
+            String providerIdFromFile = providerData[0].trim();
+            String passwordFromFile = providerData[5].trim(); // Assuming password is at index 5
+            if (id.equals(providerIdFromFile) && password.equals(passwordFromFile)) {
+                found = true;
+                break;
+            }
+        }
+    } catch (IOException e) {
+        printing.printSomething("Error reading provider data: " + e.getMessage());
+    }
+
+    if (found) {
+        while (x > 0) {
+            providerPageList();
+            int c = scanner.nextInt();
+            providerOptions(c);
+        }
+    } else {
+        printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
+        signInFunction(); // Allow the user to retry login
+    }
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    static  int x =1;
 	  public static  void adminPage() throws IOException, Exception
