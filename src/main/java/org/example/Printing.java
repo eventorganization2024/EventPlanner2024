@@ -11,10 +11,10 @@ public class Printing {
             @Override
             public String format(LogRecord logRecord) {
                 String message = super.formatMessage(logRecord);
-               String ANSI_RED = ANSI_CYAN;
+               String ansiRed = ANSI_CYAN;
 
-                String ANSI_RESET = "\u001B[0m";
-                return ANSI_RED + message + ANSI_RESET;
+                String ansiReset = "\u001B[0m";
+                return ansiRed + message + ansiReset;
             }
         });
 
