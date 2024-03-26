@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import java.util.stream.Collectors;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -40,6 +41,7 @@ import javax.mail.internet.MimeMessage;
 
 
 public class Functions {
+
 	  static Printing printing = new Printing();
 	    static Scanner scanner = new Scanner(System.in);
 	    Customer customerObj;
@@ -70,6 +72,8 @@ public class Functions {
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    static final String CUSTOMER_FILE_NAME = "customer.txt";
 	    static final String PROVIDER_FILE_NAME = "provider.txt";
+	    static final String Request_FILE_NAME = "requst.txt";
+	    static final String Event_FILE_NAME = "event.txt";
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    static final String ENTER_CHOICE = "Enter your choice: ";
@@ -85,12 +89,13 @@ public class Functions {
 		  
 	    private static  String id;
 	  
-   static void inputs() {
+	    static void inputs() {
 	        printing.printSomething("Enter Id: ");
 	        id = scanner.next();
 	        printing.printSomething(ENTER_PASSWORD);
 	        scanner.next(); 
 	    }
+
 ///////////////////////////////////////////////////////////////////////////////////////
 static void signInFunction() throws Exception {
     signInPageList();
@@ -191,7 +196,7 @@ static void signInProvider(String id) throws Exception {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  static  int x =1;
+	    static  int x =1;
 	  public static  void adminPage() throws Exception
 	    { 
 
@@ -258,7 +263,7 @@ static void signInProvider(String id) throws Exception {
 	         }
 	      }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	  	    public static void customerOptions(int x) throws Exception {
+	    public static void customerOptions(int x) throws Exception {
 	    	
 	        switch (x){
 	            case 1:
@@ -381,7 +386,7 @@ static void signInProvider(String id) throws Exception {
           	    	  updateEventList(Request_FILE_NAME);
           			   Event e=Event.findeventID(eventIDToView,Request_FILE_NAME);
           	    	
-          			  logger.info(e.toString2());
+          			 printing.printSomething(e.toString2());
           	    	 show2 =false;
           	    	break;
           	       }
