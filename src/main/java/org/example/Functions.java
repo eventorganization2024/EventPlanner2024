@@ -62,7 +62,7 @@ public class Functions {
 	    static Provider provider1=new Provider();
 	    protected static final List<Customer> customers = new ArrayList<>();
 	    private static final ArrayList<Provider> providers = new ArrayList<>();
-	private static final ArrayList<Event> events = new ArrayList<>();
+	    private static final ArrayList<Event> events = new ArrayList<>();
 
 	   protected static final List<ServiceDetails> serviceDetails = new ArrayList<>();
 
