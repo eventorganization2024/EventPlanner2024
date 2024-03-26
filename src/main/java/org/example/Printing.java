@@ -34,8 +34,8 @@ public class Printing {
     
 /////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
     public void printInColor(String msg, String color) {
-        String ANSI_COLOR = color;
-        LOGGER.log(Level.INFO, ANSI_COLOR + msg);
+        String ansiColor = color;
+        LOGGER.log(Level.INFO, ansiColor + msg);
     }
     public static final String ANSI_RESET = "\u001B[0m";
     public String getColoredString(String input, String color) {
