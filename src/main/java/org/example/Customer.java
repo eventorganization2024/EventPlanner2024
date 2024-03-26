@@ -66,7 +66,7 @@ public static List<Event> getEvents() {
     } catch (IOException e) {
         printing.printSomething("An error occurred: " + e.getMessage());
     }
-}
+   }
 
     
  
