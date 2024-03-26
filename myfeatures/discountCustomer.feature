@@ -14,3 +14,4 @@ Feature: Apply Discount
     Given the discount code "INVALID_DISCOUNT" is not valid
     When the customer applies the invalid discount code "INVALID_DISCOUNT" to a price of $100
     Then the discounted price should remain $100
+    

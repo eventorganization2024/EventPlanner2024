@@ -9,3 +9,4 @@ Scenario: Notifying user when trying to book a reserved venue
   Given there is a venue that is already reserved
   When a user tries to book the venue
   Then a message should appear informing the user that the venue is unavailable
+  

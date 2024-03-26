@@ -34,3 +34,4 @@ Scenario: Edit Catering Service Details
     When the service provider selects exist servicetype "Entertainment"
     And selects deletion
     Then the Entertainment service should be removed from the providers profile
+    

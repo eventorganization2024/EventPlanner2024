@@ -35,9 +35,6 @@ Given that the admin is logged into the system
 When select to view all venues registered in the system
 Then the admin can see a comprehensive list of all venues.
 
-#Scenario: View Venue Availability
-#Given that the admin is logged into the system
-#When select to check the availability of venues
-#Then the admin can see the availability status of all venues within the system.
-#
+
+
 

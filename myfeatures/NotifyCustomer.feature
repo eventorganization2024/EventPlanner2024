@@ -9,3 +9,4 @@ Feature: Notify Customer by Email
     Given there is an existing event request for a customer
     When the event request is rejected by the administrator
     Then an message notification is sent to the customer informing them about the rejection
+    

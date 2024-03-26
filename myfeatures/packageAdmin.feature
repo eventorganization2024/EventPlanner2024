@@ -21,3 +21,4 @@ Then the new Package is successfully added to the system
     Given the administrator is logged into the system
     When the administrator selects to view all packages
     Then the system should display a list of all available packages
+    

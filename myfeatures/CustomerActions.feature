@@ -19,3 +19,4 @@ Scenario: Delete My Profile
     And I choose to delete my profile
     And I confirm the deletion
     Then my profile should be deleted successfully
+    

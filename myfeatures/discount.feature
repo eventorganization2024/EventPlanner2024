@@ -38,11 +38,3 @@ Then the discount is applied to the total order amount
 
 
 
-#Scenario: when a customer wants to view applied discounts before completing the purchase
-#Given the customer is on the checkout page
-#When the customer select "View Applied Discounts" option
-#Then a list of applied discounts along with their details is displayed for the customer to review
-
-
-
-
