@@ -84,7 +84,8 @@ public static List<Event> getEvents() {
           customer1.setPassword(items[5]);
      } else {
       
-    	 logger.warning("Invalid line format: " + line);
+logger.warning(() -> "Invalid line format: " + line);
+
 
       }
       return customer1;
