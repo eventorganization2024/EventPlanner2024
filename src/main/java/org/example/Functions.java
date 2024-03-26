@@ -87,6 +87,7 @@ public class Functions {
 	    
 static ///////////////////////////////////////////////////////////////////////////////////////
 	    void inputs(){
+		    String password;
 	    	printing.printSomething("Enter Id: ");
 	    	id = scanner.next();
 	    	printing.printSomething(ENTER_PASSWORD);
