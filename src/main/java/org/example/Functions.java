@@ -93,31 +93,32 @@ static /////////////////////////////////////////////////////////////////////////
 	    	password = scanner.next();
 	    	}
 ///////////////////////////////////////////////////////////////////////////////////////
-	  static void signInFunction() throws Exception {
+	static void signInFunction() throws Exception {
     signInPageList();
     printing.printSomething(ENTER_CHOICE);
     int choice = scanner.nextInt();
     printing.printSomething("\nEnter Id: ");
     String id = scanner.next();
     printing.printSomething("Enter password: ");
-    String password = scanner.next();
-
+   
     switch (choice) {
         case 1:
-            signInAdmin(id, password);
+            signInAdmin(id);
             break;
         case 2:
-            signInCustomer(id, password);
+            signInCustomer(id);
             break;
         case 3:
-            signInProvider(id, password);
+            signInProvider(id);
             break;
         default:
             printing.printSomething("\n" + INVALID_CHOICE);
     }
 }
 
-static void signInAdmin(String id, String password) throws IOException, Exception {
+static void signInAdmin(String id) throws IOException, Exception {
+	  printing.printSomething("Enter password: ");
+	    String password = scanner.next();
     if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) {
         adminPage();
     } else {
@@ -126,15 +127,17 @@ static void signInAdmin(String id, String password) throws IOException, Exceptio
     }
 }
 
-static void signInCustomer(String id, String password) throws Exception {
+static void signInCustomer(String id) throws Exception {
     boolean found = false;
-    updateCustomersList(); // Update method to read from file
+    updateCustomersList(); 
+    printing.printSomething("Enter password: ");
+    String password = scanner.next();
     try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             String[] customerData = line.split(",");
             String customerIdFromFile = customerData[0].trim();
-            String passwordFromFile = customerData[5].trim(); // Assuming password is at index 5
+            String passwordFromFile = customerData[5].trim(); 
             if (id.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
                 found = true;
                 break;
@@ -152,19 +155,22 @@ static void signInCustomer(String id, String password) throws Exception {
         }
     } else {
         printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
-        signInFunction(); // Allow the user to retry login
+        signInFunction();
     }
 }
 
-static void signInProvider(String id, String password) throws Exception {
+static void signInProvider(String id) throws Exception {
+	
     boolean found = false;
-    updateProvidersList(); // Update method to read from file
+    updateProvidersList(); 
+    printing.printSomething("Enter password: ");
+    String password = scanner.next();
     try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             String[] providerData = line.split(",");
             String providerIdFromFile = providerData[0].trim();
-            String passwordFromFile = providerData[5].trim(); // Assuming password is at index 5
+            String passwordFromFile = providerData[5].trim(); 
             if (id.equals(providerIdFromFile) && password.equals(passwordFromFile)) {
                 found = true;
                 break;
@@ -182,7 +188,7 @@ static void signInProvider(String id, String password) throws Exception {
         }
     } else {
         printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
-        signInFunction(); // Allow the user to retry login
+        signInFunction(); 
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
