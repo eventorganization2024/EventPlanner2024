@@ -1,7 +1,7 @@
 package org.example;
 
 public class Venue {
-	private String VenueId;
+	private String venueId;
 	 private String name;
 	    private String address;
 	    private int capacity;
@@ -10,19 +10,19 @@ public class Venue {
 	    private String imagepath;
 	    private String date;
 
-	    // Constructor
+	   
 	    public Venue(String name, String address, int capacity, double price,String Availability,String Id,String Image) {
 	        this.name = name;
 	        this.address = address;
 	        this.capacity = capacity;
 	        this.price = price;
 	        this.Availability=Availability;
-	        this.VenueId=Id;
+	        this.venueId=Id;
 	        this.imagepath=Image;
 	    }
 
 	    public Venue() {
-			// TODO Auto-generated constructor stub
+			
 		}
 
 		public Venue(String venueId2, String name2, String address2, int capacity2, double price2,String Image) {
@@ -31,7 +31,7 @@ public class Venue {
 			this.capacity=capacity2;
 			this.name=name2;
 			this.price=price2;
-			this.VenueId=venueId2;
+			this.venueId=venueId2;
 			this.imagepath=Image;
 		}
 		
@@ -57,8 +57,8 @@ public class Venue {
 		}
 
 		// Getters and Setters
-	    public String getId() {return VenueId;}
-	    public void setId(String id) {this.VenueId=id;}
+	    public String getId() {return venueId;}
+	    public void setId(String id) {this.venueId=id;}
 	    
 	    public String getAvailavility() { return Availability;}
 	    public void setAvailability(String A) {this.Availability=A;}
@@ -102,7 +102,7 @@ public class Venue {
 	    }
 	    
 	    public String toFileString() {
-	        return VenueId + "," + name + "," + address + "," +imagepath+"," + capacity + "," + price;
+	        return venueId + "," + name + "," + address + "," +imagepath+"," + capacity + "," + price;
 	    }
 }
 

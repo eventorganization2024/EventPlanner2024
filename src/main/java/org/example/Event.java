@@ -1,4 +1,3 @@
-
 package org.example;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -41,8 +40,10 @@ public class Event {
     private static final String YELLOW_COLOR = "\033[0;33m"; 
     static Scanner scannerr = new Scanner(System.in);
 	   
+    static Event eventToUpdated ;
     static Printing printing = new Printing();
-    
+    static Functions func =new Functions();
+     
     
    
    
@@ -91,7 +92,7 @@ public class Event {
 	        try {
 	            date = DATE_FORMAT.parse(items[1]);
 	        } catch (ParseException e) {
-	        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
+	            e.printStackTrace();
 	            return null;
 	        }
 	        String time = items[2];
@@ -226,6 +227,7 @@ public class Event {
 ///////////////////////////////////////////////////////////////////////////////////////////////////// 
    
 	   
+
     
 
    	public static void searchEvent(String customerId, String searchTerm, int searchFieldIndex) {
@@ -257,6 +259,64 @@ public class Event {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////// 
   
+
+		
+	 public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
+	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+	            StringBuilder sb = new StringBuilder();
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 5 && parts[4].equals(eventId)) {
+	                	 Date date2;
+	                     try {
+	                         date2 = DATE_FORMAT.parse(parts[2]);
+	                     } catch (ParseException e) {
+
+	                         e.printStackTrace();
+	                        
+	                     }
+	                     date2=newDate;
+	                    line = String.join(",", parts);
+	                }
+	                sb.append(line).append("\n");
+	            }
+	            // Write the updated content back to the file
+	            try (FileWriter writer = new FileWriter(venueBookFileName)) {
+	                writer.write(sb.toString());
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace(); // Handle or log the exception as needed
+	        }
+	    }
+	    
+	    
+	 public void updateVenueInVenueBook(String eventId, String newVenue, String venueBookFileName) throws ParseException {
+	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+	            StringBuilder sb = new StringBuilder();
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 5 && parts[4].equals(eventId)) {
+	                	
+	                	Date dateNew = DATE_FORMAT.parse(parts[2]);
+	                     String formattedDate = DATE_FORMAT.format(dateNew);
+	                     newVenue = formattedDate;
+	                    line = String.join(",", parts);
+	                }
+	                sb.append(line).append("\n");
+	            }
+	            // Write the updated content back to the file
+	            try (FileWriter writer = new FileWriter(venueBookFileName)) {
+	                writer.write(sb.toString());
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace(); // Handle or log the exception as needed
+	        }
+	    }
+	    
+	    
+
 	 
 	 
 	 
@@ -264,11 +324,28 @@ public class Event {
 	 
 	 
 	 
-	  
+	    public static String findVenueIdByName(String venueName, String filename) {
+	        String id = null;
+	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] parts = line.split(",");
+	                if (parts.length >= 5 && parts[1].trim().equals(venueName.trim())) {
+	                    id = parts[0].trim(); // Found the venue name, return its ID
+	                    break; // No need to continue searching
+	                }
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return id;
+	    }
+	    
 	 
     
     
     
+
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
    static void printUpdateList(Event eventUpdate) {
@@ -288,12 +365,13 @@ public class Event {
         	    + RESET_COLOR // Reset text color to default
         	    );} 
 	
-    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException ,NullPointerException{
+    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException {
        Event eventToUpdated = findeventID(eventidd, filename);
 
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
             printUpdateList(eventToUpdated);
-             printing.printSomething ("\nEnter the number of the field you want to update: ");
+           // Scanner scanner = new Scanner(System.in);
+	        printing.printSomething ("\nEnter the number of the field you want to update: ");
 	        String choice = scannerr.next();
 
 
@@ -352,11 +430,11 @@ public class Event {
          try {
              newdate = DATE_FORMAT.parse(dateInput);
          } catch (ParseException e) {
-        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
+             e.printStackTrace();
              return null;
          }
          eventt.setDate(newdate);
-         eventt.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
+         eventToUpdated.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
          return eventt;
     }
    
@@ -391,32 +469,32 @@ public class Event {
         return eventt;
     }
     private Event updateEventServices(Event eventt) {
-    	Functions.updateServiceList();
-    	Functions.viewallservice("service.txt");
+    	func.updateServiceList();
+    	func.viewallservice("service.txt");
         printing.printSomething("\nEnter new service IDs (comma-separated):\n");
         String serviceIdsInput = scannerr.next();
-        List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
-        eventt.setServiceIds(serviceIds2);
+        List<String> serviceIds = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
+        eventt.setServiceIds(serviceIds);
 		return eventt;
         
     }
  
     
-    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException{
-    	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
+    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException, ParseException {
+    	func.viewAllVenuesCustomer(VENUE_FILE_NAME);
         printing.printSomething("\nEnter new event venue name:");
        String newVenueName = scannerr.next();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String eventDateString = dateFormat.format(eventt.getDate());
+        String eventDateString = dateFormat.format(eventToUpdated.getDate());
        boolean venueAvailable=false;
         
         do {
             printing.printSomething("Enter Venue name:");
             venueName = scannerr.next();
-            if (Functions.checkAvailability(venueName,eventDateString )) {
-                if (Integer.parseInt(eventt.getAttendeeCount()) <= Functions.getVenueCapacity(venueName)) {
+            if (func.checkAvailability(venueName,eventDateString )) {
+                if (Integer.parseInt(eventToUpdated.getAttendeeCount()) <= func.getVenueCapacity(venueName)) {
                     venueAvailable = true;
-                    eventt.setVenuename(venueName);
+                    eventToUpdated.setVenuename(venueName);
                 } else {
                     printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
                 }
@@ -427,9 +505,10 @@ public class Event {
 
         
         eventt.setVenuename(venueName);
-       eventt.updateVenueInVenueBook(eventidd, venueName, filename);
+       eventt.updateVenueInVenueBook(eventidd, venueName, VENUEBOOK_FILE_NAME);
           }
 //////////////////////////////////////////////////////////
+
     public static void updateEventInFile(Event event2, String filename) throws IOException, NullPointerException {
         // Check if event2 is null
         if (event2 == null) {
@@ -690,30 +769,36 @@ public LocalDate getDateAsLocalDate() {
 public String getDateTime() {
     return date + " " + time;
 }
+=======
+    private void updateEventInFile(Event event2, String filename) throws IOException {
+    	 List<Event> events = new ArrayList<>();
+	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                Event event1 =getEventFromLine(line) ;
+	                if (event1 != null) {
+	                	if (event1.getEID() != null && event1.getEID().equals(event2.getEID())) {
+	                		  event1.setDate(event2.getDate());
+	                        // Replace the old event with the updated one
+	                        events.add(event2);
+	                    } else {
+	                        events.add(event1);
+	                    }
+	                }
+	            }
+	        }
 
- 
-    
-    
-    
-    
+
+	        // Write all events back to the file
+	        try (FileWriter writer = new FileWriter(filename, false)) {
+	            for (Event e : events) {
+	            	addEventToFile(e,"event.txt");
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething( ERROR_PREFIX  + e.getMessage());
+	        }
+	    }
+	   
 }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+ /////////////////////////////////////////////////////////////////////////////////////////////

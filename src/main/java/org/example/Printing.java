@@ -9,11 +9,13 @@ public class Printing {
         Handler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
-            public String format(LogRecord record) {
-                String message = super.formatMessage(record);
-                String ANSI_RED = "\u001B[36m";
-                String ANSI_RESET = "\u001B[0m";
-                return ANSI_RED + message + ANSI_RESET;
+            public String format(LogRecord logRecord) {
+                String message = super.formatMessage(logRecord);
+               String ansiRed = ANSI_CYAN;
+
+               String ansiReset = ANSI_RESET;
+
+                return ansiRed + message + ansiReset;
             }
         });
 
@@ -31,10 +33,10 @@ public class Printing {
     
     
 /////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
-    public void printInColor(String msg, String color) {
-        String ANSI_COLOR = color;
-        LOGGER.log(Level.INFO, ANSI_COLOR + msg);
-    }
+ public void printInColor(String msg, String color) {
+    LOGGER.log(Level.INFO, "{}{}", new Object[]{color, msg});
+}
+
     public static final String ANSI_RESET = "\u001B[0m";
     public String getColoredString(String input, String color) {
         return color + input + ANSI_RESET;

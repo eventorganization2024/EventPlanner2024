@@ -9,7 +9,7 @@ public class Discount {
     private String discountCode;
     private double discountPercentage;
     private String validityPeriod;
-    private String applicableProductsServices;
+ 
 
     public Discount(  double discountPercentage,int discountId, String validityPeriod,String discountCode) {
         this.discountId = discountId;
