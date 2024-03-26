@@ -54,6 +54,8 @@ public class Functions {
 	    String d;
 	    static double price;
 
+	    /////
+	    
 	    static double pricee;
 	    static Admin admin = new Admin();
 	    static Paackage p = new Paackage();

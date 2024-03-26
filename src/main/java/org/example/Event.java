@@ -55,6 +55,8 @@ public class Event {
         this.venueName = venueName;
     }
 
+    
+    //////
     public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, List<String> serviceIds, String eventId) {
         this(eventName, eventDate, eventTime, eventDescription, eventAttendeeCount, userId, eventTheme, eventCategory, venueName, eventId);
         this.serviceIds.addAll(serviceIds);
