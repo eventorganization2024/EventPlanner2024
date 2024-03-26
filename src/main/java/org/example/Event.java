@@ -130,7 +130,7 @@ public class Event {
    
     
     
-   public void addEventToFile(Event event, String filename) {
+   public static void addEventToFile(Event event, String filename) {
 	    try (FileWriter eventFile = new FileWriter(filename, true)) { // Open the file in append mode
 	        eventFile.write(event.getName() + " , " +
 	                        DATE_FORMAT.format(event.getDate()) + " , " +
@@ -182,13 +182,7 @@ public class Event {
        
     }
 
-    
-
  
-
-   
-    
-   
 	 	
      public void deleteEvent(String eventFileName, String eventId2) throws IOException {
        String venueBookFileName = VENUEBOOK_FILE_NAME;
@@ -229,10 +223,40 @@ public class Event {
         }
     }
        
- 
+///////////////////////////////////////////////////////////////////////////////////////////////////// 
    
 	   
-	
+    
+
+   	public static void searchEvent(String customerId, String searchTerm, int searchFieldIndex) {
+     	    String filename = "event.txt";
+
+     	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+     	        String line;
+     	        boolean eventFound = false;
+     	        while ((line = reader.readLine()) != null) {
+     	            String[] fields = line.split(",\\s*");
+
+     	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim()) && fields[searchFieldIndex].trim().equals(searchTerm)) {
+     	            	printing.printSomething(line);
+     	                eventFound = true;
+     	            }
+     	        }
+     	        if (!eventFound) {
+     	            if (searchFieldIndex == 0) {
+     	            	printing.printSomething("There is no event with this Name");
+     	            } else if (searchFieldIndex == 8) {
+     	            	printing.printSomething("There is no event with this Venue");
+     	            }
+     	        }
+     	    } catch (IOException e) {
+     	    	  printing.printSomething( ERROR_PREFIX + e.getMessage());
+     	    	  }
+     	}
+   	
+
+///////////////////////////////////////////////////////////////////////////////////////////////////// 
+  
 	 
 	 
 	 
@@ -245,152 +269,9 @@ public class Event {
     
     
     
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public  Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String  getAttendeeCount() {
-        return attendeeCount;
-    }
-
-    public void setAttendeeCount(String attendeeCount) {
-        this.attendeeCount = attendeeCount;
-    }
-    
-    public String getUsrTd() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-           
-    public String getEID() {
-        return eventId;
-    }
-
-    public void setEID(String eventid2) {
-        this.eventId = eventid2;
-    }
-    
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setVenuename(String n) {this.venueName=n; }
-    public String getVenuename(){return venueName;}
-
-    
-
-    public String toString2() {
-        StringBuilder sb = new StringBuilder();
-      //  sb.append(CYAN_COLOR); // Set text color to cyan
-        sb.append("Event Details:\n");
-        sb.append(YELLOW_COLOR); // Set text color to yellow for attribute names
-        sb.append("- UserID: ").append(userId).append("\n");
-        sb.append("- Name: ").append(name).append("\n");
-        sb.append("- Date: ").append(DATE_FORMAT.format(date)).append("\n");
-        sb.append("- Time: ").append(time).append("\n");
-        sb.append("- Description: ").append(description).append("\n");
-        sb.append("- Attendee Count: ").append(attendeeCount).append("\n");
-        sb.append("- Theme: ").append(theme).append("\n");
-        sb.append("- Venue name: ").append(venueName).append("\n");
-        sb.append("- Category: ").append(category).append("\n");
-        sb.append("- Event ID: ").append(eventId).append("\n");
-       sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n"); // Moved service IDs to the end
-
-        
-       Functions. updateServiceList();
-       for (String serviceId : serviceIds) {
-	        serviceId = serviceId.replaceAll("\\[|\\]", "");
-	       
-	        for (ServiceDetails service : Functions.serviceDetails) {
-	        	if (serviceId.equalsIgnoreCase("[No service]")) {
-	        		sb.append("No service");
-	        	    break;
-	        	}
-	        	
-	            if (service.getServiceID().equals(serviceId)) {
-	            	sb.append("- Service Names: ").append(service.getServiceName()).append(".");
-	                break;
-	            }
-	        }
-	    }
-      //  sb.append(RESET_COLOR); // Reset text color
-        return sb.toString();
-    }
-
-   
-
-    public String toString() {
-    	StringBuilder sb = new StringBuilder();
-       // sb.append(MAGENTA_COLOR); // Set text color to magenta
-        sb.append("Name: ").append(name).append(", ")
-          .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
-          .append("User ID: ").append(userId).append(", ")
-          .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
-       // sb.append(RESET_COLOR); // Reset text color
-
-        return sb.toString();
-    }
-
-    public LocalDate getDateAsLocalDate() {
-        // Assuming 'date' is your java.util.Date object
-        Instant instant = date.toInstant();
-        ZoneId zoneId = ZoneId.systemDefault(); // Or specify the desired time zone
-        LocalDate localDate = instant.atZone(zoneId).toLocalDate();
-        return localDate;
-    }
-    
-    
-    public String getDateTime() {
-        return date + " " + time;
-    }
-    
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
-    void printUpdateList(Event eventUpdate) {
+   static void printUpdateList(Event eventUpdate) {
     	printing.printSomething(MAGENTA_COLOR + // Set text color to magenta
         	    '\n' +
         	    "UserID: " + eventUpdate.getUsrTd() + '\n' +
@@ -457,7 +338,7 @@ public class Event {
 /////////////////////////////////////////////////////////////////////
    
 
-    private Event updateEventName(Event eventt) {
+    public Event updateEventName(Event eventt) {
         printing.printSomething("Enter new event name:");
         eventt.setName(scannerr.next());
         return eventt;
@@ -549,7 +430,7 @@ public class Event {
        eventt.updateVenueInVenueBook(eventidd, venueName, filename);
           }
 //////////////////////////////////////////////////////////
-    private void updateEventInFile(Event event2, String filename) throws IOException, NullPointerException {
+    public static void updateEventInFile(Event event2, String filename) throws IOException, NullPointerException {
         // Check if event2 is null
         if (event2 == null) {
             // Handle the null case (printing an error message, throwing an exception, etc.)
@@ -665,6 +546,150 @@ public static String findVenueIdByName(String venueName, String filename) {
     return id;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+public String getName() {
+    return name;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public  Date getDate() {
+    return date;
+}
+
+public void setDate(Date date) {
+    this.date = date;
+}
+
+public String getTime() {
+    return time;
+}
+
+public void setTime(String time) {
+    this.time = time;
+}
+
+
+public String getDescription() {
+    return description;
+}
+
+public void setDescription(String description) {
+    this.description = description;
+}
+
+public String  getAttendeeCount() {
+    return attendeeCount;
+}
+
+public void setAttendeeCount(String attendeeCount) {
+    this.attendeeCount = attendeeCount;
+}
+
+public String getUsrTd() {
+    return userId;
+}
+
+public void setUserId(String userId) {
+    this.userId = userId;
+}
+       
+public String getEID() {
+    return eventId;
+}
+
+public void setEID(String eventid2) {
+    this.eventId = eventid2;
+}
+
+public String getTheme() {
+    return theme;
+}
+
+public void setTheme(String theme) {
+    this.theme = theme;
+}
+
+public String getCategory() {
+    return category;
+}
+
+public void setCategory(String category) {
+    this.category = category;
+}
+
+public void setVenuename(String n) {this.venueName=n; }
+public String getVenuename(){return venueName;}
+
+
+
+public String toString2() {
+    StringBuilder sb = new StringBuilder();
+  //  sb.append(CYAN_COLOR); // Set text color to cyan
+    sb.append("Event Details:\n");
+    sb.append(YELLOW_COLOR); // Set text color to yellow for attribute names
+    sb.append("- UserID: ").append(userId).append("\n");
+    sb.append("- Name: ").append(name).append("\n");
+    sb.append("- Date: ").append(DATE_FORMAT.format(date)).append("\n");
+    sb.append("- Time: ").append(time).append("\n");
+    sb.append("- Description: ").append(description).append("\n");
+    sb.append("- Attendee Count: ").append(attendeeCount).append("\n");
+    sb.append("- Theme: ").append(theme).append("\n");
+    sb.append("- Venue name: ").append(venueName).append("\n");
+    sb.append("- Category: ").append(category).append("\n");
+    sb.append("- Event ID: ").append(eventId).append("\n");
+   sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n"); // Moved service IDs to the end
+
+    
+   Functions. updateServiceList();
+   for (String serviceId : serviceIds) {
+        serviceId = serviceId.replaceAll("\\[|\\]", "");
+       
+        for (ServiceDetails service : Functions.serviceDetails) {
+        	if (serviceId.equalsIgnoreCase("[No service]")) {
+        		sb.append("No service");
+        	    break;
+        	}
+        	
+            if (service.getServiceID().equals(serviceId)) {
+            	sb.append("- Service Names: ").append(service.getServiceName()).append(".");
+                break;
+            }
+        }
+    }
+  //  sb.append(RESET_COLOR); // Reset text color
+    return sb.toString();
+}
+
+
+
+public String toString() {
+	StringBuilder sb = new StringBuilder();
+   // sb.append(MAGENTA_COLOR); // Set text color to magenta
+    sb.append("Name: ").append(name).append(", ")
+      .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
+      .append("User ID: ").append(userId).append(", ")
+      .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
+   // sb.append(RESET_COLOR); // Reset text color
+
+    return sb.toString();
+}
+
+public LocalDate getDateAsLocalDate() {
+    // Assuming 'date' is your java.util.Date object
+    Instant instant = date.toInstant();
+    ZoneId zoneId = ZoneId.systemDefault(); // Or specify the desired time zone
+    LocalDate localDate = instant.atZone(zoneId).toLocalDate();
+    return localDate;
+}
+
+
+public String getDateTime() {
+    return date + " " + time;
+}
 
  
     
