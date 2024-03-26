@@ -39,7 +39,9 @@ public class Event {
     private static final String MAGENTA_COLOR = "\033[0;35m";
     private static final String CYAN_COLOR = "\033[0;36m"; 
     private static final String YELLOW_COLOR = "\033[0;33m"; 
-	static Event eventToUpdated ;
+    static Scanner scannerr = new Scanner(System.in);
+	   
+    static Event eventToUpdated ;
     static Printing printing = new Printing();
     static Functions func =new Functions();
      
@@ -253,144 +255,7 @@ public class Event {
        
  
    
-	    void printUpdateList() {
-	    	printing.printSomething(MAGENTA_COLOR + // Set text color to magenta
-	        	    '\n' +
-	        	    "UserID: " + eventToUpdated.userId + '\n' +
-	        	    "Event ID: " + eventToUpdated.eventId + '\n' +
-	        	    "1. Name: " + eventToUpdated.name + '\n' +
-	        	    "2. Date: " + DATE_FORMAT.format(eventToUpdated.date) + '\n' +
-	        	    "3. Time: " + eventToUpdated.time + '\n' +
-	        	    "4. Description: " + eventToUpdated.description + '\n' +
-	        	    "5. Attendee Count: " + eventToUpdated.attendeeCount + '\n' +
-	        	    "6. Theme: " + eventToUpdated.theme + '\n' +
-	        	    "7. Category: " + eventToUpdated.category + '\n' +
-	        	    "8. Venue Name: " + eventToUpdated.venueName + '\n' +
-	        	    "9. Service IDs: " + eventToUpdated.getServiceIds() + '\n'
-	        	    + RESET_COLOR // Reset text color to default
-	        	    );} 
-    	
-      public Event updateEvent(String id, String filename) throws IOException  {
-    	     eventToUpdated = findeventID(id, filename);
-
-    	    if (eventToUpdated != null && eventToUpdated.getEID() != null) {
-    	        printUpdateList();
-    	        Scanner scanner = new Scanner(System.in);
-
-    	        printing.printSomething ("\nEnter the number of the field you want to update: ");
-    	        String choice = scanner.next();
-
-    	        switch (choice) {
-    	            case "1":
-    	                printing.printSomething("Enter new event name:");
-    	                eventToUpdated.setName(scanner.next());
-    	                break;
-    	            case "2":
-    	                printing.printSomething("Enter new event date (yyyy-MM-dd):");
-    	                String dateInput = scanner.next();
-    	                Date newdate;
-    	                try {
-    	                    newdate = DATE_FORMAT.parse(dateInput);
-    	                } catch (ParseException e) {
-    	                    e.printStackTrace();
-    	                    return null;
-    	                }
-    	                eventToUpdated.setDate(newdate);
-    	                eventToUpdated.updateVenueInVenueBook(id, newdate, VENUEBOOK_FILE_NAME);
-    	                break;
-    	            case "3":
-    	                printing.printSomething("Enter new event time:");
-    	                eventToUpdated.setTime(scanner.next());
-    	                break;
-    	            case "4":
-    	                printing.printSomething("Enter new event description:");
-    	                eventToUpdated.setDescription(scanner.next());
-    	                break;
-    	            case "5":
-    	                printing.printSomething("Enter new event attendee count:");
-    	                eventToUpdated.setAttendeeCount(scanner.next());
-    	                break;
-    	            case "6":
-    	                printing.printSomething("Enter new event theme :");
-    	                eventToUpdated.setTheme(scanner.next());
-    	                break;
-    	            case "7":
-    	                printing.printSomething("Enter new event category:");
-    	                eventToUpdated.setCategory(scanner.next());
-    	                break;
-    	            case "8":
-    	            	func.viewAllVenuesCustomer(VENUE_FILE_NAME);
-    	                printing.printSomething("\nEnter new event venue name:");
-    	               String newVenueName = scanner.next();
-    	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    	                String eventDateString = dateFormat.format(eventToUpdated.getDate());
-    	               boolean venueAvailable=false;
-    	                
-    	                do {
-    	                    printing.printSomething("Enter Venue name:");
-    	                    venueName = scanner.next();
-    	                    if (func.checkAvailability(venueName,eventDateString )) {
-    	                        if (Integer.parseInt(eventToUpdated.getAttendeeCount()) <= func.getVenueCapacity(venueName)) {
-    	                            venueAvailable = true;
-    	                            eventToUpdated.setVenuename(venueName);
-    	                        } else {
-    	                            printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
-    	                        }
-    	                    } else {
-    	                 	  // printing.printSomething("\n choose another venue \n");
-    	                      }
-    	                } while (!venueAvailable );
-
-    	                
-    	                eventToUpdated.setVenuename(venueName);
-    	                eventToUpdated.updateVenueInVenueBook(id, venueName, VENUEBOOK_FILE_NAME);
-    	                break;
-    	            case "9":
-    	            	func.updateServiceList();
-    	            	func.viewallservice("service.txt");
-    	                printing.printSomething("\nEnter new service IDs (comma-separated):\n");
-    	                String serviceIdsInput = scanner.next();
-    	                List<String> serviceIds = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
-    	                eventToUpdated.setServiceIds(serviceIds);
-    	                break;
-    	            default:
-    	            	printing.printSomething("Invalid choice.");
-    	        }
-
-    	        // Read all events from the file
-    	        List<Event> events = new ArrayList<>();
-    	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-    	            String line;
-    	            while ((line = reader.readLine()) != null) {
-    	                Event event =getEventFromLine(line) ;
-    	                if (event != null) {
-    	                	if (event.getEID() != null && event.getEID().equals(eventToUpdated.getEID())) {
-    	                		  event.setDate(eventToUpdated.getDate());
-    	                        // Replace the old event with the updated one
-    	                        events.add(eventToUpdated);
-    	                    } else {
-    	                        events.add(event);
-    	                    }
-    	                }
-    	            }
-    	        }
-
-    	        // Write all events back to the file
-    	        try (FileWriter writer = new FileWriter(filename, false)) {
-    	            for (Event event : events) {
-    	            	addEventToFile(event,"event.txt");
-    	            }
-    	        } catch (IOException e) {
-    	            printing.printSomething( ERROR_PREFIX  + e.getMessage());
-    	        }
-    	    }
-    	    else {
-    	    	printing.printSomething("Event not found or event ID is null.");
-    	    }
-
-    	    return eventToUpdated;
-    	}
-
+	   
 		
 	 public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
 	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
@@ -560,7 +425,7 @@ public class Event {
 
     public String toString2() {
         StringBuilder sb = new StringBuilder();
-        sb.append(CYAN_COLOR); // Set text color to cyan
+      //  sb.append(CYAN_COLOR); // Set text color to cyan
         sb.append("Event Details:\n");
         sb.append(YELLOW_COLOR); // Set text color to yellow for attribute names
         sb.append("- UserID: ").append(userId).append("\n");
@@ -592,7 +457,7 @@ public class Event {
 	            }
 	        }
 	    }
-        sb.append(RESET_COLOR); // Reset text color
+      //  sb.append(RESET_COLOR); // Reset text color
         return sb.toString();
     }
 
@@ -600,12 +465,12 @@ public class Event {
 
     public String toString() {
     	StringBuilder sb = new StringBuilder();
-        sb.append(MAGENTA_COLOR); // Set text color to magenta
+       // sb.append(MAGENTA_COLOR); // Set text color to magenta
         sb.append("Name: ").append(name).append(", ")
           .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
           .append("User ID: ").append(userId).append(", ")
           .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
-        sb.append(RESET_COLOR); // Reset text color
+       // sb.append(RESET_COLOR); // Reset text color
 
         return sb.toString();
     }
@@ -623,5 +488,222 @@ public class Event {
         return date + " " + time;
     }
     
+  
+///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
+    void printUpdateList(Event eventUpdate) {
+    	printing.printSomething(MAGENTA_COLOR + // Set text color to magenta
+        	    '\n' +
+        	    "UserID: " + eventUpdate.getUsrTd() + '\n' +
+        	    "Event ID: " + eventUpdate.eventId + '\n' +
+        	    "1. Name: " + eventUpdate.name + '\n' +
+        	    "2. Date: " + DATE_FORMAT.format(eventUpdate.date) + '\n' +
+        	    "3. Time: " + eventUpdate.time + '\n' +
+        	    "4. Description: " + eventUpdate.description + '\n' +
+        	    "5. Attendee Count: " + eventUpdate.attendeeCount + '\n' +
+        	    "6. Theme: " + eventUpdate.theme + '\n' +
+        	    "7. Category: " + eventUpdate.category + '\n' +
+        	    "8. Venue Name: " + eventUpdate.venueName + '\n' +
+        	    "9. Service IDs: " + eventUpdate.getServiceIds() + '\n'
+        	    + RESET_COLOR // Reset text color to default
+        	    );} 
+	
+    public Event updateEvent(String eventidd, String filename) throws IOException {
+       Event eventToUpdated = findeventID(eventidd, filename);
+
+        if (eventToUpdated != null && eventToUpdated.getEID() != null) {
+            printUpdateList(eventToUpdated);
+           // Scanner scanner = new Scanner(System.in);
+	        printing.printSomething ("\nEnter the number of the field you want to update: ");
+	        String choice = scannerr.next();
+
+
+            switch (choice) {
+                case "1":
+                    updateEventName(eventToUpdated);
+                    break;
+                case "2":
+                    updateEventDate(eventToUpdated,eventidd);
+                    break;
+                case "3":
+                    updateEventTime(eventToUpdated);
+                    break;
+                case "4":
+                    updateEventDescription(eventToUpdated);
+                    break;
+                case "5":
+                    updateEventAttendeeCount(eventToUpdated);
+                    break;
+                case "6":
+                    updateEventTheme(eventToUpdated);
+                    break;
+                case "7":
+                    updateEventCategory(eventToUpdated);
+                    break;
+                case "8":
+                    updateEventVenue(eventidd,eventToUpdated, filename);
+                    break;
+                case "9":
+                    updateEventServices(eventToUpdated);
+                    break;
+                default:
+                    printing.printSomething("Invalid choice.");
+            }
+        } else {
+            printing.printSomething("Event not found or event ID is null.");
+        }
+
+        updateEventInFile(eventToUpdated,filename);
+        return eventToUpdated;
+    }
+/////////////////////////////////////////////////////////////////////
    
+
+    private Event updateEventName(Event eventt) {
+        printing.printSomething("Enter new event name:");
+        eventt.setName(scannerr.next());
+        return eventt;
+    }
+
+
+    private Event updateEventDate(Event eventt,String eventidd) {
+    	 printing.printSomething("Enter new event date (yyyy-MM-dd):");
+         String dateInput = scannerr.next();
+         Date newdate;
+         try {
+             newdate = DATE_FORMAT.parse(dateInput);
+         } catch (ParseException e) {
+             e.printStackTrace();
+             return null;
+         }
+         eventt.setDate(newdate);
+         eventToUpdated.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
+         return eventt;
+    }
+   
+
+    private Event updateEventTime(Event eventt) {
+        printing.printSomething("Enter new event time:");
+        eventt.setTime(scannerr.next());
+        return eventt;
+    }
+
+    private Event updateEventDescription(Event eventt) {
+        printing.printSomething("Enter new event description:");
+        eventt.setDescription(scannerr.next());
+        return eventt;
+    }
+
+    private Event updateEventAttendeeCount(Event eventt) {
+        printing.printSomething("Enter new event attendee count:");
+        eventt.setAttendeeCount(scannerr.next());
+        return eventt;
+    }
+
+    private Event updateEventTheme(Event eventt) {
+        printing.printSomething("Enter new event theme:");
+        eventt.setTheme(scannerr.next());
+        return eventt;
+    }
+
+    private Event updateEventCategory(Event eventt) {
+        printing.printSomething("Enter new event category:");
+        eventt.setCategory(scannerr.next());
+        return eventt;
+    }
+    private Event updateEventServices(Event eventt) {
+    	func.updateServiceList();
+    	func.viewallservice("service.txt");
+        printing.printSomething("\nEnter new service IDs (comma-separated):\n");
+        String serviceIdsInput = scannerr.next();
+        List<String> serviceIds = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
+        eventt.setServiceIds(serviceIds);
+		return eventt;
+        
+    }
+ 
+    
+    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException {
+    	func.viewAllVenuesCustomer(VENUE_FILE_NAME);
+        printing.printSomething("\nEnter new event venue name:");
+       String newVenueName = scannerr.next();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String eventDateString = dateFormat.format(eventToUpdated.getDate());
+       boolean venueAvailable=false;
+        
+        do {
+            printing.printSomething("Enter Venue name:");
+            venueName = scannerr.next();
+            if (func.checkAvailability(venueName,eventDateString )) {
+                if (Integer.parseInt(eventToUpdated.getAttendeeCount()) <= func.getVenueCapacity(venueName)) {
+                    venueAvailable = true;
+                    eventToUpdated.setVenuename(venueName);
+                } else {
+                    printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
+                }
+            } else {
+         	  // printing.printSomething("\n choose another venue \n");
+              }
+        } while (!venueAvailable );
+
+        
+        eventt.setVenuename(venueName);
+       eventt.updateVenueInVenueBook(eventidd, venueName, VENUEBOOK_FILE_NAME);
+          }
+//////////////////////////////////////////////////////////
+    private void updateEventInFile(Event event2, String filename) throws IOException {
+    	 List<Event> events = new ArrayList<>();
+	        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                Event event1 =getEventFromLine(line) ;
+	                if (event1 != null) {
+	                	if (event1.getEID() != null && event1.getEID().equals(event2.getEID())) {
+	                		  event1.setDate(event2.getDate());
+	                        // Replace the old event with the updated one
+	                        events.add(event2);
+	                    } else {
+	                        events.add(event1);
+	                    }
+	                }
+	            }
+	        }
+
+	        // Write all events back to the file
+	        try (FileWriter writer = new FileWriter(filename, false)) {
+	            for (Event e : events) {
+	            	addEventToFile(e,"event.txt");
+	            }
+	        } catch (IOException e) {
+	            printing.printSomething( ERROR_PREFIX  + e.getMessage());
+	        }
+	    }
+	   
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
