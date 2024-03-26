@@ -80,10 +80,5 @@ public class User {
 	public static void setUsers1(List<User> users1) {
 		User.users1 = users1;
 	}
-    
-    
-    
-    
-    
    
 }
