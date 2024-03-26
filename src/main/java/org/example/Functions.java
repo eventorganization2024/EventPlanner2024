@@ -73,34 +73,34 @@ public class Functions {
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    static final String ENTER_CHOICE = "Enter your choice: ";
-	    static final String ENTER_PASSWORD= "\nEnter Password ";
+	    static final String ENTER_PASSWORD= "\nEnter Password :";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
+
 	   
 	    private static String id1;
 		  
 	    private static  String id;
-	
-	    
+	  
 static ///////////////////////////////////////////////////////////////////////////////////////
 	    void inputs(){
-		    String password;
+	  String password;
+	    
 	    	printing.printSomething("Enter Id: ");
 	    	id = scanner.next();
 	    	printing.printSomething(ENTER_PASSWORD);
 	    	password = scanner.next();
 	    	}
 ///////////////////////////////////////////////////////////////////////////////////////
-	static void signInFunction() throws Exception {
+static void signInFunction() throws Exception {
     signInPageList();
     printing.printSomething(ENTER_CHOICE);
     int choice = scanner.nextInt();
     printing.printSomething("\nEnter Id: ");
     String id = scanner.next();
-    printing.printSomething("Enter password: ");
    
     switch (choice) {
         case 1:
@@ -118,7 +118,7 @@ static /////////////////////////////////////////////////////////////////////////
 }
 
 static void signInAdmin(String id) throws IOException, Exception {
-	  printing.printSomething("Enter password: ");
+	  printing.printSomething( ENTER_PASSWORD);
 	    String password = scanner.next();
     if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) {
         adminPage();
@@ -131,7 +131,7 @@ static void signInAdmin(String id) throws IOException, Exception {
 static void signInCustomer(String id) throws Exception {
     boolean found = false;
     updateCustomersList(); 
-    printing.printSomething("Enter password: ");
+    printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
     try (BufferedReader br = new BufferedReader(new FileReader(CUSTOMER_FILE_NAME))) {
         String line;
@@ -164,7 +164,7 @@ static void signInProvider(String id) throws Exception {
 	
     boolean found = false;
     updateProvidersList(); 
-    printing.printSomething("Enter password: ");
+    printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
     try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
         String line;
@@ -192,6 +192,7 @@ static void signInProvider(String id) throws Exception {
         signInFunction(); 
     }
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    static  int x =1;
 	  public static  void adminPage() throws IOException, Exception
@@ -2846,6 +2847,21 @@ Transport.send(message);
 mex.printStackTrace();
 }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
