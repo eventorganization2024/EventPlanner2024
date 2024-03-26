@@ -38,8 +38,7 @@ public class venueTest {
     
     @When("select to add a new venue such as details {string}, {double}, {string}, {string}, {string}, {int}")
     public void selectToAddANewVenueSuchAsDetails(String string, Double double1, String string2, String string3, String string4, Integer int1) {
-      // Write code here that turns the phrase above into concrete actions
-    	
+      
     	v.setId(string);
          v.setPrice(double1);
          v.setAddress(string2);

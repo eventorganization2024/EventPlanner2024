@@ -32,7 +32,7 @@ price = newprice;
 }
 
 
-
+////
 @Given("the discount code {string} is expired")
 public void theDiscountCodeIsExpired(String string) {
 	expired=true;

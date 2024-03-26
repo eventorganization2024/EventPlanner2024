@@ -32,8 +32,7 @@ public class ServiceStepDefinitions {
     @Given("the service provider is logged in")
     public void theServiceProviderIsLoggedIn() {
 
-		// Assuming you have a method in your application to log in a service provider
-        Provider.login("23443", "2233");
+		 Provider.login("23443", "2233");
     	
     }
     

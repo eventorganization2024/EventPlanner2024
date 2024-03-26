@@ -34,13 +34,8 @@ public class Event {
    
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
-    static final String VENUEBOOK_FILE_NAME = "venuebook.txt";
-    private static final String RESET_COLOR = "\033[0m";
-    private static final String MAGENTA_COLOR = "\033[0;35m";
-    private static final String CYAN_COLOR = "\033[0;36m"; 
-    private static final String YELLOW_COLOR = "\033[0;33m"; 
+    static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
     static Scanner scannerr = new Scanner(System.in);
-	   
     static Printing printing = new Printing();
     
     
@@ -272,7 +267,7 @@ public class Event {
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
    static void printUpdateList(Event eventUpdate) {
-    	printing.printSomething(MAGENTA_COLOR + // Set text color to magenta
+    	printing.printSomething(printing.ANSI_MAGENTA + // Set text color to magenta
         	    '\n' +
         	    "UserID: " + eventUpdate.getUsrTd() + '\n' +
         	    "Event ID: " + eventUpdate.eventId + '\n' +
@@ -285,7 +280,7 @@ public class Event {
         	    "7. Category: " + eventUpdate.category + '\n' +
         	    "8. Venue Name: " + eventUpdate.venueName + '\n' +
         	    "9. Service IDs: " + eventUpdate.getServiceIds() + '\n'
-        	    + RESET_COLOR // Reset text color to default
+        	    + printing.ANSI_RED // Reset text color to default
         	    );} 
 	
     public Event updateEvent(String eventidd, String filename) throws IOException, ParseException ,NullPointerException{
@@ -630,7 +625,7 @@ public String toString2() {
     StringBuilder sb = new StringBuilder();
   //  sb.append(CYAN_COLOR); // Set text color to cyan
     sb.append("Event Details:\n");
-    sb.append(YELLOW_COLOR); // Set text color to yellow for attribute names
+    sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
     sb.append("- UserID: ").append(userId).append("\n");
     sb.append("- Name: ").append(name).append("\n");
     sb.append("- Date: ").append(DATE_FORMAT.format(date)).append("\n");

@@ -12,6 +12,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import eventSteps.*;
 
+
+/////
 public class CustomerActionSteps {
 	 User user = new User();
 	    Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456","ansam@gmail.com");

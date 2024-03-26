@@ -74,20 +74,7 @@ public class event_Management_Steps {
        List<String> serviceIds = new ArrayList<>();
         serviceIds.add("100");
         event = new Event(string5, date, string2, string3, string4, customer1.getId(), string7, string6, string8, serviceIds, string9);
-           /*
-		    event.setDate(date);
-	        event.setTime(string2);
-	        event.setDescription(string3);
-	        event.setAttendeeCount(string4);
-	        event.setName(string5);
-	        event.setCategory(string6);
-	        event.setTheme(string7);
-	        event.setVenuename(string8);
-	        event.setEID(string9);
-	        event.setUID(customer1.getId());
-	        */
-        
-	   	    event.addEventToFile(event, "requst.txt");
+	     event.addEventToFile(event, "requst.txt");
 	   	   }
 	
 	

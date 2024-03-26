@@ -154,13 +154,7 @@ public class discounttest {
     private Discount oldDiscount;
     private Discount newDiscount;
 
-//    @Given("the administrator is logged into the system")
-//    public void theAdministratorIsLoggedIntoTheSystem() {
-//    	 Admin admin = new Admin();
-//	        admin.setState(true);
-//	        assertTrue( admin.getstate()); 
-//        System.out.println("Administrator is logged into the system.");
-//    }
+
 
     @Given("navigates to the discount management section")
     public void navigatesToTheDiscountManagementSection() {
@@ -255,5 +249,5 @@ public class discounttest {
         // Implement code here to access the list of existing discounts
         System.out.println("The administrator accesses the list of existing discounts.");
     }
-    // You can add more step definitions as needed for your scenarios
+   
 }

@@ -19,7 +19,7 @@ public class LogInSteps {
 
     @Given("table")
 
-    //public void table() { }
+    ///
 
     @Given("that the user is not logged in")
     public void that_the_user_is_not_logged_in() {
