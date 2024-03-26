@@ -13,7 +13,8 @@ public class Printing {
                 String message = super.formatMessage(logRecord);
                String ansiRed = ANSI_CYAN;
 
-                String ansiReset = "\u001B[0m";
+               String ansiReset = ANSI_RESET;
+
                 return ansiRed + message + ansiReset;
             }
         });
