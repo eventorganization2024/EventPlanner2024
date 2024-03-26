@@ -74,6 +74,7 @@ public class Functions {
 	    static final String PROVIDER_FILE_NAME = "provider.txt";
 	    static final String REQUEST_FILE_NAME = "requst.txt";
 	    static final String EVENT_FILE_NAME = "event.txt";
+	    static final String PACKAGE_FILE_NAME = "package.txt";
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    static final String ENTER_CHOICE = "Enter your choice: ";
@@ -348,10 +349,11 @@ static void signInProvider(String id) throws Exception {
 	        	  showAdminMessage(id);
 	               break;	               
 	          case 8:
-	            	 if (viewAllPackagesFromFile("package.txt"))
-	            	selectpackagee();
-	            	 
-	            	break;
+	        	    if (viewAllPackagesFromFile(PACKAGE_FILE_NAME)) {
+	        	        selectpackagee();
+	        	    }
+	        	    break;
+
 	        case 9:
 	        	  
 	        	if(  viewCostomerevents(id,EVENT_FILE_NAME)) { 
@@ -635,16 +637,16 @@ static void signInProvider(String id) throws Exception {
       	switch (r)
       	{
       	case 1:
-      		viewAllPackagesFromFile( "package.txt");
+      		viewAllPackagesFromFile( PACKAGE_FILE_NAME);
               break;
       	 case 2:
-               addPackage(scanner, "package.txt");              
+               addPackage(scanner, PACKAGE_FILE_NAME);              
                break;
            case 3:
-          	 deletePackageById( scanner,"package.txt");
+          	 deletePackageById( scanner,PACKAGE_FILE_NAME);
                break;
            case 4:
-               updatePackage(scanner,"package.txt");
+               updatePackage(scanner,PACKAGE_FILE_NAME);
                break;
            case 5:
                System.out.println("Exiting...");
@@ -1190,21 +1192,21 @@ static void signInProvider(String id) throws Exception {
             System.out.print("Enter venue capacity: ");
             while (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a valid venue capacity (numeric value): ");
-                scanner.next(); // Clear the buffer
+                scanner.next();
             }
             capacity = scanner.nextInt();
         } while (capacity <= 0);
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
        double price;
         do {
             System.out.print("Enter venue price: ");
             while (!scanner.hasNextDouble()) {
                 System.out.println("Invalid input. Please enter a valid venue price (numeric value): ");
-                scanner.next(); // Clear the buffer
+                scanner.next();
             }
             price = scanner.nextDouble();
         } while (price <= 0);
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); 
         Venue newVenue = new Venue(venueId, name, address, capacity, price, Image);
         String venueDetails = newVenue.toFileString();
         addVenueToFile(filename, venueDetails);
@@ -1257,7 +1259,7 @@ static void signInProvider(String id) throws Exception {
 
         while (true) {
             System.out.println("All Packages:");
-            viewAllPackagesFromFile("package.txt");
+            viewAllPackagesFromFile(PACKAGE_FILE_NAME);
             
 
             System.out.print("\nEnter ID for package you want to update (or 'exit' to quit): ");
@@ -1668,12 +1670,12 @@ static void signInProvider(String id) throws Exception {
             String name = parts[1];
             if (name.equalsIgnoreCase(venueName)) {
                 scanner.close();
-                return Integer.parseInt(parts[4]); // Assuming capacity is at index 4
+                return Integer.parseInt(parts[4]); 
             }
         }
         
         scanner.close();
-        return -1; // Venue not found
+        return -1;
     }
 ////////////////////////////////////////////////////////////////////////////         
 public static void selectpackagee() throws Exception {
@@ -1684,8 +1686,8 @@ public static void selectpackagee() throws Exception {
         int packageId = scanner.nextInt();
         scanner.nextLine(); // Consume newline character
 
-        // Check if the package ID exists
-        if (!Paackage.isPackageIdExists("package.txt", packageId)) {
+        
+        if (!Paackage.isPackageIdExists(PACKAGE_FILE_NAME, packageId)) {
             System.out.println("Package ID doesn't exist.");
             return;
         }
@@ -2853,6 +2855,28 @@ mex.printStackTrace();
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
 
 	
