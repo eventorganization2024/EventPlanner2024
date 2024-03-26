@@ -34,6 +34,7 @@ public class Event {
    
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
+    static final String VENUEBOOK_FILE_NAME = "venuebook.txt";
 	   
 
 	static Event eventToUpdated ;
@@ -210,7 +211,7 @@ public class Event {
    
 	 	
      public void deleteEvent(String eventFileName, String eventId2) throws IOException {
-       String venueBookFileName = "venuebook.txt";
+       String venueBookFileName = VENUEBOOK_FILE_NAME;
     	StringBuilder eventFileContent = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(eventFileName))) {
             String line;
@@ -293,7 +294,7 @@ public class Event {
     	                    return null;
     	                }
     	                eventToUpdated.setDate(newdate);
-    	                eventToUpdated.updateVenueInVenueBook(id, newdate, "venuebook.txt");
+    	                eventToUpdated.updateVenueInVenueBook(id, newdate, VENUEBOOK_FILE_NAME);
     	                break;
     	            case "3":
     	                printing.printSomething("Enter new event time:");
@@ -340,7 +341,7 @@ public class Event {
 
     	                
     	                eventToUpdated.setVenuename(venueName);
-    	                eventToUpdated.updateVenueInVenueBook(id, venueName, "venuebook.txt");
+    	                eventToUpdated.updateVenueInVenueBook(id, venueName, VENUEBOOK_FILE_NAME);
     	                break;
     	            case "9":
     	            	func.updateServiceList();
