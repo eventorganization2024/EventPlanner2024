@@ -41,7 +41,6 @@ public class Event {
     private static final String YELLOW_COLOR = "\033[0;33m"; 
     static Scanner scannerr = new Scanner(System.in);
 	   
-    static Event eventToUpdated ;
     static Printing printing = new Printing();
     static Functions func =new Functions();
      
@@ -236,13 +235,14 @@ public class Event {
 	   
 		
 	 public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
-	        try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+		 Date date2;
+		 try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
 	            StringBuilder sb = new StringBuilder();
 	            String line;
 	            while ((line = reader.readLine()) != null) {
 	                String[] parts = line.split(",");
 	                if (parts.length >= 5 && parts[4].equals(eventId)) {
-	                	 Date date2;
+	                	 
 	                     try {
 	                         date2 = DATE_FORMAT.parse(parts[2]);
 	                     } catch (ParseException e) {
@@ -371,8 +371,8 @@ public class Event {
         return eventId;
     }
 
-    public void setEID(String ID) {
-        this.eventId = ID;
+    public void setEID(String eventid2) {
+        this.eventId = eventid2;
     }
     
     public String getTheme() {
@@ -414,11 +414,11 @@ public class Event {
        sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n"); // Moved service IDs to the end
 
         
-       func. updateServiceList();
+       Functions. updateServiceList();
        for (String serviceId : serviceIds) {
 	        serviceId = serviceId.replaceAll("\\[|\\]", "");
 	       
-	        for (ServiceDetails service : func.serviceDetails) {
+	        for (ServiceDetails service : Functions.serviceDetails) {
 	        	if (serviceId.equalsIgnoreCase("[No service]")) {
 	        		sb.append("No service");
 	        	    break;
@@ -485,8 +485,7 @@ public class Event {
 
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
             printUpdateList(eventToUpdated);
-           // Scanner scanner = new Scanner(System.in);
-	        printing.printSomething ("\nEnter the number of the field you want to update: ");
+             printing.printSomething ("\nEnter the number of the field you want to update: ");
 	        String choice = scannerr.next();
 
 
@@ -549,7 +548,7 @@ public class Event {
              return null;
          }
          eventt.setDate(newdate);
-         eventToUpdated.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
+         eventt.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
          return eventt;
     }
    
@@ -584,32 +583,32 @@ public class Event {
         return eventt;
     }
     private Event updateEventServices(Event eventt) {
-    	func.updateServiceList();
+    	Functions.updateServiceList();
     	func.viewallservice("service.txt");
         printing.printSomething("\nEnter new service IDs (comma-separated):\n");
         String serviceIdsInput = scannerr.next();
-        List<String> serviceIds = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
-        eventt.setServiceIds(serviceIds);
+        List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
+        eventt.setServiceIds(serviceIds2);
 		return eventt;
         
     }
  
     
     private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException, ParseException {
-    	func.viewAllVenuesCustomer(VENUE_FILE_NAME);
+    	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
         printing.printSomething("\nEnter new event venue name:");
        String newVenueName = scannerr.next();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String eventDateString = dateFormat.format(eventToUpdated.getDate());
+        String eventDateString = dateFormat.format(eventt.getDate());
        boolean venueAvailable=false;
         
         do {
             printing.printSomething("Enter Venue name:");
             venueName = scannerr.next();
             if (func.checkAvailability(venueName,eventDateString )) {
-                if (Integer.parseInt(eventToUpdated.getAttendeeCount()) <= func.getVenueCapacity(venueName)) {
+                if (Integer.parseInt(eventt.getAttendeeCount()) <= func.getVenueCapacity(venueName)) {
                     venueAvailable = true;
-                    eventToUpdated.setVenuename(venueName);
+                    eventt.setVenuename(venueName);
                 } else {
                     printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
                 }
