@@ -83,7 +83,7 @@ public class Functions {
 	    private static String id1;
 		  
 	    private static  String id;
-	    private static String password;
+	
 	    
 static ///////////////////////////////////////////////////////////////////////////////////////
 	    void inputs(){
