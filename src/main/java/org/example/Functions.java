@@ -77,6 +77,9 @@ public class Functions {
 	    static final String PACKAGE_FILE_NAME = "package.txt";
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
+	    private static final String ERROR_PREFIX = "An error occurred: ";
+	    
+	    
 	    static final String ENTER_CHOICE = "Enter your choice: ";
 	    static final String ENTER_PASSWORD= "\nEnter Password :";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
@@ -698,7 +701,7 @@ static void signInProvider(String id) throws Exception {
  		           prov.add(provider2);
  		        }
  		    } catch (Exception e) {
- 		       e.printStackTrace();
+ 		    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
  		    }
  		    if (prov.isEmpty()) {
  		        printing.printSomething("No provider found.\n");
@@ -846,8 +849,7 @@ static void signInProvider(String id) throws Exception {
   	            }
   	        }
   	    } catch (IOException e) {
-  	        System.err.println("Error reading file: " + e.getMessage());
-  	    }
+  	    	 printing.printSomething( ERROR_PREFIX + e.getMessage()); }
   	}
   	           /////////////////////////////////////////////////////////////////////////////
     public static boolean viewAllPackagesFromFile(String filename) {
@@ -890,8 +892,7 @@ static void signInProvider(String id) throws Exception {
                 System.out.println("There is no message for you.");
             }
         } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
+        	 printing.printSomething( ERROR_PREFIX + e.getMessage()); }
     }
   	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -932,7 +933,7 @@ static void signInProvider(String id) throws Exception {
           sdf.parse(date);
           return true;
       } catch (ParseException e) {
-          return false;
+    	  return false;
       }
 
   } 
@@ -944,7 +945,7 @@ static void signInProvider(String id) throws Exception {
                 count++;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
         }
         return count;
     }
@@ -978,7 +979,7 @@ static void signInProvider(String id) throws Exception {
              date = DATE_FORMAT.parse(dateInput);
          } catch (ParseException e) {
 
-             e.printStackTrace();
+        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
              return null;
          }
          eventObj.setDate(date);	               
@@ -1225,7 +1226,7 @@ static void signInProvider(String id) throws Exception {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("invoice.txt", true))) {
             writer.write(customerId + "," + eventId + "," + eventName + "," + price);
             writer.newLine();           
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) { printing.printSomething( ERROR_PREFIX + e.getMessage());}
     } 
 /////////////////////////////////////////////////////////////////////////////
    
@@ -1420,7 +1421,7 @@ static void signInProvider(String id) throws Exception {
             }
             System.out.println("Venue successfully edited.");
         } catch (IOException e) {
-            e.printStackTrace();
+        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1583,7 +1584,7 @@ static void signInProvider(String id) throws Exception {
 	        }
 	        return price; 
 	    } catch (IOException e) {
-	        e.printStackTrace();
+	    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
 	        return price;
 	    }
 	}
@@ -1709,7 +1710,7 @@ public static boolean isPackageIdExists(String filename, int id) {
             }
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
     return false;
 }
@@ -1725,7 +1726,7 @@ public static boolean isVenueIdExists(String filename, String venueId) {
               }
           }
       } catch (IOException e) {
-          e.printStackTrace();
+    	  printing.printSomething( ERROR_PREFIX + e.getMessage());
       }
       return false; // Venue ID does not exist in the file
   }
@@ -1742,7 +1743,7 @@ public static void addVenueToFile(String filename, String venueDetails) {
         writer.write(venueDetails);
         writer.newLine();
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 public static void addDiscountToFile(String filename, String discountDetails) {
@@ -1750,7 +1751,7 @@ public static void addDiscountToFile(String filename, String discountDetails) {
         writer.write(discountDetails);
         writer.newLine();
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 public static void addPackageToFile(String filename, String packageDetails) {
@@ -1758,7 +1759,7 @@ public static void addPackageToFile(String filename, String packageDetails) {
         writer.write(packageDetails);
         writer.newLine();
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 public static void savePackagesToFile(String filename, List<Paackage> packages) {
@@ -1768,7 +1769,7 @@ public static void savePackagesToFile(String filename, List<Paackage> packages) 
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1779,7 +1780,7 @@ public static void writeDiscountsToFile(String filename, List<Discount> discount
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 
@@ -1803,7 +1804,7 @@ public static List<Venue> readVenuesFromFile(String filename) {
             venues.add(venue);
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
     return venues;
 }
@@ -1827,7 +1828,7 @@ public static List<Paackage> readPackagesFromFile(String filename) {
             packages.add(p);
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
     return packages;
 }
@@ -1850,7 +1851,7 @@ public static List<Discount> readDiscountsFromFile(String filename) {
 	            }
 	        }
 	    } catch (IOException e) {
-	        e.printStackTrace();
+	    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
 	    }
 	    return discounts;
 	}
@@ -1874,7 +1875,7 @@ public static void readInvoiceFile(String fileName, String customerId) {
         }
         System.out.println("Total Price: " + totalPrice); // Print the total price
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 
@@ -1886,7 +1887,7 @@ public static void deleteDiscountFromFile(String filename, List<Discount> update
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 private static void deleteVenueFromFile(String filename, List<Venue> venues) {
@@ -1896,7 +1897,7 @@ private static void deleteVenueFromFile(String filename, List<Venue> venues) {
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 
@@ -2026,7 +2027,7 @@ public static void deleteVenueById(Scanner scanner, String filename) {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
         }
     } else {
         System.out.println("Venue with ID " + venueIdToRemove + " not found.");
@@ -2048,7 +2049,7 @@ public void deleteVenueBooking(String eventId, String filename) {
             lines.add(line);
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
     
     // Rewrite the file with updated contents (excluding the line with the specified event ID)
@@ -2058,7 +2059,7 @@ public void deleteVenueBooking(String eventId, String filename) {
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 
