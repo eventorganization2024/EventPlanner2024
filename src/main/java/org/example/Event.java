@@ -289,7 +289,8 @@ public class Event {
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
             printUpdateList(eventToUpdated);
              printing.printSomething ("\nEnter the number of the field you want to update: ");
-	        String choice = scannerr.next();
+             Scanner scanner = new Scanner(System.in);
+             String choice = scanner.next();
 
 
             switch (choice) {
@@ -333,16 +334,19 @@ public class Event {
 /////////////////////////////////////////////////////////////////////
    
 
-    public Event updateEventName(Event eventt) {
+    public static Event updateEventName(Event eventt) {
         printing.printSomething("Enter new event name:");
-        eventt.setName(scannerr.next());
+        Scanner scannerN = new Scanner(System.in);
+       String newName=scannerN.next();
+        eventt.setName(newName);
         return eventt;
     }
 
 
-    private Event updateEventDate(Event eventt,String eventidd) {
+    public static Event updateEventDate(Event eventt,String eventidd) {
     	 printing.printSomething("Enter new event date (yyyy-MM-dd):");
-         String dateInput = scannerr.next();
+    	 Scanner scannerD = new Scanner(System.in);
+    	 String dateInput = scannerD.next();
          Date newdate;
          try {
              newdate = DATE_FORMAT.parse(dateInput);
@@ -356,40 +360,53 @@ public class Event {
     }
    
 
-    private Event updateEventTime(Event eventt) {
+    public static Event updateEventTime(Event eventt) {
         printing.printSomething("Enter new event time:");
-        eventt.setTime(scannerr.next());
+        Scanner scannerTime = new Scanner(System.in);
+        String newTime=scannerTime.next();
+        eventt.setTime(newTime);
         return eventt;
     }
 
-    private Event updateEventDescription(Event eventt) {
+    public static Event updateEventDescription(Event eventt) {
         printing.printSomething("Enter new event description:");
-        eventt.setDescription(scannerr.next());
+        Scanner scannerDe = new Scanner(System.in);
+        String newDe=scannerDe.next();
+        eventt.setDescription(newDe);
         return eventt;
     }
 
-    private Event updateEventAttendeeCount(Event eventt) {
+    public static Event updateEventAttendeeCount(Event eventt) {
         printing.printSomething("Enter new event attendee count:");
-        eventt.setAttendeeCount(scannerr.next());
+        Scanner scannerCount = new Scanner(System.in);
+        String newCount=scannerCount.next();
+        eventt.setAttendeeCount(newCount);
         return eventt;
     }
 
-    private Event updateEventTheme(Event eventt) {
+    public static Event updateEventTheme(Event eventt) {
         printing.printSomething("Enter new event theme:");
-        eventt.setTheme(scannerr.next());
+        Scanner scannerTheme = new Scanner(System.in);
+        String newTheme=scannerTheme.next();
+        eventt.setTheme(newTheme);
         return eventt;
     }
 
-    private Event updateEventCategory(Event eventt) {
+    public static Event updateEventCategory(Event eventt) {
         printing.printSomething("Enter new event category:");
-        eventt.setCategory(scannerr.next());
+        Scanner scannerCat = new Scanner(System.in);
+        String newCat=scannerCat.next();
+        eventt.setCategory(newCat);
         return eventt;
     }
-    private Event updateEventServices(Event eventt) {
+    public static Event updateEventServices(Event eventt) {
     	Functions.updateServiceList();
     	Functions.viewallservice("service.txt");
         printing.printSomething("\nEnter new service IDs (comma-separated):\n");
-        String serviceIdsInput = scannerr.next();
+        Scanner scannerServ = new Scanner(System.in);
+        String newServ=scannerServ.next();
+        String serviceIdsInput =newServ;
+        
         List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
         eventt.setServiceIds(serviceIds2);
 		return eventt;
@@ -397,7 +414,7 @@ public class Event {
     }
  
     
-    private void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException{
+    public  void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException, NumberFormatException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
         printing.printSomething("\nEnter new event venue name:");
        String newVenueName = scannerr.next();
@@ -625,7 +642,7 @@ public String toString2() {
     StringBuilder sb = new StringBuilder();
   //  sb.append(printing.ANSI_YELLOW); // Set text color to cyan
     sb.append("Event Details:\n");
-    sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
+   // sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
     sb.append("- UserID: ").append(userId).append("\n");
     sb.append("- Name: ").append(name).append("\n");
     sb.append("- Date: ").append(DATE_FORMAT.format(date)).append("\n");
