@@ -623,7 +623,7 @@ public String getVenuename(){return venueName;}
 
 public String toString2() {
     StringBuilder sb = new StringBuilder();
-  //  sb.append(CYAN_COLOR); // Set text color to cyan
+  //  sb.append(printing.ANSI_YELLOW); // Set text color to cyan
     sb.append("Event Details:\n");
     sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
     sb.append("- UserID: ").append(userId).append("\n");
