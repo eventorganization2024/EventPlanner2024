@@ -33,7 +33,7 @@ public class event_Management_Steps {
 	 
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	    
-	Event event =new Event();
+	 Event event =new Event();
     boolean cancel;
     boolean found;
     boolean update;
@@ -109,7 +109,7 @@ public class event_Management_Steps {
 	
 	@Then("the event deleted")
 	public void theEventDeleted() throws Exception{ 	
-	event .delete_event_from_file_and_arraylist( event,"event.txt","2000"); 
+	event .deleteEvent("event.txt","2000"); 
 	System.out.println("The event deleted");}
 
 	
@@ -179,7 +179,7 @@ public class event_Management_Steps {
 
 	@Given("there is an existing event to update")
 	public void thereIsAnExistingEventToUpdate() throws IOException {
-		Event eventToUpdate = Event.findeventID("1000", "event.txt");
+		Event eventToUpdate = event. findeventID("1000", "event.txt");
 		update=true;   
 		existe=true; }
     /////////////////////////////////////////////////
