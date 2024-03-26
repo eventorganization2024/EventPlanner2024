@@ -33,10 +33,10 @@ public class Printing {
     
     
 /////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
-    public void printInColor(String msg, String color) {
-        String ansiColor = color;
-        LOGGER.log(Level.INFO, ansiColor + msg);
-    }
+ public void printInColor(String msg, String color) {
+    LOGGER.log(Level.INFO, "{}{}", new Object[]{color, msg});
+}
+
     public static final String ANSI_RESET = "\u001B[0m";
     public String getColoredString(String input, String color) {
         return color + input + ANSI_RESET;
