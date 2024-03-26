@@ -15,6 +15,7 @@ public class LogInSteps {
 	
     User u = new User();
 
+
     static Logger logger= Logger.getLogger(LogInSteps.class.getName());
 
     @Given("table")
@@ -32,6 +33,7 @@ public class LogInSteps {
         u.setName(string);
         u.setPassword(string2);
         u.loginCH(string, string2);
+        
     }
 
     @Then("the user is logged in successfully")
@@ -43,7 +45,7 @@ public class LogInSteps {
     @Given("{string} is not in the database")
     public void is_not_in_the_database(String string) {
 
-        if (!User.users1.equals(string)) {
+        if (!User.getUsers1().equals(string)) {
 
             u.setLogstate(false);
         }
@@ -60,7 +62,7 @@ public class LogInSteps {
 
     @Given("the {string} not in database")
     public void the_not_in_database(String string) {
-        if (!User.users1.equals(string)) {
+        if (!User.getUsers1().equals(string)) {
 
             u.setLogstate(false);
         }
@@ -73,8 +75,9 @@ public class LogInSteps {
         logger.log(Level.INFO,string);
     }
 
+   
 
-
+    
 
 
 	
