@@ -134,7 +134,7 @@ public ViewSteps() throws ParseException {
 		}
 	@Then("the list of available venues  displayed")
 	public void theListOfAvailableVenuesDisplayed() {
-		 assertTrue(show_Venueforcustomer); F.viewAllVenuesCustomer("venue.txt");         //////////////////////////////
+		 assertTrue(show_Venueforcustomer); F.viewAllVenuesCustomer("venue.txt");         
 			}
 
 	

@@ -14,6 +14,7 @@ public class NotifyCustomerSteps {
 	    boolean requestAccepted;
 	    boolean requestRejected;
 
+	    ///
 	@Given("there is an existing event request for a customer")
 	public void thereIsAnExistingEventRequestForACustomer() {
 		
