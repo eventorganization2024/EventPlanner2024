@@ -258,7 +258,7 @@ static void signInProvider(String id) throws Exception {
 	         }
 	      }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    public static void customerOptions(int x) throws Exception {
+	  	    public static void customerOptions(int x) throws Exception {
 	    	
 	        switch (x){
 	            case 1:
@@ -268,11 +268,11 @@ static void signInProvider(String id) throws Exception {
 	                break;
 	            case 2:
 	               updateCustomersList(); 
-	               addevent("requst.txt");
+	               addevent(Request_FILE_NAME);
 	               break;
 	            case 3:
 	            	printing.printSomething("\n");
-	                boolean f = viewCostomerevents(id, "event.txt");
+	                boolean f = viewCostomerevents(id, Event_FILE_NAME);
 	                if (f) {
 	                    boolean continueUpdating = true;
 	                    while (continueUpdating) {
@@ -282,8 +282,8 @@ static void signInProvider(String id) throws Exception {
 	                        if ("done".equalsIgnoreCase(eventid)) {
 	                            continueUpdating = false; // Exit the loop if the user enters 'done'
 	                        } else {
-	                            event1.updateEvent(eventid, "event.txt");
-	                           // viewCostomerevents(id, "event.txt");
+	                            event1.updateEvent(eventid, Event_FILE_NAME);
+	                        
 	                            printing.printSomething("Event updated successfully.\n");
 	                        }
 	                    }
@@ -293,7 +293,7 @@ static void signInProvider(String id) throws Exception {
 	             
 	            case 4:
 	                printing.printSomething("\n");
-	                boolean f2 = viewCostomerevents(id, "event.txt");
+	                boolean f2 = viewCostomerevents(id, Event_FILE_NAME);
 	                if (f2) {
 	                    boolean continueDeleting = true;
 	                    while (continueDeleting) {
@@ -303,12 +303,12 @@ static void signInProvider(String id) throws Exception {
 	                        if ("done".equalsIgnoreCase(eventidd)) {
 	                            continueDeleting = false; // Exit the loop if the user enters 'done'
 	                        } else {
-	                            event1.deleteEvent( "event.txt", eventidd);
+	                            event1.deleteEvent( Event_FILE_NAME, eventidd);
 	                            printing.printSomething("\n");
 	                            continueDeleting = false;
 	                            printing.printSomething("Event deleted successfully.\n");
 	 	                       
-	                            // viewCostomerevents(id, "event.txt");
+	                      
 	                        }
 	                    }
 	                }
@@ -347,7 +347,7 @@ static void signInProvider(String id) throws Exception {
 	            	break;
 	        case 9:
 	        	  
-	        	if(  viewCostomerevents(id,"event.txt")) { /// to String 
+	        	if(  viewCostomerevents(id,Event_FILE_NAME)) { 
 		          	 boolean show=true;
 	          	 while (show) {
 	          		 
@@ -356,10 +356,10 @@ static void signInProvider(String id) throws Exception {
 	          	    if ("done".equalsIgnoreCase(eventIDToView)) {
 	          	       break;
 	          	    } else {
-	          	    	  updateEventList("event.txt");
-	          			   Event e=Event.findeventID(eventIDToView,"event.txt");
+	          	    	  updateEventList(Event_FILE_NAME);
+	          			   Event e=Event.findeventID(eventIDToView,Event_FILE_NAME);
 	          	    	
-	          			  System.out.println(e.toString2());// to String2
+	          			  System.out.println(e.toString2());
 	          	    	 show =false;
 	          	    	break;
 	          	       }
@@ -369,7 +369,7 @@ static void signInProvider(String id) throws Exception {
 	        	 	        	 	        		        	  	        	   	        	   
 	        case 10: 
 	        	 printing.printSomething("\n");   	        	  
-	        	if(viewCostomerevents(id,"requst.txt")){/// to String
+	        	if(viewCostomerevents(id,Request_FILE_NAME)){
 	        	boolean show2=true;
           	     while (show2) {
           		 
@@ -378,10 +378,10 @@ static void signInProvider(String id) throws Exception {
           	    if ("done".equalsIgnoreCase(eventIDToView)) {
           	       break;
           	    } else {
-          	    	  updateEventList("requst.txt");
-          			   Event e=Event.findeventID(eventIDToView,"requst.txt");
+          	    	  updateEventList(Request_FILE_NAME);
+          			   Event e=Event.findeventID(eventIDToView,Request_FILE_NAME);
           	    	
-          			  System.out.println(e.toString2());// to String2
+          			  logger.info(e.toString2());
           	    	 show2 =false;
           	    	break;
           	       }
@@ -389,7 +389,7 @@ static void signInProvider(String id) throws Exception {
 	        	}
               break;
 	        case 11:
-	        	// Load events from the event.txt file
+	       
             	Calendar calendar =loadEventsForCustomerInCalendar(id);
                 displayAllCustomerEvents(calendar);	        	
 	        	break;
