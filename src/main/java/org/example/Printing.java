@@ -9,8 +9,8 @@ public class Printing {
         Handler consoleHandler = new ConsoleHandler();
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
-            public String format(LogRecord record) {
-                String message = super.formatMessage(record);
+            public String format(LogRecord logRecord) {
+                String message = super.formatMessage(logRecord);
                 String ANSI_RED = "\u001B[36m";
                 String ANSI_RESET = "\u001B[0m";
                 return ANSI_RED + message + ANSI_RESET;
