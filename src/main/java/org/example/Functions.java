@@ -296,13 +296,13 @@ static /////////////////////////////////////////////////////////////////////////
 	            	   case 1: printing.printSomething("\n"+"Please enter the Event Name you want to see it : ");
 	            	   String EventN=scanner.next();
 	                   String usId=id;
-	                   Event. searchEvent(usId, EventN, 0);
+	                   searchEvent(usId, EventN, 0);
 	                   break;
 	            	   case 2:  printing.printSomething("\n");   
 	                   printing.printSomething("\n"+"Please enter the Venue Name of the event you want to see it : ");
 	                   String VenueN=scanner.next();
 	                   String userId=id;
-	                   Event. searchEvent(userId, VenueN, 8);
+	                   searchEvent(userId, VenueN, 8);
 	            	   }
 	            	 break;	                 
 	          case 6:
@@ -1459,7 +1459,54 @@ static /////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
-   
+    public static void searchEventsByCustomer(String customerId) {
+    	String filename = "requst.txt"; 
+
+    	try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    	    String line;
+    	    while ((line = reader.readLine()) != null) {
+    	      
+    	        String[] fields = line.split(",\\s*"); 
+    	        
+    	 
+    	        if (fields.length >= 9 && fields[5].trim().equals(customerId.trim())) {
+    	         
+    	            System.out.println(line);
+    	        }
+    	    }
+    	} catch (IOException e) {
+    	    System.err.println("An error occurred while reading the file: " + e.getMessage());
+    	}
+    	}
+
+  	public static void searchEvent(String customerId, String searchTerm, int searchFieldIndex) {
+    	    String filename = "event.txt";
+
+    	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    	        String line;
+    	        boolean eventFound = false;
+    	        while ((line = reader.readLine()) != null) {
+    	            String[] fields = line.split(",\\s*");
+
+    	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim()) && fields[searchFieldIndex].trim().equals(searchTerm)) {
+    	                System.out.println(line);
+    	                eventFound = true;
+    	            }
+    	        }
+    	        if (!eventFound) {
+    	            if (searchFieldIndex == 0) {
+    	                System.out.println("There is no event with this Name");
+    	            } else if (searchFieldIndex == 8) {
+    	                System.out.println("There is no event with this Venue");
+    	            }
+    	        }
+    	    } catch (IOException e) {
+    	        System.err.println("An error occurred while reading the file: " + e.getMessage());
+    	    }
+    	}
+  	
+
+  
 
 
 

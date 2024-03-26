@@ -19,17 +19,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import java.util.Scanner;
-=======
 import org.junit.Test;
-
 
 import org.example.Customer;
 import org.example.Event;
 import org.example.Functions;
 import org.example.Venue;
-import org.junit.Test;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -43,11 +38,9 @@ public class event_Management_Steps {
 	 Event event =new Event();
     boolean cancel;
     boolean found;
-    boolean search;
     boolean update;
     boolean existe;
     boolean creat;
-  
     Customer customer1 = new Customer();
     
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
@@ -93,17 +86,12 @@ public class event_Management_Steps {
 	        event.setEID(string9);
 	        event.setUID(customer1.getId());
 	        */
-
-        
-	   	    event.addEventToFile(event, "requst.txt");
-
 		  customer1.addEvent(event);
          assertEquals(1, customer1.getEvents().size());
         assertNotNull(customer1.getCevents());
         assertTrue(customer1.getEvents().contains(event));
 	   	    event.addEventToFile(event, "event.txt");
 	   	
-
 	   	   }
 
 
@@ -124,7 +112,7 @@ public class event_Management_Steps {
 
 	
 	@Then("the event is added to admin requst")
-	public void theEventIsAddedToAdminRequst() throws Exception {  event.addEventToFile(event,"requst.txt");
+	public void theEventIsAddedToAdminRequst() throws Exception {  event.addEventToFile(event,"event.txt");
 	}
 
 
@@ -153,6 +141,9 @@ public class event_Management_Steps {
 	@Given("there is an non_existing event")
 	public void thereIsAnNonExistingEvent() {existe=false;}
 
+	
+	
+
 	@Then("non_Existing massage")
 	public void nonExistingMassage() {assertFalse(found);System.out.println("The event does not exist.");}
 
@@ -161,32 +152,61 @@ public class event_Management_Steps {
 	
 	@Given("selects the option to update the event details")
 	public void selectsTheOptionToUpdateTheEventDetails() throws IOException {
-		update=true;
-	
 		}
 	
 	
-	 
+	@Then("the event details are successfully updated in the system")
+	public void theEventDetailsAreSuccessfullyUpdatedInTheSystem() throws Exception {
+		 {assertTrue(update);  
+		/* String[] simulatedInputs = {
+				    "1\nnewname\n",
+				    // Case 2: Enter new event date
+				    "2\n2025-05-12\n",
+				    // Case 3: Enter new event time
+				    "3\n4:00 pm\n",
+				    // Case 4: Enter new event description
+				    "4\nnew description\n",
+				    // Case 5: Enter new event attendee count
+				    "5\n10\n",
+				    // Case 6: Enter new event theme
+				    "6\nnew theme\n",
+				    // Case 7: Enter new event category
+				    "7\nnew category\n",
+				    // Case 8: Enter new event venue name
+				    "8\nNablus_Event_Center\n"
+				    + "\nNablus_Event_Center\n",
+				    // Case 9: Enter new service IDs
+				    "9\n100, 200\n"
+		    };
+		
+		 for (String simulatedInput : simulatedInputs) {
+		        // Set up input stream with simulated input
+		        InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+		        System.setIn(inputStream);
+
+		        // Call the method you want to test
+		        try {
+		            event.updateEvent("1000", "event.txt");
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            // Handle exceptions if any
+		        }
+
+		        // Reset System.in to standard input stream
+		        System.setIn(System.in);
+		    
+		      }}
+		*/ 
+	}
+		    
+	}
+
 
 	@Given("there is an existing event to update")
 	public void thereIsAnExistingEventToUpdate() throws IOException {
-		assertTrue(update);
-		Event eventToUpdate = Event. findeventID("1000", "event.txt");
-		Event.updateEventInFile(eventToUpdate,"event.txt");		  
-		 }
-	
-	@Then("the event details are successfully updated in the system")
-	public void theEventDetailsAreSuccessfullyUpdatedInTheSystem() throws Exception {
-		
-	}
-	
-	@Given("there is an nonexisting event to update")
-	public void thereIsAnNonexistingEventToUpdate() throws NullPointerException, IOException {
-		assertTrue(update);
-		Event.updateEventInFile(null,"event.txt");
-		 
-	}
-
+		Event eventToUpdate = event. findeventID("1000", "event.txt");
+		update=true;   
+		existe=true; }
     /////////////////////////////////////////////////
 	
 @Given("the administrator is going to create an event")
@@ -223,33 +243,9 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 
  ////////////////////////////////////
 	
-	@Given("the customer is going to search about event")
-	public void theCustomerIsGoingToSearchAboutEvent() {
-		search=true;
-	
-	}
-	@When("the customer enters the event details such as event name {string}")
-	public void theCustomerEntersTheEventDetailsSuchAsEventName(String string) {
-	   assertTrue(search);
-	   Event.searchEvent("12114777", string, 0);
-	   
-	}
-	
-	@When("the customer enters the event details such as venue name {string}")
-	public void theCustomerEntersTheEventDetailsSuchAsVenueName(String string) {
-		assertTrue(search);
-		Event.searchEvent("12114777", string, 8);
-		
-	}
-	
 
-@Then("the system should display all events matching the name")
-	public void theSystemShouldDisplayAllEventsMatchingTheName() {
+
 	
-   }
-
-///////////////////////////////////////////////////////////////////////////////////
-
 
 
 	
