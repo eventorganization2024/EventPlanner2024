@@ -191,8 +191,8 @@ static void signInProvider(String id) throws Exception {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    static  int x =1;
-	  public static  void adminPage() throws IOException, Exception
+  static  int x =1;
+	  public static  void adminPage() throws Exception
 	    { 
 
 	    	while (x > 0) {
@@ -222,24 +222,24 @@ static void signInProvider(String id) throws Exception {
 	    	            break;
 	    	        case 3:
 	    	        	EventManagementAdminPageList();
-	    	        	int CE=scanner.nextInt();
-	    	        	EventManagementOptions(CE);
+	    	        	int customerEvent=scanner.nextInt();
+	    	        	EventManagementOptions(customerEvent);
 	    	            break;
 	    	        case 4:
 	    	        	VenueManagementadminList();
-	    	        	int C=scanner.nextInt();
-	    	        	VenueManagementOptions(C);
+	    	        	int cusVenue=scanner.nextInt();
+	    	        	VenueManagementOptions(cusVenue);
 	    	            break;
 	    	         
 	    	        case 5:
 	    	        	ProviderManagementAdminPageList();
-	    	        	int PR=scanner.nextInt();
-	    	        	ProviderAdminManagementOptions(PR);
+	    	        	int providerMan=scanner.nextInt();
+	    	        	ProviderAdminManagementOptions(providerMan);
 	    	            break;
 	    	        case 6:
 	    	        	PackageManagementadminList();
-	    	        	int Cr=scanner.nextInt();
-	    	        	PackageManagementOptions(Cr);
+	    	        	int packageMan=scanner.nextInt();
+	    	        	PackageManagementOptions(packageMan);
 	    	            
 	    	            break;
 	    	        case 7:
