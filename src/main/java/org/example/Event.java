@@ -703,8 +703,7 @@ public LocalDate getDateAsLocalDate() {
     // Assuming 'date' is your java.util.Date object
     Instant instant = date.toInstant();
     ZoneId zoneId = ZoneId.systemDefault(); // Or specify the desired time zone
-    LocalDate localDate = instant.atZone(zoneId).toLocalDate();
-    return localDate;
+   return instant.atZone(zoneId).toLocalDate();
 }
 
 
