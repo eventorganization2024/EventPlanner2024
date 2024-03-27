@@ -413,7 +413,8 @@ String[] serviceIdsArray = serviceIdsString.split(",\\s*", -1);
         String newServ=scannerServ.next();
         String serviceIdsInput =newServ;
    
-      List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split(",\\s*"));
+    List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split(",\\s*"));
+
 
         eventt.setServiceIds(serviceIds2);
 		return eventt;
