@@ -173,7 +173,7 @@ public class Provider extends User  {
 
 
 	public boolean doesServiceExist(String serviceType) {
-		  if (serviceDetailsList != null) {
+		  if (!serviceDetailsList.isEmpty()) {
 	            for (ServiceDetails serviceDetails : serviceDetailsList) {
 	                if (serviceDetails != null && serviceDetails.getServiceID() != null
 	                        && serviceDetails.getServiceType().equalsIgnoreCase(serviceType)) {
@@ -189,7 +189,7 @@ public class Provider extends User  {
 	    Functions.updateProviderAndServiceList();
 	    Functions.updateProviderAndServiceList();
 
-	    if (serviceDetailsList != null && !serviceDetailsList.isEmpty()) {
+	    if ( !serviceDetailsList.isEmpty()) {
 	        ServiceDetails serviceToDelete = null;
 	        for (ServiceDetails service : Functions.serviceDetails) {
 	            if (service.getServiceID().equals(serviceID)) {
@@ -200,7 +200,7 @@ public class Provider extends User  {
 
           if (serviceToDelete != null) {
                 serviceDetailsList.remove(serviceToDelete);
-                deleteProviderFromFileAndArrayList("service.txt", serviceID);
+                deleteServiceFromFile("service.txt", serviceID);
                   
             } else {
             	printing.printSomething("Service not found.\n");
@@ -211,7 +211,7 @@ public class Provider extends User  {
 	
 /////////////////////
 
-	public void delete_provider_from_file_and_arraylist( String fileName, String pid) throws IOException {
+	public void deleteProviderFromFileAndArrayList( String fileName, String pid) throws IOException {
 	    String line;
 	    StringBuilder sb = new StringBuilder();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -232,7 +232,7 @@ public class Provider extends User  {
 	}
 
 ///////////////////////////////
-	public void deleteProviderFromFileAndArrayList(String filename,String SID)throws Exception 
+	public void deleteServiceFromFile(String filename,String sid)throws IOException 
 	{ 
 	
 		
@@ -244,8 +244,8 @@ public class Provider extends User  {
 	        {   String[] items = line.split(" , ");
 	        if (items.length >= 7) 
 	        {
-	        	  String SERVICEID=items[0];
-	        	  if (!SERVICEID.equals(SID)) {
+	        	  String serviceId=items[0];
+	        	  if (!serviceId.equals(sid)) {
 	                  sb.append(line).append("\n");
 	              } 
 	        } 
