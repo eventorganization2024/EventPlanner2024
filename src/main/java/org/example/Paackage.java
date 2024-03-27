@@ -17,7 +17,6 @@ private double price ;
 private String validityPeriod;
 private String title; 
 	
-	
 public Paackage(){}
  static final String PACKAGE_WITH_ID = "Package with ID ";
  static final String ALL_PACKAGES = "All Packages:";
@@ -84,8 +83,7 @@ public static void addPackageToFile(String filename, String packageDetails) {
         writer.write(packageDetails);
         writer.newLine();
     } catch (IOException e) {
-	print.printSomething("An error occurred while writing package details to file: " + e.getMessage());
-
+    	print.printSomething("An error occurred while writing package details to file: " + e.getMessage());
     }
 }
 
@@ -132,6 +130,8 @@ public static boolean isPackageIdExists(String filename, int id) {
             }
         }
     } catch (IOException e) {
+    	print.printSomething("An error occurred while writing package details to file: " + e.getMessage());
+
     }
     return false;
 }
@@ -228,6 +228,8 @@ public static List<Paackage> readPackagesFromFile(String filename) {
             packages.add(p);
         }
     } catch (IOException e) {
+    	print.printSomething("An error occurred while writing package details to file: " + e.getMessage());
+
     }
     return packages;
 }
@@ -241,6 +243,8 @@ public static void savePackagesToFile(String filename, List<Paackage> packages) 
             writer.newLine();
         }
     } catch (IOException e) {
+    	print.printSomething("An error occurred while writing package details to file: " + e.getMessage());
+
     }
 }
 public String toFileString() {
