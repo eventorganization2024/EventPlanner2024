@@ -116,8 +116,8 @@ import io.cucumber.java.en.When;
 	        System.out.println("The administrator views the list of existing discounts.");
 	 }
 	 
-	 @Before
-	    public void setUp() {
+	@org.junit.Before
+          public void setUp() {
 	        p = new Paackage();
 	    }
 
