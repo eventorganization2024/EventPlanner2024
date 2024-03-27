@@ -290,7 +290,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
         	    + printing.ANSI_RED // Reset text color to default
         	    );} 
 	
-    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException ,NullPointerException{
+    public Event updateEvent(String eventidd, String filename) throws IOException,NullPointerException{
        Event eventToUpdated = findeventID(eventidd, filename);
 
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
