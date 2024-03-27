@@ -2568,7 +2568,8 @@ customerEvents = Customer.getEvents();
 
 //Check if events are found for the customer
 if (customerEvents.isEmpty()) {
-return null;
+//return null;
+return Collections.emptyList(); 
 } else {
 return customerEvents;
 }
