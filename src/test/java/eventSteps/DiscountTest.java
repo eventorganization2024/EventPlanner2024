@@ -1,142 +1,12 @@
 package eventSteps;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.example.*;
+import org.junit.Test;
 
-//import event.Functions;
 
-
-//import io.cucumber.java.en.Given;
-//import io.cucumber.java.en.Then;
-//import io.cucumber.java.en.When;
-//public class discounttest {
-//Discount discount=new Discount();
-//String filename = "discount.txt";
-// static boolean adding=false;
-//User user = new User();
-//static boolean updated = false;
-//static boolean deleteProfile = false;
-//static boolean addevent=false;
-//static boolean appliddiscount=false;
-//static boolean navigates=false;
-//Printing printing = new Printing();
-//private Discount oldDiscount;
-//private Discount newDiscount;
-//
-//	@Given("the administrator is logged into the system")
-//	public void theAdministratorIsLoggedIntoTheSystem() {
-//		
-//		
-//		   Admin admin = new Admin();
-//	        admin.login(); // Assuming login() method authenticates the administrator
-//	        System.out.println("Administrator is logged into the system.");
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	@When("the administrator provides the discount details such as {double},{int},{string}, {string}, and {string}")
-//	public void theAdministratorProvidesTheDiscountDetailsSuchAsAnd(double discountpercentage, int discountid, String validityperiod,String discountcode  ) {
-//	    // Write code here that turns the phrase above into concrete actions
-//     discount.setdiscountcode(discountcode);
-//     discount.setsiscountid(discountid);
-//     discount.setdiscountpercentage(discountpercentage);
-//     discount.setvalidity(validityperiod);
-//     throw new io.cucumber.java.PendingException();
-//	}
-//	
-//
-//	@Then("the new discount is successfully added to the system")
-//	public void theNewDiscountIsSuccessfullyAddedToTheSystem() {
-//		
-//		adding=true;
-//
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//
-//	@When("the administrator selects the discount to edit and updates the necessary details according to {int} and {string}")
-//	public void theadministratorselectsthediscounttoeditandupdatesthenecessarydetails(Integer i,String val) {
-//	    // Write code here that turns the phrase above into concrete actions
-////		 DiscountFileManager.editDiscountInFile("discount.txt", oldDiscount, newDiscount);
-//		
-//		if( i == 1){
-//
-//discount.setsiscountid(Integer.parseInt(val));
-//updated = true;
-//        } else if (i == 2) {
-//            discount.setdiscountcode(val);
-//            updated = true;
-//        } else if (i==3) {
-//            discount.setdiscountpercentage(Double.parseDouble(val));
-//            updated = true;
-//        }else{
-//            discount.setvalidity(val);
-//            updated = true;
-//        }
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	
-//	@Then("the changes are saved")
-//	public void thechangesaresaved() {
-//		if(updated){
-//            printing.printSomething("Updated successfully");
-//        }
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	
-//	@When("the administrator selects the discount to delete and confirms the action")
-//	public void theadministratorselectsthediscounttodeleteandconfirmstheaction(){
-//		
-//		 deleteProfile = true;
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	
-//	
-//	
-//	@Then("the discount is successfully removed from the system")
-//	public void thediscountissuccessfullyremovedfromthesystem() {
-//		
-//		if(deleteProfile){
-//            printing.printSomething("deleted successfully");}
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	
-//	
-//	@Given("the customer Added event")
-//	public void thecustomerAddedevent() {
-//		addevent =true;
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	@When(" the customer enters the valid discount code or selects a pre-applied discount")
-//	public void thecustomerentersthevaliddiscountcodeorselectsapreapplieddiscount() {
-//		appliddiscount=false;
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//    
-//	@Then("the discount is applied to the total order amount")
-//    public void thediscountisappliedtothetotalorderamount () {
-//	    // Write code here that turns the phrase above into concrete actions
-//	    throw new io.cucumber.java.PendingException();
-//	}
-//	
-//	public void theAdministratorProvidesTheDiscountDetailsSuchAsAnd(String string1, String string2, String string3, String string4, String string5) {
-//	    adding=true;
-//	}
-//	public void navigatesToTheDiscountManagementSection() {
-//		navigates=true;
-//	}
-//	
-//}
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -248,6 +118,25 @@ public class DiscountTest {
     public void accessesTheListOfExistingDiscounts() {
         // Implement code here to access the list of existing discounts
         System.out.println("The administrator accesses the list of existing discounts.");
+    }
+    @Test
+    public void testDiscountInitialization() {
+        Discount discount = new Discount(0.1, 1, "2024-12-31", "DISCOUNT10");
+        assertNotNull(discount);
+        assertEquals(1, discount.getDiscountId());
+        
+    }
+    
+    @Test
+    public void testDiscountModification() {
+        Discount discount = new Discount();
+        discount.setsiscountid(2);
+        discount.setdiscountcode("DISCOUNT20");
+        discount.setdiscountpercentage(0.2);
+        discount.setvalidity("2025-12-31");
+
+        assertEquals(2, discount.getDiscountId());
+        
     }
    
 }
