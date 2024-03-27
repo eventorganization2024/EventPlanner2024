@@ -11,14 +11,14 @@ public class Venue {
 	    private String date;
 
 	   
-	    public Venue(String name, String address, int capacity, double price,String availability,String id,String Image) {
+	    public Venue(String name, String address, int capacity, double price,String availability,String id,String image) {
 	        this.name = name;
 	        this.address = address;
 	        this.capacity = capacity;
 	        this.price = price;
 	        this.availability=availability;
 	        this.venueId=id;
-	        this.imagepath=Image;
+	        this.imagepath=image;
 	    }
 
 	    public Venue() {
