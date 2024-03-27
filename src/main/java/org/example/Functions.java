@@ -2369,9 +2369,9 @@ public  static void updateeventandcustomer(String filename) throws Exception {
     for (Event event : events) {
         e = event.getUsrTd();
         for (Customer customer : customers) {
-            e = customer.getId();
+            c = customer.getId();
             if (e != null && c != null && e.equals(c)) {
-    			Customer.getCevents().add (event); 
+            	Customer.getCevents().add (event); 
             }
         }
     }
@@ -2408,7 +2408,7 @@ public  static void updateProviderAndServiceList()  {
 	      			for (ServiceDetails Serv : serviceDetails)
 	      			{s=Serv.getProviderID();
 	      				if (p.equals(s)) 
-	      				{Provider.serviceDetailsList.add(Serv); break;}}}}
+	      				{Prov.serviceDetailsList.add(Serv); break;}}}}
 	      				
 
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
