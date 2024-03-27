@@ -100,8 +100,11 @@ public class Event {
 	        String serviceIdsString = items[10];
 	        // Remove leading and trailing brackets if present
 	        serviceIdsString = serviceIdsString.replaceAll("^\\[|\\]$", "");
-	       
-	        String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*");
+
+	     String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*", -1);
+
+
+
 	        event.setName(name);
 	        event.setDate(date);
 	        event.setTime(time);
