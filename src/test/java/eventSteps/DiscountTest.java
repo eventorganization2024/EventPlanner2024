@@ -142,7 +142,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class discounttest {
+public class DiscountTest {
     Discount discount = new Discount();
     static boolean adding = false;
     static boolean updated = false;
