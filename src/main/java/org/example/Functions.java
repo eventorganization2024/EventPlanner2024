@@ -2451,18 +2451,17 @@ public  static void customerPageList(){
             SPACE + "\n----------------------------------------\n" + ENTER_CHOICE);
 }
     public static void eventManagementAdminPageList() {
-    	printing.printSomething("""
-    		    ---- Welcome to EventManagement Page ----
-    		    \033[1;33m
-    		    |   1. IN requst                        |
-    		    |   2. All events                       |
-    		    |   3. ADD EVENT                        |
-    		    |   4. DELETE                           |
-    		    |   5. EDIT                             |
-    		    |   6. Log Out                          |
-    		    \033[1;36m
-    		    \n\n\033[0m
-    		""");
+    	printing.printSomething(
+    			YELLOW_TEXT_COLOR+
+    		    " ---- Welcome to EventManagement Page ----\n"+
+    		    YELLOW_TEXT_COLOR+
+    		   " |   1. IN requst                        |\n"+
+    		   " |   2. All events                       |\n"+
+    		   " |   3. ADD EVENT                        |\n"+
+    		   " |   4. DELETE                           |\n"+
+    		   " |   5. EDIT                             |\n"+
+    		   " |   6. Log Out                          |\n"+
+    		   YELLOW_TEXT_COLOR);
 
 }
 
@@ -2470,11 +2469,11 @@ public static void userManagementAdminPageList() {
     printing.printSomething(
     		YELLOW_TEXT_COLOR +
         "---- Welcome to User Management Page ----\n" +
-        "\033[1;33m" +
+        YELLOW_TEXT_COLOR+
         "|   1. View All                         |\n" +
         "|   2. Delete                           |\n" +
         "|   3. Log Out                          |\n" +
-        "\033[1;36m" + "\n" + "\n\033[0m"
+        YELLOW_TEXT_COLOR + "\n" 
     );
 }
 public static void userSearchPageList() {
@@ -2485,7 +2484,7 @@ public static void userSearchPageList() {
      "|   1. Search by Event Name          |\n" +
      "|   2. Search by Venue Name          |\n" +
      "|   3. Log out                       |\n"+
-     "\033[1;36m" + "\n" + "\n\033[0m"
+     YELLOW_TEXT_COLOR + "\n" 
  );
 }
 
@@ -2493,13 +2492,13 @@ public static void venueManagementadminList() {
     printing.printSomething(
     		YELLOW_TEXT_COLOR +
         "---- Welcome to Venue Management Page ----\n" +
-        "\033[1;33m" +
+        YELLOW_TEXT_COLOR  +
         "|   1. VIEW ALL                         |\n" +
         "|   2. ADD                              |\n" +
         "|   3. DELETE                           |\n" +
         "|   4. EDIT                             |\n" +
         "|   5. Log Out                          |\n" +
-        "\033[1;36m" +"\n" + "\n\033[0m"
+        YELLOW_TEXT_COLOR + "\n" 
     );}
 
 public static void providerManagementAdminPageList() {
@@ -2510,34 +2509,33 @@ public static void providerManagementAdminPageList() {
     "|   1. VIEW ALL                         |\n" +
     "|   2. DELETE Provider                            |\n" +
     "|   3.  Log Out                         |\n" +
-
-    "\033[1;36m" +"\n" + "\n\033[0m"
+    YELLOW_TEXT_COLOR + "\n"
 );}
 
 public static void packageManagementadminList() {
   printing.printSomething(
 		  YELLOW_TEXT_COLOR +
       "---- Welcome to Package Management Page ----\n" +
-      "\033[1;33m" +
+      YELLOW_TEXT_COLOR+
       "|   1. VIEW ALL                         |\n" +
       "|   2. ADD                              |\n" +
       "|   3. DELETE                           |\n" +
       "|   4. EDIT                             |\n" +
       "|   5. Log Out                          |\n" +
-      "\033[1;36m" +"\n" + "\n\033[0m"
+      YELLOW_TEXT_COLOR + "\n"
   );}
 
 public static void discountManagementadminList() {
   printing.printSomething(
 		  YELLOW_TEXT_COLOR +
       "---- Welcome to Discount Management Page ----\n" +
-      "\033[1;33m" +
+      YELLOW_TEXT_COLOR+
       "|   1. VIEW ALL                         |\n" +
       "|   2. ADD                              |\n" +
       "|   3. DELETE                           |\n" +
       "|   4. EDIT                             |\n" +
       "|   5. Log Out                          |\n" +
-      "\033[1;36m" +"\n" + "\n\033[0m"
+      YELLOW_TEXT_COLOR+"\n" 
   );}
 //==========================================================================================================================================
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
