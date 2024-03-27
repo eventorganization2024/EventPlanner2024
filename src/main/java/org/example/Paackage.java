@@ -19,7 +19,9 @@ private String title;
 	
 	
 public Paackage(){}
-
+ static final String PACKAGE_WITH_ID = "Package with ID ";
+ static final String ALL_PACKAGES = "All Packages:";
+static Printing print=new Printing ();
 public void setId(int id) {
     this.id = id;
 }
@@ -62,10 +64,11 @@ public String getTitle() {
 }
 
 
-Paackage(int id2, String name,String description,double price, String validityDate)
+Paackage(int id2, String description,double price)
 {
-	this.id=id2; this.description=description;this.price=price; this.validityPeriod=validityPeriod;
-	}
+	this.id=id2; this.description=description;this.price=price; 
+	
+}
 
 @Override
 public String toString() {
@@ -81,41 +84,40 @@ public static void addPackageToFile(String filename, String packageDetails) {
         writer.write(packageDetails);
         writer.newLine();
     } catch (IOException e) {
-        e.printStackTrace();
     }
 }
 
 public static void addPackage(Scanner scanner, String filename) {
-    System.out.println("Adding a new package...");
+	print.printSomething("Adding a new package...");
     int id;
     while (true) {
-        System.out.print("Enter package ID: ");
+    	print.printSomething("Enter package ID: ");
         id = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        scanner.nextLine(); 
 
         if (!isPackageIdExists(filename, id)) {
             break;
         }
 
-        System.out.println("Package ID already exists in the file. Please enter a new ID.");
+print.printSomething("Package ID already exists in the file. Please enter a new ID.");
     }
 
-    System.out.print("Enter package name: ");
+    print.printSomething("Enter package name: ");
     String name = scanner.nextLine();
 
-    System.out.print("Enter package description: ");
+    print.printSomething("Enter package description: ");
     String description = scanner.nextLine();
 
-    System.out.print("Enter package price: ");
+    print.printSomething("Enter package price: ");
     double price = scanner.nextDouble();
     scanner.nextLine(); // Consume newline character
 
-    System.out.print("Enter package validity period (YYYY-MM-DD): ");
+    print.printSomething("Enter package validity period (YYYY-MM-DD): ");
     String validityPeriod = scanner.nextLine();
 
     String packageDetails = String.format("%d,%s,%s,%.2f,%s", id, name, description, price, validityPeriod);
     addPackageToFile(filename, packageDetails);
-    System.out.println("Package successfully added.");
+    print.printSomething("Package successfully added.");
 }
 
 public static boolean isPackageIdExists(String filename, int id) {
@@ -128,34 +130,24 @@ public static boolean isPackageIdExists(String filename, int id) {
             }
         }
     } catch (IOException e) {
-        e.printStackTrace();
     }
     return false;
 }
-public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-    String filename = "package.txt";
-    
-    // Uncomment the lines below to test different functionalities
-    // addPackage(scanner, filename);
-    // deletePackageById(scanner, filename);
-    updatePackage(scanner,filename);    
-}
+
 
 public static void updatePackage(Scanner scanner, String filename) {
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
-        System.out.println("No packages found.");
+        print.printSomething("No packages found.");
         return;
     }
 
     while (true) {
-        System.out.println("All Packages:");
-        viewAllPackagesFromFile("package.txt");
-        
+        print.printSomething(ALL_PACKAGES);
+        viewAllPackages(packages);
 
-        System.out.print("\nEnter ID for package you want to update (or 'exit' to quit): ");
+        print.printSomething("\nEnter ID for package you want to update (or 'exit' to quit): ");
         String userInput = scanner.nextLine();
 
         if (userInput.equalsIgnoreCase("exit")) {
@@ -163,107 +155,33 @@ public static void updatePackage(Scanner scanner, String filename) {
         }
 
         int packageId = Integer.parseInt(userInput);
-
-        // Find the package with the specified ID
-        Paackage packageToUpdate = null;
-        for (Paackage p : packages) {
-            if (p.getId() == packageId) {
-                packageToUpdate = p;
-                break;
-            }
-        }
+        Paackage packageToUpdate = findPackageById(packages, packageId);
 
         if (packageToUpdate == null) {
-            System.out.println("Package with ID " + packageId + " not found.");
-            continue; // Prompt for another ID
+            print.printSomething(PACKAGE_WITH_ID + packageId + " not found.");
         } else {
-            System.out.println("1. ID");
-            System.out.println("2. Title");
-            System.out.println("3. Price");
-            System.out.println("4. Validity Date");
-            System.out.println("5. Description");
-            System.out.println("6. Exit");
-
-            System.out.print("Select a number: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
-
-            switch (choice) {
-                case 1:
-                    int newId;
-                    do {
-                        System.out.print("Enter a new ID: ");
-                        newId = scanner.nextInt();
-                        scanner.nextLine(); // Consume newline character
-
-                        if (isPackageIdExists(filename, newId)) {
-                            System.out.println("ID already exists in the file. Please enter a new ID.");
-                        } else {
-                            packageToUpdate.setId(newId);
-                            System.out.println("ID is updating successfully.");
-                            break;
-                        }
-                    } while (true);
-                    break;
-                case 2:
-                    System.out.print("Enter a new title: ");
-                    String newTitle = scanner.nextLine();
-                    packageToUpdate.setTitle(newTitle);
-                    System.out.println("The title is updating successfully.");
-                    break;
-                case 3:
-                    System.out.print("Enter a new price: ");
-                    double newPrice = scanner.nextDouble();
-                    scanner.nextLine(); // Consume newline character
-                    packageToUpdate.setPrice(newPrice);
-                    System.out.println("Price is updating successfully.");
-                    break;
-                case 4:
-                    System.out.print("Enter a new validity date: ");
-                    String newValidityDate = scanner.nextLine();
-                    packageToUpdate.setValidityPeriod(newValidityDate);
-                    System.out.println("Validity date is updating successfully.");
-                    break;
-                case 5:
-                    System.out.print("Enter a new description: ");
-                    String newDescription = scanner.nextLine();
-                    packageToUpdate.setDescription(newDescription);
-                    System.out.println("Description is updating successfully.");
-                    break;
-                case 6:
-                    System.out.println("Exit.");
-                    break;
-                default:
-                    System.out.println("Invalid choice.");
-            }
-
-            // Save updated packages to file
-            savePackagesToFile(filename, packages);
-
-            System.out.print("Do you want to update another package? (yes/no): ");
-            userInput = scanner.nextLine();
-            if (!userInput.equalsIgnoreCase("yes")) {
-                break;
-            }
-        }}
+            updatePackageDetails(scanner, packageToUpdate, filename, packages);
+        }
     }
+}
+
+
 
 public static void deletePackageById(Scanner scanner, String filename) {
-
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
-        System.out.println("No packages found.");
+        print.printSomething("No packages found.");
         return;
     }
 
-    System.out.println("All Packages:");
+    print.printSomething(ALL_PACKAGES);
     for (Paackage p : packages) {
-        System.out.println("Package ID: " + p.getId() + " Name: " + p.getTitle());
+        print.printSomething("Package ID: " + p.getId() + " Name: " + p.getTitle());
     }
 
     while (true) {
-        System.out.print("Enter the ID of the package to remove: ");
+        print.printSomething("Enter the ID of the package to remove: ");
         int packageIdToRemove = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
@@ -273,22 +191,21 @@ public static void deletePackageById(Scanner scanner, String filename) {
             if (p.getId() == packageIdToRemove) {
                 found = true;
                 packages.remove(p);
-                System.out.println("Package with ID " + packageIdToRemove + " successfully removed.");
+                print.printSomething(PACKAGE_WITH_ID + packageIdToRemove + " successfully removed.");
                 break;
             }
         }
 
         if (found) {
-            break; // Exit the loop if the package is found and removed
+            break;
         } else {
-            System.out.println("Package with ID " + packageIdToRemove + " not found.");
-            System.out.println("Please insert a new ID.");
+            print.printSomething(PACKAGE_WITH_ID + packageIdToRemove + " not found.");
+            print.printSomething("Please insert a new ID.");
         }
     }
 
     savePackagesToFile(filename, packages);
 }
-
 public static List<Paackage> readPackagesFromFile(String filename) {
     List<Paackage> packages = new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -309,7 +226,6 @@ public static List<Paackage> readPackagesFromFile(String filename) {
             packages.add(p);
         }
     } catch (IOException e) {
-        e.printStackTrace();
     }
     return packages;
 }
@@ -323,7 +239,6 @@ public static void savePackagesToFile(String filename, List<Paackage> packages) 
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
     }
 }
 public String toFileString() {
@@ -335,20 +250,143 @@ public static void viewAllPackagesFromFile(String filename) {
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
-        System.out.println("No packages found in the file.");
+        print.printSomething("No packages found in the file.");
         return;
     }
 
-    System.out.println("All Packages:");
+    print.printSomething(ALL_PACKAGES);
     for (Paackage p : packages) {
-        System.out.println("ID: " + p.getId() +
+        print.printSomething("ID: " + p.getId() +
                 "  Name: " + p.getTitle() +
                 "  Description: " + p.getDescription() +
                 "  Price: " + p.getPrice() +
                 "  Validity Date: " + p.getValidityPeriod());
     }
-}}
+}
 
 
+public static void updatePackageDetails(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
+	print.printSomething("1. ID");
+	print.printSomething("\n2. Title");
+	print.printSomething("\n3. Price");
+	print.printSomething("\n4. Validity Date");
+	print.printSomething("\n5. Description");
+	print.printSomething("\n6. Exit");
+
+	print.printSomething("Select a number: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine(); 
+
+    switch (choice) {
+        case 1:
+        	 updatePackageId(scanner, packageToUpdate, filename);
+            break;
+        case 2:
+            updatePackageTitle(scanner, packageToUpdate, filename, packages);
+            break;
+        case 3:
+            updatePackagePrice(scanner, packageToUpdate, filename, packages);
+            break;
+        case 4:
+            updatePackageValidityDate(scanner, packageToUpdate, filename, packages);
+            break;
+        case 5:
+            updatePackageDescription(scanner, packageToUpdate, filename, packages);
+            break;
+        case 6:
+        	print.printSomething("Exit.");
+            break;
+        default:
+        	print.printSomething("Invalid choice.");
+    }
+}
+public static void updatePackageValidityDate(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
+	print.printSomething("Enter a new validity date (YYYY-MM-DD): ");
+    String newValidityDate = scanner.nextLine();
+    packageToUpdate.setValidityPeriod(newValidityDate);
+    print.printSomething("Validity date is updating successfully.");
+
+    
+    savePackagesToFile(filename, packages);
+}
+
+
+public static void updatePackageDescription(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
+	print.printSomething("Enter a new description: ");
+    String newDescription = scanner.nextLine();
+    packageToUpdate.setDescription(newDescription);
+    print.printSomething("Description is updating successfully.");
+
+    
+    savePackagesToFile(filename, packages);
+}
+
+public static void updatePackagePrice(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
+	print.printSomething("Enter a new price: ");
+    double newPrice = scanner.nextDouble();
+    scanner.nextLine(); // Consume newline character
+    packageToUpdate.setPrice(newPrice);
+    print.printSomething("Price is updating successfully.");
+
+    savePackagesToFile(filename, packages);
+}
+
+public static void updatePackageId(Scanner scanner, Paackage packageToUpdate, String filename) {
+    int newId;
+    do {
+    	 print.printSomething("Enter a new ID: ");
+        newId = scanner.nextInt();
+        scanner.nextLine(); 
+
+        if (!isPackageIdExists(filename, newId)) {
+            packageToUpdate.setId(newId);
+            print.printSomething("ID is updating successfully.");
+            break;
+        } else {
+        	 print.printSomething("ID already exists in the file. Please enter a new ID.");
+        }
+    } while (true);
+}
+
+
+
+
+public static void viewAllPackages(List<Paackage> packages) {
+    if (packages.isEmpty()) {
+    	print.printSomething("No packages found in the file.");
+        return;
+    }
+
+    print.printSomething(ALL_PACKAGES);
+    for (Paackage p : packages) {
+    	print.printSomething("ID: " + p.getId() +
+                "  Name: " + p.getTitle() +
+                "  Description: " + p.getDescription() +
+                "  Price: " + p.getPrice() +
+                "  Validity Date: " + p.getValidityPeriod());
+    }
+}
+
+
+public static void updatePackageTitle(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
+	print.printSomething("Enter a new title: ");
+    String newTitle = scanner.nextLine();
+    packageToUpdate.setTitle(newTitle);
+    print.printSomething("The title is updating successfully.");
+
+   
+    savePackagesToFile(filename, packages);
+}
+
+public static Paackage findPackageById(List<Paackage> packages, int packageId) {
+    for (Paackage p : packages) {
+        if (p.getId() == packageId) {
+            return p;
+        }
+    }
+    return null; 
+}
+
+}
 
 

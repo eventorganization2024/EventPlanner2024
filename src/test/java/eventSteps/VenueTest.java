@@ -1,18 +1,20 @@
 package eventSteps;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
 import org.example.*;
+import org.junit.Test;
 
 import io.cucumber.datatable.DataTable;
-//import event.Venue;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class venueTest {
+public class VenueTest {
 	
     static boolean adding = false;
     static boolean updated = false;
@@ -106,12 +108,51 @@ public class venueTest {
 
     @When("select to view all venues registered in the system")
     public void selectToViewAllVenuesRegisteredInTheSystem() {
-        // Assuming some logic to retrieve all venues from the system
+    	Functions.viewAllVenues("venue.txt");
+
     }
 
     @Then("the admin can see a comprehensive list of all venues.")
     public void theAdminCanSeeAComprehensiveListOfAllVenues() {
-        // Assuming some logic to display the list of venues
+    	Functions.viewAllVenues("venue.txt");
+    }
+    @Test
+    public void testVenueConstructorWithAllParameters() {
+        Venue venue = new Venue("Venue Name", "Venue Address", 100, 150.0, "Available", "VenueID123", "image.jpg");
+
+        assertEquals("VenueID123", venue.getId());
+        assertEquals("Venue Name", venue.getName());
+        assertEquals("Venue Address", venue.getAddress());
+        assertEquals(100, venue.getCapacity());
+        assertEquals(150.0, venue.getPrice(), 0.001);
+        assertEquals("Available", venue.getAvailavility());
+        assertEquals("image.jpg", venue.getImage());
+    }
+
+    @Test
+    public void testVenueConstructorWithLimitedParameters() {
+        Venue venue = new Venue("VenueID123", "Venue Name", "Venue Address", 100, 150.0, "image.jpg");
+
+        assertEquals("VenueID123", venue.getId());
+        assertEquals("Venue Name", venue.getName());
+        assertEquals("Venue Address", venue.getAddress());
+        assertEquals(100, venue.getCapacity());
+        assertEquals(150.0, venue.getPrice(), 0.001);
+        assertEquals("image.jpg", venue.getImage());
+    }
+
+    @Test
+    public void testSetAndGetDate() {
+        Venue venue = new Venue();
+        venue.setdate("2024-03-27");
+        assertEquals("2024-03-27", venue.getdate());
+    }
+
+    @Test
+    public void testToFileString() {
+        Venue venue = new Venue("VenueID123", "Venue Name", "Venue Address", 100, 150.0, "image.jpg");
+        String expectedString = "VenueID123,Venue Name,Venue Address,image.jpg,100,150.0";
+        assertEquals(expectedString, venue.toFileString());
     }
 
 

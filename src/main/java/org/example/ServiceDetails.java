@@ -100,8 +100,8 @@ public class ServiceDetails {
 	        service.setPrice(Double.parseDouble(items[5]));
 	        service.setAvailability(items[6]);
 	    } else {
-	        System.err.println("Invalid line format: " + line);
-	    }
+	    	 printing.printSomething("Invalid line format: " + line);	  
+	    	 }
 	    return service;
 	}
 
@@ -115,7 +115,7 @@ public class ServiceDetails {
            if (servicePrices.containsKey(serviceId)) {
                totalPrice += servicePrices.get(serviceId);
            } else {
-               System.out.println("Price for service ID " + serviceId + " not found.");
+        	   printing.printSomething("Price for service ID " + serviceId + " not found.");
            }
        }
 
@@ -137,7 +137,7 @@ public class ServiceDetails {
                }
            }
        } catch (IOException | NumberFormatException e) {
-           e.printStackTrace(); // Handle or log the exception as needed
+    	   printing.printSomething("error at getServicePricesFromFile:"+e); // Handle or log the exception as needed
        }
 
        return servicePrices;
@@ -156,25 +156,21 @@ public class ServiceDetails {
                availability+"\n";
    }
 
-	public static void addServiceToFile(ServiceDetails service) {
-  	    try {
-  	        FileWriter serviceFile = new FileWriter("service.txt", true);
-  	      serviceFile.append("\033[0;33m");
-
-  	        serviceFile.append(service.getServiceID()).append(" , ")
-  	                   .append(service.getProviderID()).append(" , ")
-  	                   .append(service.getServiceType()).append(" , ")
-  	                   .append(service.getServiceName()).append(" , ")
-  	                   .append(service.getDescription()).append(" , ")
-  	                   .append(String.valueOf(service.getPrice())).append(" , ")
-  	                   .append(service.getAvailability())
-  	                   .append("\n");
-  	      serviceFile.append("\033[0m");
-
-  	        serviceFile.close();
-  	    } catch (IOException e) {
-  	        printing.printSomething("An error occurred: " + e.getMessage());
-  	    }
-  	}
+   public static void addServiceToFile(ServiceDetails service) {
+	    try (FileWriter serviceFile = new FileWriter("service.txt", true)) {
+	        serviceFile.append("\033[0;33m");
+	        serviceFile.append(service.getServiceID()).append(" , ")
+	                   .append(service.getProviderID()).append(" , ")
+	                   .append(service.getServiceType()).append(" , ")
+	                   .append(service.getServiceName()).append(" , ")
+	                   .append(service.getDescription()).append(" , ")
+	                   .append(String.valueOf(service.getPrice())).append(" , ")
+	                   .append(service.getAvailability())
+	                   .append("\n");
+	        serviceFile.append("\033[0m");
+	    } catch (IOException e) {
+	        printing.printSomething("An error occurred: " + e.getMessage());
+	    }
+	}
    
 }

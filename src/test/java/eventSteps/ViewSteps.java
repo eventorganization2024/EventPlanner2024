@@ -165,14 +165,14 @@ public ViewSteps() throws ParseException {
 	@Then("the pages displayed")
 	public void thePagesDisplayed() {
 		 assertTrue(show_mangepages);
-		 F.signInPageList();
-		 F.EventManagementAdminPageList();
-		 F.DiscountManagementadminList();
-		 F.UserManagementAdminPageList();
-		 F.UserSearchPageList();
-		 F. VenueManagementadminList();
-		 F.ProviderManagementAdminPageList();
-		 F.PackageManagementadminList();
+		 Functions.signInPageList();
+		 Functions.eventManagementAdminPageList();
+		 Functions.discountManagementadminList();
+		 Functions.userManagementAdminPageList();
+		 Functions.userSearchPageList();
+		 Functions.venueManagementadminList();
+		 Functions.providerManagementAdminPageList();
+		 Functions.packageManagementadminList();
 		
 	
 	}
