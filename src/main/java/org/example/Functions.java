@@ -1600,7 +1600,7 @@ static void signInProvider(String id) throws Exception {
 
 
   	public static boolean checkAvailability(String venueName, String date) throws IOException {
-  	    String venueId = new String (); // Initialize venueId to null
+  	    String venueId = getVenueIdByName(venueName);
   	    
   	    if (venueId == null || venueId.isEmpty()) { // Check if venueId is null or empty
   	        printing.printSomething("\nVenue with name " + venueName + NOT_FOUND_MESSAGE);
