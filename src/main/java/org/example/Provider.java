@@ -3,6 +3,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -184,7 +185,7 @@ public class Provider extends User  {
 	        return false; // Service of specified type does not exist or serviceDetailsList is null
 	    }
 //////////////////////////////	
-	public void deleteService(String serviceID) throws Exception {
+	public void deleteService(String serviceID) throws IOException {
 	    Functions.updateServiceList();
 	    Functions.updateProviderAndServiceList();
 	    Functions.updateProviderAndServiceList();
@@ -352,13 +353,13 @@ public class Provider extends User  {
  		{
  			Scanner scanner = new Scanner(System.in);
  			printing.printSomething("""
- 				    Choose which field to update:
- 				    1. Service Type
- 				    2. Service Name
- 				    3. Description
- 				    4. Price
- 				    5. Availability
- 				    """);
+			Choose which field to update:
+			1. Service Type
+			2. Service Name
+			3. Description
+			4. Price
+			5. Availability
+			""");
  			
  			
  			printing.printSomething("Enter the number of the field you want to update: ");
