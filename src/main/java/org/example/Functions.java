@@ -40,7 +40,7 @@ import javax.mail.internet.MimeMessage;
 
 public class Functions {
 
-	  static Printing printing = new Printing();
+	   static Printing printing = new Printing();
 	    static Scanner scanner = new Scanner(System.in);
 	    Customer customerObj;
 	    Provider providerObj;
@@ -90,9 +90,10 @@ public class Functions {
 	    static final String ENTER_CHOICE = "Enter your choice: ";
 	    static final String ENTER_PASSWORD= "\nEnter Password :";
 	    private static final String ACCOUNT_ALREADY_EXIST_MESSAGE = "This account is already existed, Please Sign in.";
-
+	    private static final String THANK_MESSAGE="  \nThank you! Your information has been recorded.	\nEnter a password: ";
 	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
+	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
@@ -526,11 +527,13 @@ static void signInProvider(String id) throws Exception {
 	         	event1.deleteEvent( REQUEST_FILE_NAME, eventID);
 	         	Event.addEventToFile(event1, EVENT_FILE_NAME);
 	            printing.printSomething("\nEvent accepted.");             
-	           SendmsgtoCustomer("has been approved",event1);  
+
+	           sendmsgToCustomer("has been approved",event1);  
 	            
 	            } else if (choice.equals("N")) {
 	         	 event1= Event.findeventID(eventID, REQUEST_FILE_NAME);
-	         	SendmsgtoCustomer("has been Rejected",event1);
+	         	sendmsgToCustomer("has been Rejected",event1);
+
 	         	event1.deleteEvent(REQUEST_FILE_NAME, eventID);
 	         	printing.printSomething("\nEvent rejected.");
 	         	
@@ -751,7 +754,7 @@ static void signInProvider(String id) throws Exception {
 		        return false; }
 		    printing.printSomething("List of Events: \n");		    
 		    for (Event event22 : events) {
-		   printing.printSomething(event22.toString());} 
+		   printing.printSomething("\n"+event22.toString());} 
            return true;}
                      /////////////////////////////////////////////////////////////////////////			
       public static void viewAllVenues(String filename) {
@@ -808,7 +811,7 @@ static void signInProvider(String id) throws Exception {
 		    
 			return foundd;}
                  //////////////////////////////////////////////////////////////////////////
-  	private static boolean viewproviderservice(String id2) throws  IOException {
+  	private static boolean viewproviderservice(String id2)  {
   		 boolean found = false; 
 
   		  updateProviderAndServiceList(); 
@@ -930,11 +933,11 @@ static void signInProvider(String id) throws Exception {
     } 
     public static void updateFile(String filePath, String oldValue, String newValue) throws IOException {
     	 try (RandomAccessFile file = new RandomAccessFile(filePath, "rw")) {
-    	        String line;
+    	        String lineC;
     	        long lastPos = 0;
-    	        while ((line = file.readLine()) != null) {
-    	            if (line.contains(oldValue)) {
-    	                String updatedLine = line.replace(oldValue, newValue);
+    	        while ((lineC = file.readLine()) != null) {
+    	            if (lineC.contains(oldValue)) {
+    	                String updatedLine = lineC.replace(oldValue, newValue);
     	                file.seek(lastPos);
     	                file.writeBytes(updatedLine);
     	            }
@@ -1249,7 +1252,10 @@ static void signInProvider(String id) throws Exception {
 
 
 /////////////////////////////////////////////////////////////////////////////////
-    private static void SendmsgtoCustomer(String msg, Event event) {
+
+    private static void sendmsgToCustomer(String msg, Event event) {
+
+  
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter("Msg.txt", true);
@@ -1578,7 +1584,9 @@ static void signInProvider(String id) throws Exception {
   	                String codeValue = parts[1];
   	                if (codeValue.equals(code)) {
   	                    double percentage = Double.parseDouble(parts[2]);
-  	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+  	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+
   	                    if (validityDate.isAfter(LocalDate.now())) {
   	                        double discountedPrice = price * (1 - percentage / 100);
   	                        return discountedPrice;
@@ -1989,6 +1997,7 @@ public static void deleteVenueById(Scanner scanner, String filename) {
 
     String venueIdToRemove = getVenueIdToRemove(scanner);
 
+
     boolean found = removeVenue(venues, venueIdToRemove);
 
     if (found) {
@@ -1997,6 +2006,7 @@ public static void deleteVenueById(Scanner scanner, String filename) {
         printing.printSomething("\nVenue with ID " + venueIdToRemove + NOT_FOUND_MESSAGE);
     }
 }
+
 
 private static void printAllVenues(List<Venue> venues) {
     printing.printSomething("\nAll Venues:");
@@ -2095,10 +2105,9 @@ void customerSignUp() throws Exception {
         customerObj.setAddress(scanner.next());
         printing.printSomething("Enter your Email: ");
         customerObj.setEmail(scanner.next());
-        printing.printSomething("""
-        	    \nThank you! Your information has been recorded.
-        	    Enter a password: 
-        	    """);
+
+        printing.printSomething(THANK_MESSAGE);
+
         customerObj.setPassword(scanner.next());
         printing.printSomething("\nRegistration done successfully\n");
         customers.add(customerObj);
@@ -2200,10 +2209,9 @@ public  void providerSignUp() throws Exception {
           providerObj.setAddress(scanner.next());
           printing.printSomething("Enter your Email: ");
           providerObj.setEmail(scanner.next());
-          printing.printSomething("""
-        		    \nThank you! Your information has been recorded
-        		    Enter a password: 
-        		    """);
+
+          printing.printSomething(THANK_MESSAGE);
+
           providerObj.setPassword(scanner.next());
           printing.printSomething("\nRegistration done successfully\n");
           providers.add(providerObj);
@@ -2359,7 +2367,7 @@ public static void updateCustomersList() {
 
 
 //////////////////////////////////////
-public  static void updateeventandcustomer(String filename) throws Exception {
+public  static void updateeventandcustomer(String filename) {
     updateEventList(filename);
     updateCustomersList();
 
@@ -2560,14 +2568,14 @@ public static void discountManagementadminList() {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
-public static List<Event> makeListofEvent(String Cid) throws Exception {
+public static List<Event> makeListofEvent(String cId) throws Exception {
 updateeventandcustomer(EVENT_FILE_NAME);
 
 List<Event> customerEvents = new ArrayList<>();
 
 for (Customer customer : customers) {
-if (customer.getId().equals(Cid)) {
-customerEvents = customer.getEvents();
+if (customer.getId().equals(cId)) {
+customerEvents = Customer.getEvents();
 }
 }
 
@@ -2633,7 +2641,7 @@ calendar.setMonth(month);
 
 // Print the events for the current year and month
 displayCalendarEvents(calendar);
-printing.printInColor("\n\n+************************************************************************************************************************************************************************+\n", Printing.ANSI_BLACK);
+printing.printInColor(LINE_STARS, Printing.ANSI_BLACK);
 
 // Add the displayed month to the set
 displayedMonths.add(yearMonthKey);
@@ -2708,7 +2716,7 @@ printing.printInColor("\n", Printing.ANSI_GREEN);
 printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
 
 // Print events for each day
-printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1), dayFormatter);
+printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1));
 }
 
 // Print the footer for the days of the week
@@ -2717,7 +2725,7 @@ printing.printInColor("+--------------------------------------------------------
 
 
 
-private static void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay, DateTimeFormatter dayFormatter) {
+private static void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay) {
 
 for (int i = 0; i < 7; i++) {
 for (LocalDate currentDate = startDay; currentDate.isBefore(endDay.plusDays(1)); currentDate = currentDate.plusDays(1)) {
@@ -2766,23 +2774,23 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 
 
 
-//Initialize a set to keep track of event IDs for which notifications have been sent
-private Set<String> notifiedEvents = new HashSet<>();
+      //Initialize a set to keep track of event IDs for which notifications have been sent
+      private Set<String> notifiedEvents = new HashSet<>();
 
-//Initialize a scheduled executor service
-private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+     //Initialize a scheduled executor service
+     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-public void startApproachingUpcomingEvents() {
-// Schedule the approachUpcomingEvents method to run every hour
-executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
-}
+     public void startApproachingUpcomingEvents() {
+       // Schedule the approachUpcomingEvents method to run every hour
+      executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
+      }
 
-public void stopApproachingUpcomingEvents() {
-// Shutdown the executor service when you want to stop checking for upcoming events
-executor.shutdown();
-}
+    public void stopApproachingUpcomingEvents() {
+    	// Shutdown the executor service when you want to stop checking for upcoming events
+      executor.shutdown();
+      }
 
-public void approachUpcomingEvents() {
+    public void approachUpcomingEvents()throws NullPointerException {
 LocalDateTime now = LocalDateTime.now();
 updateEventList(EVENT_FILE_NAME);
 
@@ -2813,7 +2821,7 @@ notifiedEvents.add(event.getEID());
 }
 
 
-private String getEmailAndNameFromCustomerFile(String customerId) {
+      private String getEmailAndNameFromCustomerFile(String customerId) {
 // Update the customers list
 updateCustomersList();
 
@@ -2849,7 +2857,7 @@ private void sendNotificationsToParticipants(String recipientEmail, String subje
 try {
 
 String senderEmail = "royasmine05@gmail.com";
-String password = "igun bclo kbti fzno";
+String password = getEncryptedPassword();;
 
 Properties properties = new Properties();
 properties.put("mail.smtp.auth", "true");
@@ -2878,7 +2886,23 @@ Transport.send(message);
 }
 
 
+////////////////////////////////////new/////////////////
 
+public static String getEncryptedPassword() {
+String password = null;
+try (BufferedReader reader = new BufferedReader(new FileReader("config.properties"))) {
+String line;
+while ((line = reader.readLine()) != null) {
+if (line.startsWith("password=")) {
+password = line.substring("password=".length());
+break;
+}
+}
+} catch (IOException e) {
+e.printStackTrace(); // Handle the exception appropriately
+}
+return password;
+}
 
 
 
