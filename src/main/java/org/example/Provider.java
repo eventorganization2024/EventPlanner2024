@@ -9,17 +9,16 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.example.*;
 
 public class Provider extends User  {
-   public static List<ServiceDetails> serviceDetailsList;
+    private static final List<ServiceDetails> serviceDetailsList = new ArrayList<>();
     private String email;
     static Printing printing = new Printing();
     static List<Provider> providers = new ArrayList<>(); 
     Functions f=new Functions();
    
 ///////////////////////////////////////////////////////////////////////
-    public Provider() {this.serviceDetailsList = new ArrayList<>();}
+    public Provider() {  }
     
     
      public Provider(String username, String password) {
@@ -47,20 +46,19 @@ public class Provider extends User  {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                    String[] ProviderData = line.split(",");
-                    String username = ProviderData[0].trim();
-                    String password = ProviderData[5].trim(); // Assuming password is at index 5
+            	String[] providerData = line.split(",");                    
+            	String username = providerData[0].trim();
+                String password = providerData[5].trim(); // Assuming password is at index 5
                       providers.add(new Provider(username, password));
                 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	 printing.printSomething("error at loadProviderDataFromFile :"+e); // Handle or log the exception as needed
         }
     }
 ////////////////////////////////////////////////////////////////////////////////////////////
     private static Provider authenticateProvider(String username, String password) {
-    	providers.removeAll(providers);
-    	loadProviderDataFromFile("provider.txt");
+    	providers.clear(); // Clear the list before reloading data    	loadProviderDataFromFile("provider.txt");
     	for (Provider provider : providers) {
             if (provider.getUsername().equals(username) && provider.getPassword().equals(password)) {
                 return provider;
@@ -99,10 +97,8 @@ public class Provider extends User  {
 
 //////////////////////////////////////////////////////////////////////////////////
     public Provider editServiceDetails(ServiceDetails editedService) {
-    	boolean f=false;
         for (ServiceDetails service : serviceDetailsList) {
             if (service.getServiceType() .equals (editedService.getServiceType())) {
-            	f=true;
                 service.setServiceType(editedService.getServiceType());
                 service.setServiceName(editedService.getServiceName());
                 service.setDescription(editedService.getDescription());
@@ -114,11 +110,7 @@ public class Provider extends User  {
         return this;
     }
 
-  /*  public void deleteService(String servicetype) {
-        serviceDetailsList.removeIf(service -> service.getServiceType() == servicetype);
-    }
-
- */ 
+ 
     public Provider(String id, String password, String name, String phone,String email) 
     {
         super( name, password,  "Provider");    
@@ -154,7 +146,7 @@ public class Provider extends User  {
         
        }else {
     	      
-           System.err.println("Invalid line format: " + line);
+    	   printing.printSomething("Invalid line format: " + line);
 
        }
         return  provider;
@@ -167,7 +159,7 @@ public class Provider extends User  {
         printing.printSomething("   |-------------|-------------|------------------------|-------------------------------------|----------|----------------|\n");
 
         for (ServiceDetails service : serviceDetailsList) {
-            printing.printSomething(String.format("   |%-13s| %-12s| %-23s| %-36s| %-6.2f $ | %-23s|\n",
+            printing.printSomething(String.format("   |%-13s| %-12s| %-23s| %-36s| %-6.2f $ | %-23s|%n",
                     service.getServiceID(), service.getServiceType(), service.getServiceName(),
                     service.getDescription(), service.getPrice(), service.getAvailability()));
         }
@@ -192,12 +184,12 @@ public class Provider extends User  {
 	    }
 //////////////////////////////	
 	public void deleteService(String serviceID) throws Exception {
-		f.updateServiceList();
-		f.updateProviderAndServiceList();
-		f.updateProviderAndServiceList();
+		Functions.updateServiceList();
+		Functions.updateProviderAndServiceList();
+		Functions.updateProviderAndServiceList();
        if (serviceDetailsList != null) {
            ServiceDetails serviceToDelete = null;
-            for (ServiceDetails service : f.serviceDetails) {
+            for (ServiceDetails service : Functions.serviceDetails) {
                 if (service.getServiceID() .equals(serviceID)) {
                     serviceToDelete = service;
                     break;
@@ -209,9 +201,7 @@ public class Provider extends User  {
           if (serviceToDelete != null) {
                 serviceDetailsList.remove(serviceToDelete);
                 delete_Service_from_file("service.txt", serviceID);
-                
-                
-               // printing.printSomething("Service deleted successfully.\n");
+                  
             } else {
             	printing.printSomething("Service not found.\n");
             }
@@ -221,35 +211,26 @@ public class Provider extends User  {
 	
 /////////////////////
 
-	public void delete_provider_from_file_and_arraylist(Provider p,String filename,String PID)throws Exception 
-	{ 
-	
-		
+	public void delete_provider_from_file_and_arraylist( String fileName, String pid) throws IOException {
 	    String line;
-		 StringBuilder sb = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
-		{   
-	        while ((line = reader.readLine()) != null)
-	        {   String[] items = line.split(" , ");
-	        if (items.length >= 6) 
-	        {
-	        	  String PROVIDERID=items[0];
-	        	  if (!PROVIDERID.equals(PID)) {
-	                  sb.append(line).append("\n");
-	              } 
-	        } 
-	   
+	    StringBuilder sb = new StringBuilder();
+	    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+	        while ((line = reader.readLine()) != null) {
+	            String[] items = line.split(" , ");
+	            if (items.length >= 6) {
+	            	String providerId = items[0];
+	            	if (!providerId.equals(pid)) {
+	                    sb.append(line).append("\n");
+	                }
+	            }
 	        }
-	        
-	       
-	     }
-	         try (FileOutputStream fos = new FileOutputStream(filename, false)) {
-		            fos.write(sb.toString().getBytes());
-		        }
-			
-	         
-	              
+	    }
+
+	    try (FileOutputStream fos = new FileOutputStream(fileName, false)) {
+	        fos.write(sb.toString().getBytes());
+	    }
 	}
+
 ///////////////////////////////
 	public void delete_Service_from_file(String filename,String SID)throws Exception 
 	{ 
@@ -329,15 +310,14 @@ public class Provider extends User  {
 //////////////////
     public static ServiceDetails findServiceByID(String serviceId, String filename) {
 	    String line;
-	    int currentLine = 1;
 	    ServiceDetails service =new ServiceDetails();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 	        while ((line = reader.readLine()) != null) {
 	            String[] items = line.split(" , ");
 	            if (items.length >= 7) {
 	    	        
-	            	String SID=items[0];
-	            	if (SID.equals(serviceId)) {
+	            	String sid = items[0];
+	            	if (sid.equals(serviceId)) {
 	            	
 					service.setServiceID(items[0]);
 	    	        service.setProviderID(items[1]);
@@ -348,14 +328,13 @@ public class Provider extends User  {
 	    	        service.setAvailability(items[6]);
 
 	                    return service;}
-	            	else currentLine++;
 	               
 	            } else {
-	                System.err.println("Invalid line format for service ID " + serviceId + ": " + line);
+	            	printing.printSomething("Invalid line format for service ID " + serviceId + ": " + line);
 	            }
 	        }
 	    } catch (IOException e) {
-	        System.err.println("Error reading file: " + e.getMessage());
+	    	printing.printSomething("Error reading file: " + e.getMessage());
 	    }
 
 	    return null; // Service not found or error occurred
@@ -363,7 +342,7 @@ public class Provider extends User  {
     
 ////////    
     
-    public void updateServiceDetails(String sid, String string) throws Exception {
+    public void updateServiceDetails(String sid) throws Exception {
 		
  	   ServiceDetails toupdatedService = findServiceByID(sid,"service.txt");
  		deleteService(sid);
@@ -372,16 +351,17 @@ public class Provider extends User  {
  		if ( toupdatedService != null)
  		{
  			Scanner scanner = new Scanner(System.in);
- 			printing.printSomething("Choose which field to update:\n" +
- 			        "1. Service Type\n" +
- 			        "2. Service Name\n" +
- 			        "3. Description\n" +
- 			        "4. Price\n" +
- 			        "5. Availability\n" );
-
+ 			printing.printSomething("""
+ 				    Choose which field to update:
+ 				    1. Service Type
+ 				    2. Service Name
+ 				    3. Description
+ 				    4. Price
+ 				    5. Availability
+ 				    """);
  			
  			
- 			 System.out.print("Enter the number of the field you want to update: ");
+ 			printing.printSomething("Enter the number of the field you want to update: ");
              String x = scanner.next();
              
              switch (x) {
@@ -406,18 +386,13 @@ public class Provider extends User  {
                  toupdatedService.setAvailability(scanner.next());
                  break;
              default:
-                 System.out.println("Invalid choice.");
+            	 printing.printSomething("Invalid choice.");
          }
-
-
- 	   
- 	   
  	   
  	   
  	   
  		}
  		ServiceDetails.addServiceToFile(toupdatedService);
- 	  // editServiceDetails( toupdatedService);
  			
  			
  		
@@ -430,8 +405,8 @@ public class Provider extends User  {
 	
     public static void addProviderToFile(Provider provider) {
   	    try {
-  	        FileWriter ProvidersFile = new FileWriter("provider.txt", true);
-  	        ProvidersFile.append(provider.getId()).append(" , ")
+  	    	FileWriter providersFile = new FileWriter("provider.txt", true);
+  	    	providersFile.append(provider.getId()).append(" , ")
   	                .append(provider.getUsername()).append(" , ")
   	                .append(provider.getphone()).append(" , ")
   	                .append(provider.getaddress()).append(" , ")
@@ -441,7 +416,6 @@ public class Provider extends User  {
 
   	                
 
-  	        ProvidersFile.close();
   	    } catch (IOException e) {
   	        printing.printSomething("An error occurred: " + e.getMessage());
   	    }

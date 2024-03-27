@@ -451,7 +451,7 @@ static void signInProvider(String id) throws Exception {
 	                	
 	                     updateProviderAndServiceList();
 	                     updateServiceList();
-	                    provider1.updateServiceDetails(serviceIdIn,SERVICE_FILE_NAME);
+	                    provider1.updateServiceDetails(serviceIdIn);
 	                    printing.printSomething("\nService updated successfully.");
 	                    viewproviderservice(id);
 	                     }
@@ -614,7 +614,7 @@ static void signInProvider(String id) throws Exception {
 	    	    	  if(  viewallprovider(PROVIDER_FILE_NAME)) {
 	    	              printing.printSomething("\nEnter the Provider ID  you want to delete it: ");
 	    	              String providerID = scanner.next();  
-	    	             provider1.delete_provider_from_file_and_arraylist(provider1, PROVIDER_FILE_NAME, providerID);
+	    	             provider1.delete_provider_from_file_and_arraylist( PROVIDER_FILE_NAME, providerID);
 	    	      	  printing.printSomething("\nProvider with ID " + providerID + " successfully deleted .");}
 
 	    	      	break;  
@@ -2408,7 +2408,7 @@ public  static void updateProviderAndServiceList()  {
 	      			for (ServiceDetails Serv : serviceDetails)
 	      			{s=Serv.getProviderID();
 	      				if (p.equals(s)) 
-	      				{Prov.serviceDetailsList.add(Serv); break;}}}}
+	      				{Prov.getServiceDetailsList().add(Serv); break;}}}}
 	      				
 
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
