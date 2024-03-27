@@ -274,7 +274,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
    static void printUpdateList(Event eventUpdate) {
-    	printing.printSomething(printing.ANSI_MAGENTA + // Set text color to magenta
+    	printing.printSomething(Printing.ANSI_MAGENTA + // Set text color to magenta
         	    '\n' +
         	    "UserID: " + eventUpdate.getUsrTd() + '\n' +
         	    "Event ID: " + eventUpdate.eventId + '\n' +
@@ -287,7 +287,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
         	    "7. Category: " + eventUpdate.category + '\n' +
         	    "8. Venue Name: " + eventUpdate.venueName + '\n' +
         	    "9. Service IDs: " + eventUpdate.getServiceIds() + '\n'
-        	    + printing.ANSI_RED // Reset text color to default
+        	    + Printing.ANSI_RED // Reset text color to default
         	    );} 
 	
     public Event updateEvent(String eventidd, String filename) throws IOException,NullPointerException{
