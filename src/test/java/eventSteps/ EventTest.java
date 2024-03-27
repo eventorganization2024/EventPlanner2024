@@ -32,7 +32,7 @@ import io.cucumber.java.en.When;
 
 public class EventTest{
 	 
-	
+	acceptTest1 c=new acceptTest1();
 	
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	 private InputStream inputStream;
