@@ -441,7 +441,6 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
                     printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
                 }
             } else {
-         	  // printing.printSomething("\n choose another venue \n");
               }
         } while (!venueAvailable );
 
