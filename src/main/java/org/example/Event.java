@@ -30,7 +30,7 @@ public class Event {
     private String eventId;
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static  SimpleDateFormat DATE_FORMAT ;
     private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
 
     private static final String ERROR_PREFIX = "An error occurred: ";
@@ -42,7 +42,8 @@ public class Event {
     
    
    
-    public  Event() {DATE_FORMAT.setLenient(false);}
+    public  Event() { DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); // Initialize DATE_FORMAT in the constructor
+         DATE_FORMAT.setLenient(false); // Optionally set leniency}
     
     public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, String eventId) {
         this.userId = userId; 
