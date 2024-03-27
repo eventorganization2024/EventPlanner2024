@@ -19,8 +19,8 @@ private String title;
 	
 	
 public Paackage(){}
-private static final String PACKAGE_WITH_ID = "Package with ID ";
-private static final String ALL_PACKAGES = "All Packages:";
+ static final String PACKAGE_WITH_ID = "Package with ID ";
+ static final String ALL_PACKAGES = "All Packages:";
 static Printing print=new Printing ();
 public void setId(int id) {
     this.id = id;
@@ -271,11 +271,11 @@ public static void viewAllPackagesFromFile(String filename) {
 
 public static void updatePackageDetails(Scanner scanner, Paackage packageToUpdate, String filename, List<Paackage> packages) {
 	print.printSomething("1. ID");
-	print.printSomething("2. Title");
-	print.printSomething("3. Price");
-	print.printSomething("4. Validity Date");
-	print.printSomething("5. Description");
-	print.printSomething("6. Exit");
+	print.printSomething("\n2. Title");
+	print.printSomething("\n3. Price");
+	print.printSomething("\n4. Validity Date");
+	print.printSomething("\n5. Description");
+	print.printSomething("\n6. Exit");
 
 	print.printSomething("Select a number: ");
     int choice = scanner.nextInt();
