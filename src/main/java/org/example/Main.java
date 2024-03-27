@@ -10,7 +10,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Printing printing = new Printing();
         
-        while (true) {
+        boolean running = true;
+        while (running) {
             printWelcomeMenu();
             int choice = getValidIntegerInput(scanner, printing);
             
@@ -22,7 +23,7 @@ public class Main {
                     Functions.signInFunction();
                     break;
                 case 3:
-                    System.exit(0);
+                    running = false; // Set running to false to exit the loop
                     break;
                 default:
                     printing.printSomething("Invalid choice! Please enter a valid choice.");
