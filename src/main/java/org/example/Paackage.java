@@ -84,7 +84,6 @@ public static void addPackageToFile(String filename, String packageDetails) {
         writer.write(packageDetails);
         writer.newLine();
     } catch (IOException e) {
-        e.printStackTrace();
     }
 }
 
@@ -131,7 +130,6 @@ public static boolean isPackageIdExists(String filename, int id) {
             }
         }
     } catch (IOException e) {
-        e.printStackTrace();
     }
     return false;
 }
@@ -228,7 +226,6 @@ public static List<Paackage> readPackagesFromFile(String filename) {
             packages.add(p);
         }
     } catch (IOException e) {
-        e.printStackTrace();
     }
     return packages;
 }
@@ -242,7 +239,6 @@ public static void savePackagesToFile(String filename, List<Paackage> packages) 
             writer.newLine();
         }
     } catch (IOException e) {
-        e.printStackTrace();
     }
 }
 public String toFileString() {
