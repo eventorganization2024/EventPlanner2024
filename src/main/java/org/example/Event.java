@@ -42,7 +42,7 @@ public class Event {
     
    
    
-    public  Event() {}
+    public  Event() {DATE_FORMAT.setLenient(false);}
     
     public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, String eventId) {
         this.userId = userId; 
