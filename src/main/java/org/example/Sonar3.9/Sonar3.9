@@ -527,13 +527,11 @@ static void signInProvider(String id) throws Exception {
 	         	event1.deleteEvent( REQUEST_FILE_NAME, eventID);
 	         	Event.addEventToFile(event1, EVENT_FILE_NAME);
 	            printing.printSomething("\nEvent accepted.");             
-
 	           sendmsgToCustomer("has been approved",event1);  
 	            
 	            } else if (choice.equals("N")) {
 	         	 event1= Event.findeventID(eventID, REQUEST_FILE_NAME);
 	         	sendmsgToCustomer("has been Rejected",event1);
-
 	         	event1.deleteEvent(REQUEST_FILE_NAME, eventID);
 	         	printing.printSomething("\nEvent rejected.");
 	         	
@@ -1252,10 +1250,7 @@ static void signInProvider(String id) throws Exception {
 
 
 /////////////////////////////////////////////////////////////////////////////////
-
     private static void sendmsgToCustomer(String msg, Event event) {
-
-  
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter("Msg.txt", true);
@@ -1584,9 +1579,7 @@ static void signInProvider(String id) throws Exception {
   	                String codeValue = parts[1];
   	                if (codeValue.equals(code)) {
   	                    double percentage = Double.parseDouble(parts[2]);
-
   	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-
   	                    if (validityDate.isAfter(LocalDate.now())) {
   	                        double discountedPrice = price * (1 - percentage / 100);
   	                        return discountedPrice;
@@ -1997,7 +1990,6 @@ public static void deleteVenueById(Scanner scanner, String filename) {
 
     String venueIdToRemove = getVenueIdToRemove(scanner);
 
-
     boolean found = removeVenue(venues, venueIdToRemove);
 
     if (found) {
@@ -2006,7 +1998,6 @@ public static void deleteVenueById(Scanner scanner, String filename) {
         printing.printSomething("\nVenue with ID " + venueIdToRemove + NOT_FOUND_MESSAGE);
     }
 }
-
 
 private static void printAllVenues(List<Venue> venues) {
     printing.printSomething("\nAll Venues:");
@@ -2105,9 +2096,7 @@ void customerSignUp() throws Exception {
         customerObj.setAddress(scanner.next());
         printing.printSomething("Enter your Email: ");
         customerObj.setEmail(scanner.next());
-
         printing.printSomething(THANK_MESSAGE);
-
         customerObj.setPassword(scanner.next());
         printing.printSomething("\nRegistration done successfully\n");
         customers.add(customerObj);
@@ -2209,9 +2198,7 @@ public  void providerSignUp() throws Exception {
           providerObj.setAddress(scanner.next());
           printing.printSomething("Enter your Email: ");
           providerObj.setEmail(scanner.next());
-
           printing.printSomething(THANK_MESSAGE);
-
           providerObj.setPassword(scanner.next());
           printing.printSomething("\nRegistration done successfully\n");
           providers.add(providerObj);
