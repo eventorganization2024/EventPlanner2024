@@ -3,7 +3,6 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -343,7 +342,7 @@ public class Provider extends User  {
     
 ////////    
     
-    public void updateServiceDetails(String sid) throws Exception {
+    public void updateServiceDetails(String sid) throws IOException {
 		
  	   ServiceDetails toupdatedService = findServiceByID(sid,"service.txt");
  		deleteService(sid);
