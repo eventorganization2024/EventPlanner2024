@@ -1,14 +1,19 @@
 package eventSteps;
  import eventSteps.*;
 import org.example.Paackage;
+import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.example.*;
+
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
- public class PaackagTest
+ public class PaackageTest
  {
 	 ////
 	 Paackage p=new Paackage(); 
@@ -110,5 +115,50 @@ import io.cucumber.java.en.When;
 	     // Write code here that turns the phrase above into concrete actions
 	        System.out.println("The administrator views the list of existing discounts.");
 	 }
+	 
+	 @Before
+	    public void setUp() {
+	        p = new Paackage();
+	    }
+
+	    @Test
+	    public void testPackageConstructor() {
+	        Paackage package1 = new Paackage(1, "Description", 100.0);
+	        assertEquals(1, package1.getId());
+	        assertEquals("Description", package1.getDescription());
+	        assertEquals(100.0, package1.getPrice(), 0.001);
+	        assertNull(package1.getTitle());
+	        assertNull(package1.getValidityPeriod());
+	    }
+
+	    @Test
+	    public void testSetAndGetId() {
+	        p.setId(1);
+	        assertEquals(1, p.getId());
+	    }
+
+	    @Test
+	    public void testSetAndGetDescription() {
+	        p.setDescription("Description");
+	        assertEquals("Description", p.getDescription());
+	    }
+
+	    @Test
+	    public void testSetAndGetPrice() {
+	        p.setPrice(100.0);
+	        assertEquals(100.0, p.getPrice(), 0.001);
+	    }
+
+	    @Test
+	    public void testSetAndGetValidityPeriod() {
+	        p.setValidityPeriod("2024-03-28");
+	        assertEquals("2024-03-28", p.getValidityPeriod());
+	    }
+
+	    @Test
+	    public void testSetAndGetTitle() {
+	        p.setTitle("Title");
+	        assertEquals("Title", p.getTitle());
+	    }
 	 
  }
