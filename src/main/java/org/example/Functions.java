@@ -93,8 +93,8 @@ public class Functions {
 	    private static final String THANK_MESSAGE = "  \nThank you! Your information has been recorded.    \nEnter a password: ";
         static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
-	    //static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
-	    //static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
+	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
+	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
@@ -2547,27 +2547,34 @@ public static void discountManagementadminList() {
 //==========================================================================================================================================
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
+
+
+
+
+
+
+
 /////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
 
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
-public static List<Event> makeListofEvent(String Cid) throws Exception {
-updateeventandcustomer("event.txt");
+public static List<Event> makeListofEvent(String cId) throws Exception {
+updateeventandcustomer(EVENT_FILE_NAME);
 
 List<Event> customerEvents = new ArrayList<>();
 
 for (Customer customer : customers) {
-if (customer.getId().equals(Cid)) {
-customerEvents = customer.getEvents();
+if (customer.getId().equals(cId)) {
+customerEvents = Customer.getEvents();
 }
 }
 
-//Check if events are found for the customer
+
 if (customerEvents.isEmpty()) {
-return null;
+
+return Collections.emptyList(); 
 } else {
 return customerEvents;
 }
@@ -2579,7 +2586,6 @@ public static Calendar loadEventsForCustomerInCalendar(String customerId) {
 List<Event> customerEvents;
 try {
 customerEvents = makeListofEvent(customerId);
-//printing.printSomething("here");
 
 if (customerEvents != null && !customerEvents.isEmpty()) {
 Calendar calendar = new Calendar();
@@ -2592,8 +2598,8 @@ printing.printSomething( "No events found for customer with ID: " + customerId);
 
 }
 } catch (Exception e) {
-//TODO Auto-generated catch block
-e.printStackTrace();
+
+	printing.printSomething( ERROR_PREFIX + e.getMessage());
 } return null ;
 
 }
@@ -2602,10 +2608,10 @@ e.printStackTrace();
 
 
 public static void displayAllCustomerEvents(Calendar calendar) {
-//Keep track of displayed months
+// Keep track of displayed months
 Set<String> displayedMonths = new HashSet<>();
 
-//Collect all unique year-month combinations from events and sort them chronologically
+// Collect all unique year-month combinations from events and sort them chronologically
 List<String> eventYearMonths = new ArrayList<>();
 for (Event event : calendar.getEvents()) {
 LocalDate eventDate = event.getDateAsLocalDate();
@@ -2616,31 +2622,31 @@ eventYearMonths.add(yearMonthKey);
 }
 Collections.sort(eventYearMonths);
 
-//Iterate over all unique year-month combinations
+// Iterate over all unique year-month combinations
 for (String yearMonthKey : eventYearMonths) {
 String[] parts = yearMonthKey.split("-");
 int year = Integer.parseInt(parts[0]);
 int month = Integer.parseInt(parts[1]);
 
-//Set the current year and month to the calendar
+// Set the current year and month to the calendar
 calendar.setYear(year);
 calendar.setMonth(month);
 
-//Print the events for the current year and month
+// Print the events for the current year and month
 displayCalendarEvents(calendar);
-printing.printInColor("\n\n+************************************************************************************************************************************************************************+\n", Printing.ANSI_BLACK);
+printing.printInColor(LINE_STARS, Printing.ANSI_BLACK);
 
-//Add the displayed month to the set
+// Add the displayed month to the set
 displayedMonths.add(yearMonthKey);
 }
 }
-//
+// 
 
 public static void displayCalendarEvents(Calendar calendar) {
 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
 DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
 
-//Print year and month with appropriate color
+// Print year and month with appropriate color
 YearMonth yearMonth = YearMonth.of(calendar.getYear(), calendar.getMonth());
 if (yearMonth.isBefore(YearMonth.now())) {
 printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_GRAY);
@@ -2650,31 +2656,31 @@ printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_ORANGE);
 printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_BLUE);
 }
 
-//Print the header for days of the week
+// Print the header for days of the week
 printing.printInColor("\n+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
 printing.printInColor("|          Mon          |          Tue          |          Wed          |          Thu          |          Fri          |          Sat          |          Sun          |\n", Printing.ANSI_GREEN);
 
-//Get the first day of the month
+// Get the first day of the month
 LocalDate firstDayOfMonth = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
 
 int frow = 0;
 boolean inFirstRow = false;
-//Set the current date to the first day of the month
+// Set the current date to the first day of the month
 LocalDate currentDate = firstDayOfMonth;
 
 int currentDayOfMonth = 1;
-//Print the days of the month
+// Print the days of the month
 while (currentDayOfMonth <= yearMonth.lengthOfMonth()) {//currentDate.getMonthValue() == calendar.getMonth()
-printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+printing.printInColor(LINE2, Printing.ANSI_LIME);
 
 StringBuilder dayRow = new StringBuilder("|");
 inFirstRow = false;
-//Print the current week
+// Print the current week
 for (int i = 0; i < 7; i++) {
 currentDayOfMonth++;
 if (currentDate.format(dayFormatter).compareTo("01") == 0 &&currentDate.getMonthValue()==calendar.getMonth()) {
 inFirstRow = true;
-//Print the calendar grid
+// Print the calendar grid
 for (int k = 0; k < firstDayOfMonth.getDayOfWeek().getValue() - 1; k++) {
 dayRow.append("                       |");
 frow = k + 2;
@@ -2700,19 +2706,19 @@ currentDate = currentDate.plusDays(1);
 
 printing.printInColor(dayRow.toString(), Printing.ANSI_GREEN);
 printing.printInColor("\n", Printing.ANSI_GREEN);
-printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+printing.printInColor(LINE2, Printing.ANSI_LIME);
 
-//Print events for each day
-printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1), dayFormatter);
+// Print events for each day
+printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1));
 }
 
-//Print the footer for the days of the week
-printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+// Print the footer for the days of the week
+printing.printInColor(LINE2, Printing.ANSI_LIME);
 }
 
 
 
-private static void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay, DateTimeFormatter dayFormatter) {
+private static void printEventsForWeek(Calendar calendar, LocalDate startDay, LocalDate endDay) {
 
 for (int i = 0; i < 7; i++) {
 for (LocalDate currentDate = startDay; currentDate.isBefore(endDay.plusDays(1)); currentDate = currentDate.plusDays(1)) {
@@ -2726,7 +2732,7 @@ Event eventForDay = calendar.getEvents().stream()
 .findFirst()
 .orElse(null);
 
-//Display the event with appropriate color
+// Display the event with appropriate color
 if (eventForDay != null && currentDate.getMonthValue()==calendar.getMonth()) {
 String eventColor = "";
 YearMonth eventYearMonth = YearMonth.of(eventForDay.getDateAsLocalDate().getYear(), eventForDay.getDateAsLocalDate().getMonth());
@@ -2761,29 +2767,29 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 
 
 
-//Initialize a set to keep track of event IDs for which notifications have been sent
-private Set<String> notifiedEvents = new HashSet<>();
+      //Initialize a set to keep track of event IDs for which notifications have been sent
+      private Set<String> notifiedEvents = new HashSet<>();
 
-//Initialize a scheduled executor service
-private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+     //Initialize a scheduled executor service
+     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-public void startApproachingUpcomingEvents() {
-//Schedule the approachUpcomingEvents method to run every hour
-executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
-}
+     public void startApproachingUpcomingEvents() {
+       // Schedule the approachUpcomingEvents method to run every hour
+      executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
+      }
 
-public void stopApproachingUpcomingEvents() {
-//Shutdown the executor service when you want to stop checking for upcoming events
-executor.shutdown();
-}
+    public void stopApproachingUpcomingEvents() {
+    	// Shutdown the executor service when you want to stop checking for upcoming events
+      executor.shutdown();
+      }
 
-public void approachUpcomingEvents() {
+    public void approachUpcomingEvents()throws NullPointerException {
 LocalDateTime now = LocalDateTime.now();
-updateEventList("event.txt");
+updateEventList(EVENT_FILE_NAME);
 
 List<Event> upcomingEvents = events.stream()
 .filter(event -> {
-LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
 return eventDate.isEqual(now.toLocalDate());
 })
 .collect(Collectors.toList());
@@ -2793,13 +2799,12 @@ LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.
 LocalTime currentTime = LocalTime.now();
 long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
 
-//System.out.println("test: "+notifiedEvents.contains(event.getEID())+timeDifferenceMinutes );
 if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
 String customerId = event.getUsrTd();
 String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
 String[] details = recipientDetails.split("-");
 String recipientName = details[1];		            
-String messageContent = generateMessageContent(customerId,recipientName, event.getTime(), 60-timeDifferenceMinutes);
+String messageContent = generateMessageContent(recipientName, event.getTime(), 60-timeDifferenceMinutes);
 String subject = "Notification for Upcoming Event: " + event.getName();
 
 sendNotificationsToParticipants(details[0], subject, messageContent);
@@ -2809,26 +2814,26 @@ notifiedEvents.add(event.getEID());
 }
 
 
-private String getEmailAndNameFromCustomerFile(String customerId) {
-//Update the customers list
-updateCustomersList();
+      private String getEmailAndNameFromCustomerFile(String customerId) {
+     // Update the customers list
+    updateCustomersList();
 
 
 
-//Search for the customer with the specified ID
-for (Customer customer1 : customers) {
-if (customer1.getId().equals(customerId)) { 	            
+   // Search for the customer with the specified ID
+    for (Customer cust : customers) {
+    if (cust.getId().equals(customerId)) { 	            
 
-return customer1.getEmail()+"-"+customer1.getUsername();
+    return cust.getEmail()+"-"+customer1.getUsername();
+    }
+     }
+
+    // If customer not found, return null or throw an exception
+    return null;
 }
-}
 
-//If customer not found, return null or throw an exception
-return null;
-}
-
-private String generateMessageContent(String customerId, String customerName, String eventTime, long hoursDifference) {
-//Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
+     private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
+// Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
 return "Dear " + customerName + ",\n\n"
 + "We are pleased to confirm your registration for the upcoming event.\n\n"
 + "Event Details:\n"
@@ -2854,7 +2859,8 @@ properties.put("mail.smtp.host", "smtp.gmail.com");
 properties.put("mail.smtp.port", "587");
 
 Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+	   @Override
+	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 return new javax.mail.PasswordAuthentication(senderEmail, password);
 }
 });
@@ -2867,23 +2873,10 @@ message.setText(messageContent);
 
 Transport.send(message);
 
-//System.out.println("Email sent successfully to " + recipientEmail);
 } catch (MessagingException mex) {
-mex.printStackTrace();
+	 printing.printSomething( ERROR_PREFIX + mex.getMessage());
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ////////////////////////////////////new/////////////////
