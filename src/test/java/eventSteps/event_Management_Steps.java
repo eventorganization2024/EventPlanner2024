@@ -46,7 +46,7 @@ public class event_Management_Steps {
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
 
-    @Test
+    
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
@@ -59,7 +59,7 @@ public class event_Management_Steps {
 
 	}
 	                                                 
-	
+	 @Test
 	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
 	Date date=new Date();
@@ -78,7 +78,7 @@ public class event_Management_Steps {
 	     event.addEventToFile(event, "requst.txt");
 	   	   }
 	
-	
+	 @Test
 	@Then("the event is added to admin requst")
 	public void theEventIsAddedToAdminRequst() throws Exception {  event.addEventToFile(event,"requst.txt");
 	}
@@ -98,6 +98,7 @@ public class event_Management_Steps {
 	@When("cancel event selected")
 	public void cancelEventSelected() {cancel=true;}
 	
+	@Test
 	@Then("the event deleted")
 	public void theEventDeleted() throws Exception{ 	
 	event .deleteEvent("event.txt","2000"); 
@@ -108,7 +109,8 @@ public class event_Management_Steps {
 	
 	@Given("there is an non_existing event")
 	public void thereIsAnNonExistingEvent() {existe=false;}
-
+	
+	@Test
 	@Then("non_Existing massage")
 	public void nonExistingMassage() {assertFalse(found);System.out.println("The event does not exist.");}
 
@@ -170,7 +172,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setEID(string9);
         event.setUserId("12114777");}
 
-	
+    @Test
 	@Then("the event is successfully created in the system")
 	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat=true); 
 
@@ -198,7 +200,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 		
 	}
 	
-
+	 @Test
 @Then("the system should display all events matching the name")
 	public void theSystemShouldDisplayAllEventsMatchingTheName() {
 	
