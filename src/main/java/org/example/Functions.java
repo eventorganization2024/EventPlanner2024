@@ -614,7 +614,7 @@ static void signInProvider(String id) throws Exception {
 	    	    	  if(  viewallprovider(PROVIDER_FILE_NAME)) {
 	    	              printing.printSomething("\nEnter the Provider ID  you want to delete it: ");
 	    	              String providerID = scanner.next();  
-	    	             provider1.delete_provider_from_file_and_arraylist( PROVIDER_FILE_NAME, providerID);
+	    	             provider1.deleteProviderFromFileAndArrayList( PROVIDER_FILE_NAME, providerID);
 	    	      	  printing.printSomething("\nProvider with ID " + providerID + " successfully deleted .");}
 
 	    	      	break;  
