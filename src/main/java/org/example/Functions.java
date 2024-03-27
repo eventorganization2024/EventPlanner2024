@@ -76,6 +76,7 @@ public class Functions {
 	    static final String EVENT_FILE_NAME = "event.txt";
 	    static final String PACKAGE_FILE_NAME = "package.txt";
 	    static final String VENUE_FILE_NAME = "venue.txt";
+	    static final String INVOICE_FILE_NAME ="invoice.txt" ;
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    private static final String ERROR_PREFIX = "An error occurred: ";
@@ -159,7 +160,7 @@ static void signInCustomer(String id) throws Exception {
         while (x > 0) {
             customerPageList();
             int c = scanner.nextInt();
-            customerOptions(c);
+            customerOptions(id,c);
         }
     } else {
         printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
@@ -192,7 +193,7 @@ static void signInProvider(String id) throws Exception {
         while (x > 0) {
             providerPageList();
             int c = scanner.nextInt();
-            providerOptions(c);
+            providerOptions(id,c);
         }
     } else {
         printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
@@ -233,12 +234,12 @@ static void signInProvider(String id) throws Exception {
 	    	        case 3:
 	    	        	EventManagementAdminPageList();
 	    	        	int customerEvent=scanner.nextInt();
-	    	        	EventManagementOptions(customerEvent);
+	    	        	eventManagementOptions(customerEvent);
 	    	            break;
 	    	        case 4:
 	    	        	VenueManagementadminList();
 	    	        	int cusVenue=scanner.nextInt();
-	    	        	VenueManagementOptions(cusVenue);
+	    	        	venueManagementOptions(cusVenue);
 	    	            break;
 	    	         
 	    	        case 5:
@@ -268,7 +269,7 @@ static void signInProvider(String id) throws Exception {
 	         }
 	      }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    public static void customerOptions(int x) throws Exception {
+	    public static void customerOptions(String id,int x) throws Exception {
 	    	
 	        switch (x){
 	            case 1:
@@ -361,8 +362,8 @@ static void signInProvider(String id) throws Exception {
 	        case 9:
 	        	  
 	        	if(  viewCostomerevents(id,EVENT_FILE_NAME)) { 
-		          	 boolean show=true;
-	          	 while (show) {
+		          	 
+	          	 while (true) {
 	          		 
 	          		 printing.printSomething("Enter the Event ID you want to view details for (or enter 'done' to finish):\n ");
 	          	     String eventIDToView = scanner.next();
@@ -373,7 +374,7 @@ static void signInProvider(String id) throws Exception {
 	          			   Event e=Event.findeventID(eventIDToView,EVENT_FILE_NAME);
 	          	    	
 	          			  System.out.println(e.toString2());
-	          	    	 show =false;
+	          	    	 
 	          	    	break;
 	          	       }
 	              	 }
@@ -383,8 +384,8 @@ static void signInProvider(String id) throws Exception {
 	        case 10: 
 	        	 printing.printSomething("\n");   	        	  
 	        	if(viewCostomerevents(id,REQUEST_FILE_NAME)){
-	        	boolean show2=true;
-          	     while (show2) {
+	        	
+          	     while (true) {
           		 
           		 printing.printSomething("Enter the Event ID you want to view details for (or enter 'done' to finish): ");
           	     String eventIDToView = scanner.next();
@@ -395,7 +396,7 @@ static void signInProvider(String id) throws Exception {
           			   Event e=Event.findeventID(eventIDToView,REQUEST_FILE_NAME);
           	    	
           			 printing.printSomething(e.toString2());
-          	    	 show2 =false;
+          	    	 
           	    	break;
           	       }
               	 }
@@ -403,11 +404,15 @@ static void signInProvider(String id) throws Exception {
               break;
 	        case 11:
 	       
-            	Calendar calendar =loadEventsForCustomerInCalendar(id);
-                displayAllCustomerEvents(calendar);	        	
+	        	Calendar calendar = loadEventsForCustomerInCalendar(id);
+	        	if (calendar != null) {
+	        	    displayAllCustomerEvents(calendar);
+	        	} else {
+	        		printing.printSomething("Calendar is null. Unable to display events.");
+	        	}      	
 	        	break;
 	        case 12:
-	        	readInvoiceFile("invoice.txt",  id) ;
+	        	readInvoiceFile(INVOICE_FILE_NAME,  id) ;
 	   	     break;
 	       case 13:	
 	    	   
@@ -417,7 +422,7 @@ static void signInProvider(String id) throws Exception {
 	        }
 	    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    public static void providerOptions(int choice) throws Exception {
+	    public static void providerOptions(String id,int choice) throws Exception {
 	        switch (choice) {
 	            case 1:
 	            	updateProvidersList();
@@ -433,11 +438,11 @@ static void signInProvider(String id) throws Exception {
 	            	 printing.printSomething("\n");   
 	            	 if (viewproviderservice(id)) {
 	                     printing.printSomething("\n"+"Please enter the Event ID of the service you want to update : ");
-	                     String Sid=scanner.next();
+	                     String serviceIdIn=scanner.next();
 	                	
 	                     updateProviderAndServiceList();
 	                     updateServiceList();
-	                    provider1.updateServiceDetails(Sid,"service.txt");
+	                    provider1.updateServiceDetails(serviceIdIn,"service.txt");
 	                    printing.printSomething("\nService updated successfully.");
 	                    viewproviderservice(id);
 	                     }
@@ -463,9 +468,9 @@ static void signInProvider(String id) throws Exception {
 	        }
 	    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	   private static void VenueManagementOptions(int C) {
+	   private static void venueManagementOptions(int c) {
 	  	  Scanner scanner = new Scanner(System.in);
-	  	switch (C)
+	  	switch (c)
 	  	{
 	  	case 2:
 	  		  addVenue(scanner, VENUE_FILE_NAME);
@@ -482,7 +487,7 @@ static void signInProvider(String id) throws Exception {
 	           viewAllVenues(VENUE_FILE_NAME);
 	           break;
 	       case 5:
-	           System.out.println("Exiting...");
+	    	   printing.printSomething("Exiting...");
 	           break;
 	       default:
 	           printing.printSomething(INVALID_CHOICE);
@@ -491,32 +496,30 @@ static void signInProvider(String id) throws Exception {
 	  	}
 	  }     
                             /////////////////////////////////////////////////////////////////////
-       private static void EventManagementOptions(int cE) throws Exception {
+       private static void eventManagementOptions(int cE) throws Exception {
        switch (cE) {
         case 1:
         if( viewalleventsforAdmin(REQUEST_FILE_NAME)) {
-      	boolean continuee = true;
-        while (continuee) {     	
+      	
+        while (true) {     	
         printing.printSomething("\nEnter the Event ID of the event you want to accept or reject (or enter 'done' to finish): ");
          String eventID = scanner.next();
          if ("done".equalsIgnoreCase(eventID)) {
-        	continuee = false; // Exit the loop if the user enters 'done'
+        	
           break; // Exit the switch case
         	}
         		     
           printing.printSomething("\nEnter 'Y' to accept the event or 'N' to reject: ");
          String choice = scanner.next().toUpperCase();        
          if (choice.equals("Y")) {         	
-             event1= event1.findeventID(eventID, REQUEST_FILE_NAME);
+             event1= Event.findeventID(eventID, REQUEST_FILE_NAME);
          	event1.deleteEvent( REQUEST_FILE_NAME, eventID);
-         	event1.addEventToFile(event1, EVENT_FILE_NAME);
+         	Event.addEventToFile(event1, EVENT_FILE_NAME);
             printing.printSomething("\nEvent accepted.");             
-             ///to send Notification:
-            SendmsgtoCustomer("has been approved",event1);  
+           SendmsgtoCustomer("has been approved",event1);  
             break;
             } else if (choice.equals("N")) {
-         	  ///to send Notification:
-         	  event1= event1.findeventID(eventID, REQUEST_FILE_NAME);
+         	 event1= Event.findeventID(eventID, REQUEST_FILE_NAME);
          	SendmsgtoCustomer("has been Rejected",event1);
          	event1.deleteEvent(REQUEST_FILE_NAME, eventID);
          	printing.printSomething("\nEvent rejected.");
@@ -530,8 +533,8 @@ static void signInProvider(String id) throws Exception {
         break;        
      case 2:
      	 viewalleventsforAdmin(EVENT_FILE_NAME); /// to String 
-     	 boolean show=true;
-     	 while (show) {
+     	 
+     	 while (true) {
      		 
      		 printing.printSomething("\nEnter the Event ID you want to view details for (or enter 'done' to finish): ");
      	     String eventIDToView = scanner.next();
@@ -541,8 +544,8 @@ static void signInProvider(String id) throws Exception {
      	    	 updateEventList(EVENT_FILE_NAME);
      			   Event e=Event.findeventID(eventIDToView,EVENT_FILE_NAME);
      	    	
-     			  System.out.println(e.toString2());// to String2
-     	    	 show =false;
+     			  printing.printSomething(e.toString2());// to String2
+     	    	
      	    	break;
      	       }
          	 }
@@ -584,7 +587,8 @@ static void signInProvider(String id) throws Exception {
              printing.printSomething("\nEvent with ID " + eventid + " successfully updated.");
              }}}
         break;
-     case 6:adminPage();
+     case 6:
+    	 adminPage(); break;
      default:
          printing.printSomething(INVALID_CHOICE);
   	     break;
@@ -594,13 +598,13 @@ static void signInProvider(String id) throws Exception {
       private static void ProviderAdminManagementOptions(int p) throws Exception {
     		switch (p) {
     	    case 1:
-    	    	 viewallprovider("provider.txt");
+    	    	 viewallprovider(PROVIDER_FILE_NAME);
     	    	 break;
     	    case 2:
-    	    	  if(  viewallprovider("provider.txt")) {
+    	    	  if(  viewallprovider(PROVIDER_FILE_NAME)) {
     	              printing.printSomething("\nEnter the Provider ID  you want to delete it: ");
     	              String providerID = scanner.next();  
-    	             provider1.delete_provider_from_file_and_arraylist(provider1, "provider.txt", providerID);
+    	             provider1.delete_provider_from_file_and_arraylist(provider1, PROVIDER_FILE_NAME, providerID);
     	      	  printing.printSomething("\nProvider with ID " + providerID + " successfully deleted .");}
 
     	      	break;    
@@ -1224,7 +1228,7 @@ static void signInProvider(String id) throws Exception {
     }
 ///////////////////////////////////////////////////////////////////////////////////////    
     public static void addToInvoice(String customerId, String eventId, String eventName, double price) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("invoice.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(INVOICE_FILE_NAME, true))) {
             writer.write(customerId + "," + eventId + "," + eventName + "," + price);
             writer.newLine();           
         } catch (IOException e) { printing.printSomething( ERROR_PREFIX + e.getMessage());}
@@ -2203,25 +2207,25 @@ public static void updateProviderProfile(int n) throws IOException {
                 case 1:
                     printing.printSomething(ENTER_NAME);
                     tmp1 = scanner.next();
-                    updateFile("provider.txt", provider1.getUsername(), tmp1);
+                    updateFile(PROVIDER_FILE_NAME, provider1.getUsername(), tmp1);
                     provider1.setName(tmp1);
                     break;
                 case 2:
                     printing.printSomething("Enter New Phone: ");
                     tmp1 = scanner.next();
-                    updateFile("provider.txt", provider1.getphone(), tmp1);
+                    updateFile(PROVIDER_FILE_NAME, provider1.getphone(), tmp1);
                     provider1.setPhone(tmp1);
                     break;
                 case 3:
                     printing.printSomething("Enter New Address: ");
                     tmp1= scanner.next();
-                    updateFile("provider.txt", provider1.getaddress(), tmp1);
+                    updateFile(PROVIDER_FILE_NAME, provider1.getaddress(), tmp1);
                     provider1.setAddress(tmp1);
                     break;
                 case 4:
                     printing.printSomething("Enter New Email: ");
                     tmp1 = scanner.next();
-                    updateFile("provider.txt", provider1.getEmail(), tmp1);
+                    updateFile(PROVIDER_FILE_NAME, provider1.getEmail(), tmp1);
                     provider1.setEmail(tmp1);
                     break;
                 default:    printing.printSomething(INVALID_CHOICE);
@@ -2362,7 +2366,7 @@ public  static void updateeventandcustomer(String filename) throws Exception {
 //////////////////////////////////////
 public static void updateProvidersList() {
     providers.clear(); 
-    try (BufferedReader br = new BufferedReader(new FileReader("provider.txt"))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(PROVIDER_FILE_NAME))) {
         String line;
         while ((line = br.readLine()) != null) {
             Provider provider = Provider.getProviderFromLine(line); 
