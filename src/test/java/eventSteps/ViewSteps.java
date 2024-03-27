@@ -166,13 +166,13 @@ public ViewSteps() throws ParseException {
 	public void thePagesDisplayed() {
 		 assertTrue(show_mangepages);
 		 F.signInPageList();
-		 F.EventManagementAdminPageList();
-		 F.DiscountManagementadminList();
-		 F.UserManagementAdminPageList();
-		 F.UserSearchPageList();
-		 F. VenueManagementadminList();
-		 F.ProviderManagementAdminPageList();
-		 F.PackageManagementadminList();
+		 F.eventManagementAdminPageList();
+		 F.discountManagementadminList();
+		 F.userManagementAdminPageList();
+		 F.userSearchPageList();
+		 F.venueManagementadminList();
+		 F.providerManagementAdminPageList();
+		 F.packageManagementadminList();
 		
 	
 	}
