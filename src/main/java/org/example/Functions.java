@@ -80,7 +80,7 @@ public class Functions {
 	    static final String INVOICE_FILE_NAME ="invoice.txt" ;
 	    static final String DISCOUNT_FILE_NAME = "discounts.txt";
 	    static final String SERVICE_FILE_NAME = "service.txt";
-		   
+	    private static final String YELLOW_TEXT_COLOR = "\033[1;33m";
 	    private static final String ENTER_NAME = "Enter New Name: ";
 	    static final String SPACE = "|                                       |";
 	    private static final String ERROR_PREFIX = "An error occurred: ";
@@ -222,7 +222,7 @@ static void signInProvider(String id) throws Exception {
 
 	    	    switch (c) {
 	    	        case 1:
-	    	        	 UserManagementAdminPageList();
+	    	        	 userManagementAdminPageList();
 	    	        	 int j=scanner.nextInt();
 	    	            switch(j) {
 	    	            case 1:viewCustomer();
@@ -236,28 +236,28 @@ static void signInProvider(String id) throws Exception {
 	    	            }
 	    	            break;
 	    	        case 2:
-	    	        	DiscountManagementadminList();
+	    	        	discountManagementadminList();
 	    	        	int l = scanner.nextInt();
 	    	        	discountManagementOptions(l);
 	    	            break;
 	    	        case 3:
-	    	        	EventManagementAdminPageList();
+	    	        	eventManagementAdminPageList();
 	    	        	int customerEvent=scanner.nextInt();
 	    	        	eventManagementOptions(customerEvent);
 	    	            break;
 	    	        case 4:
-	    	        	VenueManagementadminList();
+	    	        	venueManagementadminList();
 	    	        	int cusVenue=scanner.nextInt();
 	    	        	venueManagementOptions(cusVenue);
 	    	            break;
 	    	         
 	    	        case 5:
-	    	        	ProviderManagementAdminPageList();
+	    	        	providerManagementAdminPageList();
 	    	        	int providerMan=scanner.nextInt();
 	    	        	providerAdminManagementOptions(providerMan);
 	    	            break;
 	    	        case 6:
-	    	        	PackageManagementadminList();
+	    	        	packageManagementadminList();
 	    	        	int packageMan=scanner.nextInt();
 	    	        	packageManagementOptions(packageMan);
 	    	            
@@ -339,7 +339,7 @@ static void signInProvider(String id) throws Exception {
 
 	            case 5:
 	                printing.printSomething("\n");
-	                UserSearchPageList();
+	                userSearchPageList();
 	                int s = scanner.nextInt();
 	                
 	                if (s == 1) {
@@ -2365,13 +2365,15 @@ public  static void updateeventandcustomer(String filename) throws Exception {
     updateEventList(filename);
     updateCustomersList();
 
-    String E,C = null;
+    String e = null;
+    String c = null;
+
     for (Event event : events) {
-        E = event.getUsrTd();
+        e = event.getUsrTd();
         for (Customer customer : customers) {
-            C = customer.getId();
-            if (E != null && C != null && E.equals(C)) {
-    			customer.getCevents().add (event); 
+            e = customer.getId();
+            if (e != null && c != null && e.equals(c)) {
+    			Customer.getCevents().add (event); 
             }
         }
     }
@@ -2398,28 +2400,35 @@ public static void updateServiceList() {
             }}
              catch (IOException e) { printing.printSomething(ERROR_PREFIX + e.getMessage());}}
 /////////////////////////////////////
-public  static void updateProviderAndServiceList() throws FileNotFoundException, IOException {
+public  static void updateProviderAndServiceList()  {
              updateProvidersList();
 			 updateServiceList();
-			String P=null,S=null;
+			String p=null;
+			String s=null;
 			for (Provider  Prov :  providers)  
-			{ P=Prov.getId();
+			{ p=Prov.getId();
 	      			for (ServiceDetails Serv : serviceDetails)
-	      			{S=Serv.getProviderID();
-	      				if (P.equals(S)) 
-	      				{Prov.serviceDetailsList.add(Serv); break;}}}}
+	      			{s=Serv.getProviderID();
+	      				if (p.equals(s)) 
+	      				{Provider.serviceDetailsList.add(Serv); break;}}}}
 	      				
 
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //==========================================================================================================================================
                                                      //PAGE LISTS//
-public static void signInPageList(){
-    printing.printSomething("\n---------- Sign in Page ----------"+"\n|                                |"+
-            "\n|        1. Administrator        |"+"\n|        2. Customer             |"+
-            "\n|        3. Provider             |"+"\n|                                |"+
-            "\n----------------------------------\n" );
+public static void signInPageList() {
+    printing.printSomething("""
+        \n---------- Sign in Page ----------
+        |                                |
+        |        1. Administrator        |
+        |        2. Customer             |
+        |        3. Provider             |
+        |                                |
+        ----------------------------------
+        """);
 }
+
 
 public static void adminList() {      
     printing.printSomething("\n--------- Welcome to Admin Page --------\n"+SPACE+
@@ -2448,24 +2457,25 @@ public  static void customerPageList(){
             "\n|        7. Log Out                    |\n" +
             SPACE + "\n----------------------------------------\n" + ENTER_CHOICE);
 }
-    public static void EventManagementAdminPageList() {
-    printing.printSomething(
-        "\n\033[1;33m"+
-        "---- Welcome to EventManagement Page ----\n" +
-        "\033[1;33m"+
-        "|   1. IN requst                        |\n" +
-        "|   2. All events                       |\n" +
-        "|   3. ADD EVENT                        |\n" +
-        "|   4. DELETE                           |\n" +
-        "|   5. EDIT                             |\n" +
-        "|   6. Log Out                          |\n" +
-        "\033[1;36m" + "\n"  + "\n\033[0m"
-    );
+    public static void eventManagementAdminPageList() {
+    	printing.printSomething("""
+    		    ---- Welcome to EventManagement Page ----
+    		    \033[1;33m
+    		    |   1. IN requst                        |
+    		    |   2. All events                       |
+    		    |   3. ADD EVENT                        |
+    		    |   4. DELETE                           |
+    		    |   5. EDIT                             |
+    		    |   6. Log Out                          |
+    		    \033[1;36m
+    		    \n\n\033[0m
+    		""");
+
 }
 
-public static void UserManagementAdminPageList() {
+public static void userManagementAdminPageList() {
     printing.printSomething(
-        "\n\033[1;33m" +
+    		YELLOW_TEXT_COLOR +
         "---- Welcome to User Management Page ----\n" +
         "\033[1;33m" +
         "|   1. View All                         |\n" +
@@ -2474,11 +2484,11 @@ public static void UserManagementAdminPageList() {
         "\033[1;36m" + "\n" + "\n\033[0m"
     );
 }
-public static void UserSearchPageList() {
+public static void userSearchPageList() {
  printing.printSomething(
-     "\n\033[1;33m" +
+		 YELLOW_TEXT_COLOR+
      "---- Welcome to User Search Page ----\n" +
-     "\033[1;33m" +
+     YELLOW_TEXT_COLOR +
      "|   1. Search by Event Name          |\n" +
      "|   2. Search by Venue Name          |\n" +
      "|   3. Log out                       |\n"+
@@ -2486,24 +2496,22 @@ public static void UserSearchPageList() {
  );
 }
 
-public static void VenueManagementadminList() {
+public static void venueManagementadminList() {
     printing.printSomething(
-        "\n\033[1;33m" +
+    		YELLOW_TEXT_COLOR +
         "---- Welcome to Venue Management Page ----\n" +
         "\033[1;33m" +
         "|   1. VIEW ALL                         |\n" +
         "|   2. ADD                              |\n" +
         "|   3. DELETE                           |\n" +
         "|   4. EDIT                             |\n" +
-        "|   5.                                  |\n" +
-        "|   6.                                  |\n" +
-        "|   7. Log Out                          |\n" +
+        "|   5. Log Out                          |\n" +
         "\033[1;36m" +"\n" + "\n\033[0m"
     );}
 
-public static void ProviderManagementAdminPageList() {
+public static void providerManagementAdminPageList() {
  printing.printSomething(
-    "\n\033[1;33m" +
+		 YELLOW_TEXT_COLOR +
     "---- Welcome to Provider Management Page ----\n" +
     "\033[1;33m" +
     "|   1. VIEW ALL                         |\n" +
@@ -2513,9 +2521,9 @@ public static void ProviderManagementAdminPageList() {
     "\033[1;36m" +"\n" + "\n\033[0m"
 );}
 
-public static void PackageManagementadminList() {
+public static void packageManagementadminList() {
   printing.printSomething(
-      "\n\033[1;33m" +
+		  YELLOW_TEXT_COLOR +
       "---- Welcome to Package Management Page ----\n" +
       "\033[1;33m" +
       "|   1. VIEW ALL                         |\n" +
@@ -2526,9 +2534,9 @@ public static void PackageManagementadminList() {
       "\033[1;36m" +"\n" + "\n\033[0m"
   );}
 
-public static void DiscountManagementadminList() {
+public static void discountManagementadminList() {
   printing.printSomething(
-      "\n\033[1;33m" +
+		  YELLOW_TEXT_COLOR +
       "---- Welcome to Discount Management Page ----\n" +
       "\033[1;33m" +
       "|   1. VIEW ALL                         |\n" +
@@ -2579,7 +2587,6 @@ public static Calendar loadEventsForCustomerInCalendar(String customerId) {
 List<Event> customerEvents;
 try {
 customerEvents = makeListofEvent(customerId);
-//printing.printSomething("here");
 
 if (customerEvents != null && !customerEvents.isEmpty()) {
 Calendar calendar = new Calendar();
@@ -2592,8 +2599,8 @@ printing.printSomething( "No events found for customer with ID: " + customerId);
 
 }
 } catch (Exception e) {
-// TODO Auto-generated catch block
-	 printing.printSomething( ERROR_PREFIX + e.getMessage());
+
+	printing.printSomething( ERROR_PREFIX + e.getMessage());
 } return null ;
 
 }
@@ -2793,7 +2800,6 @@ LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.
 LocalTime currentTime = LocalTime.now();
 long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
 
-//  printing.printSomething("\ntest: "+notifiedEvents.contains(event.getEID())+timeDifferenceMinutes );
 if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
 String customerId = event.getUsrTd();
 String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
@@ -2816,10 +2822,10 @@ updateCustomersList();
 
 
 // Search for the customer with the specified ID
-for (Customer customer1 : customers) {
-if (customer1.getId().equals(customerId)) { 	            
+for (Customer cust : customers) {
+if (cust.getId().equals(customerId)) { 	            
 
-return customer1.getEmail()+"-"+customer1.getUsername();
+return cust.getEmail()+"-"+customer1.getUsername();
 }
 }
 
@@ -2854,7 +2860,8 @@ properties.put("mail.smtp.host", "smtp.gmail.com");
 properties.put("mail.smtp.port", "587");
 
 Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+	   @Override
+	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 return new javax.mail.PasswordAuthentication(senderEmail, password);
 }
 });
@@ -2867,7 +2874,6 @@ message.setText(messageContent);
 
 Transport.send(message);
 
-//    printing.printSomething("Email sent successfully to " + recipientEmail);
 } catch (MessagingException mex) {
 	 printing.printSomething( ERROR_PREFIX + mex.getMessage());
 }
