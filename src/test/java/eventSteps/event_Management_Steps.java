@@ -32,7 +32,7 @@ import io.cucumber.java.en.When;
 public class event_Management_Steps {
 	 
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	    
+	 private InputStream inputStream;  
 	 Event event =new Event();
     boolean cancel;
     boolean found;
@@ -42,7 +42,7 @@ public class event_Management_Steps {
     boolean creat;
   
     Customer customer1 = new Customer();
-    
+    Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
 
 	
@@ -113,7 +113,7 @@ public class event_Management_Steps {
 
 
 	/////////////////////////////////
-	
+	/*
 	@Given("selects the option to update the event details")
 	public void selectsTheOptionToUpdateTheEventDetails() throws IOException {
 		update=true;
@@ -141,7 +141,7 @@ public class event_Management_Steps {
 		Event.updateEventInFile(null,"event.txt");
 		 
 	}
-
+*/
     /////////////////////////////////////////////////
 	
 @Given("the administrator is going to create an event")
@@ -204,6 +204,188 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
    }
 
 ///////////////////////////////////////////////////////////////////////////////////
+
+
+@Given("selects the option to update the event details")
+public void selectsTheOptionToUpdateTheEventDetails() {
+	
+}
+
+@Given("there is an existing event to update")
+public void thereIsAnExistingEventToUpdate() throws IOException {
+	 eventToUpdate = Event. findeventID("1000", "event.txt");
+	 update=true;
+}
+////////////////////////////
+@Given("the user chooses {string} to update name")
+public void theUserChoosesToUpdateName(String string) throws IOException, NullPointerException, ParseException {
+ //assertTrue(update);
+
+    eventToUpdate = Event. findeventID("1000", "event.txt");
+    String simulatedInputs1 = ("Ali_party");
+  
+ 
+   InputStream inputStream1 = new ByteArrayInputStream(simulatedInputs1.getBytes());
+     System.setIn(inputStream1);
+   event.updateEventName(eventToUpdate);
+  
+   InputStream inputStream2 = new ByteArrayInputStream("out".getBytes());
+   System.setIn(inputStream2);
+ 
+   event.updateEvent("1000", "event.txt");
+   
+ 
+   }
+
+ 
+ 
+
+
+@Given("the user chooses {string} to update date")
+public void theUserChoosesToUpdateDate(String string) throws IOException, NullPointerException, ParseException {
+    eventToUpdate = Event. findeventID("1000", "event.txt");
+    String simulatedInputs3 = ("2026-08-14");
+  
+ 
+   InputStream inputStream3 = new ByteArrayInputStream(simulatedInputs3.getBytes());
+     System.setIn(inputStream3);
+   event.updateEventDate(eventToUpdate,"1000");
+  
+   InputStream inputStream4 = new ByteArrayInputStream("out".getBytes());
+   System.setIn(inputStream4);
+ 
+   event.updateEvent("1000", "event.txt");
+}
+
+
+@Given("the user chooses {string} to update time")
+public void theUserChoosesToUpdateTime(String string) throws IOException, NullPointerException, ParseException {
+	 eventToUpdate = Event. findeventID("1000", "event.txt");
+	    String simulatedInputs5 = ("7:00 pm");
+	  
+	 
+	   InputStream inputStream5 = new ByteArrayInputStream(simulatedInputs5.getBytes());
+	     System.setIn(inputStream5);
+	   event.updateEventTime(eventToUpdate);
+	  
+	   InputStream inputStream6 = new ByteArrayInputStream("out".getBytes());
+	   System.setIn(inputStream6);
+	 
+	   event.updateEvent("1000", "event.txt");
+}
+
+
+@Given("the user chooses {string} to update description")
+public void theUserChoosesToUpdateDescription(String string) throws IOException, NullPointerException, ParseException {
+	 eventToUpdate = Event. findeventID("1000", "event.txt");
+	    String simulatedInputs7 = ("*******");
+	  
+	 
+	   InputStream inputStream7 = new ByteArrayInputStream(simulatedInputs7.getBytes());
+	     System.setIn(inputStream7);
+	   event.updateEventDescription(eventToUpdate);
+	  
+	   InputStream inputStream8 = new ByteArrayInputStream("out".getBytes());
+	   System.setIn(inputStream8);
+	 
+	   event.updateEvent("1000", "event.txt");
+}
+
+
+@Given("the user chooses {string} to update count")
+public void theUserChoosesToUpdateCount(String string) throws IOException, NullPointerException, ParseException {
+	eventToUpdate = Event. findeventID("1000", "event.txt");
+    String simulatedInputs9 = ("40");
+  
+ 
+   InputStream inputStream9 = new ByteArrayInputStream(simulatedInputs9.getBytes());
+     System.setIn(inputStream9);
+   event.updateEventAttendeeCount(eventToUpdate);
+  
+   InputStream inputStream10 = new ByteArrayInputStream("out".getBytes());
+   System.setIn(inputStream10);
+ 
+   event.updateEvent("1000", "event.txt");
+}
+
+
+@Given("the user chooses {string} to update theme")
+public void theUserChoosesToUpdateTheme(String string) throws IOException, NullPointerException, ParseException {
+	eventToUpdate = Event. findeventID("1000", "event.txt");
+    String simulatedInputs11 = ("theme");
+  
+ 
+   InputStream inputStream11 = new ByteArrayInputStream(simulatedInputs11.getBytes());
+     System.setIn(inputStream11);
+   event.updateEventTheme(eventToUpdate);
+  
+   InputStream inputStream12 = new ByteArrayInputStream("out".getBytes());
+   System.setIn(inputStream12);
+ 
+   event.updateEvent("1000", "event.txt");
+}
+
+
+@Given("the user chooses {string} to update category")
+public void theUserChoosesToUpdateCategory(String string) throws IOException, NullPointerException, ParseException {
+	eventToUpdate = Event. findeventID("1000", "event.txt");
+    String simulatedInputs13 = ("cat");
+  
+ 
+   InputStream inputStream13 = new ByteArrayInputStream(simulatedInputs13.getBytes());
+     System.setIn(inputStream13);
+   event.updateEventCategory(eventToUpdate);
+  
+   InputStream inputStream14 = new ByteArrayInputStream("out".getBytes());
+   System.setIn(inputStream14);
+ 
+   event.updateEvent("1000", "event.txt");
+    
+}
+
+@Given("the user chooses {string} to update venue")
+public void theUserChoosesToUpdateVenue(String string) {
+ 
+}
+
+@Given("the user chooses {string} to update services")
+public void theUserChoosesToUpdateServices(String string) throws IOException, NullPointerException, ParseException {
+	eventToUpdate = Event. findeventID("1000", "event.txt");
+    String simulatedInputs15 = ("100");
+  
+ 
+   InputStream inputStream15 = new ByteArrayInputStream(simulatedInputs15.getBytes());
+     System.setIn(inputStream15);
+   event.updateEventServices(eventToUpdate);
+  
+   InputStream inputStream16 = new ByteArrayInputStream("out".getBytes());
+   System.setIn(inputStream16);
+ 
+   event.updateEvent("1000", "event.txt");	
+    
+}
+
+@Then("the event  is successfully updated in the system")
+public void theEventIsSuccessfullyUpdatedInTheSystem() {
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
