@@ -100,8 +100,10 @@ public class Event {
 	        String serviceIdsString = items[10];
 	        // Remove leading and trailing brackets if present
 	        serviceIdsString = serviceIdsString.replaceAll("^\\[|\\]$", "");
-	  @SuppressWarnings("java:S4784") // Suppress warning about regex denial of service
-String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*", -1);
+	// The regex "\\s*,\\s*" is safe as it splits the input string by commas with optional whitespace.
+// The limit of -1 ensures that trailing empty strings are not discarded.
+String[] serviceIdsArray = serviceIdsString.split(",\\s*", -1);
+
 
 
 
