@@ -58,7 +58,8 @@ public class Provider extends User  {
     }
 ////////////////////////////////////////////////////////////////////////////////////////////
     private static Provider authenticateProvider(String username, String password) {
-    	providers.clear(); // Clear the list before reloading data    	loadProviderDataFromFile("provider.txt");
+    	providers.clear(); // Clear the list before reloading data    
+	    loadProviderDataFromFile("provider.txt");
     	for (Provider provider : providers) {
             if (provider.getUsername().equals(username) && provider.getPassword().equals(password)) {
                 return provider;
@@ -183,24 +184,23 @@ public class Provider extends User  {
 	        return false; // Service of specified type does not exist or serviceDetailsList is null
 	    }
 //////////////////////////////	
-	public void deleteService(String serviceID) throws Exception {
-		Functions.updateServiceList();
-		Functions.updateProviderAndServiceList();
-		Functions.updateProviderAndServiceList();
-       if (serviceDetailsList != null) {
-           ServiceDetails serviceToDelete = null;
-            for (ServiceDetails service : Functions.serviceDetails) {
-                if (service.getServiceID() .equals(serviceID)) {
-                    serviceToDelete = service;
-                    break;
-                    
-                    
-                }
+public void deleteService(String serviceID) throws Exception {
+    Functions.updateServiceList();
+    Functions.updateProviderAndServiceList();
+    Functions.updateProviderAndServiceList();
+
+    if (serviceDetailsList != null && !serviceDetailsList.isEmpty()) {
+        ServiceDetails serviceToDelete = null;
+        for (ServiceDetails service : Functions.serviceDetails) {
+            if (service.getServiceID().equals(serviceID)) {
+                serviceToDelete = service;
+                break;
             }
+        }
 
           if (serviceToDelete != null) {
                 serviceDetailsList.remove(serviceToDelete);
-                delete_Service_from_file("service.txt", serviceID);
+                deleteProviderFromFileAndArrayList("service.txt", serviceID);
                   
             } else {
             	printing.printSomething("Service not found.\n");
@@ -211,7 +211,7 @@ public class Provider extends User  {
 	
 /////////////////////
 
-	public void delete_provider_from_file_and_arraylist( String fileName, String pid) throws IOException {
+	public void deleteProviderFromFileAndArrayList( String fileName, String pid) throws IOException {
 	    String line;
 	    StringBuilder sb = new StringBuilder();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
