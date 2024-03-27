@@ -30,7 +30,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
-public class EventTest{
+public class event_Management_Steps{
 	 
 	acceptTest1 c=new acceptTest1();
 	
