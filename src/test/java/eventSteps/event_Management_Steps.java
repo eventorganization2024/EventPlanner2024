@@ -41,7 +41,7 @@ public class event_Management_Steps {
     boolean update;
     boolean existe;
     boolean creat;
-  
+    boolean toadd;
     Customer customer1 = new Customer();
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
@@ -62,7 +62,8 @@ public class event_Management_Steps {
 	 @Test
 	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
-	Date date=new Date();
+	
+		 Date date=new Date();
         try {
             date = DATE_FORMAT.parse(string);
         } catch (ParseException e) {
@@ -76,11 +77,15 @@ public class event_Management_Steps {
         serviceIds.add("100");
         event = new Event(string5, date, string2, string3, string4, customer1.getId(), string7, string6, string8, serviceIds, string9);
 	     event.addEventToFile(event, "requst.txt");
-	   	   }
+	     toadd=true;
+	    }
 	
-	 @Test
+	@Test
 	@Then("the event is added to admin requst")
-	public void theEventIsAddedToAdminRequst() throws Exception {  event.addEventToFile(event,"requst.txt");
+	public void theEventIsAddedToAdminRequst() throws Exception { 
+		
+		assertTrue(toadd);
+		Event.addEventToFile(event,"requst.txt");
 	}
 
 
