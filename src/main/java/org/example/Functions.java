@@ -69,7 +69,7 @@ public class Functions {
 	    private static final String NAME_LABEL = " Name: ";
 	   protected static final List<ServiceDetails> serviceDetails = new ArrayList<>();
 	   private static final String NOT_FOUND_MESSAGE = " not found.";
-
+	   private static final String ERROR= "Error: ";
 ///////////////////////////////////////////////////////////////////////////////////////	    
 	    static final String CUSTOMER_FILE_NAME = "customer.txt";
 	    static final String PROVIDER_FILE_NAME = "provider.txt";
@@ -86,7 +86,7 @@ public class Functions {
 	    private static final String ERROR_PREFIX = "An error occurred: ";
 	    private static final String CAPACITY_LABEL = " Capacity: ";
 	    private static final String PRICE_LABEL = " Price: ";
-	    
+
 	    static final String EXITING = "Exiting...";
 	    
 	    static final String ENTER_CHOICE = "Enter your choice: ";
@@ -782,10 +782,10 @@ static void signInProvider(String id) throws Exception {
     	    } else {
     	    	printing.printSomething("\033[0;35mAll Venues:\033[0m");
                 for (Venue venue : venues) {  	           
-                	  printing.printSomething("Name: " + venue.getName() + ", ");
+                	  printing.printSomething("\nName: " + venue.getName() + ", ");
                       printing.printSomething("Address: " + venue.getAddress() + ", ");
                       printing.printSomething(CAPACITY_LABEL + venue.getCapacity() + ", ");
-                       printing.printSomething(PRICE_LABEL + venue.getPrice());
+                       printing.printSomething(PRICE_LABEL + venue.getPrice()+"\n");
                    
     	        }
     	    }}
@@ -1297,7 +1297,7 @@ static void signInProvider(String id) throws Exception {
     	        Paackage packageToUpdate = findPackageById(packages, packageId);
 
     	        if (packageToUpdate == null) {
-    	            printing.printSomething(Paackage.PACKAGE_WITH_ID + packageId + " not found.");
+    	            printing.printSomething(Paackage.PACKAGE_WITH_ID + packageId + NOT_FOUND_MESSAGE);
     	        } else {
     	            handlePackageUpdate(scanner, packageToUpdate, filename, packages);
     	        }
@@ -1369,7 +1369,7 @@ static void signInProvider(String id) throws Exception {
 ///////////////////////////////////////////////////////////////////////////////////////////////
     public static void editVenuefrom(Scanner scanner, String filename) {
         List<Venue> venues = readVenuesFromFile(filename);
-       // List<Venue> venues = readVenuesFromFile(filename);
+       
 
         if (venues.isEmpty()) {
             printing.printSomething("\nNo venues found.");
@@ -1522,7 +1522,7 @@ static void signInProvider(String id) throws Exception {
     	        }
     	    }
     	} catch (IOException e) {
-    	    System.err.println("An error occurred while reading the file: " + e.getMessage());
+    		printing.printSomething("An error occurred while reading the file: " + e.getMessage());
     	}
     	}
 
@@ -1548,7 +1548,7 @@ static void signInProvider(String id) throws Exception {
     	            }
     	        }
     	    } catch (IOException e) {
-    	        System.err.println("An error occurred while reading the file: " + e.getMessage());
+    	    	printing.printSomething("An error occurred while reading the file: " + e.getMessage());
     	    }
     	}
   	
@@ -1571,44 +1571,46 @@ static void signInProvider(String id) throws Exception {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
-    public static double applyDiscount(double price, String code) {
-	    try (BufferedReader br = new BufferedReader(new FileReader(DISCOUNT_FILE_NAME))) {
-	        String line;
-	        while ((line = br.readLine()) != null) {
-	            String[] parts = line.split(",");
-	            if (parts.length >= 4) { // Ensure parts array has enough elements
-	                String code_ = parts[1];
-	                if (code_.equals(code)) {
-	                    double percentage = Double.parseDouble(parts[2]);
-	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-	                    if (validityDate.isAfter(LocalDate.now())) {
-	                        double discountedPrice = price * (1 - percentage / 100);
-	                        return discountedPrice;
-	                    } else {
-	                    	printing.printSomething("\n\nThe code is expired");
-	                    	return price ; // Example: Return -1 for expired discount
-	                    }
-	                }
-	            } else {
-	                printing.printSomething("\nInvalid format in discounts file: " + line);
-	            }
-	        }
-	        return price; 
-	    } catch (IOException e) {
-	    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-	        return price;
-	    }
-	}
+  	public static double applyDiscount(double price, String code) {
+  	    try (BufferedReader br = new BufferedReader(new FileReader(DISCOUNT_FILE_NAME))) {
+  	        String line;
+  	        while ((line = br.readLine()) != null) {
+  	            String[] parts = line.split(",");
+  	            if (parts.length >= 4) { // Ensure parts array has enough elements
+  	                String codeValue = parts[1];
+  	                if (codeValue.equals(code)) {
+  	                    double percentage = Double.parseDouble(parts[2]);
+  	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  	                    if (validityDate.isAfter(LocalDate.now())) {
+  	                        double discountedPrice = price * (1 - percentage / 100);
+  	                        return discountedPrice;
+  	                    } else {
+  	                        printing.printSomething("\n\nThe code is expired");
+  	                        return price; // Example: Return -1 for expired discount
+  	                    }
+  	                }
+  	            } else {
+  	                printing.printSomething("\nInvalid format in discounts file: " + line);
+  	            }
+  	        }
+  	        return price; 
+  	    } catch (IOException e) {
+  	        printing.printSomething(ERROR_PREFIX + e.getMessage());
+  	        return price;
+  	    }
+  	}
 
-    public static boolean checkAvailability(String venueName, String date) throws IOException {
-        String venueId = new String();
-        
-        if (venueId == null) {
-            printing.printSomething("\nVenue with name " + venueName + " not found.");
-            return false;
-        }
-        return checkAvailabilityById(venueId, date);
-    }
+
+  	public static boolean checkAvailability(String venueName, String date) throws IOException {
+  	    String venueId = new String (); // Initialize venueId to null
+  	    
+  	    if (venueId == null || venueId.isEmpty()) { // Check if venueId is null or empty
+  	        printing.printSomething("\nVenue with name " + venueName + NOT_FOUND_MESSAGE);
+  	        return false;
+  	    }
+  	    return checkAvailabilityById(venueId, date);
+  	}
+
     private static boolean checkAvailabilityById(String venueId, String date) throws IOException {
         File venueBookFile = new File("venuebook.txt");
         Scanner scanner = new Scanner(venueBookFile);
@@ -1645,9 +1647,9 @@ static void signInProvider(String id) throws Exception {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
+            printing.printSomething("Error reading file: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.err.println("Error parsing price: " + e.getMessage());
+        	 printing.printSomething("Error parsing price: " + e.getMessage());
         }
         return 0; 
     }
@@ -1899,16 +1901,7 @@ public static void deleteDiscountFromFile(String filename, List<Discount> update
     	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
-private static void deleteVenueFromFile(String filename, List<Venue> venues) {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-        for (Venue venue : venues) {
-            writer.write(venue.toFileString());
-            writer.newLine();
-        }
-    } catch (IOException e) {
-    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-    }
-}
+
 
 
 public static void removeDiscount(Scanner scanner, String filename) {
@@ -1928,7 +1921,7 @@ public static void removeDiscount(Scanner scanner, String filename) {
         if (discount.getDiscountId() == discountIdToRemove) {
             found = true;
             printing.printSomething("\nDiscount found:");
-            System.out.print(discount);
+            printing.printSomething(""+discount);
         } else {
             // Add discounts other than the one to be removed to the updated list
             updatedDiscounts.add(discount);
@@ -1955,7 +1948,7 @@ public static void deletePackageById(Scanner scanner, String filename) {
 
     printing.printSomething("\nAll Packages:");
     for (Paackage p : packages) {
-        printing.printSomething("\nPackage ID: " + p.getId() + " Name: " + p.getTitle());
+        printing.printSomething("\nPackage ID: " + p.getId() + NAME_LABEL + p.getTitle());
     }
 
     while (true) {
@@ -1977,7 +1970,7 @@ public static void deletePackageById(Scanner scanner, String filename) {
         if (found) {
             break; // Exit the loop if the package is found and removed
         } else {
-            printing.printSomething("\nPackage with ID " + packageIdToRemove + " not found.");
+            printing.printSomething("\nPackage with ID " + packageIdToRemove + NOT_FOUND_MESSAGE);
             printing.printSomething("\nPlease insert a new ID.");
         }
     }
@@ -1986,58 +1979,70 @@ public static void deletePackageById(Scanner scanner, String filename) {
 }
 
 public static void deleteVenueById(Scanner scanner, String filename) {
-	
-	
     printing.printSomething("\nRemoving a venue...");
     List<Venue> venues = readVenuesFromFile(filename);
 
     if (venues.isEmpty()) {
         printing.printSomething("\nNo venues found.");
-    } else {
-        printing.printSomething("\nAll Venues:");
-        for (Venue venue : venues) {
-            printing.printSomething(VENUE_ID_LABEL + venue.getId());
-            printing.printSomething(NAME_LABEL + venue.getName());
-            printing.printSomething(ADDRESS_LABEL + venue.getAddress());
-            printing.printSomething(IMAGE_LABEL + venue.getImage());
-            printing.printSomething(CAPACITY_LABEL + venue.getCapacity());
-            printing.printSomething("\n"+ + venue.getPrice());
-          
-            printing.printSomething("\n");
-        }
+        return;
     }
-    printing.printSomething("Enter the ID of the venue to remove: ");
-    String venueIdToRemove = scanner.nextLine();
 
-  
-    boolean found = false;
+    printAllVenues(venues);
 
-    List<Venue> updatedVenues = new ArrayList<>();
+    String venueIdToRemove = getVenueIdToRemove(scanner);
 
-    
-    for (Venue venue : venues) {
-        if (venue.getId().equals(venueIdToRemove)) {
-            found = true;
-            printing.printSomething("Venue with ID " + venueIdToRemove + " successfully removed.");
-        } else {
-            updatedVenues.add(venue);
-        }
-    }
+    boolean found = removeVenue(venues, venueIdToRemove);
 
     if (found) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (int i = 0; i < updatedVenues.size(); i++) {
-                Venue venue = updatedVenues.get(i);
-                writer.write(venue.toFileString());
-                if (i != updatedVenues.size() - 1) {
-                    writer.newLine();
-                }
-            }
-        } catch (IOException e) {
-        	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-        }
+        updateVenueFile(filename, venues);
     } else {
-        printing.printSomething("\nVenue with ID " + venueIdToRemove + " not found.");
+        printing.printSomething("\nVenue with ID " + venueIdToRemove + NOT_FOUND_MESSAGE);
+    }
+}
+
+private static void printAllVenues(List<Venue> venues) {
+    printing.printSomething("\nAll Venues:");
+    for (Venue venue : venues) {
+        printing.printSomething(VENUE_ID_LABEL + venue.getId());
+        printing.printSomething(NAME_LABEL + venue.getName());
+        printing.printSomething(ADDRESS_LABEL + venue.getAddress());
+        printing.printSomething(IMAGE_LABEL + venue.getImage());
+        printing.printSomething(CAPACITY_LABEL + venue.getCapacity());
+        printing.printSomething("Price: " + venue.getPrice());
+        printing.printSomething("\n");
+    }
+}
+
+private static String getVenueIdToRemove(Scanner scanner) {
+    printing.printSomething("Enter the ID of the venue to remove: ");
+    return scanner.nextLine();
+}
+
+private static boolean removeVenue(List<Venue> venues, String venueIdToRemove) {
+    boolean found = false;
+    for (int i = 0; i < venues.size(); i++) {
+        Venue venue = venues.get(i);
+        if (venue.getId().equals(venueIdToRemove)) {
+            venues.remove(i);
+            found = true;
+            printing.printSomething("Venue with ID " + venueIdToRemove + " successfully removed.");
+            break;
+        }
+    }
+    return found;
+}
+
+private static void updateVenueFile(String filename, List<Venue> venues) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+        for (int i = 0; i < venues.size(); i++) {
+            Venue venue = venues.get(i);
+            writer.write(venue.toFileString());
+            if (i != venues.size() - 1) {
+                writer.newLine();
+            }
+        }
+    } catch (IOException e) {
+        printing.printSomething(ERROR_PREFIX + e.getMessage());
     }
 }
 
@@ -2077,7 +2082,7 @@ public void deleteVenueBooking(String eventId, String filename) {
 void customerSignUp() throws Exception {
     customerObj = new Customer();
     printing.printSomething("Enter your Id: ");
-    id = scanner.next();
+     id = scanner.next();
     found = searchIdU(id);
     if (found) {
         printing.printSomething(ACCOUNT_ALREADY_EXIST_MESSAGE);
@@ -2092,11 +2097,14 @@ void customerSignUp() throws Exception {
         customerObj.setAddress(scanner.next());
         printing.printSomething("Enter your Email: ");
         customerObj.setEmail(scanner.next());
-        printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
+        printing.printSomething("""
+        	    \nThank you! Your information has been recorded.
+        	    Enter a password: 
+        	    """);
         customerObj.setPassword(scanner.next());
         printing.printSomething("\nRegistration done successfully\n");
         customers.add(customerObj);
-        customerObj .addCustomerToFile(customerObj);
+        Customer .addCustomerToFile(customerObj);
     }
 }
 public static void updateCustomerProfile(int n) throws IOException {
@@ -2107,25 +2115,25 @@ public static void updateCustomerProfile(int n) throws IOException {
                 case 1:
                     printing.printSomething(ENTER_NAME);
                     tmp1 = scanner.next();
-                    updateFile("customer.txt", customer1.getUsername(), tmp1);
+                    updateFile(CUSTOMER_FILE_NAME, customer1.getUsername(), tmp1);
                     customer1.setName(tmp1);
                     break;
                 case 2:
                     printing.printSomething("Enter New Phone: ");
                     tmp1 = scanner.next();
-                    updateFile("customer.txt", customer1.getphone(), tmp1);
+                    updateFile(CUSTOMER_FILE_NAME, customer1.getphone(), tmp1);
                     customer1.setPhone(tmp1);
                     break;
                 case 3:
                     printing.printSomething("Enter New Address: ");
                     tmp1= scanner.next();
-                    updateFile("customer.txt", customer1.getaddress(), tmp1);
+                    updateFile(CUSTOMER_FILE_NAME, customer1.getaddress(), tmp1);
                     customer1.setAddress(tmp1);
                     break;
                 case 4:
                     printing.printSomething("Enter New Email: ");
                     tmp1 = scanner.next();
-                    updateFile("customer.txt", customer1.getEmail(), tmp1);
+                    updateFile(CUSTOMER_FILE_NAME, customer1.getEmail(), tmp1);
                     customer1.setEmail(tmp1);
                     break;
                 default:    printing.printSomething(INVALID_CHOICE);
@@ -2194,7 +2202,10 @@ public  void providerSignUp() throws Exception {
           providerObj.setAddress(scanner.next());
           printing.printSomething("Enter your Email: ");
           providerObj.setEmail(scanner.next());
-          printing.printSomething("\nThank you! Your information have been recorded"+"\nEnter a password: ");
+          printing.printSomething("""
+        		    \nThank you! Your information has been recorded
+        		    Enter a password: 
+        		    """);
           providerObj.setPassword(scanner.next());
           printing.printSomething("\nRegistration done successfully\n");
           providers.add(providerObj);
@@ -2239,8 +2250,7 @@ public static void updateProviderProfile(int n) throws IOException {
 }
 /////////////////////////////////////
 public static void updateCustomerFile() {
-    try {
-        FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME);
+    try (FileWriter customersFile = new FileWriter(CUSTOMER_FILE_NAME)) {
         for (Customer customer : customers) {
             customersFile.write(customer.getId() + " , "
                     + customer.getUsername() + " , "
@@ -2248,10 +2258,12 @@ public static void updateCustomerFile() {
                     + customer.getaddress() + " , "
                     + customer.getEmail() + " , "
                     + customer.getPassword() + " \n ");
-              
         }
-        customersFile.close();
-    } catch (IOException e) { printing.printSomething("An error occurred while updating the customer file: " + e.getMessage());}}
+    } catch (IOException e) {
+        printing.printSomething("An error occurred while updating the customer file: " + e.getMessage());
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                            //SEARCH IDS//
@@ -2262,7 +2274,7 @@ static boolean searchIdU(String id) {
         while ((line = br.readLine()) != null) {
             if (line.contains(id)) {f = true;}
         }
-    } catch (IOException e) { printing.printSomething("Error: " + e.getMessage());}
+    } catch (IOException e) { printing.printSomething(ERROR + e.getMessage());}
     return f;
 }
 
@@ -2273,7 +2285,7 @@ static boolean searchIdP(String id) {
         while ((line = br.readLine()) != null) {
             if (line.contains(id)) { f = true;}
         }
-    } catch (IOException e) { printing.printSomething("Error: " + e.getMessage());}
+    } catch (IOException e) { printing.printSomething( ERROR + e.getMessage());}
     return f;
 }
 
@@ -2283,14 +2295,14 @@ static boolean searchIdE(String id3, String filename) {
         while ((line = br.readLine()) != null) {
             String[] items = line.split(" , ");
             if (items.length >= 10) {
-                String event_id =items[9].trim();
-                if (event_id .equals(id3)) {
+                String eventId =items[9].trim();
+                if (eventId .equals(id3)) {
                     return true; 
                }
             }
         }
     } catch (IOException e) {
-        printing.printSomething("Error: " + e.getMessage());
+        printing.printSomething(ERROR + e.getMessage());
     } catch (NumberFormatException e) {
         printing.printSomething("Invalid input: " + e.getMessage());
     }
@@ -2303,14 +2315,14 @@ static boolean searchIdS(String serviceID, String fileName) {
         while ((line = br.readLine()) != null) {
             String[] items = line.split(" , ");
             if (items.length >= 7) { 
-                String service_id = items[0].trim();
-                if (service_id.equals(serviceID)) {
+                String serviceid = items[0].trim();
+                if (serviceid.equals(serviceID)) {
                     return true; 
                 }
             }
         }
     } catch (IOException e) {
-        printing.printSomething("Error: " + e.getMessage());
+        printing.printSomething(ERROR + e.getMessage());
     } catch (NumberFormatException e) {
         printing.printSomething("Invalid input: " + e.getMessage());
     }
@@ -2319,35 +2331,34 @@ static boolean searchIdS(String serviceID, String fileName) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                    //UPDATE ON LISTS//
-public static void updateEventList( String filename) {
-      String line;
-      events.clear();
-      FileReader eventFileReader;
-      try {
-         eventFileReader = new FileReader(filename);
-          BufferedReader lineReader = new BufferedReader(eventFileReader);
-          while ((line = lineReader.readLine()) != null) {
-              if (line.isEmpty()) continue;
-             events.add(Event.getEventFromLine(line));
-          }
-          lineReader.close();
-         eventFileReader.close(); }
-         catch (IOException e){ printing.printSomething(ERROR_PREFIX + e.getMessage()); }}
+public static void updateEventList(String filename) {
+    String line;
+    events.clear();
+    try (FileReader eventFileReader = new FileReader(filename);
+         BufferedReader lineReader = new BufferedReader(eventFileReader)) {
+        while ((line = lineReader.readLine()) != null) {
+            if (line.isEmpty()) continue;
+            events.add(Event.getEventFromLine(line));
+        }
+    } catch (IOException e) {
+        printing.printSomething(ERROR_PREFIX + e.getMessage());
+    }
+}
+
 //////////////////////////////////////
 public static void updateCustomersList() {
     String line;
     customers.clear();
-    FileReader customersFileReader;
-    try {
-        customersFileReader = new FileReader(CUSTOMER_FILE_NAME);
-        BufferedReader lineReader = new BufferedReader(customersFileReader);
+    try (FileReader customersFileReader = new FileReader(CUSTOMER_FILE_NAME);
+         BufferedReader lineReader = new BufferedReader(customersFileReader)) {
         while ((line = lineReader.readLine()) != null) {
-            //if (line.isEmpty()) continue;
             customers.add(Customer.getCustomerFromLine(line));
         }
-        lineReader.close();
-        customersFileReader.close();}
-        catch (IOException e) { printing.printSomething(ERROR_PREFIX + e.getMessage());}}
+    } catch (IOException e) {
+        printing.printSomething(ERROR_PREFIX + e.getMessage());
+    }
+}
+
 
 //////////////////////////////////////
 public  static void updateeventandcustomer(String filename) throws Exception {
