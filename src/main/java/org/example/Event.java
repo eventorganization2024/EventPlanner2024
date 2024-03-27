@@ -532,16 +532,14 @@ public void updateVenueInVenueBook(String eventId, String newV, String venueBook
                 } catch (ParseException e) {
                     printing.printSomething(ERROR_PREFIX + e.getMessage());
                 }
-                newV = DATE_FORMAT.format(date);
+                String formattedDate = DATE_FORMAT.format(date);
                 line = String.join(",", parts);
             }
             sb.append(line).append("\n");
         }
-      
+        // Write the updated content back to the file
         try (FileWriter writer = new FileWriter(venueBookFileName)) {
             writer.write(sb.toString());
-        } catch (IOException e) {
-            printing.printSomething(ERROR_PREFIX + e.getMessage());
         }
     } catch (IOException e) {
         printing.printSomething(ERROR_PREFIX + e.getMessage());
