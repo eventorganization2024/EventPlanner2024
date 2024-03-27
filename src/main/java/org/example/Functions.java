@@ -2465,9 +2465,9 @@ public  static void customerPageList(){
     		   " |   1. IN requst                         |\n"+
     		   " |   2. All events                        |\n"+
     		   " |   3. ADD EVENT                         |\n"+
-    		    "|   4."+DELETE+"                         |\n" +
-    		    "|   5."+EDIT+"                           |\n" +
-    		    "|   6."+LOG_OUT+"                        |\n" +
+    		   " |   4."+DELETE+"                         |\n" +
+    		   " |   5."+EDIT+"                           |\n" +
+    		   " |   6."+LOG_OUT+"                        |\n" +
     		   YELLOW_TEXT_COLOR);
 
 }
