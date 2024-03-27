@@ -31,7 +31,8 @@ public class Event {
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-   
+    private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
+
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
     static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
@@ -102,7 +103,7 @@ public class Event {
 	        serviceIdsString = serviceIdsString.replaceAll("^\\[|\\]$", "");
 	// The regex "\\s*,\\s*" is safe as it splits the input string by commas with optional whitespace.
 // The limit of -1 ensures that trailing empty strings are not discarded.
-String[] serviceIdsArray = serviceIdsString.split(",\\s*", -1);
+String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -1);
 
 
 
@@ -236,7 +237,7 @@ String[] serviceIdsArray = serviceIdsString.split(",\\s*", -1);
      	        String line;
      	        boolean eventFound = false;
      	        while ((line = reader.readLine()) != null) {
-     	            String[] fields = line.split(",\\s*");
+     	            String[] fields = line.split(COMMA_WITH_WHITESPACE_REGEX);
 
      	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim()) && fields[searchFieldIndex].trim().equals(searchTerm)) {
      	            	printing.printSomething(line);
@@ -413,7 +414,7 @@ String[] serviceIdsArray = serviceIdsString.split(",\\s*", -1);
         String newServ=scannerServ.next();
         String serviceIdsInput =newServ;
    
-    List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split(",\\s*"));
+    List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split(COMMA_WITH_WHITESPACE_REGEX));
 
 
         eventt.setServiceIds(serviceIds2);
