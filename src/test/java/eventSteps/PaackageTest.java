@@ -7,6 +7,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import org.example.*;
 
 import io.cucumber.java.Before;
@@ -116,8 +120,8 @@ import io.cucumber.java.en.When;
 	        System.out.println("The administrator views the list of existing discounts.");
 	 }
 	 
-	@org.junit.Before
-          public void setUp() {
+	 @org.junit.Before
+	 public void setUp() {
 	        p = new Paackage();
 	    }
 
@@ -159,6 +163,40 @@ import io.cucumber.java.en.When;
 	    public void testSetAndGetTitle() {
 	        p.setTitle("Title");
 	        assertEquals("Title", p.getTitle());
+	    }
+	   
+	    @Test
+	    public void testUpdatePackageDetails() {
+	        // Test case for updating package ID
+	        p.setId(1);
+	        String filename = "test_packages.txt";
+	        List<Paackage> packages = new ArrayList<>();
+	        packages.add(p);
+	        
+	        Scanner scanner = new Scanner("1\n5");
+	        Paackage.updatePackageDetails(scanner, p, filename, packages);
+	        assertEquals(1, p.getId()); // ID should remain the same
+	        assertEquals("Description", p.getDescription()); // Description should not change
+
+	        // Test case for updating package title
+	        scanner = new Scanner("2\nNew Title\n6");
+	        Paackage.updatePackageDetails(scanner, p, filename, packages);
+	        assertEquals("New Title", p.getTitle());
+
+	        // Test case for updating package price
+	        scanner = new Scanner("3\n200.0\n6");
+	        Paackage.updatePackageDetails(scanner, p, filename, packages);
+	        assertEquals(200.0, p.getPrice(), 0.001);
+
+	        // Test case for updating package validity date
+	        scanner = new Scanner("4\n2024-12-31\n6");
+	        Paackage.updatePackageDetails(scanner, p, filename, packages);
+	        assertEquals("2024-12-31", p.getValidityPeriod());
+	        
+	        // Test case for exiting updatePackageDetails
+	        scanner = new Scanner("6");
+	        Paackage.updatePackageDetails(scanner, p, filename, packages);
+	        // No assertions needed for this case
 	    }
 	 
  }
