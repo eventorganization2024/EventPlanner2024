@@ -14,7 +14,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class venueTest {
+public class VenueTest {
 	
     static boolean adding = false;
     static boolean updated = false;
