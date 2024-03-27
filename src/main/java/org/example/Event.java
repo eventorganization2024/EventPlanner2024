@@ -425,8 +425,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
     
     public  void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException, NumberFormatException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
-        printing.printSomething("\nEnter new event venue name:");
-       String newVenueName = scannerr.next();
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String eventDateString = dateFormat.format(eventt.getDate());
        boolean venueAvailable=false;
