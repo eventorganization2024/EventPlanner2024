@@ -59,7 +59,7 @@ public class Provider extends User  {
 ////////////////////////////////////////////////////////////////////////////////////////////
     private static Provider authenticateProvider(String username, String password) {
     	providers.clear(); // Clear the list before reloading data    
-	    loadProviderDataFromFile("provider.txt");
+    	loadProviderDataFromFile("provider.txt");
     	for (Provider provider : providers) {
             if (provider.getUsername().equals(username) && provider.getPassword().equals(password)) {
                 return provider;
@@ -184,19 +184,19 @@ public class Provider extends User  {
 	        return false; // Service of specified type does not exist or serviceDetailsList is null
 	    }
 //////////////////////////////	
-public void deleteService(String serviceID) throws Exception {
-    Functions.updateServiceList();
-    Functions.updateProviderAndServiceList();
-    Functions.updateProviderAndServiceList();
+	public void deleteService(String serviceID) throws Exception {
+	    Functions.updateServiceList();
+	    Functions.updateProviderAndServiceList();
+	    Functions.updateProviderAndServiceList();
 
-    if (serviceDetailsList != null && !serviceDetailsList.isEmpty()) {
-        ServiceDetails serviceToDelete = null;
-        for (ServiceDetails service : Functions.serviceDetails) {
-            if (service.getServiceID().equals(serviceID)) {
-                serviceToDelete = service;
-                break;
-            }
-        }
+	    if (serviceDetailsList != null && !serviceDetailsList.isEmpty()) {
+	        ServiceDetails serviceToDelete = null;
+	        for (ServiceDetails service : Functions.serviceDetails) {
+	            if (service.getServiceID().equals(serviceID)) {
+	                serviceToDelete = service;
+	                break;
+	            }
+	        }
 
           if (serviceToDelete != null) {
                 serviceDetailsList.remove(serviceToDelete);
@@ -211,7 +211,7 @@ public void deleteService(String serviceID) throws Exception {
 	
 /////////////////////
 
-	public void deleteProviderFromFileAndArrayList( String fileName, String pid) throws IOException {
+	public void delete_provider_from_file_and_arraylist( String fileName, String pid) throws IOException {
 	    String line;
 	    StringBuilder sb = new StringBuilder();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -232,7 +232,7 @@ public void deleteService(String serviceID) throws Exception {
 	}
 
 ///////////////////////////////
-	public void delete_Service_from_file(String filename,String SID)throws Exception 
+	public void deleteProviderFromFileAndArrayList(String filename,String SID)throws Exception 
 	{ 
 	
 		
@@ -404,23 +404,18 @@ public void deleteService(String serviceID) throws Exception {
 ////    
 	
     public static void addProviderToFile(Provider provider) {
-  	    try {
-  	    	FileWriter providersFile = new FileWriter("provider.txt", true);
-  	    	providersFile.append(provider.getId()).append(" , ")
-  	                .append(provider.getUsername()).append(" , ")
-  	                .append(provider.getphone()).append(" , ")
-  	                .append(provider.getaddress()).append(" , ")
-  	                .append(provider.getEmail()).append(" , ")
-  	                .append(provider.getPassword())
-  	                .append("\n");
-
-  	                
-
-  	    } catch (IOException e) {
-  	        printing.printSomething("An error occurred: " + e.getMessage());
-  	    }
-  	}
-	
+        try (FileWriter providersFile = new FileWriter("provider.txt", true)) {
+            providersFile.append(provider.getId()).append(" , ")
+                        .append(provider.getUsername()).append(" , ")
+                        .append(provider.getphone()).append(" , ")
+                        .append(provider.getaddress()).append(" , ")
+                        .append(provider.getEmail()).append(" , ")
+                        .append(provider.getPassword())
+                        .append("\n");
+        } catch (IOException e) {
+            printing.printSomething("An error occurred: " + e.getMessage());
+        }
+    }
 	
 	
 	
