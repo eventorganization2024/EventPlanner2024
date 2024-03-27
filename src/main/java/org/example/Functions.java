@@ -2900,7 +2900,7 @@ break;
 }
 }
 } catch (IOException e) {
-e.printStackTrace(); // Handle the exception appropriately
+	printing.printSomething( ERROR_PREFIX + e.getMessage());
 }
 return password;
 }
