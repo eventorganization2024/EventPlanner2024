@@ -43,7 +43,8 @@ public class Event {
    
    
     public  Event() { DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); // Initialize DATE_FORMAT in the constructor
-         DATE_FORMAT.setLenient(false); // Optionally set leniency}
+         DATE_FORMAT.setLenient(false); // Optionally set leniency
+		     }
     
     public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, String eventId) {
         this.userId = userId; 
