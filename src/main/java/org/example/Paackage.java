@@ -84,6 +84,8 @@ public static void addPackageToFile(String filename, String packageDetails) {
         writer.write(packageDetails);
         writer.newLine();
     } catch (IOException e) {
+	print.printSomething("An error occurred while writing package details to file: " + e.getMessage());
+
     }
 }
 
