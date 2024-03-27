@@ -31,6 +31,7 @@ import io.cucumber.java.en.When;
 
 public class event_Management_Steps {
 	 
+	
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	 private InputStream inputStream;  
 	 Event event =new Event();
@@ -45,7 +46,7 @@ public class event_Management_Steps {
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
 
-	
+    @Test
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
@@ -86,7 +87,7 @@ public class event_Management_Steps {
 	
 	////////////////////////////////////
 	
-	
+	@Test
 	@Given("there is an existing event")
 	public void thereIsAnExistingEvent() { existe=true;}
     
