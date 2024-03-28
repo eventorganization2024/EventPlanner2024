@@ -5,11 +5,8 @@ package eventSteps;
 
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
+
 
 import org.example.Customer;
 import org.example.Event;
@@ -27,17 +24,14 @@ import org.example.Functions;
 import org.example.Printing;
 import org.example.Venue;
 
-import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import junit.framework.TestCase;
 
 
-public class EventTest extends TestCase{
+
+public class EventTest{
 	
 	
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -70,6 +64,7 @@ public class EventTest extends TestCase{
         customer1.setPhone("0599897846");
         customer1.setAddress("Nablus");
         event.setUserId(customer1.getId());
+        System.out.println(" customer is going to create an event ");
 
 	}
 	                                                 
