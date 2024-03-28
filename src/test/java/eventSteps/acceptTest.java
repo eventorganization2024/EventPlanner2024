@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
        
             )
 
-public class acceptTest1 {
+public class acceptTest {
  
 }
 
