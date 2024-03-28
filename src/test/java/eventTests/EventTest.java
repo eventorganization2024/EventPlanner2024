@@ -206,7 +206,7 @@ public void theUserWantsToUpdateEventDetails() throws IOException {
 	 eventToUpdate = Event. findeventID("1000", "event.txt");
 	if ( eventToUpdate!= null)
 	{ update=true;
-	event.printUpdateList(eventToUpdate);}
+	Event.printUpdateList(eventToUpdate);}
 	else update=false;
 	 
 }
