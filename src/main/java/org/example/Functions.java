@@ -65,7 +65,7 @@ public class Functions {
 	    private static final ArrayList<Event> events = new ArrayList<>();
 	    private static final String VENUE_ID_LABEL = "Venue ID: ";
 	    private static final String NAME_LABEL = " Name: ";
-	   protected static final List<ServiceDetails> serviceDetails = new ArrayList<>();
+	   protected static final List<Service> serviceDetails = new ArrayList<>();
 	   private static final String NOT_FOUND_MESSAGE = " not found.";
 	   private static final String ERROR= "Error: ";
 ///////////////////////////////////////////////////////////////////////////////////////	    
@@ -747,7 +747,7 @@ static void signInProvider(String id) throws Exception {
   		        printing.printSomething("No Services found.\n");
   		        return false;}
     		    printing.printSomething("List of Services : \n");
-    		    for (ServiceDetails service : serviceDetails) {
+    		    for (Service service : serviceDetails) {
   		    	printing.printSomething(service.toString ());
   		       }
   		     return true;}
@@ -823,7 +823,7 @@ static void signInProvider(String id) throws Exception {
 
   		    for (Provider PROV  : providers) {
   		        if ( PROV.getId().equals(id2)) {
-  		            List<ServiceDetails> providersservices = PROV.getServiceDetailsList();
+  		            List<Service> providersservices = PROV.getServiceDetailsList();
 
   		            if (! providersservices .isEmpty()) {
   		               
@@ -1053,7 +1053,7 @@ static void signInProvider(String id) throws Exception {
                  viewallservice();
                  printing.printSomething("\nEnter service ID you want:\n");
                  String servId = scanner.next();
-                 ServiceDetails s = Provider.findServiceByID(servId, SERVICE_FILE_NAME);
+                 Service s = Provider.findServiceByID(servId, SERVICE_FILE_NAME);
                  if (s.getAvailability().equals("available"))
                  {
                 	 serviceIdsList.add(servId);
@@ -1068,7 +1068,7 @@ static void signInProvider(String id) throws Exception {
                  }
              while (scanner.next().equalsIgnoreCase("yes"));
              printing.printSomething("\nDone successfully\n");
-              price=ServiceDetails.calculateTotalPrice(serviceIdsList);
+              price=Service.calculateTotalPrice(serviceIdsList);
            
          } 
        }	     
@@ -1091,9 +1091,9 @@ static void signInProvider(String id) throws Exception {
      return eventObj;
  }            
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static ServiceDetails addService() throws Exception {
+    public static Service addService() throws Exception {
         updateServiceList();
-       ServiceDetails service = new ServiceDetails();
+       Service service = new Service();
 
        printing.printSomething("\n"+"Enter Service Id:");
        id1 = scanner.next();	               
@@ -1132,7 +1132,7 @@ static void signInProvider(String id) throws Exception {
            }
        }
        serviceDetails.add(service);
-     ServiceDetails. addServiceToFile(service);
+     Service. addServiceToFile(service);
       printing.printSomething("\nService added successfully.");
        return service;}
        
@@ -2395,7 +2395,7 @@ public static void updateServiceList() {
         serviceDetails.clear();
         while ((line = br.readLine()) != null) {
             if (line.isEmpty()) continue;
-            ServiceDetails service = ServiceDetails.getServiceFromLine(line);
+            Service service = Service.getServiceFromLine(line);
             serviceDetails.add(service);
             }}
              catch (IOException e) { printing.printSomething(ERROR_PREFIX + e.getMessage());}}
@@ -2407,7 +2407,7 @@ public  static void updateProviderAndServiceList()  {
 			String s=null;
 			for (Provider  Prov :  providers)  
 			{ p=Prov.getId();
-	      			for (ServiceDetails Serv : serviceDetails)
+	      			for (Service Serv : serviceDetails)
 	      			{s=Serv.getProviderID();
 	      				if (p.equals(s)) 
 	      				{Prov.getServiceDetailsList().add(Serv); break;}}}}
