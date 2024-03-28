@@ -14,6 +14,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class ServiceTest {
     @Before
     public void setUp() {
         serviceProviderService = new Provider();
-        Service service =new Service(); ///////////
+        
     }
 
     
@@ -80,6 +81,18 @@ public class ServiceTest {
     public void theServiceProviderSelectsAddNewService() {
         newService = new Service();
         
+        ///////////////////////////////////////////////
+        
+        Service Exservice = new Service("Photography", "Full_Event_Coverage", "Professional_photography_coverage_event", "available", "100", 600.0, "700");
+        Service.addServiceToFile(Exservice);
+        List<String> serviceIds = Arrays.asList("100"); // Example list of service IDs
+        double totalPrice = Service.calculateTotalPrice(serviceIds);
+
+        
+       //////////////////////////////////////////////
+        
+       
+        
     }
 
     @When("the service {string} does not exist")
@@ -114,7 +127,10 @@ public class ServiceTest {
         // Assuming logic to verify that the new service is added
         Service addedService = serviceProviderService.getServiceDetails(newService.getServiceType());
         assertNotNull(addedService);
+      
         assertEquals(newService.getServiceName(), addedService.getServiceName());
+        
+        
      }
   
 ///////////////////////////////////////////////////////////////////////////////////////	
@@ -172,7 +188,8 @@ public class ServiceTest {
     }
 
 	
-	
+/////////////////////////////////////////////////////////////////////////////////////////
+    
     
     
     
