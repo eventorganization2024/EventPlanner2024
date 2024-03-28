@@ -24,7 +24,7 @@ import org.example.Functions;
 import org.example.Printing;
 import org.example.Venue;
 
-
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -49,7 +49,7 @@ public class EventTest{
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
 
-    @Test
+    @Before
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
@@ -83,7 +83,7 @@ public class EventTest{
 	     toadd=true;
 	    }
 	
-	@Test
+	
 	@Then("the event is added to admin requst")
 	public void theEventIsAddedToAdminRequst() throws Exception { 
 		
@@ -95,7 +95,7 @@ public class EventTest{
 	
 	////////////////////////////////////
 	
-	@Test
+	
 	@Given("there is an existing event")
 	public void thereIsAnExistingEvent() { existe=true;}
     
@@ -106,7 +106,6 @@ public class EventTest{
 	@When("cancel event selected")
 	public void cancelEventSelected() {cancel=true;}
 	
-	@Test
 	@Then("the event deleted")
 	public void theEventDeleted() throws Exception{ 	
 	event .deleteEvent("event.txt","2000"); 
@@ -118,7 +117,7 @@ public class EventTest{
 	@Given("there is an non_existing event")
 	public void thereIsAnNonExistingEvent() {existe=false;}
 	
-	@Test
+	
 	@Then("non_Existing massage")
 	public void nonExistingMassage() {assertFalse(found);System.out.println("The event does not exist.");}
 
@@ -179,7 +178,6 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setEID(string9);
         event.setUserId("12114777");}
 
-    @Test
 	@Then("the event is successfully created in the system")
 	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat=true); 
 
