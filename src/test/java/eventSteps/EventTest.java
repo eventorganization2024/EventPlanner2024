@@ -62,7 +62,8 @@ public class EventTest{
 
 	}
 	                                                 
-    
+
+    @Test
 	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
 	
@@ -153,11 +154,13 @@ public class EventTest{
 	}
 */
     /////////////////////////////////////////////////
-	
+
+    @Test	
 @Given("the administrator is going to create an event")
 	public void theAdministratorIsGoingToCreateAnEvent() {creat=true;}
 	   
 
+    @Test
 @When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
 public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
 	Date date=new Date();
@@ -178,6 +181,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setEID(string9);
         event.setUserId("12114777");}
 
+    @Test
 	@Then("the event is successfully created in the system")
 	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat=true); 
 
@@ -185,19 +189,22 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 	
 
  ////////////////////////////////////
-	
+
+    @Test
 	@Given("the customer is going to search about event")
 	public void theCustomerIsGoingToSearchAboutEvent() {
 		search=true;
 	
 	}
+    @Test
 	@When("the customer enters the event details such as event name {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsEventName(String string) {
 	   assertTrue(search);
 	   Event.searchEvent("12114777", string, 0);
 	   
 	}
-	
+
+    @Test
 	@When("the customer enters the event details such as venue name {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsVenueName(String string) {
 		assertTrue(search);
@@ -215,17 +222,21 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 ///////////////////////////////////////////////////////////////////////////////////
 
 
+	    @Test
 @Given("selects the option to update the event details")
 public void selectsTheOptionToUpdateTheEventDetails() {
 	
 }
 
+	    @Test
 @Given("there is an existing event to update")
 public void thereIsAnExistingEventToUpdate() throws IOException {
 	 eventToUpdate = Event. findeventID("1000", "event.txt");
 	 update=true;
 }
 ////////////////////////////
+
+	    @Test
 @Given("the user chooses {string} to update name")
 public void theUserChoosesToUpdateName(String string) throws IOException, NullPointerException, ParseException {
  //assertTrue(update);
@@ -250,6 +261,7 @@ public void theUserChoosesToUpdateName(String string) throws IOException, NullPo
  
 
 
+	    @Test
 @Given("the user chooses {string} to update date")
 public void theUserChoosesToUpdateDate(String string) throws IOException, NullPointerException, ParseException {
     eventToUpdate = Event. findeventID("1000", "event.txt");
@@ -267,6 +279,7 @@ public void theUserChoosesToUpdateDate(String string) throws IOException, NullPo
 }
 
 
+	    @Test
 @Given("the user chooses {string} to update time")
 public void theUserChoosesToUpdateTime(String string) throws IOException, NullPointerException, ParseException {
 	 eventToUpdate = Event. findeventID("1000", "event.txt");
@@ -284,6 +297,7 @@ public void theUserChoosesToUpdateTime(String string) throws IOException, NullPo
 }
 
 
+	    @Test
 @Given("the user chooses {string} to update description")
 public void theUserChoosesToUpdateDescription(String string) throws IOException, NullPointerException, ParseException {
 	 eventToUpdate = Event. findeventID("1000", "event.txt");
@@ -301,6 +315,7 @@ public void theUserChoosesToUpdateDescription(String string) throws IOException,
 }
 
 
+	    @Test
 @Given("the user chooses {string} to update count")
 public void theUserChoosesToUpdateCount(String string) throws IOException, NullPointerException, ParseException {
 	eventToUpdate = Event. findeventID("1000", "event.txt");
@@ -317,6 +332,7 @@ public void theUserChoosesToUpdateCount(String string) throws IOException, NullP
    event.updateEvent("1000", "event.txt");
 }
 
+	    @Test
 
 @Given("the user chooses {string} to update theme")
 public void theUserChoosesToUpdateTheme(String string) throws IOException, NullPointerException, ParseException {
@@ -335,6 +351,7 @@ public void theUserChoosesToUpdateTheme(String string) throws IOException, NullP
 }
 
 
+	    @Test
 @Given("the user chooses {string} to update category")
 public void theUserChoosesToUpdateCategory(String string) throws IOException, NullPointerException, ParseException {
 	eventToUpdate = Event. findeventID("1000", "event.txt");
@@ -352,11 +369,13 @@ public void theUserChoosesToUpdateCategory(String string) throws IOException, Nu
     
 }
 
+	    @Test
 @Given("the user chooses {string} to update venue")
 public void theUserChoosesToUpdateVenue(String string) {
  
 }
 
+	    @Test
 @Given("the user chooses {string} to update services")
 public void theUserChoosesToUpdateServices(String string) throws IOException, NullPointerException, ParseException {
 	eventToUpdate = Event. findeventID("1000", "event.txt");
@@ -374,6 +393,7 @@ public void theUserChoosesToUpdateServices(String string) throws IOException, Nu
     
 }
 
+	    @Test
 @Then("the event  is successfully updated in the system")
 public void theEventIsSuccessfullyUpdatedInTheSystem() {
 	printing.printSomething(eventToUpdate.toString2());
