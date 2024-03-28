@@ -6,7 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class Discountcustomertest {
+public class DiscountCustomerTest {
 	Discount d= new Discount ();
 	boolean expired;
 double oldprice ;
