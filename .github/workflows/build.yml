@@ -15,7 +15,10 @@ jobs:
     steps:  # Steps to be executed within the job
       - name: Checkout repository  # Step to checkout the repository contents
         uses: actions/checkout@v3  # Using the GitHub Action to checkout the repository
+        with:
+          fetch-depth: 0  # Disabling shallow cloning
 
+          
       - name: Set up JDK 17  # Step to set up Java Development Kit version 17
         uses: actions/setup-java@v3  # Using the GitHub Action to set up Java
         with:
