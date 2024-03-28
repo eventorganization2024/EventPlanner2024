@@ -1,22 +1,23 @@
 package eventTests;
-import static org.junit.Assert.assertNotNull;
+
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+
 
 import org.example.Event;
 import org.example.Functions;
 import org.junit.Test;
 
-import org.junit.*;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+
 
 public class ViewTest {
 
@@ -36,6 +37,7 @@ private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-M
  @Test
 public void setUp() throws ParseException {
     F = new Functions();
+   
     Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "V1", "111");
 }
 
@@ -57,6 +59,8 @@ public void setUp() throws ParseException {
 	@Given("the Administrator has selected show customar")
 	public void theAdministratorHasSelectedShowCustomar() {
 	 show_allcustomers =true;
+	 
+	 
 	}
 	@Then("the list of users  displayed")
 	public void theListOfUsersDisplayed() {
