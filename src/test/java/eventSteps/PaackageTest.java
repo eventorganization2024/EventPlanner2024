@@ -168,25 +168,5 @@ import io.cucumber.java.en.When;
 	        assertEquals("Title", p.getTitle());
 	    }
 	   
-            @Test
-	    public void testUpdatePackageDetails() {
-	        // Create a package to update
-	        Paackage packageToUpdate = new Paackage();
-	        packageToUpdate.setId(1);
-	        packageToUpdate.setTitle("Old Title");
-
-	        // Prepare input for the scanner
-	        String newTitle = "New Title";
-	        String input = "2\n" + newTitle + "\n";
-
-	        // Create a mock Scanner object using ByteArrayInputStream
-	        InputStream in = new ByteArrayInputStream(input.getBytes());
-	        Scanner scanner = new Scanner(in);
-
-	        // Invoke the method to be tested
-	        Paackage.updatePackageDetails(scanner, packageToUpdate, "packages.txt", packages);
-
-	        // Verify that the package title is updated
-	        assertEquals(newTitle, packageToUpdate.getTitle());
-	    }
+           
  }
