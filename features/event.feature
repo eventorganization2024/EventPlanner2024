@@ -79,7 +79,7 @@ Scenario: Update Event Category
 
 Scenario: Update Event Venue
   Given the user wants to update event details
-  When they update the event venue to "Nablus_Event_Center"
+  When they update the event venue to "Palestine_Convention_Center"
   Then the system should successfully save the changes
 
 Scenario: Update Event Services
