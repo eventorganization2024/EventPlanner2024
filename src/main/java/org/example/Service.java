@@ -158,7 +158,7 @@ public class Service {
 
    public static void addServiceToFile(Service service) {
 	    try (FileWriter serviceFile = new FileWriter("service.txt", true)) {
-	        serviceFile.append("\033[0;33m");
+	        
 	        serviceFile.append(service.getServiceID()).append(" , ")
 	                   .append(service.getProviderID()).append(" , ")
 	                   .append(service.getServiceType()).append(" , ")
@@ -167,7 +167,7 @@ public class Service {
 	                   .append(String.valueOf(service.getPrice())).append(" , ")
 	                   .append(service.getAvailability())
 	                   .append("\n");
-	        serviceFile.append("\033[0m");
+	        
 	    } catch (IOException e) {
 	        printing.printSomething("An error occurred: " + e.getMessage());
 	    }
