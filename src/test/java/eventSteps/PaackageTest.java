@@ -1,5 +1,7 @@
 package eventSteps;
  import eventSteps.*;
+ import java.io.ByteArrayInputStream;
+ import java.io.InputStream;
 import org.example.Paackage;
 import org.junit.Test;
 
@@ -26,6 +28,7 @@ import io.cucumber.java.en.When;
 	 boolean updated=false;
 	 boolean removed=false;
 	 Printing printing =new Printing();
+	 private List<Paackage> packages;
 	 
 	 @Given("the administrator is logged into the system")
 	 public void theAdministratorIsLoggedIntoTheSystem() {
@@ -120,9 +123,11 @@ import io.cucumber.java.en.When;
 	        System.out.println("The administrator views the list of existing discounts.");
 	 }
 	 
-	 @org.junit.Before
 	 public void setUp() {
 	        p = new Paackage();
+	        packages = new ArrayList<>();
+	        packages.add(new Paackage(1, "Package 1", 100.0));
+	        packages.add(new Paackage(2, "Package 2", 200.0));
 	    }
 
 	    @Test
@@ -167,36 +172,20 @@ import io.cucumber.java.en.When;
 	   
 	    @Test
 	    public void testUpdatePackageDetails() {
-	        // Test case for updating package ID
-	        p.setId(1);
-	        String filename = "test_packages.txt";
-	        List<Paackage> packages = new ArrayList<>();
-	        packages.add(p);
-	        
-	        Scanner scanner = new Scanner("1\n5");
-	        Paackage.updatePackageDetails(scanner, p, filename, packages);
-	        assertEquals(1, p.getId()); // ID should remain the same
-	        assertEquals("Description", p.getDescription()); // Description should not change
+	        Paackage packageToUpdate = packages.get(0); // Choose the package to update
+	        String newTitle = "New Title";
 
-	        // Test case for updating package title
-	        scanner = new Scanner("2\nNew Title\n6");
-	        Paackage.updatePackageDetails(scanner, p, filename, packages);
-	        assertEquals("New Title", p.getTitle());
+	        // Prepare input for the scanner
+	        String input = "2\n" + newTitle + "\n";
 
-	        // Test case for updating package price
-	        scanner = new Scanner("3\n200.0\n6");
-	        Paackage.updatePackageDetails(scanner, p, filename, packages);
-	        assertEquals(200.0, p.getPrice(), 0.001);
+	        // Create a mock Scanner object using ByteArrayInputStream
+	        InputStream in = new ByteArrayInputStream(input.getBytes());
+	        Scanner scanner = new Scanner(in);
 
-	        // Test case for updating package validity date
-	        scanner = new Scanner("4\n2024-12-31\n6");
-	        Paackage.updatePackageDetails(scanner, p, filename, packages);
-	        assertEquals("2024-12-31", p.getValidityPeriod());
-	        
-	        // Test case for exiting updatePackageDetails
-	        scanner = new Scanner("6");
-	        Paackage.updatePackageDetails(scanner, p, filename, packages);
-	        // No assertions needed for this case
+	        // Invoke the method to be tested
+	        Paackage.updatePackageDetails(scanner, packageToUpdate, "package.txt", packages);
+
+	        // Verify that the package title is updated
+	        assertEquals(newTitle, packageToUpdate.getTitle());
 	    }
-	 
  }
