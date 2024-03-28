@@ -165,8 +165,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
     try {
         date = DATE_FORMAT.parse(string);
     } catch (ParseException e) {
-
-        e.printStackTrace();
+    	 printing.printSomething( "/////////////ERROR_PREFIX/////////////" + e.getMessage());
        
     }
 	    event.setDate(date);
