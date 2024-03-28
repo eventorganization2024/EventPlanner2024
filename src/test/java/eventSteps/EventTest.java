@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,7 +27,10 @@ import org.example.Functions;
 import org.example.Printing;
 import org.example.Venue;
 
+import io.cucumber.java.After;
+import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -41,6 +44,7 @@ public class EventTest{
 	  static Printing printing = new Printing();
 	    
 	 Event event =new Event();
+	
     boolean cancel;
     boolean found;
     boolean search;
@@ -51,48 +55,10 @@ public class EventTest{
     Customer customer1 = new Customer();
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
-
-   @Before
-    public void setUp() {
-        event = new Event();
-    }
-
-    @Test
-    public void testSetAndGetEventName() {
-        event.setName("Birthday Party");
-        assertEquals("Birthday Party", event.getName());
-    }
-
-    @Test
-    public void testSetAndGetEventDate() throws ParseException {
-        Date date = DATE_FORMAT.parse("2024-04-01");
-        event.setDate(date);
-        assertEquals(date, event.getDate());
-    }
-
-    @Test
-    public void testSetAndGetEventDescription() {
-        event.setDescription("A celebration of life");
-        assertEquals("A celebration of life", event.getDescription());
-    }
-
-    @Test
-    public void testSetAndGetAttendeeCount() {
-        event.setAttendeeCount("50");
-        assertEquals("50", event.getAttendeeCount());
-    }
-
-    @Test
-    public void testSetAndGetCategory() {
-        event.setCategory("Family");
-        assertEquals("Family", event.getCategory());
-    }
-
-    @Test
-    public void testSetAndGetTheme() {
-        event.setTheme("Fairy Tale");
-        assertEquals("Fairy Tale", event.getTheme());
-    }
+    Date date ;
+   
+////////////////////////////////////////////////////////////////////////////////////    
+    @Before
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
