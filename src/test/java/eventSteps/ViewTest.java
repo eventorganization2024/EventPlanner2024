@@ -13,7 +13,7 @@ import org.example.Event;
 import org.example.Functions;
 import org.junit.Test;
 
-import io.cucumber.java.Before;
+import org.junit.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
