@@ -10,7 +10,7 @@ import io.cucumber.java.en.When;
 
 public class UserRegTest {
 	
-	
+	Functions f=new Functions();
 	   User u = new User();
 	    Logger logger = Logger.getLogger(UserRegTest.class.getName());
 
@@ -22,6 +22,7 @@ public class UserRegTest {
 	
 	@Given("there is a User with User ID {string} ,NAME {string} , PASSWORD {string} , phone {string}, address {string}")
 	public void thereIsAUserWithUserIDNAMEPASSWORDPhoneAddress(String string, String string2, String string3, String string4, String string5) {
+	
 		 u.setId(string);
 	        u.setName(string2);
 	        u.setPassword(string3);

@@ -26,7 +26,7 @@ import eventTests.*;
 
 /////
 public class CustomerActionTest {
-	
+	Functions f=new Functions();
 	 User user = new User();
 Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456","ansam@gmail.com");
 
@@ -65,12 +65,14 @@ Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456
 	    }
 
 	    @When("I update my profile information depends on {int} and {string}")
-	    public void i_update_my_profile_information_depends_on_and(Integer i, String val) {
+	    public void i_update_my_profile_information_depends_on_and(Integer i, String val) throws IOException {
 	
 	    	   
         if( i == 1){
 	            customer.setName(val);
 	            updated = true;
+	            Functions.updateCustomerProfile(1);
+	            assertEquals(val, customer.getUsername());
 	        } else if (i == 2) {
 	            customer.setPhone(val);
 	            updated = true;
@@ -106,12 +108,23 @@ Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456
 		    }
 
 
-
+@Test
 	 @When("I choose to delete my profile")
-	    public void i_choose_to_delete_my_profile() {
-	        deleteProfile = true;
+	    public void i_choose_to_delete_my_profile() throws IOException {
+	     deleteProfile = true;
+	        String id=customer.getId();
+	  Functions.deleteCustomer(id);
+	  Functions.deleteCustomerProfile(id);
+	       
+	        
 	       
 	    }
+@Test
+public void testDeleteCustomer_InvalidId() {
+   
+    boolean deleted = Functions.deleteCustomer("12345678");
+    assertFalse(deleted);
+}
 	 @When("I confirm the deletion")
 	 public void iConfirmTheDeletion() {
 	    

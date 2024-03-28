@@ -143,7 +143,7 @@ static void signInFunction() throws Exception {
     }
 }
 
-static void signInAdmin(String id) throws Exception {
+public static void signInAdmin(String id) throws Exception {
 	  printing.printSomething( ENTER_PASSWORD);
 	    String password = scanner.next();
     if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) {
@@ -855,7 +855,7 @@ static void signInProvider(String id) throws Exception {
   	            "\n==========================================\n\n";
   	    printing.printSomething(tmp);
   	} 
-                ///////////////////////////////////////////////////////////////////////////
+           
   	public static void viewAllDiscounts(String filename) {
   	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
   	        String line;
@@ -1258,6 +1258,7 @@ static void signInProvider(String id) throws Exception {
 
 
 /////////////////////////////////////////////////////////////////////////////////
+   
     private static void sendmsgToCustomer(String msg, Event event) {
         FileWriter fileWriter = null;
         try {
@@ -2771,12 +2772,11 @@ notifiedEvents.add(event.getEID());
 
 
       private String getEmailAndNameFromCustomerFile(String customerId) {
-     // Update the customers list
+   
     updateCustomersList();
 
 
 
-   // Search for the customer with the specified ID
     for (Customer cust : customers) {
     if (cust.getId().equals(customerId)) { 	            
 
@@ -2784,11 +2784,10 @@ notifiedEvents.add(event.getEID());
     }
      }
 
-    // If customer not found, return null or throw an exception
     return null;
 }
-
-     private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
+    
+      private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
 // Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
 return "Dear " + customerName + ",\n\n"
 + "We are pleased to confirm your registration for the upcoming event.\n\n"

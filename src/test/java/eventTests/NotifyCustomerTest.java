@@ -1,6 +1,10 @@
 package eventTests;
 
 import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.example.Customer;
 import org.example.Event;
 import org.example.Functions;
@@ -9,6 +13,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class NotifyCustomerTest {
+	Functions f=new Functions();
 	 Event event = new Event();
 	    Customer customer = new Customer();
 	    boolean requestAccepted;
@@ -27,13 +32,18 @@ public class NotifyCustomerTest {
         
 	}
 	@Then("an message notification is sent to the customer informing them about the acceptance")
-	public void anEmailNotificationIsSentToTheCustomerInformingThemAboutTheAcceptance() {
+	public void anEmailNotificationIsSentToTheCustomerInformingThemAboutTheAcceptance() throws NoSuchMethodException, SecurityException, IllegalAccessException, InvocationTargetException {
 		 if (requestAccepted) {
 	           
 	            assertTrue("Message notification sent successfully", true);
+	            Method method = Functions.class.getDeclaredMethod("sendmsgToCustomer", String.class, Event.class);
+	            method.setAccessible(true);
+	            Object result = method.invoke(null, "Your Event is Accepted", event);
+	    
+	    
 	           
 	        } else {
-	          //  assertTrue("Event request acceptance flag is not set", false);
+	         assertTrue("Event request acceptance flag is not set", false);
 	        }
 	}
 
