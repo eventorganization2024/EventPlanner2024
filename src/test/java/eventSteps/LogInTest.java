@@ -1,4 +1,4 @@
-package eventSteps;
+Fpackage eventSteps;
 
 
 import static org.junit.Assert.assertFalse;
@@ -15,7 +15,7 @@ public class LogInTest {
 	
     User u = new User();
 
-    static Logger logger= Logger.getLogger(LogInSteps.class.getName());
+    static Logger logger= Logger.getLogger(LogInTest.class.getName());
 
     @Given("table")
 
