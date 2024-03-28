@@ -83,7 +83,7 @@ public class EventTest{
 	     toadd=true;
 	    }
 	
-    @Test
+  
 	@Then("the event is added to admin requst")
 	public void theEventIsAddedToAdminRequst() throws Exception { 
 		
@@ -95,17 +95,16 @@ public class EventTest{
 	
 	////////////////////////////////////
 	
-    @Test
 	@Given("there is an existing event")
 	public void thereIsAnExistingEvent() { existe=true;}
     
   
 		
 	
-    @Test	
+
 	@When("cancel event selected")
 	public void cancelEventSelected() {cancel=true;}
-    @Test
+
 	@Then("the event deleted")
 	public void theEventDeleted() throws Exception{ 	
 	event .deleteEvent("event.txt","2000"); 
@@ -113,11 +112,11 @@ public class EventTest{
 
 	
 	
-    @Test
+ 
 	@Given("there is an non_existing event")
 	public void thereIsAnNonExistingEvent() {existe=false;}
 	
-    @Test
+    
 	@Then("non_Existing massage")
 	public void nonExistingMassage() {assertFalse(found);System.out.println("The event does not exist.");}
 
@@ -205,7 +204,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 		
 	}
 	
-	 @Test
+	
 @Then("the system should display all events matching the name")
 	public void theSystemShouldDisplayAllEventsMatchingTheName() {
 		 
