@@ -5,7 +5,9 @@ package eventTests;
 
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import java.io.ByteArrayInputStream;
@@ -48,6 +50,7 @@ public class EventTest{
     boolean existe;
     boolean creat;
     boolean toadd;
+    boolean newUpdate;
     Customer customer1 = new Customer();
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
@@ -124,36 +127,7 @@ public class EventTest{
 	public void nonExistingMassage() {assertFalse(existe);System.out.println("The event does not exist.");}
 
 
-	/////////////////////////////////
-	/*
-	@Given("selects the option to update the event details")
-	public void selectsTheOptionToUpdateTheEventDetails() throws IOException {
-		update=true;
-	
-		}
-	
-	
-	 
 
-	@Given("there is an existing event to update")
-	public void thereIsAnExistingEventToUpdate() throws IOException {
-		assertTrue(update);
-		Event eventToUpdate = Event. findeventID("1000", "event.txt");
-		Event.updateEventInFile(eventToUpdate,"event.txt");		  
-		 }
-	
-	@Then("the event details are successfully updated in the system")
-	public void theEventDetailsAreSuccessfullyUpdatedInTheSystem() throws Exception {
-		
-	}
-	
-	@Given("there is an nonexisting event to update")
-	public void thereIsAnNonexistingEventToUpdate() throws NullPointerException, IOException {
-		assertTrue(update);
-		Event.updateEventInFile(null,"event.txt");
-		 
-	}
-*/
     /////////////////////////////////////////////////
 	
 @Given("the administrator is going to create an event")
@@ -161,7 +135,7 @@ public class EventTest{
 	   
 
 @When("the administrator enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
-public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
+public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) throws NullPointerException, IOException {
 	Date date=new Date();
     try {
         date = DATE_FORMAT.parse(string);
@@ -178,12 +152,21 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setTheme(string7);
         event.setVenuename(string8);
         event.setEID(string9);
-        event.setUserId("12114777");}
+        event.setUserId("12114777");
+        
+        
+        inputStream = new ByteArrayInputStream("testupdate".getBytes());
+        System.setIn(inputStream);
+        event.updateEvent(string9, "event.txt");
+        event.getDateAsLocalDate();
+        }
 
 	@Then("the event is successfully created in the system")
 	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat); 
 
-	Event.addEventToFile(event,"event.txt");}
+	Event.addEventToFile(event,"event.txt");
+	
+	}
 	
 
  ////////////////////////////////////
@@ -196,7 +179,7 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 	@When("the customer enters the event details such as event name {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsEventName(String string) {
 	   assertTrue(search);
-	   Event.searchEvent("12114777", string, 0);
+	  Event.searchEvent("12114777", string, 0);
 	   
 	}
 	
@@ -217,180 +200,106 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 ///////////////////////////////////////////////////////////////////////////////////
 
 
-@Given("selects the option to update the event details")
-public void selectsTheOptionToUpdateTheEventDetails() {
+
+@Given("the user wants to update event details")
+public void theUserWantsToUpdateEventDetails() throws IOException {
+	 eventToUpdate = Event. findeventID("1000", "event.txt");
+	if ( eventToUpdate!= null)
+	{ update=true;
+	event.printUpdateList(eventToUpdate);}
+	else update=false;
+	 
+}
+@When("they update the event name to {string}")
+public void theyUpdateTheEventNameTo(String string) {
+	
+    inputStream = new ByteArrayInputStream(string.getBytes());
+    System.setIn(inputStream);
+   Event.updateEventName(eventToUpdate);
+   newUpdate=true;
+
+
+}
+
+@When("they update the event time to start at {string}")
+public void theyUpdateTheEventTimeToStartAt(String string) {
+	 inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventTime(eventToUpdate);
+	   newUpdate=true;
+}
+
+@When("they update the event description to {string}")
+public void theyUpdateTheEventDescriptionTo(String string) {
+	   inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventDescription(eventToUpdate);
+	   newUpdate=true;
+}
+
+
+
+@When("they update the event date to {string}")
+public void theyUpdateTheEventDateTo(String string) {
+	   inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventDate(eventToUpdate,"event.txt");
+	   newUpdate=true;
+}
+
+
+
+@When("they update the attendee count to {string}")
+public void theyUpdateTheAttendeeCountTo(String string) {
+	   inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventAttendeeCount(eventToUpdate);
+	   newUpdate=true;
+}
+
+@When("they update the event theme to {string}")
+public void theyUpdateTheEventThemeTo(String string) {
+	 inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventTheme(eventToUpdate);
+	   newUpdate=true;
+}
+
+
+@When("they update the event category to {string}")
+public void theyUpdateTheEventCategoryTo(String string) {
+	 inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventCategory(eventToUpdate);
+	   newUpdate=true;
+}
+
+@When("they update the event venue to {string}")
+public void theyUpdateTheEventVenueTo(String string) throws NumberFormatException, NullPointerException, IOException {
+	
+	inputStream = new ByteArrayInputStream(string.getBytes());
+    System.setIn(inputStream);
+   event.updateEventVenue("1000",eventToUpdate,"event.txt");
+   newUpdate=true;
 	
 }
 
-@Given("there is an existing event to update")
-public void thereIsAnExistingEventToUpdate() throws IOException {
-	 eventToUpdate = Event. findeventID("1000", "event.txt");
-	 update=true;
-}
-////////////////////////////
-@Given("the user chooses {string} to update name")
-public void theUserChoosesToUpdateName(String string) throws IOException, NullPointerException, ParseException {
- //assertTrue(update);
-
-    eventToUpdate = Event. findeventID("1000", "event.txt");
-    String simulatedInputs1 = ("Ali_party");
-  
- 
-   InputStream inputStream1 = new ByteArrayInputStream(simulatedInputs1.getBytes());
-     System.setIn(inputStream1);
-   event.updateEventName(eventToUpdate);
-  
-   InputStream inputStream2 = new ByteArrayInputStream("out".getBytes());
-   System.setIn(inputStream2);
- 
-   event.updateEvent("1000", "event.txt");
-   
- 
-   }
-
- 
- 
-
-
-@Given("the user chooses {string} to update date")
-public void theUserChoosesToUpdateDate(String string) throws IOException, NullPointerException, ParseException {
-    eventToUpdate = Event. findeventID("1000", "event.txt");
-    String simulatedInputs3 = ("2026-08-14");
-  
- 
-   InputStream inputStream3 = new ByteArrayInputStream(simulatedInputs3.getBytes());
-     System.setIn(inputStream3);
-   event.updateEventDate(eventToUpdate,"1000");
-  
-   InputStream inputStream4 = new ByteArrayInputStream("out".getBytes());
-   System.setIn(inputStream4);
- 
-   event.updateEvent("1000", "event.txt");
+@When("they update the event services to include {string}")
+public void theyUpdateTheEventServicesToInclude(String string) {
+	 inputStream = new ByteArrayInputStream(string.getBytes());
+	    System.setIn(inputStream);
+	   Event.updateEventServices(eventToUpdate);
+	   newUpdate=true;
 }
 
 
-@Given("the user chooses {string} to update time")
-public void theUserChoosesToUpdateTime(String string) throws IOException, NullPointerException, ParseException {
-	 eventToUpdate = Event. findeventID("1000", "event.txt");
-	    String simulatedInputs5 = ("7:00 pm");
-	  
-	 
-	   InputStream inputStream5 = new ByteArrayInputStream(simulatedInputs5.getBytes());
-	     System.setIn(inputStream5);
-	   event.updateEventTime(eventToUpdate);
-	  
-	   InputStream inputStream6 = new ByteArrayInputStream("out".getBytes());
-	   System.setIn(inputStream6);
-	 
-	   event.updateEvent("1000", "event.txt");
+@Then("the system should successfully save the changes")
+public void theSystemShouldSuccessfullySaveTheChanges() throws NullPointerException, IOException {
+   assumeTrue(newUpdate);
+   event.updateEventInFile(eventToUpdate, "event.txt");
+   eventToUpdate.toString2();
+	
 }
-
-
-@Given("the user chooses {string} to update description")
-public void theUserChoosesToUpdateDescription(String string) throws IOException, NullPointerException, ParseException {
-	 eventToUpdate = Event. findeventID("1000", "event.txt");
-	    String simulatedInputs7 = ("*******");
-	  
-	 
-	   InputStream inputStream7 = new ByteArrayInputStream(simulatedInputs7.getBytes());
-	     System.setIn(inputStream7);
-	   event.updateEventDescription(eventToUpdate);
-	  
-	   InputStream inputStream8 = new ByteArrayInputStream("out".getBytes());
-	   System.setIn(inputStream8);
-	 
-	   event.updateEvent("1000", "event.txt");
-}
-
-
-@Given("the user chooses {string} to update count")
-public void theUserChoosesToUpdateCount(String string) throws IOException, NullPointerException, ParseException {
-	eventToUpdate = Event. findeventID("1000", "event.txt");
-    String simulatedInputs9 = ("40");
-  
- 
-   InputStream inputStream9 = new ByteArrayInputStream(simulatedInputs9.getBytes());
-     System.setIn(inputStream9);
-   event.updateEventAttendeeCount(eventToUpdate);
-  
-   InputStream inputStream10 = new ByteArrayInputStream("out".getBytes());
-   System.setIn(inputStream10);
- 
-   event.updateEvent("1000", "event.txt");
-}
-
-
-@Given("the user chooses {string} to update theme")
-public void theUserChoosesToUpdateTheme(String string) throws IOException, NullPointerException, ParseException {
-	eventToUpdate = Event. findeventID("1000", "event.txt");
-    String simulatedInputs11 = ("theme");
-  
- 
-   InputStream inputStream11 = new ByteArrayInputStream(simulatedInputs11.getBytes());
-     System.setIn(inputStream11);
-   event.updateEventTheme(eventToUpdate);
-  
-   InputStream inputStream12 = new ByteArrayInputStream("out".getBytes());
-   System.setIn(inputStream12);
- 
-   event.updateEvent("1000", "event.txt");
-}
-
-
-@Given("the user chooses {string} to update category")
-public void theUserChoosesToUpdateCategory(String string) throws IOException, NullPointerException, ParseException {
-	eventToUpdate = Event. findeventID("1000", "event.txt");
-    String simulatedInputs13 = ("cat");
-  
- 
-   InputStream inputStream13 = new ByteArrayInputStream(simulatedInputs13.getBytes());
-     System.setIn(inputStream13);
-   event.updateEventCategory(eventToUpdate);
-  
-   InputStream inputStream14 = new ByteArrayInputStream("out".getBytes());
-   System.setIn(inputStream14);
- 
-   event.updateEvent("1000", "event.txt");
-    
-}
-
-@Given("the user chooses {string} to update venue")
-public void theUserChoosesToUpdateVenue(String string) {
- 
-}
-
-@Given("the user chooses {string} to update services")
-public void theUserChoosesToUpdateServices(String string) throws IOException, NullPointerException, ParseException {
-	eventToUpdate = Event. findeventID("1000", "event.txt");
-    String simulatedInputs15 = ("100");
-  
- 
-   InputStream inputStream15 = new ByteArrayInputStream(simulatedInputs15.getBytes());
-     System.setIn(inputStream15);
-   event.updateEventServices(eventToUpdate);
-  
-   InputStream inputStream16 = new ByteArrayInputStream("out".getBytes());
-   System.setIn(inputStream16);
- 
-   event.updateEvent("1000", "event.txt");	
-    
-}
-
-@Then("the event  is successfully updated in the system")
-public void theEventIsSuccessfullyUpdatedInTheSystem() {
-	printing.printSomething(eventToUpdate.toString2());
-   
-}
-
-
-
-
-
-
-
-
-
-
 
 
 
