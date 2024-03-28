@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Provider extends User  {
-    private static final List<ServiceDetails> serviceDetailsList = new ArrayList<>();
+    private static final List<Service> serviceDetailsList = new ArrayList<>();
     private String email;
     static Printing printing = new Printing();
     static List<Provider> providers = new ArrayList<>(); 
@@ -68,19 +68,19 @@ public class Provider extends User  {
         return null; // Provider not found or invalid credentials
     }   
 //////////////////////////////////////////////////////////////////////    
-    public ServiceDetails getServiceDetails(String servicetype) {
-        for (ServiceDetails service : serviceDetailsList) {
+    public Service getServiceDetails(String servicetype) {
+        for (Service service : serviceDetailsList) {
             if (service.getServiceType().equals(servicetype) ) {
                 return service;
             }
         }
         return null; // Return null if the service with the specified ID is not found
     }
-    public List<ServiceDetails> getServiceDetailsList() {
+    public List<Service> getServiceDetailsList() {
         return serviceDetailsList;
     }
 
-    public void addService(ServiceDetails service) {
+    public void addService(Service service) {
         serviceDetailsList.add(service);
         printing.printSomething("the Service added successfully.\n" );
     }
@@ -88,7 +88,7 @@ public class Provider extends User  {
     
     
 	public void addService( String serviceType, String serviceName,String description, double price, String availability) {
-	ServiceDetails newService = new ServiceDetails();
+	Service newService = new Service();
 	newService.setServiceType(serviceType);
 	newService.setServiceName(serviceName);
 	newService.setDescription(description);
@@ -97,8 +97,8 @@ public class Provider extends User  {
      serviceDetailsList.add(newService);}
 
 //////////////////////////////////////////////////////////////////////////////////
-    public Provider editServiceDetails(ServiceDetails editedService) {
-        for (ServiceDetails service : serviceDetailsList) {
+    public Provider editServiceDetails(Service editedService) {
+        for (Service service : serviceDetailsList) {
             if (service.getServiceType() .equals (editedService.getServiceType())) {
                 service.setServiceType(editedService.getServiceType());
                 service.setServiceName(editedService.getServiceName());
@@ -159,7 +159,7 @@ public class Provider extends User  {
         printing.printSomething("   |Service ID   | ServiceType | ServiceName            | Description                         | Price    | Availability   |\n");
         printing.printSomething("   |-------------|-------------|------------------------|-------------------------------------|----------|----------------|\n");
 
-        for (ServiceDetails service : serviceDetailsList) {
+        for (Service service : serviceDetailsList) {
             printing.printSomething(String.format("   |%-13s| %-12s| %-23s| %-36s| %-6.2f $ | %-23s|%n",
                     service.getServiceID(), service.getServiceType(), service.getServiceName(),
                     service.getDescription(), service.getPrice(), service.getAvailability()));
@@ -174,7 +174,7 @@ public class Provider extends User  {
 
 	public boolean doesServiceExist(String serviceType) {
 		  if (!serviceDetailsList.isEmpty()) {
-	            for (ServiceDetails serviceDetails : serviceDetailsList) {
+	            for (Service serviceDetails : serviceDetailsList) {
 	                if (serviceDetails != null && serviceDetails.getServiceID() != null
 	                        && serviceDetails.getServiceType().equalsIgnoreCase(serviceType)) {
 	                    return true; // Service of specified type already exists
@@ -190,8 +190,8 @@ public class Provider extends User  {
 	    Functions.updateProviderAndServiceList();
 
 	    if ( !serviceDetailsList.isEmpty()) {
-	        ServiceDetails serviceToDelete = null;
-	        for (ServiceDetails service : Functions.serviceDetails) {
+	        Service serviceToDelete = null;
+	        for (Service service : Functions.serviceDetails) {
 	            if (service.getServiceID().equals(serviceID)) {
 	                serviceToDelete = service;
 	                break;
@@ -308,9 +308,9 @@ public class Provider extends User  {
     }
 
 //////////////////
-    public static ServiceDetails findServiceByID(String serviceId, String filename) {
+    public static Service findServiceByID(String serviceId, String filename) {
 	    String line;
-	    ServiceDetails service =new ServiceDetails();
+	    Service service =new Service();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
 	        while ((line = reader.readLine()) != null) {
 	            String[] items = line.split(" , ");
@@ -344,7 +344,7 @@ public class Provider extends User  {
     
     public void updateServiceDetails(String sid) throws IOException {
 		
- 	   ServiceDetails toupdatedService = findServiceByID(sid,"service.txt");
+ 	   Service toupdatedService = findServiceByID(sid,"service.txt");
  		deleteService(sid);
  	   
  	   
@@ -392,7 +392,7 @@ public class Provider extends User  {
  	   
  	   
  		}
- 		ServiceDetails.addServiceToFile(toupdatedService);
+ 		Service.addServiceToFile(toupdatedService);
  			
  			
  		
