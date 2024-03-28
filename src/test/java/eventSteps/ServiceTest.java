@@ -3,7 +3,7 @@ package eventSteps;
 import static org.junit.Assert.*;
 
 import org.example.Provider;
-import org.example.ServiceDetails;
+import org.example.Service;
 import org.example.User;
 import org.junit.Test;
 
@@ -19,13 +19,13 @@ import java.util.Map;
 
 public class ServiceTest {
     static Provider serviceProviderService;
-    private ServiceDetails newService;
-    private ServiceDetails modifiedService;
-    private ServiceDetails deletedService;
+    private  Service newService;
+    private Service modifiedService;
+    private Service deletedService;
     @Before
     public void setUp() {
         serviceProviderService = new Provider();
-        ServiceDetails service =new ServiceDetails(); ///////////
+        Service service =new Service(); ///////////
     }
 
     
@@ -62,7 +62,7 @@ public class ServiceTest {
 	@Then("the system should display a list of the providers services with their details")
 	public void the_system_should_display_a_list_of_the_providers_services_with_their_details() {
 	    // Write code here that turns the phrase above into concrete actions
-		 List<ServiceDetails> serviceDetailsList = serviceProviderService.getServiceDetailsList();
+		 List<Service> serviceDetailsList = serviceProviderService.getServiceDetailsList();
 	     assertNotNull(serviceDetailsList);
 
 	        // Check if the list is not empty (indicating that services are displayed)
@@ -78,7 +78,7 @@ public class ServiceTest {
 ///////////////////////////////////////////////////////////////////////////////////////
 	@When("the service provider selects Add New Service")
     public void theServiceProviderSelectsAddNewService() {
-        newService = new ServiceDetails();
+        newService = new Service();
         
     }
 
@@ -112,7 +112,7 @@ public class ServiceTest {
         serviceProviderService.addService(newService);
 
         // Assuming logic to verify that the new service is added
-        ServiceDetails addedService = serviceProviderService.getServiceDetails(newService.getServiceType());
+        Service addedService = serviceProviderService.getServiceDetails(newService.getServiceType());
         assertNotNull(addedService);
         assertEquals(newService.getServiceName(), addedService.getServiceName());
      }
@@ -140,7 +140,7 @@ public class ServiceTest {
     public void systemShouldUpdateServiceDetails() {
         // Assuming serviceProviderService has a method to edit service details
     //	assertTrue(serviceProviderService.editServiceDetails(modifiedService));
-    assertNotNull(serviceProviderService.editServiceDetails(modifiedService));
+        assertTrue( serviceProviderService.editServiceDetails(modifiedService)!=null);
 	
 
     }
