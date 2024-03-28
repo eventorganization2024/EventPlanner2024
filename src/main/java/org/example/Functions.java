@@ -90,13 +90,22 @@ public class Functions {
 	    static final String ENTER_CHOICE = "Enter your choice: ";
 	    static final String ENTER_PASSWORD= "\nEnter Password :";
 	    private static final String ACCOUNT_ALREADY_EXIST_MESSAGE = "This account is already existed, Please Sign in.";
-	    private static final String THANK_MESSAGE="  \nThank you! Your information has been recorded.	\nEnter a password: ";
-	    static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
+	    private static final String THANK_MESSAGE = "  \nThank you! Your information has been recorded.    \nEnter a password: ";
+        static final String INVALID_CHOICE = "Invalid choice! Please enter a valid choice.";
 	    static final String LINE = "----------------------------------------";
 	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
+	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
+	    static final String ADD="ADD";
+	    static final String VIEW_ALL=" VIEW_ALL";
+	    static final String DELETE=" DELETE";
+	    static final String EDIT=" EDIT";
+	    static final String LOG_OUT=" LOG_OUT";
+	    
+	    
+	    
 
 	   
 	    private static String id1;
@@ -276,9 +285,7 @@ static void signInProvider(String id) throws Exception {
 	    	    }
 	         }
 	      }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	  
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 	  
 	  public static void customerOptions(String id,int x) throws Exception {
 	    	
@@ -2455,12 +2462,12 @@ public  static void customerPageList(){
     			YELLOW_TEXT_COLOR+
     		    " ---- Welcome to EventManagement Page ----\n"+
     		    YELLOW_TEXT_COLOR+
-    		   " |   1. IN requst                        |\n"+
-    		   " |   2. All events                       |\n"+
-    		   " |   3. ADD EVENT                        |\n"+
-    		   " |   4. DELETE                           |\n"+
-    		   " |   5. EDIT                             |\n"+
-    		   " |   6. Log Out                          |\n"+
+    		   " |   1. IN requst                         |\n"+
+    		   " |   2. All events                        |\n"+
+    		   " |   3. ADD EVENT                         |\n"+
+    		    "|   4."+DELETE+"                         |\n" +
+    		    "|   5."+EDIT+"                           |\n" +
+    		    "|   6."+LOG_OUT+"                        |\n" +
     		   YELLOW_TEXT_COLOR);
 
 }
@@ -2470,9 +2477,9 @@ public static void userManagementAdminPageList() {
     		YELLOW_TEXT_COLOR +
         "---- Welcome to User Management Page ----\n" +
         YELLOW_TEXT_COLOR+
-        "|   1. View All                         |\n" +
-        "|   2. Delete                           |\n" +
-        "|   3. Log Out                          |\n" +
+        "|   1."+VIEW_ALL+"                       |\n" +
+        "|   2."+DELETE+"                         |\n" +
+        "|   3."+LOG_OUT+"                        |\n" +
         YELLOW_TEXT_COLOR + "\n" 
     );
 }
@@ -2493,11 +2500,11 @@ public static void venueManagementadminList() {
     		YELLOW_TEXT_COLOR +
         "---- Welcome to Venue Management Page ----\n" +
         YELLOW_TEXT_COLOR  +
-        "|   1. VIEW ALL                         |\n" +
-        "|   2. ADD                              |\n" +
-        "|   3. DELETE                           |\n" +
-        "|   4. EDIT                             |\n" +
-        "|   5. Log Out                          |\n" +
+        "|   1."+VIEW_ALL+"                       |\n" +
+        "|   2."+ADD+"                            |\n" +
+        "|   3."+DELETE+"                         |\n" +
+        "|   4."+EDIT+"                           |\n" +
+        "|   5."+LOG_OUT+"                        |\n" +
         YELLOW_TEXT_COLOR + "\n" 
     );}
 
@@ -2505,10 +2512,10 @@ public static void providerManagementAdminPageList() {
  printing.printSomething(
 		 YELLOW_TEXT_COLOR +
     "---- Welcome to Provider Management Page ----\n" +
-    "\033[1;33m" +
-    "|   1. VIEW ALL                         |\n" +
-    "|   2. DELETE Provider                            |\n" +
-    "|   3.  Log Out                         |\n" +
+    YELLOW_TEXT_COLOR +
+    "|   1."+VIEW_ALL+"                       |\n" +
+    "|   2."+DELETE+"                         |\n" +
+    "|   3."+LOG_OUT+"                        |\n" +
     YELLOW_TEXT_COLOR + "\n"
 );}
 
@@ -2517,11 +2524,11 @@ public static void packageManagementadminList() {
 		  YELLOW_TEXT_COLOR +
       "---- Welcome to Package Management Page ----\n" +
       YELLOW_TEXT_COLOR+
-      "|   1. VIEW ALL                         |\n" +
-      "|   2. ADD                              |\n" +
-      "|   3. DELETE                           |\n" +
-      "|   4. EDIT                             |\n" +
-      "|   5. Log Out                          |\n" +
+        "|   1."+VIEW_ALL+"                       |\n" +
+        "|   2."+ADD+"                            |\n" +
+        "|   3."+DELETE+"                         |\n" +
+        "|   4."+EDIT+"                           |\n" +
+        "|   5."+LOG_OUT+"                        |\n" +
       YELLOW_TEXT_COLOR + "\n"
   );}
 
@@ -2530,11 +2537,11 @@ public static void discountManagementadminList() {
 		  YELLOW_TEXT_COLOR +
       "---- Welcome to Discount Management Page ----\n" +
       YELLOW_TEXT_COLOR+
-      "|   1. VIEW ALL                         |\n" +
-      "|   2. ADD                              |\n" +
-      "|   3. DELETE                           |\n" +
-      "|   4. EDIT                             |\n" +
-      "|   5. Log Out                          |\n" +
+        "|   1."+VIEW_ALL+"                       |\n" +
+        "|   2."+ADD+"                            |\n" +
+        "|   3."+DELETE+"                         |\n" +
+        "|   4."+EDIT+"                           |\n" +
+        "|   5."+LOG_OUT+"                        |\n" +
       YELLOW_TEXT_COLOR+"\n" 
   );}
 //==========================================================================================================================================
@@ -2564,9 +2571,9 @@ customerEvents = Customer.getEvents();
 }
 }
 
-//Check if events are found for the customer
+
 if (customerEvents.isEmpty()) {
-//return null;
+
 return Collections.emptyList(); 
 } else {
 return customerEvents;
@@ -2664,7 +2671,7 @@ LocalDate currentDate = firstDayOfMonth;
 int currentDayOfMonth = 1;
 // Print the days of the month
 while (currentDayOfMonth <= yearMonth.lengthOfMonth()) {//currentDate.getMonthValue() == calendar.getMonth()
-printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+printing.printInColor(LINE2, Printing.ANSI_LIME);
 
 StringBuilder dayRow = new StringBuilder("|");
 inFirstRow = false;
@@ -2699,14 +2706,14 @@ currentDate = currentDate.plusDays(1);
 
 printing.printInColor(dayRow.toString(), Printing.ANSI_GREEN);
 printing.printInColor("\n", Printing.ANSI_GREEN);
-printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+printing.printInColor(LINE2, Printing.ANSI_LIME);
 
 // Print events for each day
 printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1));
 }
 
 // Print the footer for the days of the week
-printing.printInColor("+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+printing.printInColor(LINE2, Printing.ANSI_LIME);
 }
 
 
@@ -2797,7 +2804,7 @@ String customerId = event.getUsrTd();
 String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
 String[] details = recipientDetails.split("-");
 String recipientName = details[1];		            
-String messageContent = generateMessageContent(customerId,recipientName, event.getTime(), 60-timeDifferenceMinutes);
+String messageContent = generateMessageContent(recipientName, event.getTime(), 60-timeDifferenceMinutes);
 String subject = "Notification for Upcoming Event: " + event.getName();
 
 sendNotificationsToParticipants(details[0], subject, messageContent);
@@ -2808,24 +2815,24 @@ notifiedEvents.add(event.getEID());
 
 
       private String getEmailAndNameFromCustomerFile(String customerId) {
-// Update the customers list
-updateCustomersList();
+     // Update the customers list
+    updateCustomersList();
 
 
 
-// Search for the customer with the specified ID
-for (Customer cust : customers) {
-if (cust.getId().equals(customerId)) { 	            
+   // Search for the customer with the specified ID
+    for (Customer cust : customers) {
+    if (cust.getId().equals(customerId)) { 	            
 
-return cust.getEmail()+"-"+customer1.getUsername();
+    return cust.getEmail()+"-"+customer1.getUsername();
+    }
+     }
+
+    // If customer not found, return null or throw an exception
+    return null;
 }
-}
 
-// If customer not found, return null or throw an exception
-return null;
-}
-
-private String generateMessageContent(String customerId, String customerName, String eventTime, long hoursDifference) {
+     private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
 // Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
 return "Dear " + customerName + ",\n\n"
 + "We are pleased to confirm your registration for the upcoming event.\n\n"
@@ -2843,7 +2850,7 @@ private void sendNotificationsToParticipants(String recipientEmail, String subje
 try {
 
 String senderEmail = "royasmine05@gmail.com";
-String password = getEncryptedPassword();;
+String password = getEncryptedPassword();
 
 Properties properties = new Properties();
 properties.put("mail.smtp.auth", "true");
