@@ -122,7 +122,7 @@ import io.cucumber.java.en.When;
 	     // Write code here that turns the phrase above into concrete actions
 	        System.out.println("The administrator views the list of existing discounts.");
 	 }
-	 
+	 @org.junit.Before
 	 public void setUp() {
 	        p = new Paackage();
 	       
