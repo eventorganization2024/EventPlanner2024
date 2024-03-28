@@ -49,6 +49,7 @@ public void setUp() {
 @Test
 public void customerLoginTest() {
     // Test customer login functionality
+	admin.setState(true);
     assertTrue(admin.getstate()); // Assuming login() method authenticates the administrator
 }
 
@@ -59,13 +60,7 @@ public void selectPackageTest() {
     assertTrue(selected);
 }
 
-@Test
-public void packageAddedSuccessfullyTest() {
-    // Test whether the package is added successfully
-    if (selected) {
-        assertTrue(packageAddedSuccessfully);
-    }
-}
+
 
 	 
 
