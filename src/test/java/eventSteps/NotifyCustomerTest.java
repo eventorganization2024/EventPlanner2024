@@ -8,7 +8,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class NotifyCustomerSteps {
+public class NotifyCustomerTest {
 	 Event event = new Event();
 	    Customer customer = new Customer();
 	    boolean requestAccepted;
