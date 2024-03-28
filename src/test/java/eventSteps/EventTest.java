@@ -30,9 +30,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
-public class event_Management_Steps{
-	 
-	acceptTest1 c=new acceptTest1();
+public class EventTest{
+	
 	
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	 private InputStream inputStream;
@@ -50,7 +49,7 @@ public class event_Management_Steps{
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
 
-    
+    @Test
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
@@ -63,7 +62,7 @@ public class event_Management_Steps{
 
 	}
 	                                                 
-	 @Test
+	 
 	@When("the customer enters the event details such as Date {string}, time {string}, description {string}, attendeeCount {string}, name {string},category {string} ,theme {string},Venue {string},eventid {string}")
 	public void theCustomerEntersTheEventDetailsSuchAsDateTimeDescriptionAttendeeCountNameCategoryThemeVenueEventid(String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9) {
 	
@@ -80,7 +79,7 @@ public class event_Management_Steps{
        List<String> serviceIds = new ArrayList<>();
         serviceIds.add("100");
         event = new Event(string5, date, string2, string3, string4, customer1.getId(), string7, string6, string8, serviceIds, string9);
-	     event.addEventToFile(event, "requst.txt");
+	     Event.addEventToFile(event, "requst.txt");
 	     toadd=true;
 	    }
 	
