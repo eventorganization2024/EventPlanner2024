@@ -1,5 +1,5 @@
 
-package eventSteps;
+package eventTests;
 
 
 

@@ -1,5 +1,5 @@
-package eventSteps;
- import eventSteps.*;
+package eventTests;
+ import eventTests.*;
  import java.io.ByteArrayInputStream;
  import java.io.InputStream;
 import org.example.Paackage;

@@ -1,4 +1,4 @@
-package eventSteps;
+package eventTests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 

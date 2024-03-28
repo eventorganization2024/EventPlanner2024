@@ -1,4 +1,4 @@
-package eventSteps;
+package eventTests;
 
 import org.example.Discount;
 
