@@ -63,9 +63,10 @@ public void selectPackageTest() {
 public void packageAddedSuccessfullyTest() {
     // Test whether the package is added successfully
     if (selected) {
-        assertFalse(packageAddedSuccessfully);
+        assertTrue(packageAddedSuccessfully);
     }
 }
+
 	 
 
 }
