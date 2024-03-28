@@ -11,7 +11,9 @@ import java.util.Date;
 
 import org.example.Event;
 import org.example.Functions;
+import org.junit.Test;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,14 +31,16 @@ show_Venueforcustomer,
 show_providerlist,
 show_mangepages;
 
-Functions F=new Functions();
+Functions F;
 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-public ViewTest() throws ParseException {
-    
-        Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference","V1", "111");
-    
+@Before
+public void setUp() throws ParseException {
+    F = new Functions();
+    Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "V1", "111");
 }
 
+
+    @Test
 	@Given("the Administrator has selected show Adminlist")
 	public void theAdministratorHasSelectedShowAdminlist() {
      show_Adminlist =true;
