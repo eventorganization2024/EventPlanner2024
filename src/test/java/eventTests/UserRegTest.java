@@ -35,8 +35,10 @@ public class UserRegTest {
 	@When("the User is registered {string}")
 	public void theUserIsRegistered(String string) {
 
-        if(u.isRegest(string))
+        if(u.isRegest(string)) {
             User.adduser(u);
+     
+        }
 	}
 	@Then("the User with User ID {string} ,NAME {string} , PASSWORD {string} , phone {string}, address {string} is registered in the system")
 	public void theUserWithUserIDNAMEPASSWORDPhoneAddressIsRegisteredInTheSystem(String string, String string2, String string3, String string4, String string5) {
