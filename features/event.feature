@@ -42,66 +42,47 @@ Then the system should display all events matching the name
 
 
 
+Scenario: Update Event Name
+  Given the user wants to update event details
+  When they update the event name to "Ali_party"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Name
-    Given selects the option to update the event details
-    And the user chooses "1" to update name
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Date
+  Given the user wants to update event details
+  When they update the event date to "2024-05-01"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Date
-    Given selects the option to update the event details
-    And the user chooses "2" to update date
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Time
+  Given the user wants to update event details
+  When they update the event time to start at "12:00 PM"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Time
-    Given selects the option to update the event details
-    And the user chooses "3" to update time
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Description
+  Given the user wants to update event details
+  When they update the event description to "New description"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Description
-    Given selects the option to update the event details
-    And the user chooses "4" to update description
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Attendee Count
+  Given the user wants to update event details
+  When they update the attendee count to "100"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Attendee Count
-    Given selects the option to update the event details
-    And the user chooses "5" to update count
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Theme
+  Given the user wants to update event details
+  When they update the event theme to "New Theme"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Theme
-    Given selects the option to update the event details
-    And the user chooses "6" to update theme
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Category
+  Given the user wants to update event details
+  When they update the event category to "New Category"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Category
-    Given selects the option to update the event details
-    And the user chooses "7" to update category
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
+Scenario: Update Event Venue
+  Given the user wants to update event details
+  When they update the event venue to "Nablus_Event_Center"
+  Then the system should successfully save the changes
 
-  Scenario: Update Event Venue
-    Given selects the option to update the event details
-    And the user chooses "8" to update venue
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
-
-  Scenario: Update Event Services
-    Given selects the option to update the event details
-    And the user chooses "9" to update services
-    And there is an existing event to update
-    Then the event  is successfully updated in the system
-
-
-
-
-
-
-
-
-
+Scenario: Update Event Services
+  Given the user wants to update event details
+  When they update the event services to include "100"
+  Then the system should successfully save the changes
