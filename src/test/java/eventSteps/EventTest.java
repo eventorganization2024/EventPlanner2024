@@ -34,16 +34,18 @@ import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import junit.framework.TestCase;
 
 
-public class EventTest{
+public class EventTest extends TestCase{
 	
 	
 	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	 private InputStream inputStream;
 	  static Printing printing = new Printing();
-	    
-	 Event event =new Event();
+	  
+	  Event  event = new Event();
+	 
 	
     boolean cancel;
     boolean found;
@@ -55,7 +57,7 @@ public class EventTest{
     Customer customer1 = new Customer();
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
-    Date date ;
+   
    
 ////////////////////////////////////////////////////////////////////////////////////    
     @Before
@@ -106,16 +108,13 @@ public class EventTest{
 	
 	@Given("there is an existing event")
 	public void thereIsAnExistingEvent() { existe=true;}
-    
-  
-		
-	
 
 	@When("cancel event selected")
-	public void cancelEventSelected() {cancel=true;}
+	public void cancelEventSelected() {  cancel=true;}
 
 	@Then("the event deleted")
-	public void theEventDeleted() throws Exception{ 	
+	public void theEventDeleted() throws Exception{ 
+	assertTrue(cancel);	
 	event .deleteEvent("event.txt","2000"); 
 	System.out.println("The event deleted");}
 
@@ -127,7 +126,7 @@ public class EventTest{
 	
     
 	@Then("non_Existing massage")
-	public void nonExistingMassage() {assertFalse(found);System.out.println("The event does not exist.");}
+	public void nonExistingMassage() {assertFalse(existe);System.out.println("The event does not exist.");}
 
 
 	/////////////////////////////////
@@ -187,9 +186,9 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
         event.setUserId("12114777");}
 
 	@Then("the event is successfully created in the system")
-	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat=true); 
+	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat); 
 
-	event.addEventToFile(event,"event.txt");}
+	Event.addEventToFile(event,"event.txt");}
 	
 
  ////////////////////////////////////
