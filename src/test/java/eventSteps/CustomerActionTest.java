@@ -14,7 +14,7 @@ import eventSteps.*;
 
 
 /////
-public class CustomerActionSteps {
+public class CustomerActionTest {
 	 User user = new User();
 	    Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456","ansam@gmail.com");
 	    Functions functions = new Functions();
