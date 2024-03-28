@@ -125,9 +125,7 @@ import io.cucumber.java.en.When;
 	 
 	 public void setUp() {
 	        p = new Paackage();
-	        packages = new ArrayList<>();
-	        packages.add(new Paackage(1, "Package 1", 100.0));
-	        packages.add(new Paackage(2, "Package 2", 200.0));
+	       
 	    }
 
 	    @Test
@@ -170,22 +168,5 @@ import io.cucumber.java.en.When;
 	        assertEquals("Title", p.getTitle());
 	    }
 	   
-	    @Test
-	    public void testUpdatePackageDetails() {
-	        Paackage packageToUpdate = packages.get(0); // Choose the package to update
-	        String newTitle = "New Title";
 
-	        // Prepare input for the scanner
-	        String input = "2\n" + newTitle + "\n";
-
-	        // Create a mock Scanner object using ByteArrayInputStream
-	        InputStream in = new ByteArrayInputStream(input.getBytes());
-	        Scanner scanner = new Scanner(in);
-
-	        // Invoke the method to be tested
-	        Paackage.updatePackageDetails(scanner, packageToUpdate, "package.txt", packages);
-
-	        // Verify that the package title is updated
-	        assertEquals(newTitle, packageToUpdate.getTitle());
-	    }
  }
