@@ -60,7 +60,7 @@ public class EventTest extends TestCase{
    
    
 ////////////////////////////////////////////////////////////////////////////////////    
-    @Before
+    @Test
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
