@@ -10,7 +10,14 @@ public class Venue {
 	    private String imagepath;
 	    private String date;
 
-	   
+	   private static final String ERROR_PREFIX = "An error occurred: ";
+	    static final String VENUE_FILE_NAME = "venue.txt";
+	    static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
+	    static Printing printing = new Printing();
+	    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd"); ;
+
+
+	
 	    public Venue(String name, String address, int capacity, double price,String availability,String id,String image) {
 	        this.name = name;
 	        this.address = address;
