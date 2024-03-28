@@ -49,7 +49,47 @@ public class EventTest{
     Event eventToUpdate;
     Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
 
-   
+   @Before
+    public void setUp() {
+        event = new Event();
+    }
+
+    @Test
+    public void testSetAndGetEventName() {
+        event.setName("Birthday Party");
+        assertEquals("Birthday Party", event.getName());
+    }
+
+    @Test
+    public void testSetAndGetEventDate() throws ParseException {
+        Date date = DATE_FORMAT.parse("2024-04-01");
+        event.setDate(date);
+        assertEquals(date, event.getDate());
+    }
+
+    @Test
+    public void testSetAndGetEventDescription() {
+        event.setDescription("A celebration of life");
+        assertEquals("A celebration of life", event.getDescription());
+    }
+
+    @Test
+    public void testSetAndGetAttendeeCount() {
+        event.setAttendeeCount("50");
+        assertEquals("50", event.getAttendeeCount());
+    }
+
+    @Test
+    public void testSetAndGetCategory() {
+        event.setCategory("Family");
+        assertEquals("Family", event.getCategory());
+    }
+
+    @Test
+    public void testSetAndGetTheme() {
+        event.setTheme("Fairy Tale");
+        assertEquals("Fairy Tale", event.getTheme());
+    }
 	@Given("the customer is going to create an event")
 	public void theCustomerIsGoingToCreateAnEvent()
 	{
