@@ -13,7 +13,7 @@ import org.example.Event;
 import org.example.Functions;
 import org.junit.Test;
 
-import org.junit.Before;
+import org.junit.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -33,7 +33,7 @@ show_mangepages;
 
 Functions F;
 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-@Before
+ @Test
 public void setUp() throws ParseException {
     F = new Functions();
     Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "V1", "111");
