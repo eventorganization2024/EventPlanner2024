@@ -112,6 +112,7 @@ public class Functions {
 		  
 	    private static  String id;
 	  
+	    
 	    static void inputs() {
 	        printing.printSomething("Enter Id: ");
 	        id = scanner.next();
@@ -352,13 +353,13 @@ static void signInProvider(String id) throws Exception {
 	                    printing.printSomething("\n" + "Please enter the Event Name you want to see it : ");
 	                    String eventN = scanner.next();
 	                    String usId = id;
-	                    searchEvent(usId, eventN, 0);
+	                    Event. searchEvent(usId, eventN, 0);
 	                } else if (s == 2) {
 	                    printing.printSomething("\n");
 	                    printing.printSomething("\n" + "Please enter the Venue Name of the event you want to see it : ");
 	                    String venueN = scanner.next();
 	                    String userId = id;
-	                    searchEvent(userId, venueN, 8);
+	                    Event. searchEvent(userId, venueN, 8);
 	                }
 	                break;
               
@@ -1511,52 +1512,7 @@ static void signInProvider(String id) throws Exception {
 /////////////////////////////////////////////////////////////////////////////////////	    
 
 
-///////////////////////////////////////////////////////////////////////////////////////
-    public static void searchEventsByCustomer(String customerId) {
-    	String filename = REQUEST_FILE_NAME; 
 
-    	try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-    	    String line;
-    	    while ((line = reader.readLine()) != null) {
-    	      
-    	        String[] fields = line.split(",\\s*"); 
-    	        
-    	 
-    	        if (fields.length >= 9 && fields[5].trim().equals(customerId.trim())) {
-    	         
-    	            printing.printSomething(line);
-    	        }
-    	    }
-    	} catch (IOException e) {
-    		printing.printSomething("An error occurred while reading the file: " + e.getMessage());
-    	}
-    	}
-
-  	public static void searchEvent(String customerId, String searchTerm, int searchFieldIndex) {
-    	    String filename = EVENT_FILE_NAME;
-
-    	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-    	        String line;
-    	        boolean eventFound = false;
-    	        while ((line = reader.readLine()) != null) {
-    	            String[] fields = line.split(",\\s*");
-
-    	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim()) && fields[searchFieldIndex].trim().equals(searchTerm)) {
-    	                printing.printSomething(line);
-    	                eventFound = true;
-    	            }
-    	        }
-    	        if (!eventFound) {
-    	            if (searchFieldIndex == 0) {
-    	                printing.printSomething("\nThere is no event with this Name");
-    	            } else if (searchFieldIndex == 8) {
-    	                printing.printSomething("\nThere is no event with this Venue");
-    	            }
-    	        }
-    	    } catch (IOException e) {
-    	    	printing.printSomething("An error occurred while reading the file: " + e.getMessage());
-    	    }
-    	}
   	
 
   
@@ -2289,7 +2245,7 @@ static boolean searchIdP(String id) {
     return f;
 }
 
-static boolean searchIdE(String id3, String filename) {
+public static boolean searchIdE(String id3, String filename) {
     try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
         String line;
         while ((line = br.readLine()) != null) {
