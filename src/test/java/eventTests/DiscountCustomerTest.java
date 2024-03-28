@@ -1,6 +1,9 @@
 package eventTests;
 
+import static org.junit.Assert.assertEquals;
+
 import org.example.Discount;
+import org.junit.Test;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -55,5 +58,14 @@ public void theDiscountCodeIsNotValid(String string) {
 @When("the customer applies the invalid discount code {string} to a price of ${int}")
 public void theCustomerAppliesTheInvalidDiscountCodeToAPriceOf$(String string, Integer int1) {
  price = oldprice;
+}
+@Test
+public void testToString() {
+ 
+    Discount discount = new Discount(10.0, 1, "2024-12-31", "DISCOUNT10");
+   
+    String expectedString = "1,DISCOUNT10,10.0,2024-12-31";
+ 
+    assertEquals(expectedString, discount.toString());
 }
 }
