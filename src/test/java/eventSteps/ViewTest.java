@@ -16,7 +16,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class ViewSteps {
+public class ViewTest {
 
 boolean show_Adminlist ,
 show_ListOfEventsforAdmin,
@@ -31,7 +31,7 @@ show_mangepages;
 
 Functions F=new Functions();
 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-public ViewSteps() throws ParseException {
+public ViewTest() throws ParseException {
     
         Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference","V1", "111");
     
@@ -165,14 +165,14 @@ public ViewSteps() throws ParseException {
 	@Then("the pages displayed")
 	public void thePagesDisplayed() {
 		 assertTrue(show_mangepages);
-		 Functions.signInPageList();
-		 Functions.eventManagementAdminPageList();
-		 Functions.discountManagementadminList();
-		 Functions.userManagementAdminPageList();
-		 Functions.userSearchPageList();
-		 Functions.venueManagementadminList();
-		 Functions.providerManagementAdminPageList();
-		 Functions.packageManagementadminList();
+		 F.signInPageList();
+		 F.eventManagementAdminPageList();
+		 F.discountManagementadminList();
+		 F.userManagementAdminPageList();
+		 F.userSearchPageList();
+		 F.venueManagementadminList();
+		 F.providerManagementAdminPageList();
+		 F.packageManagementadminList();
 		
 	
 	}
