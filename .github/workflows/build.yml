@@ -1,46 +1,45 @@
 name: SonarCloud  # Name of the GitHub Actions workflow
 
 on:
-  push:  # Triggering on push events to the main branch
+  push:
     branches:
       - main
-  pull_request:  # Triggering on certain pull request events
+  pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:  # Defining a job named "build"
-    name: Build and analyze  # Name of the job
-    runs-on: ubuntu-latest  # Running the job on an Ubuntu environment
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
 
-    steps:  # Steps to be executed within the job
-      - name: Checkout repository  # Step to checkout the repository contents
-        uses: actions/checkout@v3  # Using the GitHub Action to checkout the repository
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Disabling shallow cloning
+          fetch-depth: 0
 
-          
-      - name: Set up JDK 17  # Step to set up Java Development Kit version 17
-        uses: actions/setup-java@v3  # Using the GitHub Action to set up Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: 17  # Setting the Java version to 17
-          distribution: 'zulu'  # Using the Zulu distribution of Java
+          java-version: 17
+          distribution: 'zulu'
 
-      - name: Cache SonarCloud packages  # Step to cache SonarCloud packages for future runs
-        uses: actions/cache@v3  # Using the GitHub Action to cache files
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
         with:
-          path: ~/.sonar/cache  # Specifying the path to cache SonarCloud packages
-          key: ${{ runner.os }}-sonar  # Setting a unique key for caching
-          restore-keys: ${{ runner.os }}-sonar  # Setting restore keys for caching
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache Maven packages  # Step to cache Maven packages for future runs
-        uses: actions/cache@v3  # Using the GitHub Action to cache files
+      - name: Cache Maven packages
+        uses: actions/cache@v2
         with:
-          path: ~/.m2  # Specifying the path to cache Maven packages
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}  # Setting a unique key for caching based on hash of pom.xml files
-          restore-keys: ${{ runner.os }}-m2  # Setting restore keys for caching
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and analyze  # Step to build the project and run SonarCloud analysis
+      - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Providing GitHub token to access PR information
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Providing SonarCloud token for analysis
-        run: mvn -B jacoco:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar jacoco:report -Dsonar.projectKey=eventorganization2024_EventPlanner2024 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B jacoco:prepare-agent verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar jacoco:report -Dsonar.projectKey=eventorganization2024_EventPlanner2024
