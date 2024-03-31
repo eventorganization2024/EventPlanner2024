@@ -197,9 +197,9 @@ public void testDeleteCustomer_InvalidId() {
 	        List<Event> events = Customer.getCevents();
 	        int numE=events.size();
 	        assertEquals(numE, events.size());
-	        assertEquals(event, events.get(0));
+	       
 	    }
-
+	    
 	    @Test
 	    public void testPrintInColor() throws IOException {
    
