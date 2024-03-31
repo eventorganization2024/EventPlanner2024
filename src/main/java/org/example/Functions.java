@@ -53,7 +53,7 @@ public class Functions {
 	
 	    static double price;
 	    private static final String IMAGE_LABEL = " Image: ";
-	    /////
+
 	    private static final String ADDRESS_LABEL = " Address: ";
 	    static double pricee;
 	    static Admin admin = new Admin();
