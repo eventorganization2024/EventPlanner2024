@@ -66,7 +66,7 @@ private Scanner scanner;
          ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
          System.setIn(inputStream);
          venues.add(v);
-         venues.add(venue1);
+         //venues.add(venue1);
          Scanner scanner = new Scanner(System.in);
 
          Functions.addVenue(scanner, "venue.txt");
@@ -161,14 +161,14 @@ private Scanner scanner;
     }
 
   
-
+    String venueIdToRemove;
     @When("select to delete a venue by its {string}")
     public void selectToDeleteAVenueByIts(String venueId) {
     	Functions.getPriceByVenue("jullnar");
     	Functions.getPriceByVenue(venue1.getName());
 
         
-    	String venueIdToRemove = "000"; // Venue ID to remove
+    	 venueIdToRemove = "000"; // Venue ID to remove
          inputStream = new ByteArrayInputStream(venueIdToRemove.getBytes());
          scanner = new Scanner(inputStream); // Provide venue ID as input
 
@@ -193,9 +193,11 @@ private Scanner scanner;
           Functions.deleteVenueById(scanner, "venue.txt");
 
         // Verify that the venue is removed from the list
+          
+      
        
     	delete = true;
-    }
+}
 
 
     @Then("the admin can successfully remove the venue from the system.")
@@ -216,9 +218,11 @@ private Scanner scanner;
     @Then("the admin can see a comprehensive list of all venues.")
     public void theAdminCanSeeAComprehensiveListOfAllVenues() {
     	Functions.viewAllVenues("venue.txt");
-    	Functions.updateVenueFile("Venue.txt", venues);
-    	venues.add(venue1);
-    	Functions.updateVenueFile("Venue.txt", venues);
+    	Functions.updateVenueFile("venue.txt", venues);
+    	
+    	
+    	//venues.add(venue1);
+  //	Functions.updateVenueFile("venue.txt", venues);
 
     }
     @Test
@@ -258,10 +262,12 @@ private Scanner scanner;
         Venue venue = new Venue("VenueID123", "VenueName", "VenueAddress", 100, 150.0, "image.jpg");
         String expectedString = "VenueID123,VenueName,VenueAddress,image.jpg,100,150.0";
         assertEquals(expectedString, venue.toFileString());
+        
+   
     }
     
   
 
 
-
+    
 }

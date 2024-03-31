@@ -1163,24 +1163,22 @@ public   void adminPage(String adminId) throws Exception{
    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
     public static void addDiscount(Scanner scanner, String filename) {
-    	 Scanner scannerD =new Scanner(System.in);
-         
-    	printing.printSomething("Adding a discount...");
+        printing.printSomething("Adding a discount...");
         
         try {
             printing.printSomething("Enter discount ID: ");
-            int discountId = scannerD.nextInt();
-            scannerD.nextLine(); // Consume newline
+            int discountId = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
             
             printing.printSomething("Enter discount code: ");
-            String discountCode = scannerD.nextLine();
+            String discountCode = scanner.nextLine();
             
             printing.printSomething("Enter discount percentage: ");
-            double discountPercentage = scannerD.nextDouble();
-            //scanner.nextLine(); // Consume newline
+            double discountPercentage = scanner.nextDouble();
+            scanner.nextLine(); // Consume newline
             
             printing.printSomething("Enter validity period (YYYY-MM-DD): ");
-            String validityPeriod = scannerD.nextLine();
+            String validityPeriod = scanner.nextLine();
 
             // Validate input if necessary
             
@@ -1195,6 +1193,16 @@ public   void adminPage(String adminId) throws Exception{
         }
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
     public static void addPackage(Scanner scanner, String filename) {
     	 Scanner scannerP =new Scanner(System.in);
@@ -2049,13 +2057,11 @@ public static String getVenueIdToRemove(Scanner scanner) {
 
 
 public static void updateVenueFile(String filename, List<Venue> venues) {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
         for (int i = 0; i < venues.size(); i++) {
             Venue venue = venues.get(i);
             writer.write(venue.toFileString());
-            if (i != venues.size() - 1) {
-                writer.newLine();
-            }
+            writer.newLine(); 
         }
     } catch (IOException e) {
         printing.printSomething(ERROR_PREFIX + e.getMessage());

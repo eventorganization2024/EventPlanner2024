@@ -1,1 +1,2 @@
 Conference , 2024-03-15 , 12:00 , New , 111 , 12114777 , New , New , Palestine_Convention_Center , 111 , [100]
+Ali_party , 2024-05-01 , 12:00 , New , 100 , 12114777 , New , New , Palestine_Convention_Center , 1000 , [100]
