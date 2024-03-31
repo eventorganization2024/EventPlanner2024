@@ -186,7 +186,7 @@ public void testDeleteCustomer_InvalidId() {
 	        int numEv=events.size();
 	        assertEquals(numEv, events.size());
 	    }
-
+	    
 	    @Test
 	    public void testAddEvent() throws ParseException {
 	    	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
