@@ -8,7 +8,7 @@ import org.junit.Test;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import org.example.*;
 public class DiscountCustomerTest {
 	Discount d= new Discount ();
 	boolean expired;
@@ -16,16 +16,23 @@ double oldprice ;
 double newprice;
 double price;
 boolean valid ;
+Discount discount;
+
 
 @Given("the discount code {string} is valid")
 public void theDiscountCodeIsValid(String string) {
+	Functions.isValidDiscountPercentage(40);
 	expired=false;
 	valid = true;
    d.setdiscountcode(string);
+
 }
 @When("the customer applies the discount code {string} to a price of ${int}")
 public void theCustomerAppliesTheDiscountCodeToAPriceOf$(String string, Integer int1) {
 newprice = int1 *oldprice;
+Functions.applyDiscount(300.0, "455");
+Functions.applyDiscount(300.0, "CODE123");
+Functions.applyDiscount(300.0, "CODE12");
 
 }
 @Then("the discounted price should be ${int}")

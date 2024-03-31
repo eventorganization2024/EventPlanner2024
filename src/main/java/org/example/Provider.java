@@ -13,6 +13,7 @@ import java.io.IOException;
 public class Provider extends User  {
     private static final List<Service> serviceDetailsList = new ArrayList<>();
     private String email;
+    private String Address;
     static Printing printing = new Printing();
     static List<Provider> providers = new ArrayList<>(); 
     Functions f=new Functions();
@@ -112,18 +113,20 @@ public class Provider extends User  {
     }
 
  
-    public Provider(String id, String password, String name, String phone,String email) 
+    public Provider(String id, String password, String name, String phone,String email,String address) 
     {
         super( name, password,  "Provider");    
         this.phone=phone;
         this.id=id;
-        this .email=email;      
+        this .email=email;  
+        this.Address=address;
     }
     
     public String getEmail() { return email;  }
     public void setEmail(String email) { this.email = email;}
     
-    
+    public void setAddress(String address) {this.Address=address;}
+    public String getAddress() { return Address;  }
     
     public static Provider getProviderFromLine(String line) {
        Provider provider =new  Provider();
@@ -184,34 +187,10 @@ public class Provider extends User  {
 	        return false; // Service of specified type does not exist or serviceDetailsList is null
 	    }
 //////////////////////////////	
-	public void deleteService(String serviceID) throws IOException {
-	    Functions.updateServiceList();
-	    Functions.updateProviderAndServiceList();
-	    Functions.updateProviderAndServiceList();
-
-	    if ( !serviceDetailsList.isEmpty()) {
-	        Service serviceToDelete = null;
-	        for (Service service : Functions.serviceDetails) {
-	            if (service.getServiceID().equals(serviceID)) {
-	                serviceToDelete = service;
-	                break;
-	            }
-	        }
-
-          if (serviceToDelete != null) {
-                serviceDetailsList.remove(serviceToDelete);
-                deleteServiceFromFile("service.txt", serviceID);
-                  
-            } else {
-            	printing.printSomething("Service not found.\n");
-            }
-        } else {
-        	printing.printSomething("Service details list is null.\n");
-        }}	
 	
-/////////////////////
 
-	public void deleteProviderFromFileAndArrayList( String fileName, String pid) throws IOException {
+
+	public static void deleteProviderFromFileAndArrayList( String fileName, String pid) throws IOException {
 	    String line;
 	    StringBuilder sb = new StringBuilder();
 	    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -232,35 +211,6 @@ public class Provider extends User  {
 	}
 
 ///////////////////////////////
-	public void deleteServiceFromFile(String filename,String sid)throws IOException 
-	{ 
-	
-		
-	    String line;
-		 StringBuilder sb = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) 
-		{   
-	        while ((line = reader.readLine()) != null)
-	        {   String[] items = line.split(" , ");
-	        if (items.length >= 7) 
-	        {
-	        	  String serviceId=items[0];
-	        	  if (!serviceId.equals(sid)) {
-	                  sb.append(line).append("\n");
-	              } 
-	        } 
-	   
-	        }
-	        
-	       
-	     }
-	         try (FileOutputStream fos = new FileOutputStream(filename, false)) {
-		            fos.write(sb.toString().getBytes());
-		        }
-			
-	         
-	              
-	}
 	
 /////////////////
 
@@ -268,7 +218,7 @@ public class Provider extends User  {
         return  
                 "UserID='" + id + '\'' +
                 ",1. Name=" + username+'\'' +
-                ",2. Address='" + address + '\'' +
+                ",2. Address='" + Address + '\'' +
                 ",3. Phone=" + phone +'\'' +
                 ",4. Email='" + email + '\'' +
                 ",5. Password=" + password +'\'' 
@@ -284,7 +234,7 @@ public class Provider extends User  {
         sb.append("\033[0;33m"); // Set text color to yellow for attribute names
         sb.append("- UserID: ").append(id).append("\n");
         sb.append("- Name: ").append(username).append("\n");
-        sb.append("- Address: ").append(address).append("\n");
+        sb.append("- Address: ").append(Address).append("\n");
         sb.append("- Phone: ").append(phone).append("\n");
         sb.append("- Email: ").append(email).append("\n");
         sb.append("- Password: ").append(password).append("\n");
@@ -308,99 +258,7 @@ public class Provider extends User  {
     }
 
 //////////////////
-    public static Service findServiceByID(String serviceId, String filename) {
-	    String line;
-	    Service service =new Service();
-	    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-	        while ((line = reader.readLine()) != null) {
-	            String[] items = line.split(" , ");
-	            if (items.length >= 7) {
-	    	        
-	            	String sid = items[0];
-	            	if (sid.equals(serviceId)) {
-	            	
-					service.setServiceID(items[0]);
-	    	        service.setProviderID(items[1]);
-	    	        service.setServiceType(items[2]);
-	    	        service.setServiceName(items[3]);
-	    	        service.setDescription(items[4]);
-	    	        service.setPrice(Double.parseDouble(items[5]));
-	    	        service.setAvailability(items[6]);
-
-	                    return service;}
-	               
-	            } else {
-	            	printing.printSomething("Invalid line format for service ID " + serviceId + ": " + line);
-	            }
-	        }
-	    } catch (IOException e) {
-	    	printing.printSomething("Error reading file: " + e.getMessage());
-	    }
-
-	    return null; // Service not found or error occurred
-	}   
-    
-////////    
-    
-    public void updateServiceDetails(String sid) throws IOException {
-		
- 	   Service toupdatedService = findServiceByID(sid,"service.txt");
- 		deleteService(sid);
- 	   
- 	   
- 		if ( toupdatedService != null)
- 		{
- 			Scanner scanner = new Scanner(System.in);
- 			printing.printSomething("""
-			Choose which field to update:
-			1. Service Type
-			2. Service Name
-			3. Description
-			4. Price
-			5. Availability
-			""");
- 			
- 			
- 			printing.printSomething("Enter the number of the field you want to update: ");
-             String x = scanner.next();
-             
-             switch (x) {
-             case "1":
-                 printing.printSomething("Enter new service type:");
-                 toupdatedService.setServiceType(scanner.next());
-                 break;
-             case "2":
-                 printing.printSomething("Enter new service name:");
-                 toupdatedService.setServiceName(scanner.next());
-                 break;
-             case "3":
-                 printing.printSomething("Enter new service description:");
-                 toupdatedService.setDescription(scanner.next());
-                 break;
-             case "4":
-                 printing.printSomething("Enter new service price:");
-                 toupdatedService.setPrice(scanner.nextDouble());
-                 break;
-             case "5":
-                 printing.printSomething("Enter new service availability:");
-                 toupdatedService.setAvailability(scanner.next());
-                 break;
-             default:
-            	 printing.printSomething("Invalid choice.");
-         }
- 	   
- 	   
- 	   
- 		}
- 		Service.addServiceToFile(toupdatedService);
- 			
- 			
- 		
- 		
- 		
- 		
- 	}
-
+   
 ////    
 	
     public static void addProviderToFile(Provider provider) {
@@ -408,7 +266,7 @@ public class Provider extends User  {
             providersFile.append(provider.getId()).append(" , ")
                         .append(provider.getUsername()).append(" , ")
                         .append(provider.getphone()).append(" , ")
-                        .append(provider.getaddress()).append(" , ")
+                        .append(provider.getAddress()).append(" , ")
                         .append(provider.getEmail()).append(" , ")
                         .append(provider.getPassword())
                         .append("\n");

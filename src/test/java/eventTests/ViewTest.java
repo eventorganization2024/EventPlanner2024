@@ -50,7 +50,7 @@ public void setUp() throws ParseException {
 	}
 	@Then("the list Adminlist  displayed")
 	public void theListAdminlistDisplayed() throws IOException, Exception {
-    assertTrue(show_Adminlist); F.adminList();
+    assertTrue(show_Adminlist); Functions.adminList();
   
 	}
 //////////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ public void setUp() throws ParseException {
 	}
 	@Then("the list Userlist  displayed")
 	public void theListUserlistDisplayed() {
-		 assertTrue(show_customerlist); F.customerPageList();
+		 assertTrue(show_customerlist); Functions.customerPageList();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ public void setUp() throws ParseException {
 	@Then("the list of Myevents  displayed")
 	public void theListOfMyeventsDisplayed() throws Exception {
 		 assertTrue(show_eventsofCustomer);//.viewCostomerevents();         //////////////////////////////
-			F.viewCostomerevents("12114777","event.txt" );
+			Functions.viewCostomerevents("admin123","event.txt" );
 	}
 
 

@@ -1,7 +1,6 @@
 package org.example;
 
 import java.util.Scanner;
-
 public class Main {
     
     public static void main(String[] args) throws Exception {
@@ -20,7 +19,7 @@ public class Main {
                     handleSignUpMenu(scanner, printing, functions);
                     break;
                 case 2:
-                    Functions.signInFunction();
+                	 functions.signInFunction();
                     break;
                 case 3:
                     running = false; // Set running to false to exit the loop
@@ -82,5 +81,10 @@ public class Main {
                 printing.printSomething("Invalid choice! Please enter a valid choice.");
                 break;
         }
-    }
-}
+//     Functions functions = new Functions();
+//    Functions.printCustomersList();
+//    	
+//}
+        }}
+
+

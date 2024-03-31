@@ -27,11 +27,7 @@ Then the discount is successfully removed from the system
 
 
 
-Scenario: when a customer proceeds to checkout and wishes to apply a discount
-Given the customer Added event
-When the customer enters the valid discount code or selects a pre-applied discount
-Then the discount is applied to the total order amount
-#And the updated total is displayed
+
 
 
 

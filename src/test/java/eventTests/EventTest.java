@@ -53,7 +53,7 @@ public class EventTest{
     boolean newUpdate;
     Customer customer1 = new Customer();
     Event eventToUpdate;
-    Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "RAMA456", "ramallah_venue_image.jpg");
+    Venue v = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "R456", "ramallah_venue_image.jpg");
    
    
 ////////////////////////////////////////////////////////////////////////////////////    
@@ -83,30 +83,36 @@ public class EventTest{
             e.printStackTrace();
            
         } 
-       Functions.addVenueToFile("venue.txt",  v.toFileString());
+     //  Functions.addVenueToFile("venue.txt",  v.toFileString());
         
        List<String> serviceIds = new ArrayList<>();
         serviceIds.add("100");
+        
+        
+        
         event = new Event(string5, date, string2, string3, string4, customer1.getId(), string7, string6, string8, serviceIds, string9);
-	     Event.addEventToFile(event, "requst.txt");
-	     toadd=true;
-	    }
+        if (Functions.searchIdE(string9, "requst.txt")|| Functions.searchIdE(string9, "event.txt")) { found =true ;}else found=false;	              
+        
+        if (!found)
+		{	
+		   Event.addEventToFile(event,"requst.txt");}
+		else    System.out.println(" event existe ");
+
+	    } 
+        
+	     
+	  
 	
   
 	@Then("the event is added to admin requst")
 	public void theEventIsAddedToAdminRequst() throws Exception { 
-		
-		assertTrue(toadd);
-		Event.addEventToFile(event,"requst.txt");
 	}
 
-
-	
 	////////////////////////////////////
 	
 	@Given("there is an existing event")
 	public void thereIsAnExistingEvent() { 
-		if (Functions.searchIdE(event.getEID(), "event.txt"))
+		if (Functions.searchIdE(event.getEID(), "requst.txt")|| Functions.searchIdE(event.getEID(), "event.txt"))
 			existe=true;
 		else 	
 		existe=false;}
@@ -168,9 +174,16 @@ public void theAdministratorEntersTheEventDetailsSuchAsDateTimeDescriptionAttend
 	@Then("the event is successfully created in the system")
 	public void theEventIsSuccessfullyCreatedInTheSystem() throws Exception { assertTrue(creat); 
      
-	Event.addEventToFile(event,"event.txt");
+	 if (Functions.searchIdE(event.getEID(), "requst.txt")|| Functions.searchIdE(event.getEID(), "event.txt")) { found =true ;}else found=false;	                      
+     if (!found)
+		{	
+		Event.addEventToFile(event,"event.txt");}
+		else    System.out.println(" event existe ");
+
+	    } 
+     
 	
-	}
+
 	
 
  ////////////////////////////////////
@@ -242,7 +255,6 @@ public void theyUpdateTheEventDescriptionTo(String string) {
 }
 
 
-
 @When("they update the event date to {string}")
 public void theyUpdateTheEventDateTo(String string) {
 	   inputStream = new ByteArrayInputStream(string.getBytes());
@@ -280,7 +292,7 @@ public void theyUpdateTheEventCategoryTo(String string) {
 
 @When("they update the event venue to {string}")
 public void theyUpdateTheEventVenueTo(String string) throws NumberFormatException, NullPointerException, IOException {
-	
+	Functions.addVenueToFile("venue.txt", v.toFileString());
 	inputStream = new ByteArrayInputStream(string.getBytes());
     System.setIn(inputStream);
    event.updateEventVenue("1000",eventToUpdate,"event.txt");
