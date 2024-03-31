@@ -100,7 +100,8 @@ public class Event {
 	        String eventId = items[9];
 	        String serviceIdsString = items[10];
 	        // Remove leading and trailing brackets if present
-	        serviceIdsString = serviceIdsString.replaceAll("^\\[|\\]$", "");
+	        serviceIdsString = serviceIdsString.replaceAll("^(\\[|\\])$", "");
+
 	// The regex "\\s*,\\s*" is safe as it splits the input string by commas with optional whitespace.
 // The limit of -1 ensures that trailing empty strings are not discarded.
 String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -1);
