@@ -45,7 +45,8 @@ public void setUp() throws ParseException {
     @Test
 	@Given("the Administrator has selected show Adminlist")
 	public void theAdministratorHasSelectedShowAdminlist() {
-     show_Adminlist =true;
+         show_Adminlist =true;
+		assertTrue(show_Adminlist);
 	
 	}
 	@Then("the list Adminlist  displayed")
