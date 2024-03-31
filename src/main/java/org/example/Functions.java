@@ -50,7 +50,7 @@ public class Functions {
 	    int choice2;
 	    static boolean found;
 	    static String tmp;
-	    //String d;
+	
 	    static double price;
 	    private static final String IMAGE_LABEL = " Image: ";
 	    /////
