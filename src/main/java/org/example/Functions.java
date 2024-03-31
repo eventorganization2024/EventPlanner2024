@@ -2297,7 +2297,7 @@ public static void updateCustomerFile() {
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                            //SEARCH IDS//
 public static boolean searchIdU(String id) {
-	 try (BufferedReader br = new BufferedReader(new FileReader("customer.txt"))) {
+	 try (BufferedReader br = new BufferedReader(new FileReader("CUSTOMER_FILE_NAME"))) {
 	        String line;
 	        while ((line = br.readLine()) != null) {
 	            String[] items = line.split(" , ");
