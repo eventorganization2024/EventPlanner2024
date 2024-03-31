@@ -86,12 +86,13 @@ public class Functions {
 	    private static final String CAPACITY_LABEL = " Capacity: ";
 	    private static final String PRICE_LABEL = " Price: ";
 	    static final String EXITING = "Exiting...";
-	    
+	     static final String INVALID_INPUT = "Invalid input: ";
 	    static final String ENTER_CHOICE = "Enter your choice:\n ";
 	    static final String ENTER_PASSWORD= "Enter Password:";
 	    private static final String ACCOUNT_ALREADY_EXIST_MESSAGE = "This account is already existed, Please Sign in.\n";
 	    private static final String THANK_MESSAGE = "  \nThank you! Your information has been recorded.    \nEnter a password: ";
         static final String INVALID_CHOICE = "\nInvalid choice! Please enter a valid choice.\n";
+	
 	    static final String LINE = "----------------------------------------";
 	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
 	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
@@ -2311,7 +2312,7 @@ public static boolean searchIdU(String id) {
 	    } catch (IOException e) {
 	        printing.printSomething(ERROR + e.getMessage());
 	    } catch (NumberFormatException e) {
-	        printing.printSomething("Invalid input: " + e.getMessage());
+	        printing.printSomething(INVALID_INPUT + e.getMessage());
 	    }
 	    return false; // Return false if the ID is not found in any line
 }
@@ -2342,7 +2343,7 @@ public static boolean searchIdE(String id3, String filename) {
     } catch (IOException e) {
         printing.printSomething(ERROR + e.getMessage());
     } catch (NumberFormatException e) {
-        printing.printSomething("Invalid input: " + e.getMessage());
+        printing.printSomething(INVALID_INPUT + e.getMessage());
     }
     return false; // Return false if the ID is not found in any line
 }
@@ -2362,7 +2363,7 @@ public static boolean searchIdS(String serviceID, String fileName) {
     } catch (IOException e) {
         printing.printSomething(ERROR + e.getMessage());
     } catch (NumberFormatException e) {
-        printing.printSomething("Invalid input: " + e.getMessage());
+        printing.printSomething(INVALID_INPUT + e.getMessage());
     }
     return false; 
 }
