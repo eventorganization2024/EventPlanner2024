@@ -591,7 +591,8 @@ public String toString2() {
     
    Functions. updateServiceList();
    for (String serviceId : serviceIds) {
-        serviceId = serviceId.replaceAll("\\[|\\]", "");
+     serviceId = serviceId.replaceAll("[\\[\\]]", "");
+
        
         for (Service service : Functions.serviceDetails) {
         	if (serviceId.equalsIgnoreCase("[No service]")) {
