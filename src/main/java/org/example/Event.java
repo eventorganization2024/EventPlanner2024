@@ -30,7 +30,7 @@ public class Event {
     private String eventId;
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
-    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd"); ;
+    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd");
     private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
 
     private static final String ERROR_PREFIX = "An error occurred: ";
