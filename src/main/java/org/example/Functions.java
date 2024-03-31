@@ -2819,35 +2819,39 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
       executor.shutdown();
       }
 
-    public void approachUpcomingEvents()throws NullPointerException {
-LocalDateTime now = LocalDateTime.now();
-updateEventList(EVENT_FILE_NAME);
+      public void approachUpcomingEvents() throws NullPointerException {
+        LocalDateTime now = LocalDateTime.now();
+        updateEventList(EVENT_FILE_NAME);
 
-List<Event> upcomingEvents = events.stream()
-.filter(event -> {
-LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-return eventDate.isEqual(now.toLocalDate());
-})
-.collect(Collectors.toList());
+        List<Event> upcomingEvents = events.stream()
+                .filter(event -> {
+                    LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+                    return eventDate.isEqual(now.toLocalDate());
+                })
+                .collect(Collectors.toList());
 
-for (Event event : upcomingEvents) {
-LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
-LocalTime currentTime = LocalTime.now();
-long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
+        for (Event event : upcomingEvents) {
+            LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
+            LocalTime currentTime = LocalTime.now();
+            long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
 
-if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
-String customerId = event.getUsrTd();
-String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
-String[] details = recipientDetails.split("-");
-String recipientName = details[1];		            
-String messageContent = generateMessageContent(recipientName, event.getTime(), 60-timeDifferenceMinutes);
-String subject = "Notification for Upcoming Event: " + event.getName();
-
-sendNotificationsToParticipants(details[0], subject, messageContent);
-notifiedEvents.add(event.getEID());
-}
-}
-}
+            if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
+                String customerId = event.getUsrTd();
+                String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
+                if (recipientDetails != null) {
+                    String[] details = recipientDetails.split("-");
+                    String recipientName = details[1];
+                    String messageContent = generateMessageContent(recipientName, event.getTime(), 60 - timeDifferenceMinutes);
+                    String subject = "Notification for Upcoming Event: " + event.getName();
+                    sendNotificationsToParticipants(details[0], subject, messageContent);
+                    notifiedEvents.add(event.getEID());
+                } else {
+                  
+                    System.out.println("Recipient details are null for event: " + event.getName());
+                }
+            }
+        }
+    }
 
 
       private String getEmailAndNameFromCustomerFile(String customerId) {
