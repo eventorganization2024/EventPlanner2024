@@ -2585,7 +2585,7 @@ public static void discountManagementadminList() {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
-public static List<Event> makeListofEvent(String cId)  {
+public  List<Event> makeListofEvent(String cId)  {
 updateeventandcustomer(EVENT_FILE_NAME);
 
 List<Event> customerEvents = new ArrayList<>();
@@ -2611,7 +2611,7 @@ return customerEvents;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //method to load events for a specific customer in calendar
-public static Calendar loadEventsForCustomerInCalendar(String customerId) {
+public  Calendar loadEventsForCustomerInCalendar(String customerId) {
 List<Event> customerEvents;
 try {
 customerEvents = makeListofEvent(customerId);
