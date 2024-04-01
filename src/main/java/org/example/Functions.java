@@ -100,7 +100,7 @@ public class Functions {
 	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
 	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
-	    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+	   // private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
 	    static final String ADD="ADD";
 	    static final String VIEW_ALL=" VIEW_ALL";
@@ -1007,7 +1007,8 @@ public   void adminPage(String adminId) throws Exception{
 
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
     public  Event addevent (String idUser,String filename) throws Exception {
-    	
+    	   SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+           
         updateEventList(REQUEST_FILE_NAME);
         updateEventList(EVENT_FILE_NAME);
          eventObj = new Event();	
@@ -1027,7 +1028,7 @@ public   void adminPage(String adminId) throws Exception{
          String dateInput = scanner.next();
          Date date;
          try {
-             date = DATE_FORMAT.parse(dateInput);
+             date = dateFormat.parse(dateInput);
          } catch (ParseException e) {
 
         	 printing.printSomething( ERROR_PREFIX + e.getMessage());
