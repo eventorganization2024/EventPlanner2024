@@ -1240,7 +1240,7 @@ public   void adminPage(String adminId) throws Exception{
 
         printing.printSomething("Enter package price: ");
        String priceP =scannerP.next();
-        double pricePD = Double.valueOf(priceP);
+       double pricePD = Double.parseDouble(priceP);
         scannerP.nextLine(); // Consume newline character
 
         printing.printSomething("Enter package validity period (YYYY-MM-DD): ");
