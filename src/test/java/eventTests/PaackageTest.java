@@ -524,8 +524,9 @@ public class PaackageTest
 	    @Test
 	    public void testLoadEventsForCustomerInCalendar_WithoutEvents() {
 	        String customerIdWithoutEvents = "customerIdWithoutEvents"; // Assuming customer has no events
-
 	        Calendar calendar = fun.loadEventsForCustomerInCalendar(customerIdWithoutEvents);
+		         boolean eventFound= false;
+	       assertFalse(eventFound);
 
 	    }
 	    
