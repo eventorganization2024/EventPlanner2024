@@ -217,7 +217,7 @@ public class Service {
    
 ////////   
    
-   public static void updateServiceDetails(String sid) throws IOException {
+   public static void updateServiceDetails(String sid) throws IOException,NullPointerException {
 		
 	   Service toupdatedService = findServiceByID(sid,"service.txt");
 		deleteService(sid);
@@ -265,12 +265,8 @@ public class Service {
         }
 	   
 	   
-	   
+	     Service.addServiceToFile(toupdatedService);
 		}
-		Service.addServiceToFile(toupdatedService);
-			
-			
-		
 		
 		
 		
