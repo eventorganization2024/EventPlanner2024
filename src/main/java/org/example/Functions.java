@@ -2134,7 +2134,7 @@ void customerSignUp() throws Exception {
     }
 }
 public  void updateCustomerProfile(int n) throws IOException {
-     Scanner SC =new Scanner(System.in);
+     Scanner sc =new Scanner(System.in);
 	String tmp1;
     for (Customer customer1 : customers) {
         if (customer1.getId().equals(customerId)) {
@@ -2142,7 +2142,7 @@ public  void updateCustomerProfile(int n) throws IOException {
             switch (n) {
                 case 1:
                     printing.printSomething("Enter New Name: ");
-                    tmp1 = SC.nextLine(); 
+                    tmp1 = sc.nextLine(); 
                     updateFile(CUSTOMER_FILE_NAME, customer1.getUsername(), tmp1);
                     customer1.setName(tmp1);
                    break;
