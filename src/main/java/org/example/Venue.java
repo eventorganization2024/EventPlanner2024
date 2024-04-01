@@ -104,7 +104,7 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
             String[] parts = line.split(",");
             if (parts.length >= 5 && parts[4].equals(eventId)) {
                 // Find the venue ID based on the new venue name
-                String venueId = findVenueIdByName(newV, "venue.txt");
+                String venueId = findVenueIdByName(newV, VENUE_FILE_NAME );
                 if (venueId != null) {
                     Date date = new Date();
                     try {
