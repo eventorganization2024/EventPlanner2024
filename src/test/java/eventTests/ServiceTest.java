@@ -30,7 +30,7 @@ public class ServiceTest {
     private Service deletedService;
     boolean found;
     Functions fun=new Functions();
-    @Before
+   @org.junit.Before
     public void setUp() throws IOException {
         serviceProviderService = new Provider();}
        
