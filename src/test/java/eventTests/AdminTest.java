@@ -6,7 +6,7 @@ import org.example.Printing;
 import org.example.Service;
 import org.junit.Test;
 
-import org.junit.Before;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 
 import static org.junit.Assert.assertEquals;
