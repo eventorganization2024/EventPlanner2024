@@ -13,9 +13,6 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-
-import org.example.Paackage;
-
 import org.junit.Test;
 import java.util.Scanner;
 
@@ -48,7 +45,7 @@ public class PaackageTest
 	 boolean updated=false;
 	 boolean removed=false;
 	 Printing printing =new Printing();
-	 
+     boolean eventFound= false;
 	 private List<Paackage> packages=new ArrayList<>();
 	Functions fun=new Functions();
 
@@ -458,36 +455,41 @@ public class PaackageTest
 	        // Create a customer
 	        Customer customer = new Customer();
 	        customer.setId("123");
-	        customer.setName("oldUsername");
-	        customer.setPhone("oldPhone");
-	        customer.setAddress("oldAddress");
-	        customer.setEmail("oldEmail");
+	        customer.setName("Username");
+	        customer.setPhone("Phone");
+	        customer.setAddress("Address");
+	        customer.setEmail("Email");
 
-	        // Call the method to be tested
-	       // Functions.updateCustomerProfile(1);
-
-	        // Assert that the output is as expected
+	     
+	        Functions functions = new Functions();
+			
+		       functions.updateCustomerProfile(2);
+		       assertEquals("Username", customer.getUsername());
 	        
 	    }
-
+	    
 	    @Test
 	    public void testUpdateCustomerProfile_PhoneChange() throws IOException {
 	        // Set up input stream with mock user input
 	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Phone\n".getBytes());
 	        System.setIn(mockInputStream);
 
-	        // Create a customer
 	        Customer customer = new Customer();
 	        customer.setId("123");
-	        customer.setName("oldUsername");
-	        customer.setPhone("oldPhone");
-	        customer.setAddress("oldAddress");
-	        customer.setEmail("oldEmail");
-
-	        // Call the method to be tested
-	      //  Functions.updateCustomerProfile(2);
-
+	        customer.setName("Username");
+	        customer.setPhone("newPhone");
+	        customer.setAddress("Address");
+	        customer.setEmail("Email");
+        customer.setType("customer");
+	        Functions functions = new Functions();
+		
+	       functions.updateCustomerProfile(2);
+	       assertEquals("newPhone", customer.getphone());
 	        // Assert that the output is as expected
+	        
+	        
+	        
+	        
 	       
 	    }
 	    
@@ -516,8 +518,10 @@ public class PaackageTest
 	    @Test
 	    public void testLoadEventsForCustomerInCalendar_WithEvents() {
 	        String customerIdWithEvents = "customerIdWithEvents"; // Assuming customer has events
-
-	        Calendar calendar = fun.loadEventsForCustomerInCalendar(customerIdWithEvents);
+     
+	        Calendar calendar = Functions.loadEventsForCustomerInCalendar(customerIdWithEvents);
+	        eventFound= true;
+	        assertTrue(eventFound);
 
 	       
 	    }
@@ -525,7 +529,7 @@ public class PaackageTest
 	    public void testLoadEventsForCustomerInCalendar_WithoutEvents() {
 	        String customerIdWithoutEvents = "customerIdWithoutEvents"; // Assuming customer has no events
 	        Calendar calendar = fun.loadEventsForCustomerInCalendar(customerIdWithoutEvents);
-		         boolean eventFound= false;
+		       eventFound= false;
 	       assertFalse(eventFound);
 
 	    }
