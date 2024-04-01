@@ -1,4 +1,5 @@
 package eventTests;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -76,7 +77,7 @@ public class VenueAvailabilityTest
 	        bookingSuccess=true;
             assertTrue(bookingSuccess);
              
-	        assertTrue(v.getAvailavility().equals("Available"));
+            assertEquals("Available", v.getAvailavility());
 	    }
 
 	    @Test
