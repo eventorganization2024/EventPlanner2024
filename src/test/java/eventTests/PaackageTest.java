@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 
 import org.junit.Test;
 import java.util.Scanner;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
