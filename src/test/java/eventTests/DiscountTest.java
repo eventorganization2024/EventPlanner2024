@@ -220,6 +220,8 @@ Functions.writeDiscountsToFile("discounts.txt",Discounts);
 
         // Verify the output or behavior as needed
         String expectedOutput = "Discount successfully edited.\n";
+                assertNotEquals(expectedOutput, outContent.toString());
+
     }
 }
 
