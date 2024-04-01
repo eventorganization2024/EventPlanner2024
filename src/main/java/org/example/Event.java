@@ -329,7 +329,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
                     updateEventCategory(eventToUpdated);
                     break;
                 case "8":
-                    updateEventVenue(eventidd,eventToUpdated, filename);
+                    updateEventVenue(eventidd,eventToUpdated);
                     break;
                 case "9":
                     updateEventServices(eventToUpdated);
@@ -431,7 +431,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
     }
  
     
-    public  void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException, NumberFormatException{
+    public  void updateEventVenue(String eventidd,Event eventt) throws IOException,NullPointerException, NumberFormatException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
         
         SimpleDateFormat dateFormatV = new SimpleDateFormat(FORMAT);
