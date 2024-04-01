@@ -23,7 +23,7 @@ public class CalendarNotificationsTest {
     @Then("the user should see a list of upcoming events")
     public void theUserShouldSeeAListOfUpcomingEvents() {
     	
-    	 Calendar calendar = Functions.loadEventsForCustomerInCalendar("11");
+    	 Calendar calendar = functions.loadEventsForCustomerInCalendar("11");
      	if (calendar != null) {
      	 Functions.displayAllCustomerEvents(calendar);
      	 } 
