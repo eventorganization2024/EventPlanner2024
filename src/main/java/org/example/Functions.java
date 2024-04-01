@@ -1608,7 +1608,6 @@ public   void adminPage(String adminId) throws Exception{
   	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
   	                    if (validityDate.isAfter(LocalDate.now())) {
   	                        return ( price * (1 - percentage / 100));
-  	                       // return discountedPrice;
   	                    } else {
   	                        printing.printSomething("\n\nThe code is expired");
   	                        return price; // Example: Return -1 for expired discount
