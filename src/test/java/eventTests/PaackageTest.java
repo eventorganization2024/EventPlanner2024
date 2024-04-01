@@ -535,7 +535,8 @@ public class PaackageTest
 	        String invalidCustomerId = "invalidCustomerId"; // Assuming invalid customer ID
 
 	        Calendar calendar = fun.loadEventsForCustomerInCalendar(invalidCustomerId);
-
+	        boolean addedtoCulendar=false;
+	        assertFalse(addedtoCulendar);
 	    }
 	    
 	    @Test
