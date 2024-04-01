@@ -303,12 +303,7 @@ public class PaackageTest
 	        System.setIn(in);
 
 	        Functions.addPackage(new Scanner(System.in), "package.txt");
-	       /*
-	        ByteArrayInputStream in2 = new ByteArrayInputStream("1".getBytes());
-		       System.setIn(in2);
-		        Scanner s =new Scanner(System.in);
-	         Functions.deletePackageById(s, "package.txt");
-		    */	
+	   
 			
 	        
 	    }
