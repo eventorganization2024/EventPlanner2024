@@ -96,32 +96,44 @@ public static void updateVenueInVenueBook(String eventId, Date newDate, String v
    
    
 public static void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
-       try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
-           StringBuilder sb = new StringBuilder();
-           String line;
-           while ((line = reader.readLine()) != null) {
-               String[] parts = line.split(",");
-               if (parts.length >= 5 && parts[4].equals(eventId)) {
-               	 Date date=new Date();
+    try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length >= 5 && parts[4].equals(eventId)) {
+                // Find the venue ID based on the new venue name
+                String venueId = findVenueIdByName(newV, "venue.txt");
+                System.out.println("venueeeeeeee");
+                if (venueId != null) {
+                    Date date = new Date();
                     try {
                         date = DATE_FORMAT.parse(parts[2]);
+                        parts[0] = venueId; // Update the venue ID
+                        parts[2] = DATE_FORMAT.format(date); // Update the date part
                     } catch (ParseException e) {
-
-                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
+                        e.printStackTrace();
                     }
-                    newV= DATE_FORMAT.format(date) ;
-                   line = String.join(",", parts);
-               }
-               sb.append(line).append("\n");
-           }
-           // Write the updated content back to the file
-           try (FileWriter writer = new FileWriter(venueBookFileName)) {
-               writer.write(sb.toString());
-           }
-       } catch (IOException e) {
-    	   printing.printSomething( ERROR_PREFIX + e.getMessage());
-       }
-   }
+                } else {
+                    // Handle case where venue ID is not found for the new venue name
+                    // You can log an error message or handle it according to your requirements
+                }
+            }
+            line = String.join(",", parts); // Construct the updated line
+            sb.append(line).append("\n");
+        }
+        
+        // Write the updated content back to the file
+        try (FileWriter writer = new FileWriter(venueBookFileName)) {
+            writer.write(sb.toString());
+        }
+    } catch (IOException e) {
+        e.printStackTrace(); // Handle or log the exception as needed
+    }
+}
+
+
+
    
    
 public static String findVenueIdByName(String venueName, String filename) {
