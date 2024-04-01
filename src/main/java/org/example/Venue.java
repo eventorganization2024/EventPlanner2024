@@ -95,6 +95,7 @@ public static void updateVenueInVenueBook(String eventId, Date newDate, String v
    }
    
    
+   
 public static void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
     try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
         StringBuilder sb = new StringBuilder();
@@ -104,7 +105,6 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
             if (parts.length >= 5 && parts[4].equals(eventId)) {
                 // Find the venue ID based on the new venue name
                 String venueId = findVenueIdByName(newV, "venue.txt");
-                System.out.println("venueeeeeeee");
                 if (venueId != null) {
                     Date date = new Date();
                     try {
@@ -112,7 +112,7 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
                         parts[0] = venueId; // Update the venue ID
                         parts[2] = DATE_FORMAT.format(date); // Update the date part
                     } catch (ParseException e) {
-                        e.printStackTrace();
+printing.printSomething("");                        
                     }
                 } else {
                     // Handle case where venue ID is not found for the new venue name
@@ -128,9 +128,10 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
             writer.write(sb.toString());
         }
     } catch (IOException e) {
-        e.printStackTrace(); // Handle or log the exception as needed
+printing.printSomething("");                        
     }
 }
+
 
 
 
