@@ -21,7 +21,7 @@ public class Venue {
 	    static final String VENUE_FILE_NAME = "venue.txt";
 	    static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
 	    static Printing printing = new Printing();
-	    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd"); ;
+	    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd"); 
 
 
 	
