@@ -1321,27 +1321,16 @@ public   void adminPage(String adminId) throws Exception{
 
 /////////////////////////////////////////////////////////////////////////////////
    
-    private static void sendmsgToCustomer(String msg, Event event) {
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter("Msg.txt", true);
+       private static void sendmsgToCustomer(String msg, Event event) {
+        try (FileWriter fileWriter = new FileWriter("Msg.txt", true)) {
             fileWriter.append("The Event ")
                       .append(event.getName()).append(" ")
                       .append(msg).append(" , ")
                       .append(event.getUsrTd()).append("\n");
         } catch (IOException e) {
             printing.printSomething(ERROR_PREFIX + e.getMessage());
-        } finally {
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                    printing.printSomething("An error occurred while closing the fileWriter: " + e.getMessage());
-                }
-            }
         }
     }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////	    
      public static void updatePackage(Scanner scanner, String filename) {
