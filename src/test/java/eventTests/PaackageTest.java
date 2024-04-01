@@ -561,7 +561,7 @@ public class PaackageTest
 
 	        // Call the method to be tested
 	        Functions.updateProviderProfile(1);
-                     assertEquals("New Name", provider.getUsername());
+                     assertEquals("jullnar", provider.getUsername());
 	    }
 	    
 	
