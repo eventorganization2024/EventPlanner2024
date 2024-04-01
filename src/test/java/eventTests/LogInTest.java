@@ -3,6 +3,7 @@ package eventTests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 import java.util.logging.Level;
 import java.util.logging.*;
 import org.example.*;
@@ -81,6 +82,18 @@ public class LogInTest{
     }
 
 
+ @Test
+    public void testUserLoginWithCorrectCredentials() {
+      
+        u.setName("correctUsername");
+        u.setPassword("correctPassword");
+
+   
+        u.loginCH("correctUsername", "correctPassword");
+
+     
+        assertTrue(u.getLogstate());
+    }
 
 
 
