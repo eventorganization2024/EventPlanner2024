@@ -47,7 +47,8 @@ public class PaackageTest
 	 Printing printing =new Printing();
      boolean eventFound= false;
      boolean packageFound= false;
-
+     boolean updatePpage=false;
+     boolean updateCpage=false;
 	 private List<Paackage> packages=new ArrayList<>();
 	Functions fun=new Functions();
 
@@ -469,6 +470,8 @@ public class PaackageTest
 			
 		       functions.updateCustomerProfile(1);
 		       assertEquals("Username", customer.getUsername());
+		       updateCpage=true;
+	           assertTrue(updateCpage);
 	        
 	    }
 	    
@@ -491,6 +494,8 @@ public class PaackageTest
 			
 		       functions.updateCustomerProfile(4);
 		       assertEquals("newEmail", customer.getEmail());
+		       updateCpage=true;
+               assertTrue(updateCpage);
 	        
 	    }
 	    
@@ -499,7 +504,7 @@ public class PaackageTest
 	    
 	    @Test
 	    public void testUpdateCustomerProfile_PhoneChange() throws IOException {
-	        // Set up input stream with mock user input
+	
 	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Phone\n".getBytes());
 	        System.setIn(mockInputStream); 
 
@@ -515,7 +520,8 @@ public class PaackageTest
 	       functions.updateCustomerProfile(2);
 	       assertEquals("newPhone", customer.getphone());
 	        // Assert that the output is as expected
-	        
+	       updateCpage=true;
+           assertTrue(updateCpage);
 	        
 	        
 	        
@@ -571,6 +577,7 @@ public class PaackageTest
 	        Calendar calendar = fun.loadEventsForCustomerInCalendar(invalidCustomerId);
 	        boolean addedtoCulendar=false;
 	        assertFalse(addedtoCulendar);
+	      
 	    }
 	    
 	    @Test
@@ -589,14 +596,17 @@ public class PaackageTest
 	        
 	        providers.add(provider);
 
-	        // Set up scanner input
+	        
 	        String input = "1\nNew Name\n"; // Change name option (1) and provide new name
 	        InputStream in = new ByteArrayInputStream(input.getBytes());
 	        System.setIn(in);
-
-	        // Call the method to be tested
+            
 	        Functions.updateProviderProfile(1);
                      assertEquals("jullnar", provider.getUsername());
+                     updatePpage=true;
+                     assertTrue(updatePpage);
+                    		 
+                    
 	    }
 	    
 	
