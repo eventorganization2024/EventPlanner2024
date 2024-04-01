@@ -632,7 +632,35 @@ public class PaackageTest
                     
 	    }
 	    
+	    
+	    @Test
+	    public void testUpdateProviderProfile_PhoneChange() throws IOException {
 	
+	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Phone\n".getBytes());
+	        System.setIn(mockInputStream); 
+
+	        Provider provider = new Provider();
+	        provider.setAddress("address");
+	        provider.setEmail("jullnarihab61@gmail.com");
+	        provider.setId("2334");
+	        provider.setLogstate(true);
+	        provider.setName("jullnar");
+	        provider.setPassword("1234");
+	        provider.setPhone("1234");
+	        provider.setType("p");
+	        Functions functions = new Functions();
+		
+	       functions.updateCustomerProfile(2);
+	       assertEquals("1234", provider.getphone());
+	      
+	       updatePpage=true;
+           assertTrue(updatePpage);
+	        
+	        
+	        
+	       
+	    }
+	    
 	    
 	    
 	    
