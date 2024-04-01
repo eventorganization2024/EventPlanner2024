@@ -68,6 +68,8 @@ public class EventTest{
         customer1.setAddress("Nablus");
         event.setUserId(customer1.getId());
         System.out.println(" customer is going to create an event ");
+		    creat=true;
+        assertTrue(creat);
 
 	}
 	                                                 
