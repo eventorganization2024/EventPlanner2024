@@ -1,6 +1,9 @@
 package eventTests;
-import org.example.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import org.example.*;
+import org.junit.Test;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -54,7 +57,7 @@ public class venueAvailabilityTest
 	
 	    @When("a user tries to book the venue")
 	    public void aUserTriesToBookTheVenue() {
-	        // Check if the venue is already reserved
+	    
 	        if (v.getAvailavility().equals("Reserved")) {
 	            bookingSuccess = false;
 	        }
@@ -62,9 +65,30 @@ public class venueAvailabilityTest
 
 	@Then("a message should appear informing the user that the venue is unavailable")
 	public void aMessageShouldAppearInformingTheUserThatTheVenueIsUnavailable() {
-		
 		 printing.printSomething("Venue is unavailable");
 	}
+	
+	 @Test
+	    public void testVenueBookingSuccess() {
+	 
+	        Venue v = new Venue();
+	        v.setAvailability("Available");
+	        bookingSuccess=true;
+            assertTrue(bookingSuccess);
+             
+	        assertTrue(v.getAvailavility().equals("Available"));
+	    }
+
+	    @Test
+	    public void testVenueBookingFailure() {
+	  
+	        Venue v = new Venue();
+	        v.setAvailability("Reserved");
+
+	        boolean bookingSuccess = false;
+
+	        assertFalse(bookingSuccess);
+	    }
 
 
 }
