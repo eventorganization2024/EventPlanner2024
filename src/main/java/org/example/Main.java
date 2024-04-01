@@ -34,14 +34,14 @@ public class Main {
     private static void printWelcomeMenu() {
         Printing printing = new Printing();
         printing.printSomething("""
-            ------ Welcome to Home Page ------
-            |                                |
-            |          1. Sign up            |
-            |          2. Sign in            |
-            |          3. Exit               |
-            |                                |
-            ----------------------------------
-            Enter your choice: 
+        ------ Welcome to Home Page ------
+        |                                |
+        |          1. Sign up            |
+        |          2. Sign in            |
+        |          3. Exit               |
+        |                                |
+        ----------------------------------
+        Enter your choice: 
         """);
     }
     
