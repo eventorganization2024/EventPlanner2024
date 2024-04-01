@@ -498,7 +498,7 @@ public class PaackageTest
 	        String customerIdWithEvents = "customerIdWithEvents";
 
 	        // Call the method to be tested
-	        List<Event> events = Functions.makeListofEvent(customerIdWithEvents);
+	        List<Event> events = fun.makeListofEvent(customerIdWithEvents);
 
 	        // Assert that the returned list is not empty
 	    }
@@ -509,7 +509,7 @@ public class PaackageTest
 	        String customerIdWithNoEvents = "customerIdWithNoEvents";
 
 	        // Call the method to be tested
-	        List<Event> events = Functions.makeListofEvent(customerIdWithNoEvents);
+	        List<Event> events = fun.makeListofEvent(customerIdWithNoEvents);
 
 	        // Assert that the returned list is empty
 	    }
@@ -518,7 +518,7 @@ public class PaackageTest
 	    public void testLoadEventsForCustomerInCalendar_WithEvents() {
 	        String customerIdWithEvents = "customerIdWithEvents"; // Assuming customer has events
 
-	        Calendar calendar = Functions.loadEventsForCustomerInCalendar(customerIdWithEvents);
+	        Calendar calendar = fun.loadEventsForCustomerInCalendar(customerIdWithEvents);
 
 	       
 	    }
@@ -526,7 +526,7 @@ public class PaackageTest
 	    public void testLoadEventsForCustomerInCalendar_WithoutEvents() {
 	        String customerIdWithoutEvents = "customerIdWithoutEvents"; // Assuming customer has no events
 
-	        Calendar calendar = Functions.loadEventsForCustomerInCalendar(customerIdWithoutEvents);
+	        Calendar calendar = fun.loadEventsForCustomerInCalendar(customerIdWithoutEvents);
 
 	    }
 	    
@@ -534,7 +534,7 @@ public class PaackageTest
 	    public void testLoadEventsForCustomerInCalendar_WithInvalidCustomerId() {
 	        String invalidCustomerId = "invalidCustomerId"; // Assuming invalid customer ID
 
-	        Calendar calendar = Functions.loadEventsForCustomerInCalendar(invalidCustomerId);
+	        Calendar calendar = fun.loadEventsForCustomerInCalendar(invalidCustomerId);
 
 	    }
 	    
