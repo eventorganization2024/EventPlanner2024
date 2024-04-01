@@ -2580,17 +2580,25 @@ public static void discountManagementadminList() {
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
-public  List<Event> makeListofEvent(String cId) throws Exception {
-updateeventandcustomer(customerId,EVENT_FILE_NAME);
+/////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
+public static List<Event> makeListofEvent(String cId)  {
+updateeventandcustomer(EVENT_FILE_NAME);
 
 List<Event> customerEvents = new ArrayList<>();
 
 for (Customer customer : customers) {
-if (customer.getId().equals(cId)) {
-customerEvents = Customer.getEvents();
-}
+    if (customer.getId().equals(cId)) {
+        for (Event E : Customer.getCevents()) {
+            if (E.getUsrTd().equals(cId)) {
+                customerEvents.add(E);
+            }
+        }
+    }
 }
 
 
@@ -2604,7 +2612,7 @@ return customerEvents;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //method to load events for a specific customer in calendar
-public  Calendar loadEventsForCustomerInCalendar(String customerId) {
+public static Calendar loadEventsForCustomerInCalendar(String customerId) {
 List<Event> customerEvents;
 try {
 customerEvents = makeListofEvent(customerId);
@@ -2621,9 +2629,7 @@ printing.printSomething( "No events found for customer with ID: " + customerId);
 }
 } catch (Exception e) {
 
-
 	printing.printSomething( ERROR_PREFIX + e.getMessage());
-
 } return null ;
 
 }
@@ -2657,14 +2663,14 @@ calendar.setYear(year);
 calendar.setMonth(month);
 
 // Print the events for the current year and month
-displayCalendarEvents(calendar);
+displayCalendarEvents(calendar); 
 printing.printInColor(LINE_STARS, Printing.ANSI_BLACK);
 
 // Add the displayed month to the set
 displayedMonths.add(yearMonthKey);
 }
 }
-// 
+
 
 public static void displayCalendarEvents(Calendar calendar) {
 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
@@ -2681,7 +2687,7 @@ printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_BLUE);
 }
 
 // Print the header for days of the week
-printing.printInColor("\n+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
+printing.printInColor("\n"+LINE2, Printing.ANSI_LIME);
 printing.printInColor("|          Mon          |          Tue          |          Wed          |          Thu          |          Fri          |          Sat          |          Sun          |\n", Printing.ANSI_GREEN);
 
 // Get the first day of the month
@@ -2721,8 +2727,7 @@ dayRow.append(String.format("********* %s ********|", dayString));
 } else if(currentDate.getMonthValue()==calendar.getMonth()) {
 dayRow.append(String.format("          %s           ", dayString));dayRow.append("|");
 } else{
-dayRow.append(String.format("                       ", dayString));dayRow.append("|");
-}   
+	dayRow.append(String.format("%-25s", dayString)).append("|");}   
 
 currentDate = currentDate.plusDays(1);
 
@@ -2732,13 +2737,11 @@ printing.printInColor(dayRow.toString(), Printing.ANSI_GREEN);
 printing.printInColor("\n", Printing.ANSI_GREEN);
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 
-
-//Print events for each day
+// Print events for each day
 printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1));
 }
 
-//Print the footer for the days of the week
-
+// Print the footer for the days of the week
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 }
 
@@ -2783,6 +2786,7 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 
 }
 }
+
 
 
 
