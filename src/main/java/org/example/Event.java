@@ -617,7 +617,7 @@ public String toString() {
     sb.append("Name: ").append(name).append(", ")
       .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
       .append("User ID: ").append(userId).append(", ")
-      .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
+      .append("Event ID: ").append(eventId).append(".").append("\n"); // Moved event ID to the end
    // sb.append(RESET_COLOR); // Reset text color
 
     return sb.toString();
