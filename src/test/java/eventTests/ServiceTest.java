@@ -155,7 +155,7 @@ public class ServiceTest {
     public void systemShouldUpdateServiceDetails() {
         // Assuming serviceProviderService has a method to edit service details
     //	assertTrue(serviceProviderService.editServiceDetails(modifiedService));
-        assertTrue( serviceProviderService.editServiceDetails(modifiedService)!=null);
+        assertNotNull(serviceProviderService.editServiceDetails(modifiedService));
 	
 
     }
