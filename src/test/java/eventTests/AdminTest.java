@@ -6,7 +6,7 @@ import org.example.Printing;
 import org.example.Service;
 import org.junit.Test;
 
-import io.cucumber.java.Before;
+import org.junit.Before;
 import io.cucumber.java.en.Given;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,7 @@ public class AdminTest {
   
 
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
 
          functions = new Functions();
