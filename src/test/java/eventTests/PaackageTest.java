@@ -1,7 +1,4 @@
 package eventTests;
-
-
-
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
