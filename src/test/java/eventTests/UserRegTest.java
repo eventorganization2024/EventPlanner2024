@@ -1,5 +1,6 @@
 package eventTests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.logging.Level;
 import java.util.logging.*;
@@ -96,6 +97,6 @@ public class UserRegTest {
 
 	        boolean registered = u.isRegest("John Doe");
 
-	        assertTrue(!registered);
+	        assertFalse(!registered);
 	    }
 }
