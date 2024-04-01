@@ -36,7 +36,6 @@ import javax.mail.internet.MimeMessage;
 
 
 
-
 public class Functions {
 
 	   static Printing printing = new Printing();
