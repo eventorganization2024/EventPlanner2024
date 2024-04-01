@@ -22,7 +22,7 @@ public class Service {
     static Printing printing = new Printing();
     Functions f =new Functions();
     private static final List<Service> serviceDetailsList = new ArrayList<>();
-    
+      static final String SERVICE_FILE_NAME = "service.txt";
     
     public Service() {}
 
@@ -42,7 +42,7 @@ public class Service {
 
  public static double calculateTotalPrice(List<String> serviceIds) {
        // Map to store service IDs and their corresponding prices
-       Map<String, Double> servicePrices = getServicePricesFromFile("service.txt");
+       Map<String, Double> servicePrices = getServicePricesFromFile(SERVICE_FILE_NAME);
        double totalPrice = 0.0;
 
        // Iterate through the chosen service IDs and sum up their prices
@@ -92,7 +92,7 @@ public class Service {
    }
 ////////////////////////////////////////////////////////////////////////
    public static void addServiceToFile(Service service) {
-	    try (FileWriter serviceFile = new FileWriter("service.txt", true)) {
+	    try (FileWriter serviceFile = new FileWriter(SERVICE_FILE_NAME, true)) {
 	        
 	        serviceFile.append(service.getServiceID()).append(" , ")
 	                   .append(service.getProviderID()).append(" , ")
@@ -142,7 +142,7 @@ public class Service {
 
          if (serviceToDelete != null) {
                serviceDetailsList.remove(serviceToDelete);
-               deleteServiceFromFile("service.txt", serviceID);
+               deleteServiceFromFile(SERVICE_FILE_NAME, serviceID);
                  
            } else {
            	printing.printSomething("Service not found.\n");
@@ -219,7 +219,7 @@ public class Service {
    
    public static void updateServiceDetails(String sid) throws IOException,NullPointerException {
 		
-	   Service toupdatedService = findServiceByID(sid,"service.txt");
+	   Service toupdatedService = findServiceByID(sid,SERVICE_FILE_NAME);
 		deleteService(sid);
 	   
 	   
