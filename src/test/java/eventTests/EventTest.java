@@ -292,7 +292,7 @@ public void theyUpdateTheEventVenueTo(String string) throws NumberFormatExceptio
 	Functions.addVenueToFile("venue.txt", v.toFileString());
 	inputStream = new ByteArrayInputStream(string.getBytes());
     System.setIn(inputStream);
-   event.updateEventVenue("1000",eventToUpdate,"event.txt");
+   event.updateEventVenue("1000",eventToUpdate);
    newUpdate=true;
 	
 }
