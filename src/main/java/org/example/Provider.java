@@ -126,7 +126,7 @@ public class Provider extends User  {
     public void setEmail(String email) { this.email = email;}
     
     public void setAddress(String address) {this.addresss=address;}
-    public String getAddress() { return addresss;  }
+    public String getProviderAddress() { return addresss;  }
     
     public static Provider getProviderFromLine(String line) {
        Provider provider =new  Provider();
@@ -266,7 +266,7 @@ public class Provider extends User  {
             providersFile.append(provider.getId()).append(" , ")
                         .append(provider.getUsername()).append(" , ")
                         .append(provider.getphone()).append(" , ")
-                        .append(provider.getAddress()).append(" , ")
+                        .append(provider.getProviderAddress()).append(" , ")
                         .append(provider.getEmail()).append(" , ")
                         .append(provider.getPassword())
                         .append("\n");
