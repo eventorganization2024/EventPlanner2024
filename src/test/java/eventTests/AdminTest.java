@@ -25,7 +25,7 @@ public class AdminTest {
     Printing printing;
     Admin admin = new Admin();
   
-  
+
 
     @org.junit.Before
     public void setUp() throws Exception {
