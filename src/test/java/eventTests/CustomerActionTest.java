@@ -44,9 +44,10 @@ private static final String TEST_FILENAME = "test_invoices.txt";
 private static final String CUSTOMER_ID = "123";
 	    Functions functions = new Functions();
 	    static boolean updated = false;
-	    static boolean deleteProfile = false;
 	    static boolean read = false;
-	static boolean added=false;
+	    static boolean deleteProfile = false;
+	    static boolean added = false;
+
 	    Printing printing = new Printing();
 	    Event event=new Event();
 	  
@@ -130,17 +131,24 @@ private static final String CUSTOMER_ID = "123";
 		    }
 
 
-@Test
-	 @When("I choose to delete my profile")
-	    public void i_choose_to_delete_my_profile() throws IOException {
-	    // deleteProfile = true;
-	       // String id=customer.getId();
-	 // Functions.deleteCustomer(id);
-	 // Functions.deleteCustomerProfile(id);
-	       
+
+
+     @When("I choose to delete my profile depends on {string}")
+     public void iChooseToDeleteMyProfileDependsOn(String string) throws IOException {
+     
+      deleteProfile = true;
+      Functions.deleteCustomer(string);
+      Functions.deleteCustomerProfile(string);
+       assertTrue(deleteProfile);
+    
+}
+
+
+
+	 
 	        
 	       
-	    }
+
 @Test
 public void testDeleteCustomer_InvalidId() {
    
@@ -209,7 +217,7 @@ public void testDeleteCustomer_InvalidId() {
 	        String message = "Test message";
 	        String color = Printing.ANSI_RED; 
 	        printing.printInColor(message, color);    
-		       boolean printedTrue=true;
+	        boolean printedTrue=true;
 	        assertTrue(printedTrue);
 	    }
 
@@ -279,9 +287,11 @@ public void testDeleteCustomer_InvalidId() {
 	    public void testReadInvoiceFile_ValidInvoices() throws IOException {
 	    	
                 Functions.addToInvoice(CUSTOMER_ID, "Evint1", "EventName", 150.0);         
+	     
 	        Functions.readInvoiceFile("invoice.txt", CUSTOMER_ID);
-		        read=true;
+	        read=true;
 	        assertTrue(read);
+	        
 
 	       
 	    }
@@ -293,9 +303,9 @@ public void testDeleteCustomer_InvalidId() {
 	        String input = "New Name";
 	        InputStream in = new ByteArrayInputStream(input.getBytes());
 	        System.setIn(in);
-
-	         updated=true;
-             assertTrue(updated);
+	        updated=true;
+            assertTrue(updated);
+	       
 
 	       
 	    }
@@ -309,6 +319,7 @@ public void testDeleteCustomer_InvalidId() {
 	        System.setIn(in);
              updated=true;
              assertTrue(updated);
+
 
 
 	        
