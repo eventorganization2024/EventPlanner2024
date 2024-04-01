@@ -123,17 +123,7 @@ public class Functions {
 	    private static  String adminId;
 	    String customerId;
 	    String provideId;
-	   /* 
-	     void inputs() {
-	        printing.printSomething("Enter Id: ");
-	        id = scanner.next();
-	        customerId=id;
-	        provideId=id;
-	        adminId=id;
-	        printing.printSomething(ENTER_PASSWORD);
-	        scanner.next(); 
-	    }
-      */
+
 ///////////////////////////////////////////////////////////////////////////////////////
  void signInFunction() throws Exception {
     signInPageList();
