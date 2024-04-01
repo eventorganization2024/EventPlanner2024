@@ -112,7 +112,7 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
                         parts[0] = venueId; // Update the venue ID
                         parts[2] = DATE_FORMAT.format(date); // Update the date part
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
                         
                     }
                 } else {
@@ -129,7 +129,7 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
             writer.write(sb.toString());
         }
     } catch (IOException e) {
-        e.printStackTrace(); // Handle or log the exception as needed
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 
