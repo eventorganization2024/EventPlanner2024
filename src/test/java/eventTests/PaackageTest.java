@@ -519,7 +519,7 @@ public class PaackageTest
 	    public void testLoadEventsForCustomerInCalendar_WithEvents() {
 	        String customerIdWithEvents = "customerIdWithEvents"; // Assuming customer has events
      
-	        Calendar calendar = Functions.loadEventsForCustomerInCalendar(customerIdWithEvents);
+	        Calendar calendar = fun.loadEventsForCustomerInCalendar(customerIdWithEvents);
 	        eventFound= true;
 	        assertTrue(eventFound);
 
