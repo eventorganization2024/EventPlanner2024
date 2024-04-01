@@ -1169,7 +1169,7 @@ public   void adminPage(String adminId) throws Exception{
        
    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
-    public static void addDiscount(Scanner scanner, String filename) {
+ public static void addDiscount(Scanner scanner, String filename) {
         printing.printSomething("Adding a discount...");
         
         try {
@@ -1607,8 +1607,8 @@ public   void adminPage(String adminId) throws Exception{
   	                    double percentage = Double.parseDouble(parts[2]);
   	                    LocalDate validityDate = LocalDate.parse(parts[3], DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
   	                    if (validityDate.isAfter(LocalDate.now())) {
-  	                        double discountedPrice = price * (1 - percentage / 100);
-  	                        return discountedPrice;
+  	                        return ( price * (1 - percentage / 100));
+  	                       // return discountedPrice;
   	                    } else {
   	                        printing.printSomething("\n\nThe code is expired");
   	                        return price; // Example: Return -1 for expired discount
@@ -1624,6 +1624,7 @@ public   void adminPage(String adminId) throws Exception{
   	        return price;
   	    }
   	}
+
 
 
   	public static boolean checkAvailability(String venueName, String date) throws IOException {
