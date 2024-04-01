@@ -13,7 +13,12 @@ Then the new Package is successfully added to the system
     
     Scenario: Administrator updates a service package
     Given the administrator is logged into the system
-    When the administrator updates the package acording to 1 and "value"
+    When the administrator updates the package 
+    And acording to 1 and "value" 
+     And acording to 2 and "11" 
+      And acording to 3 and "50" 
+       And acording to 4 and "value" 
+        And acording to 00 and "value" 
     Then the package  should be successfully updated
     
     
@@ -22,3 +27,9 @@ Then the new Package is successfully added to the system
     When the administrator selects to view all packages
     Then the system should display a list of all available packages
     
+Scenario: Administrator updates a service package with a valid new ID
+Given the administrator is logged into the system
+When the administrator updates the package according to "123"
+    Then the package  should be successfully updated
+
+

@@ -1,22 +1,26 @@
-package eventSteps;
+package eventTests;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+
 
 import org.example.Event;
 import org.example.Functions;
+import org.junit.Test;
+import org.junit.Before;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 
-public class ViewSteps {
+
+public class ViewTest {
 
 boolean show_Adminlist ,
 show_ListOfEventsforAdmin,
@@ -29,22 +33,28 @@ show_Venueforcustomer,
 show_providerlist,
 show_mangepages;
 
-Functions F=new Functions();
+Functions F;
 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-public ViewSteps() throws ParseException {
-    
-        Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference","V1", "111");
-    
-}
+ @Before
+public void setUp() throws ParseException {
+    F = new Functions();
+    Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "V1", "111");
+    assertNotNull(e);
+ 
+ }
+ 
 
+
+    @Test
 	@Given("the Administrator has selected show Adminlist")
 	public void theAdministratorHasSelectedShowAdminlist() {
-     show_Adminlist =true;
+         show_Adminlist =true;
+		assertTrue(show_Adminlist);
 	
 	}
 	@Then("the list Adminlist  displayed")
 	public void theListAdminlistDisplayed() throws IOException, Exception {
-    assertTrue(show_Adminlist); F.adminList();
+    assertTrue(show_Adminlist); Functions.adminList();
   
 	}
 //////////////////////////////////////////////////////////////////
@@ -53,6 +63,8 @@ public ViewSteps() throws ParseException {
 	@Given("the Administrator has selected show customar")
 	public void theAdministratorHasSelectedShowCustomar() {
 	 show_allcustomers =true;
+	 
+	 
 	}
 	@Then("the list of users  displayed")
 	public void theListOfUsersDisplayed() {
@@ -109,7 +121,7 @@ public ViewSteps() throws ParseException {
 	}
 	@Then("the list Userlist  displayed")
 	public void theListUserlistDisplayed() {
-		 assertTrue(show_customerlist); F.customerPageList();
+		 assertTrue(show_customerlist); Functions.customerPageList();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -121,7 +133,7 @@ public ViewSteps() throws ParseException {
 	@Then("the list of Myevents  displayed")
 	public void theListOfMyeventsDisplayed() throws Exception {
 		 assertTrue(show_eventsofCustomer);//.viewCostomerevents();         //////////////////////////////
-			F.viewCostomerevents("12114777","event.txt" );
+			Functions.viewCostomerevents("admin123","event.txt" );
 	}
 
 
@@ -165,14 +177,14 @@ public ViewSteps() throws ParseException {
 	@Then("the pages displayed")
 	public void thePagesDisplayed() {
 		 assertTrue(show_mangepages);
-		 Functions.signInPageList();
-		 Functions.eventManagementAdminPageList();
-		 Functions.discountManagementadminList();
-		 Functions.userManagementAdminPageList();
-		 Functions.userSearchPageList();
-		 Functions.venueManagementadminList();
-		 Functions.providerManagementAdminPageList();
-		 Functions.packageManagementadminList();
+		 F.signInPageList();
+		 F.eventManagementAdminPageList();
+		 F.discountManagementadminList();
+		 F.userManagementAdminPageList();
+		 F.userSearchPageList();
+		 F.venueManagementadminList();
+		 F.providerManagementAdminPageList();
+		 F.packageManagementadminList();
 		
 	
 	}

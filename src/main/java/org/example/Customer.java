@@ -1,6 +1,8 @@
 
 package org.example;
 
+
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -34,8 +36,7 @@ public static List<Event> getEvents() {
 
     public static void addEvent(Event event) { Cevents.add(event); }
 	
-    
-        
+            
    
     public Customer() {}
     public Customer(String id, String username, String phone, String address,String pass, String email) {
@@ -91,7 +92,7 @@ logger.warning(() -> "Invalid line format: " + line);
       return customer1;
   }
     
-    
+   
   
   
   
@@ -108,8 +109,7 @@ logger.warning(() -> "Invalid line format: " + line);
   
   
   
-  
-  
+ 
 
 
 }

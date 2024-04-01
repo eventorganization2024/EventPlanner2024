@@ -1,8 +1,7 @@
-000,Grand_Hall,Al_Masyoun_Ramallah,grand_hotel_image.jpg,200,1500.0
-001,Bethlehem_Event_Hall,Manger Square_Bethlehem,event_hall_image.jpg,300,2000.0
-002,Hebron_Celebration_Center,Downtown_Hebron,celebration_center_image.jpg,250,1800.0
-003,Gaza_Beach_Club,Gaza_City,gaza_beach_club_image.jpg,150,1200.0
-004,Nablus_Conference_Hall,Al_Quds_Street_Nablus,conference_hall_image.jpg,400,2200.0
-005,Jenin_Banquet_Hall,Jenin_City,jenin_banquet_hall_image.jpg,200,1600.0
-RAMA456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
+VenueID123,VenueName111111,VenueAddress,image.jpg,100,150.0R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0000,VenueName11111,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0000,VenueName1111,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.056,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
+000,VenueName111,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
+R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
+000,VenueName11,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
+R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
+000,VenueName1,VenueAddress,VenueImage,100,0.0
+
