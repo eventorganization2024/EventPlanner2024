@@ -112,7 +112,8 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
                         parts[0] = venueId; // Update the venue ID
                         parts[2] = DATE_FORMAT.format(date); // Update the date part
                     } catch (ParseException e) {
-printing.printSomething("");                        
+                        e.printStackTrace();
+                        
                     }
                 } else {
                     // Handle case where venue ID is not found for the new venue name
@@ -128,10 +129,9 @@ printing.printSomething("");
             writer.write(sb.toString());
         }
     } catch (IOException e) {
-printing.printSomething("");                        
+        e.printStackTrace(); // Handle or log the exception as needed
     }
 }
-
 
 
 
