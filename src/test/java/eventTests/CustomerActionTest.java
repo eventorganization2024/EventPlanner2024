@@ -46,6 +46,7 @@ private static final String CUSTOMER_ID = "123";
 	    static boolean updated = false;
 	    static boolean deleteProfile = false;
 	    static boolean read = false;
+	static boolean added=false;
 	    Printing printing = new Printing();
 	    Event event=new Event();
 	  
@@ -246,23 +247,29 @@ public void testDeleteCustomer_InvalidId() {
 	    	if (Functions.searchIdU("121Test")) 
 	    	{
 	    		found=true;
+	    	
 	    	}
 	    	else 
 	    	{ 
 	    		found=false;
+	    		assertFalse(found);
+	    
 	    			                            
 	    	}
 		    if (found)
 		    {	
 		    	 Functions.deleteCustomer("121Test");
-		    	// Functions.updateCustomerFile();
+		      
 		    
 		    } 
 		   
 		   else {
 			  
 			   Customer.addCustomerToFile(customer);
-			   //Functions.updateCustomerFile();
+			 
+			     added=true;
+			     assertTrue(added);
+			     
 		   }
 	    	
 	    }
