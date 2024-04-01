@@ -3,6 +3,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -10,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Provider extends User  {
-    private static final List<Service> serviceDetailsList = new ArrayList<>();
+   protected static  List<Service> serviceDetailsList = new ArrayList<>();
     private String email;
     private String addresss;
     static Printing printing = new Printing();
