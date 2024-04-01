@@ -112,7 +112,7 @@ public class Functions {
 	    
 	    public static void printCustomersList() {
 	        for (Customer customer : customers) {
-	            System.out.println(customer); // Assuming you have overridden toString() method in Customer class
+	           printing.printSomething(""+customer);
 	        }
 	    }
 	   
