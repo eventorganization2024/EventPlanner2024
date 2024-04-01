@@ -12,7 +12,8 @@ import io.cucumber.java.en.Given;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -113,17 +114,22 @@ public class AdminTest {
         admin.setState(true);
         assertTrue(admin.getstate());
     }
-    @Test
+  @Test
     public void testViewBusinessReports() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
-
-   
         Functions.updateCustomersList();
         Functions.updateEventList("event.txt");
-        Method method = Functions.class.getDeclaredMethod("viewBusinessReports");
-        method.setAccessible(true);
-        method.invoke(functions);
-      
         
-        
+        try {
+            Method method = Functions.class.getDeclaredMethod("viewBusinessReports");
+            method.setAccessible(true);
+            Object result = method.invoke(functions);
+            
+            // Add assertion to verify the result
+            assertNull(result);
+            
+        } catch (Exception e) {
+            // Handle any exceptions that may occur during reflection or method invocation
+            fail("An exception occurred: " + e.getMessage());
+        }
     }
 }
