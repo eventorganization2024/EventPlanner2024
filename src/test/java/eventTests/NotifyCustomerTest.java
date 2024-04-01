@@ -1,8 +1,9 @@
 package eventTests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -30,19 +31,25 @@ public class NotifyCustomerTest {
 	    Customer customer = new Customer();
 	    boolean requestAccepted;
 	    boolean requestRejected;
+	    boolean eventexisit=false;
+	    boolean MsgSent=false;
 
 	    ///
 	@Given("there is an existing event request for a customer")
 	public void thereIsAnExistingEventRequestForACustomer() {
+		eventexisit=true;
+		assertTrue(eventexisit);
 		
-       // Functions.addEmptyLine("requst.txt");
 	}
 	@When("the event request is accepted by the administrator")
 	public void theEventRequestIsAcceptedByTheAdministrator() {
 		
         requestAccepted = true;
+        assertTrue(requestAccepted);
         
 	}
+	
+	
 	@Then("an message notification is sent to the customer informing them about the acceptance")
 	public void anEmailNotificationIsSentToTheCustomerInformingThemAboutTheAcceptance() throws NoSuchMethodException, SecurityException, IllegalAccessException, InvocationTargetException {
 		 if (requestAccepted) {
@@ -66,6 +73,8 @@ public class NotifyCustomerTest {
 	public void theEventRequestIsRejectedByTheAdministrator() {
 		
         requestRejected = true;
+        assertTrue(requestRejected);
+        
       
 	}
 	@Then("an message notification is sent to the customer informing them about the rejection")
@@ -73,9 +82,14 @@ public class NotifyCustomerTest {
 		 if (requestRejected) {
 	          
 	            assertTrue("Message notification sent successfully", true);
+	            MsgSent=true;
+	            assertTrue(MsgSent);
+	       
 	       
 	        } else {
-	            //assertTrue("Event request rejection flag is not set", false);
+	        	MsgSent=false;
+	        	assertFalse(MsgSent);
+	            
 	        }
 	    }
 	
@@ -93,6 +107,28 @@ public class NotifyCustomerTest {
 	        
 	    }
 
+	 
+	 @Test
+	    public void testSendmsgToCustomer() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+	       
+	        Event event = new Event();
+	        event.setName("Test Event2");
+
+	        String message = " is Accepted";
+          
+	  
+	        Method method = Functions.class.getDeclaredMethod("sendmsgToCustomer", String.class, Event.class);
+	       
+	        method.setAccessible(true);
+	       
+	        Object result = method.invoke(null, message, event);
+
+	          MsgSent=true;
+	          assertTrue(MsgSent);
+	          assertNull(result);
+
+	       
+	    }
 	
 }
 

@@ -3,7 +3,6 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -13,7 +12,7 @@ import java.io.IOException;
 public class Provider extends User  {
     private static final List<Service> serviceDetailsList = new ArrayList<>();
     private String email;
-    private String Address;
+    private String addresss;
     static Printing printing = new Printing();
     static List<Provider> providers = new ArrayList<>(); 
     Functions f=new Functions();
@@ -119,14 +118,14 @@ public class Provider extends User  {
         this.phone=phone;
         this.id=id;
         this .email=email;  
-        this.Address=address;
+        this.addresss=address;
     }
     
     public String getEmail() { return email;  }
     public void setEmail(String email) { this.email = email;}
     
-    public void setAddress(String address) {this.Address=address;}
-    public String getAddress() { return Address;  }
+    public void setAddress(String address) {this.addresss=address;}
+    public String getProviderAddress() { return addresss;  }
     
     public static Provider getProviderFromLine(String line) {
        Provider provider =new  Provider();
@@ -218,7 +217,7 @@ public class Provider extends User  {
         return  
                 "UserID='" + id + '\'' +
                 ",1. Name=" + username+'\'' +
-                ",2. Address='" + Address + '\'' +
+                ",2. Address='" + addresss + '\'' +
                 ",3. Phone=" + phone +'\'' +
                 ",4. Email='" + email + '\'' +
                 ",5. Password=" + password +'\'' 
@@ -234,7 +233,7 @@ public class Provider extends User  {
         sb.append("\033[0;33m"); // Set text color to yellow for attribute names
         sb.append("- UserID: ").append(id).append("\n");
         sb.append("- Name: ").append(username).append("\n");
-        sb.append("- Address: ").append(Address).append("\n");
+        sb.append("- Address: ").append(addresss).append("\n");
         sb.append("- Phone: ").append(phone).append("\n");
         sb.append("- Email: ").append(email).append("\n");
         sb.append("- Password: ").append(password).append("\n");
@@ -266,7 +265,7 @@ public class Provider extends User  {
             providersFile.append(provider.getId()).append(" , ")
                         .append(provider.getUsername()).append(" , ")
                         .append(provider.getphone()).append(" , ")
-                        .append(provider.getAddress()).append(" , ")
+                        .append(provider.getProviderAddress()).append(" , ")
                         .append(provider.getEmail()).append(" , ")
                         .append(provider.getPassword())
                         .append("\n");

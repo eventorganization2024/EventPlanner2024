@@ -1,4 +1,5 @@
 package eventTests;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -9,7 +10,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class venueAvailabilityTest
+public class VenueAvailabilityTest
 {
 	 private Venue v= new Venue();
 	
@@ -76,7 +77,7 @@ public class venueAvailabilityTest
 	        bookingSuccess=true;
             assertTrue(bookingSuccess);
              
-	        assertTrue(v.getAvailavility().equals("Available"));
+            assertEquals("Available", v.getAvailavility());
 	    }
 
 	    @Test

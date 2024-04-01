@@ -2110,7 +2110,9 @@ public  void updateCustomerProfile(int n) throws IOException {
                 case 1:
                     printing.printSomething("Enter New Name: ");
                     tmp1 = sc.nextLine(); 
+
                     updateFile(customerId,CUSTOMER_FILE_NAME, customer1.getUsername(), tmp1);
+
                     customer1.setName(tmp1);
                    break;
                 case 2:

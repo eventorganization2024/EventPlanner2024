@@ -16,7 +16,7 @@ Scenario: View Invoices
 Scenario: Delete My Profile
     Given I am logged in
     When I navigate to My Profile
-    And I choose to delete my profile
+    And I choose to delete my profile depends on "id"
     And I confirm the deletion
     Then my profile should be deleted successfully
     

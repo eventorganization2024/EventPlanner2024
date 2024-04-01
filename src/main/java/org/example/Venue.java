@@ -21,8 +21,7 @@ public class Venue {
 	    static final String VENUE_FILE_NAME = "venue.txt";
 	    static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
 	    static Printing printing = new Printing();
-	    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd"); ;
-
+	    private static final String FORMAT = "yyyy-MM-dd";
 
 	
 	    public Venue(String name, String address, int capacity, double price,String availability,String id,String image) {
@@ -66,7 +65,9 @@ public class Venue {
 		
 
 public static void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
-       try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
+       
+	try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
            StringBuilder sb = new StringBuilder();
            String line;
            while ((line = reader.readLine()) != null) {
@@ -74,7 +75,7 @@ public static void updateVenueInVenueBook(String eventId, Date newDate, String v
                if (parts.length >= 5 && parts[4].equals(eventId)) {
                	 Date date;
                     try {
-                        date = DATE_FORMAT.parse(parts[2]);
+                        date = dateFormat.parse(parts[2]);
                     } catch (ParseException e) {
 
                     	 printing.printSomething( ERROR_PREFIX + e.getMessage());
@@ -97,7 +98,8 @@ public static void updateVenueInVenueBook(String eventId, Date newDate, String v
    
    
 public static void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
-    try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
+	    try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -108,11 +110,11 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
                 if (venueId != null) {
                     Date date = new Date();
                     try {
-                        date = DATE_FORMAT.parse(parts[2]);
+                        date = dateFormat.parse(parts[2]);
                         parts[0] = venueId; // Update the venue ID
-                        parts[2] = DATE_FORMAT.format(date); // Update the date part
+                        parts[2] = dateFormat.format(date); // Update the date part
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
                         
                     }
                 } else {
@@ -129,7 +131,7 @@ public static void updateVenueInVenueBook(String eventId, String newV, String ve
             writer.write(sb.toString());
         }
     } catch (IOException e) {
-        e.printStackTrace(); // Handle or log the exception as needed
+    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
     }
 }
 

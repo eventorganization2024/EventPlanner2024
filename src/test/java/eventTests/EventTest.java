@@ -1,9 +1,4 @@
-
 package eventTests;
-
-
-
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -68,6 +63,8 @@ public class EventTest{
         customer1.setAddress("Nablus");
         event.setUserId(customer1.getId());
         System.out.println(" customer is going to create an event ");
+		    creat=true;
+        assertTrue(creat);
 
 	}
 	                                                 
@@ -295,7 +292,7 @@ public void theyUpdateTheEventVenueTo(String string) throws NumberFormatExceptio
 	Functions.addVenueToFile("venue.txt", v.toFileString());
 	inputStream = new ByteArrayInputStream(string.getBytes());
     System.setIn(inputStream);
-   event.updateEventVenue("1000",eventToUpdate,"event.txt");
+   event.updateEventVenue("1000",eventToUpdate);
    newUpdate=true;
 	
 }

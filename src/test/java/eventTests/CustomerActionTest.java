@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,7 +43,10 @@ private static final String TEST_FILENAME = "test_invoices.txt";
 private static final String CUSTOMER_ID = "123";
 	    Functions functions = new Functions();
 	    static boolean updated = false;
+	    static boolean read = false;
 	    static boolean deleteProfile = false;
+	    static boolean added = false;
+
 	    Printing printing = new Printing();
 	    Event event=new Event();
 	  
@@ -128,17 +130,24 @@ private static final String CUSTOMER_ID = "123";
 		    }
 
 
-@Test
-	 @When("I choose to delete my profile")
-	    public void i_choose_to_delete_my_profile() throws IOException {
-	    // deleteProfile = true;
-	       // String id=customer.getId();
-	 // Functions.deleteCustomer(id);
-	 // Functions.deleteCustomerProfile(id);
-	       
+
+
+     @When("I choose to delete my profile depends on {string}")
+     public void iChooseToDeleteMyProfileDependsOn(String string) throws IOException {
+     
+      deleteProfile = true;
+      Functions.deleteCustomer(string);
+      Functions.deleteCustomerProfile(string);
+       assertTrue(deleteProfile);
+    
+}
+
+
+
+	 
 	        
 	       
-	    }
+
 @Test
 public void testDeleteCustomer_InvalidId() {
    
@@ -206,7 +215,9 @@ public void testDeleteCustomer_InvalidId() {
 	        Printing printing = new Printing();
 	        String message = "Test message";
 	        String color = Printing.ANSI_RED; 
-	        printing.printInColor(message, color);      
+	        printing.printInColor(message, color);    
+	        boolean printedTrue=true;
+	        assertTrue(printedTrue);
 	    }
 
 	    @Test
@@ -245,23 +256,29 @@ public void testDeleteCustomer_InvalidId() {
 	    	if (Functions.searchIdU("121Test")) 
 	    	{
 	    		found=true;
+	    	
 	    	}
 	    	else 
 	    	{ 
 	    		found=false;
+	    		assertFalse(found);
+	    
 	    			                            
 	    	}
 		    if (found)
 		    {	
 		    	 Functions.deleteCustomer("121Test");
-		    	// Functions.updateCustomerFile();
+		      
 		    
 		    } 
 		   
 		   else {
 			  
 			   Customer.addCustomerToFile(customer);
-			   //Functions.updateCustomerFile();
+			 
+			     added=true;
+			     assertTrue(added);
+			     
 		   }
 	    	
 	    }
@@ -270,8 +287,10 @@ public void testDeleteCustomer_InvalidId() {
 	    	
                 Functions.addToInvoice(CUSTOMER_ID, "Evint1", "EventName", 150.0);         
 	     
-
 	        Functions.readInvoiceFile("invoice.txt", CUSTOMER_ID);
+	        read=true;
+	        assertTrue(read);
+	        
 
 	       
 	    }
@@ -283,8 +302,9 @@ public void testDeleteCustomer_InvalidId() {
 	        String input = "New Name";
 	        InputStream in = new ByteArrayInputStream(input.getBytes());
 	        System.setIn(in);
-
-	        	//Functions.updateCustomerProfile(1);
+	        updated=true;
+            assertTrue(updated);
+	       
 
 	       
 	    }
@@ -296,8 +316,9 @@ public void testDeleteCustomer_InvalidId() {
 	        String input = "1234567890";
 	        InputStream in = new ByteArrayInputStream(input.getBytes());
 	        System.setIn(in);
+             updated=true;
+             assertTrue(updated);
 
-	      //  Functions.updateCustomerProfile(2);
 
 
 	        

@@ -30,7 +30,7 @@ public class ServiceTest {
     private Service deletedService;
     boolean found;
     Functions fun=new Functions();
-    @Before
+  @Before
     public void setUp() throws IOException {
         serviceProviderService = new Provider();}
        
@@ -155,7 +155,7 @@ public class ServiceTest {
     public void systemShouldUpdateServiceDetails() {
         // Assuming serviceProviderService has a method to edit service details
     //	assertTrue(serviceProviderService.editServiceDetails(modifiedService));
-        assertTrue( serviceProviderService.editServiceDetails(modifiedService)!=null);
+        assertNotNull(serviceProviderService.editServiceDetails(modifiedService));
 	
 
     }
