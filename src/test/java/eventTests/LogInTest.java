@@ -2,6 +2,7 @@ package eventTests;
 
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import java.util.logging.Level;
@@ -20,7 +21,7 @@ public class LogInTest{
 
 	
     User u = new User();
-
+  boolean loggied=false;
     static Logger logger= Logger.getLogger(LogInTest.class.getName());
 
    
@@ -95,7 +96,78 @@ public class LogInTest{
         assertTrue(u.getLogstate());
     }
 
+ @Test
+ public void testUserLoginWithIncorrectCredentials() {
+     User user = new User();
+     user.setName("incorrectUsername");
+     user.setPassword("incorrectPassword");
+   
+     user.loginCH("correctUsername", "correctPassword");
 
+     assertFalse(user.getLogstate());
+ }
+
+ @Test
+ public void testUserNameAndPasswordNull() {
+     User user = new User();
+     user.setName(null);
+     user.setPassword(null);
+     loggied=false;
+     user.setLogstate(loggied);
+     assertFalse(user.getLogstate());
+   
+
+     
+ }
+
+ @Test
+ public void testUserNameAndPasswordEmpty() {
+     User user = new User();
+     user.setName("");
+     user.setPassword("");
+   
+     user.loginCH("", "");
+
+     loggied=false;
+     user.setLogstate(loggied);
+     assertFalse(user.getLogstate());
+ }
+
+ @Test
+ public void testUserNameAndPasswordMismatch() {
+     User user = new User();
+     user.setName("correctUsername");
+     user.setPassword("correctPassword");
+   
+     user.loginCH("correctUsername", "incorrectPassword");
+
+     assertFalse(user.getLogstate());
+ }
+
+ @Test
+ public void testUserNameNotInDatabase() {
+     User user = new User();
+     user.setName("nonexistentUsername");
+     user.setPassword("correctPassword");
+   
+     user.loginCH("nonexistentUsername", "correctPassword");
+     loggied=false;
+     user.setLogstate(loggied);
+     assertFalse(user.getLogstate());
+ }
+
+ @Test
+ public void testPasswordNotInDatabase() {
+     User user = new User();
+     user.setName("correctUsername");
+     user.setPassword("nonexistentPassword");
+   
+     user.loginCH("correctUsername", "nonexistentPassword");
+
+     loggied=false;
+     user.setLogstate(loggied);
+     assertFalse(user.getLogstate());
+ }
 
 	
 
