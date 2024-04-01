@@ -30,7 +30,7 @@ public class Event {
     private String eventId;
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+   // private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
 
     private static final String ERROR_PREFIX = "An error occurred: ";
@@ -79,7 +79,9 @@ private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
    
  /////////////////////////////////////////////////////////////////////////////////   
    public static Event getEventFromLine(String line) {
-	    Event event = new Event();
+	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+       
+	   Event event = new Event();
 	    String[] items = line.split(" , ");
 	    if (items.length >= 11) {
 	        String name = items[0];
@@ -134,7 +136,9 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
     
     
    public static void addEventToFile(Event event, String filename) {
-	    try (FileWriter eventFile = new FileWriter(filename, true)) { // Open the file in append mode
+	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+       
+	   try (FileWriter eventFile = new FileWriter(filename, true)) { // Open the file in append mode
 	        eventFile.write(event.getName() + " , " +
 	        		dateFormat.format(event.getDate()) + " , " +
 	                        event.getTime() + " , " +
@@ -275,7 +279,9 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
    public static void printUpdateList(Event eventUpdate) {
-    	printing.printSomething(Printing.ANSI_MAGENTA + // Set text color to magenta
+	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+       
+	   printing.printSomething(Printing.ANSI_MAGENTA + // Set text color to magenta
         	    '\n' +
         	    "UserID: " + eventUpdate.getUsrTd() + '\n' +
         	    "Event ID: " + eventUpdate.eventId + '\n' +
@@ -352,7 +358,9 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
 
 
     public static Event updateEventDate(Event eventt,String eventidd) {
-    	 printing.printSomething("Enter new event date (yyyy-MM-dd):");
+    	
+    	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         printing.printSomething("Enter new event date (yyyy-MM-dd):");
     	 Scanner scannerD = new Scanner(System.in);
     	 String dateInput = scannerD.next();
          Date newdate;
@@ -427,8 +435,8 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
     public  void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException, NumberFormatException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String eventDateString = dateFormat.format(eventt.getDate());
+        SimpleDateFormat dateFormatV = new SimpleDateFormat("yyyy-MM-dd");
+        String eventDateString = dateFormatV.format(eventt.getDate());
        boolean venueAvailable=false;
         
         do {
@@ -571,7 +579,9 @@ public String getVenuename(){return venueName;}
 
 
 public String toString2() {
-    StringBuilder sb = new StringBuilder();
+	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+     
+	StringBuilder sb = new StringBuilder();
   //  sb.append(CYAN_COLOR); // Set text color to cyan
     sb.append("Event Details:\n");
    // sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
@@ -612,6 +622,8 @@ public String toString2() {
 
 
 public String toString() {
+	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+     
 	StringBuilder sb = new StringBuilder();
    // sb.append(MAGENTA_COLOR); // Set text color to magenta
     sb.append("Name: ").append(name).append(", ")
