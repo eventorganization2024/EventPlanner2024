@@ -30,7 +30,7 @@ public class ServiceTest {
     private Service deletedService;
     boolean found;
     Functions fun=new Functions();
-   @org.junit.Before
+    @Before
     public void setUp() throws IOException {
         serviceProviderService = new Provider();}
        
@@ -201,9 +201,10 @@ public class ServiceTest {
     }       		          
     
      List<String> serviceIds = Arrays.asList("100"); // Example list of service IDs
-     Service.calculateTotalPrice(serviceIds);
+     double totalPrice = Service.calculateTotalPrice(serviceIds);
+     assertEquals(600.0, totalPrice, 0.01); 
      Service Exservice2= Service.findServiceByID("100", "service.txt");
-    
+     assertNotNull(Exservice2); // Ensure the found service is not null
      
      
      String[] simulatedInputs = {
