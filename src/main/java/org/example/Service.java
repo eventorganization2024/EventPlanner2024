@@ -126,11 +126,11 @@ public class Service {
 	}
    
  ////////////////////////////////////////////////////////////////////  
+  /*
    public static  void deleteService(String serviceID) throws IOException {
 	    Functions.updateServiceList();
-	    Functions.updateProviderAndServiceList();
-	    Functions.updateProviderAndServiceList();
-
+	   // Functions.updateProviderAndServiceList( providerID);
+	   
 	    if ( !serviceDetailsList.isEmpty()) {
 	        Service serviceToDelete = null;
 	        for (Service service : Functions.serviceDetails) {
@@ -151,7 +151,7 @@ public class Service {
        	printing.printSomething("Service details list is null.\n");
        }}	
 	
-   
+   */
 /////////////////////////////////////////////////////////
    public static void deleteServiceFromFile(String filename,String sid)throws IOException 
 	{ 
@@ -220,8 +220,9 @@ public class Service {
    public static void updateServiceDetails(String sid) throws IOException,NullPointerException {
 		
 	   Service toupdatedService = findServiceByID(sid,SERVICE_FILE_NAME);
-		deleteService(sid);
-	   
+	   deleteServiceFromFile(SERVICE_FILE_NAME,sid);
+	   Functions.updateServiceList();
+		  
 	   
 		if ( toupdatedService != null)
 		{
