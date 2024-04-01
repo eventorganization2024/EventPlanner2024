@@ -463,16 +463,41 @@ public class PaackageTest
 	     
 	        Functions functions = new Functions();
 			
-		       functions.updateCustomerProfile(2);
+		       functions.updateCustomerProfile(1);
 		       assertEquals("Username", customer.getUsername());
 	        
 	    }
+	    
+	    
+	    @Test
+	    public void testUpdateCustomerProfile_EmailChange() throws IOException {
+	
+	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Email\n".getBytes());
+	        System.setIn(mockInputStream);
+
+	        Customer customer = new Customer();
+	        customer.setId("123");
+	        customer.setName("Username");
+	        customer.setPhone("Phone");
+	        customer.setAddress("Address");
+	        customer.setEmail("newEmail");
+
+	     
+	        Functions functions = new Functions();
+			
+		       functions.updateCustomerProfile(4);
+		       assertEquals("newEmail", customer.getEmail());
+	        
+	    }
+	    
+	    
+	    
 	    
 	    @Test
 	    public void testUpdateCustomerProfile_PhoneChange() throws IOException {
 	        // Set up input stream with mock user input
 	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Phone\n".getBytes());
-	        System.setIn(mockInputStream);
+	        System.setIn(mockInputStream); 
 
 	        Customer customer = new Customer();
 	        customer.setId("123");
