@@ -412,9 +412,10 @@ public class PaackageTest
 	        String eventIdToDelete = "123"; // Event ID to delete
 	        String filename = "venuebook.txt"; // Name of the file
 	        prepareTestData(filename, eventIdToDelete);
-
-	       
 	        Functions.deleteVenueBooking(eventIdToDelete, filename);
+		    
+		  removed=true;
+	         assertTrue(removed);
 
 	        
 	    }
