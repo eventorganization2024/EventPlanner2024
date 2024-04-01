@@ -50,10 +50,12 @@ public class Functions {
 	    int choice2;
 	    static boolean found;
 	    static String tmp;
+
 	    //String d;
+
 	    static double price;
 	    private static final String IMAGE_LABEL = " Image: ";
-	    /////
+
 	    private static final String ADDRESS_LABEL = " Address: ";
 	    static double pricee;
 	    static Admin admin = new Admin();
@@ -69,7 +71,7 @@ public class Functions {
 	   protected static final List<Service> serviceDetails = new ArrayList<>();
 	   private static final String NOT_FOUND_MESSAGE = " not found.";
 	   private static final String ERROR= "Error: ";
-///////////////////////////////////////////////////////////////////////////////////////	    
+  
 	    static final String CUSTOMER_FILE_NAME = "customer.txt";
 	    static final String PROVIDER_FILE_NAME = "provider.txt";
 	    static final String REQUEST_FILE_NAME = "requst.txt";
@@ -86,12 +88,15 @@ public class Functions {
 	    private static final String CAPACITY_LABEL = " Capacity: ";
 	    private static final String PRICE_LABEL = " Price: ";
 	    static final String EXITING = "Exiting...";
-	    
+
+	     static final String INVALID_INPUT = "Invalid input: ";
+
 	    static final String ENTER_CHOICE = "Enter your choice:\n ";
 	    static final String ENTER_PASSWORD= "Enter Password:";
 	    private static final String ACCOUNT_ALREADY_EXIST_MESSAGE = "This account is already existed, Please Sign in.\n";
 	    private static final String THANK_MESSAGE = "  \nThank you! Your information has been recorded.    \nEnter a password: ";
         static final String INVALID_CHOICE = "\nInvalid choice! Please enter a valid choice.\n";
+
 	    static final String LINE = "----------------------------------------";
 	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
 	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
@@ -396,9 +401,11 @@ public   void adminPage(String adminId) throws Exception{
 	        	    break;
 
 	        case 9:
+
 	        	events.clear();
 	        	if(  viewCostomerevents(customerId,EVENT_FILE_NAME)) {
 	        		
+
 		          	 
 	          	 while (true) {
 	          		 
@@ -419,10 +426,13 @@ public   void adminPage(String adminId) throws Exception{
 	              break;
 	        	 	        	 	        		        	  	        	   	        	   
 	        case 10: 
+
 	        	 printing.printSomething("\n");
 	        	 events.clear();   	        	  
 	        	if(viewCostomerevents(customerId,REQUEST_FILE_NAME)){
 	        		
+
+
         	     while (true) {
         		 
         		 printing.printSomething("\nEnter the Event ID you want to view details for (or enter 'done' to finish):\n ");
@@ -443,7 +453,10 @@ public   void adminPage(String adminId) throws Exception{
 	        case 11:
 
 
+
 	        	Calendar calendar = loadEventsForCustomerInCalendar(customerId);
+
+
 	        	if (calendar != null) {
 	        	    displayAllCustomerEvents(calendar);
 	        	} else {
@@ -816,30 +829,9 @@ public   void adminPage(String adminId) throws Exception{
                    
     	        }
     	    }}
- 	                  //////////////////////////////////////////////////////////////////////
-     
-      /*public static boolean viewCostomerevents(String cId, String filename) throws Exception {
-    	    boolean foundd = false;
-    	    updateeventandcustomer(filename);
-    	    for (Customer customer : customers) {
-    	        String customerId = customer.getId();
-    	        if (customerId != null && customerId.equals(cId)) { // Add null check here
-    	            List<Event> customerEvents = customer.getEvents();
+                            ///////////////////////////////////////////////////////////////////
 
-    	            if (!customerEvents.isEmpty()) {
-    	                printing.printSomething("\nHere are all your events:");
-    	                for (Event event : customerEvents) {
-    	                    printing.printSomething(event.toString());
-    	                    foundd = true;
-    	                }
-    	            } else {
-    	                printing.printSomething("Customer found, but has no events.");
-    	            }
-    	        }
-    	    }
-    	    return foundd;
-    	}
-    	*/
+    	
       public static boolean viewCostomerevents( String cIdIn,String filename) throws Exception {
  		 boolean foundd = false; 
  		    updateeventandcustomer(cIdIn,filename); 
@@ -859,6 +851,7 @@ public   void adminPage(String adminId) throws Exception{
            }
  		    
  			return foundd;}
+
                  //////////////////////////////////////////////////////////////////////////
   	public static boolean viewproviderservice(String id2)  {
   		 boolean found = false; 
@@ -1085,8 +1078,10 @@ public   void adminPage(String adminId) throws Exception{
            
         
          
-        addBookingVenue(getVenueIdByName(eventObj.getVenuename()),id,dateInput,"Reserved",JId);
-         
+
+        addBookingVenue(venueName,idUser,dateInput,"Reserved",evenId);
+
+
 ///////////////////////	               
          List<String> serviceIdsList = new ArrayList<>();
      
@@ -2059,7 +2054,6 @@ public static void deleteVenueById(Scanner scanner, String filename) {
 	        return false; // Venue with specified ID not found
 	    }
 
-
 public static void printAllVenues(List<Venue> venues) {
     printing.printSomething("\nAll Venues:");
     for (Venue venue : venues) {
@@ -2321,7 +2315,9 @@ public static void updateCustomerFile() {
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                            //SEARCH IDS//
 public static boolean searchIdU(String id) {
-	 try (BufferedReader br = new BufferedReader(new FileReader("customer.txt"))) {
+
+	 try (BufferedReader br = new BufferedReader(new FileReader("CUSTOMER_FILE_NAME"))) {
+
 	        String line;
 	        while ((line = br.readLine()) != null) {
 	            String[] items = line.split(" , ");
@@ -2335,7 +2331,9 @@ public static boolean searchIdU(String id) {
 	    } catch (IOException e) {
 	        printing.printSomething(ERROR + e.getMessage());
 	    } catch (NumberFormatException e) {
-	        printing.printSomething("Invalid input: " + e.getMessage());
+
+	        printing.printSomething(INVALID_INPUT + e.getMessage());
+
 	    }
 	    return false; // Return false if the ID is not found in any line
 }
@@ -2366,7 +2364,7 @@ public static boolean searchIdE(String id3, String filename) {
     } catch (IOException e) {
         printing.printSomething(ERROR + e.getMessage());
     } catch (NumberFormatException e) {
-        printing.printSomething("Invalid input: " + e.getMessage());
+        printing.printSomething(INVALID_INPUT + e.getMessage());
     }
     return false; // Return false if the ID is not found in any line
 }
@@ -2386,7 +2384,7 @@ public static boolean searchIdS(String serviceID, String fileName) {
     } catch (IOException e) {
         printing.printSomething(ERROR + e.getMessage());
     } catch (NumberFormatException e) {
-        printing.printSomething("Invalid input: " + e.getMessage());
+        printing.printSomething(INVALID_INPUT + e.getMessage());
     }
     return false; 
 }
@@ -2612,12 +2610,10 @@ public static void discountManagementadminList() {
 
 
 
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
 public  List<Event> makeListofEvent(String cId) throws Exception {
 updateeventandcustomer(customerId,EVENT_FILE_NAME);
+
 
 List<Event> customerEvents = new ArrayList<>();
 
@@ -2655,7 +2651,9 @@ printing.printSomething( "No events found for customer with ID: " + customerId);
 }
 } catch (Exception e) {
 
-printing.printSomething( ERROR_PREFIX + e.getMessage());
+
+	printing.printSomething( ERROR_PREFIX + e.getMessage());
+
 } return null ;
 
 }
@@ -2664,10 +2662,10 @@ printing.printSomething( ERROR_PREFIX + e.getMessage());
 
 
 public static void displayAllCustomerEvents(Calendar calendar) {
-//Keep track of displayed months
+// Keep track of displayed months
 Set<String> displayedMonths = new HashSet<>();
 
-//Collect all unique year-month combinations from events and sort them chronologically
+// Collect all unique year-month combinations from events and sort them chronologically
 List<String> eventYearMonths = new ArrayList<>();
 for (Event event : calendar.getEvents()) {
 LocalDate eventDate = event.getDateAsLocalDate();
@@ -2678,31 +2676,31 @@ eventYearMonths.add(yearMonthKey);
 }
 Collections.sort(eventYearMonths);
 
-//Iterate over all unique year-month combinations
+// Iterate over all unique year-month combinations
 for (String yearMonthKey : eventYearMonths) {
 String[] parts = yearMonthKey.split("-");
 int year = Integer.parseInt(parts[0]);
 int month = Integer.parseInt(parts[1]);
 
-//Set the current year and month to the calendar
+// Set the current year and month to the calendar
 calendar.setYear(year);
 calendar.setMonth(month);
 
-//Print the events for the current year and month
+// Print the events for the current year and month
 displayCalendarEvents(calendar);
 printing.printInColor(LINE_STARS, Printing.ANSI_BLACK);
 
-//Add the displayed month to the set
+// Add the displayed month to the set
 displayedMonths.add(yearMonthKey);
 }
 }
-//
+// 
 
 public static void displayCalendarEvents(Calendar calendar) {
 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
 DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd");
 
-//Print year and month with appropriate color
+// Print year and month with appropriate color
 YearMonth yearMonth = YearMonth.of(calendar.getYear(), calendar.getMonth());
 if (yearMonth.isBefore(YearMonth.now())) {
 printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_GRAY);
@@ -2712,31 +2710,31 @@ printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_ORANGE);
 printing.printInColor(yearMonth.format(dateFormatter), Printing.ANSI_BLUE);
 }
 
-//Print the header for days of the week
+// Print the header for days of the week
 printing.printInColor("\n+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n", Printing.ANSI_LIME);
 printing.printInColor("|          Mon          |          Tue          |          Wed          |          Thu          |          Fri          |          Sat          |          Sun          |\n", Printing.ANSI_GREEN);
 
-//Get the first day of the month
+// Get the first day of the month
 LocalDate firstDayOfMonth = LocalDate.of(calendar.getYear(), calendar.getMonth(), 1);
 
 int frow = 0;
 boolean inFirstRow = false;
-//Set the current date to the first day of the month
+// Set the current date to the first day of the month
 LocalDate currentDate = firstDayOfMonth;
 
 int currentDayOfMonth = 1;
-//Print the days of the month
+// Print the days of the month
 while (currentDayOfMonth <= yearMonth.lengthOfMonth()) {//currentDate.getMonthValue() == calendar.getMonth()
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 
 StringBuilder dayRow = new StringBuilder("|");
 inFirstRow = false;
-//Print the current week
+// Print the current week
 for (int i = 0; i < 7; i++) {
 currentDayOfMonth++;
 if (currentDate.format(dayFormatter).compareTo("01") == 0 &&currentDate.getMonthValue()==calendar.getMonth()) {
 inFirstRow = true;
-//Print the calendar grid
+// Print the calendar grid
 for (int k = 0; k < firstDayOfMonth.getDayOfWeek().getValue() - 1; k++) {
 dayRow.append("                       |");
 frow = k + 2;
@@ -2764,11 +2762,13 @@ printing.printInColor(dayRow.toString(), Printing.ANSI_GREEN);
 printing.printInColor("\n", Printing.ANSI_GREEN);
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 
+
 //Print events for each day
 printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1));
 }
 
 //Print the footer for the days of the week
+
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 }
 
@@ -2788,7 +2788,7 @@ Event eventForDay = calendar.getEvents().stream()
 .findFirst()
 .orElse(null);
 
-//Display the event with appropriate color
+// Display the event with appropriate color
 if (eventForDay != null && currentDate.getMonthValue()==calendar.getMonth()) {
 String eventColor = "";
 YearMonth eventYearMonth = YearMonth.of(eventForDay.getDateAsLocalDate().getYear(), eventForDay.getDateAsLocalDate().getMonth());
@@ -2813,6 +2813,7 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 
 }
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	  
@@ -2900,6 +2901,9 @@ return "Dear " + customerName + ",\n\n"
 
 
 
+
+
+
 private void sendNotificationsToParticipants(String recipientEmail, String subject, String messageContent) {
 try {
 
@@ -2913,8 +2917,10 @@ properties.put("mail.smtp.host", "smtp.gmail.com");
 properties.put("mail.smtp.port", "587");
 
 Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
 @Override
 protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+
 return new javax.mail.PasswordAuthentication(senderEmail, password);
 }
 });
@@ -2928,7 +2934,9 @@ message.setText(messageContent);
 Transport.send(message);
 
 } catch (MessagingException mex) {
-printing.printSomething( ERROR_PREFIX + mex.getMessage());
+
+	 printing.printSomething( ERROR_PREFIX + mex.getMessage());
+
 }
 }
 
@@ -2965,20 +2973,6 @@ return password;
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

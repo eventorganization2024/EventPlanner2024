@@ -12,7 +12,7 @@ public class User {
     String phone;
     String type;
     private boolean logged;
-    public static List<User> users1 = new ArrayList<>();
+    public  static final List<User> users1 = new ArrayList<>();
 
     public User()
     {
@@ -71,12 +71,10 @@ public class User {
         return true;
     }
 
-	public static List<User> getUsers1() {
-		return users1;
-	}
+	 public static List<User> getUsers1() {
+        return users1;
+    }
 
-	public static void setUsers1(List<User> users1) {
-		User.users1 = users1;
-	}
+	
    
 }

@@ -30,8 +30,9 @@ public class Event {
     private String eventId;
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-   
+    private static  SimpleDateFormat DATE_FORMAT= new SimpleDateFormat("yyyy-MM-dd");
+    private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
+
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
     static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
@@ -41,7 +42,7 @@ public class Event {
     
    
    
-    public  Event() {}
+    public  Event() { }
     
     public Event(String eventName, Date eventDate, String eventTime, String eventDescription, String eventAttendeeCount, String userId, String eventTheme, String eventCategory, String venueName, String eventId) {
         this.userId = userId; 
@@ -99,9 +100,15 @@ public class Event {
 	        String eventId = items[9];
 	        String serviceIdsString = items[10];
 	        // Remove leading and trailing brackets if present
-	        serviceIdsString = serviceIdsString.replaceAll("^\\[|\\]$", "");
-	       
-	        String[] serviceIdsArray = serviceIdsString.split("\\s*,\\s*");
+	        serviceIdsString = serviceIdsString.replaceAll("^(\\[|\\])$", "");
+
+	// The regex "\\s*,\\s*" is safe as it splits the input string by commas with optional whitespace.
+// The limit of -1 ensures that trailing empty strings are not discarded.
+String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -1);
+
+
+
+
 	        event.setName(name);
 	        event.setDate(date);
 	        event.setTime(time);
@@ -231,7 +238,7 @@ public class Event {
      	        String line;
      	        boolean eventFound = false;
      	        while ((line = reader.readLine()) != null) {
-     	            String[] fields = line.split(",\\s*");
+     	            String[] fields = line.split(COMMA_WITH_WHITESPACE_REGEX);
 
      	            if (fields.length >= 9 && fields[5].trim().equals(customerId.trim()) && fields[searchFieldIndex].trim().equals(searchTerm)) {
      	            	printing.printSomething(line);
@@ -267,8 +274,8 @@ public class Event {
     
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
-   static void printUpdateList(Event eventUpdate) {
-    	printing.printSomething(printing.ANSI_MAGENTA + // Set text color to magenta
+   public static void printUpdateList(Event eventUpdate) {
+    	printing.printSomething(Printing.ANSI_MAGENTA + // Set text color to magenta
         	    '\n' +
         	    "UserID: " + eventUpdate.getUsrTd() + '\n' +
         	    "Event ID: " + eventUpdate.eventId + '\n' +
@@ -281,10 +288,10 @@ public class Event {
         	    "7. Category: " + eventUpdate.category + '\n' +
         	    "8. Venue Name: " + eventUpdate.venueName + '\n' +
         	    "9. Service IDs: " + eventUpdate.getServiceIds() + '\n'
-        	    + printing.ANSI_RED // Reset text color to default
+        	    + Printing.ANSI_RED // Reset text color to default
         	    );} 
 	
-    public Event updateEvent(String eventidd, String filename) throws IOException, ParseException ,NullPointerException{
+    public Event updateEvent(String eventidd, String filename) throws IOException,NullPointerException{
        Event eventToUpdated = findeventID(eventidd, filename);
 
         if (eventToUpdated != null && eventToUpdated.getEID() != null) {
@@ -356,7 +363,7 @@ public class Event {
              return null;
          }
          eventt.setDate(newdate);
-         eventt.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
+         Venue.updateVenueInVenueBook(eventidd, newdate, VENUEBOOK_FILE_NAME);
          return eventt;
     }
    
@@ -407,8 +414,10 @@ public class Event {
         Scanner scannerServ = new Scanner(System.in);
         String newServ=scannerServ.next();
         String serviceIdsInput =newServ;
-        
-        List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split("\\s*,\\s*"));
+   
+    List<String> serviceIds2 = Arrays.asList(serviceIdsInput.split(COMMA_WITH_WHITESPACE_REGEX));
+
+
         eventt.setServiceIds(serviceIds2);
 		return eventt;
         
@@ -417,15 +426,15 @@ public class Event {
     
     public  void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException, NumberFormatException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
-        printing.printSomething("\nEnter new event venue name:");
-       String newVenueName = scannerr.next();
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String eventDateString = dateFormat.format(eventt.getDate());
        boolean venueAvailable=false;
         
         do {
             printing.printSomething("Enter Venue name:");
-            venueName = scannerr.next();
+            Scanner scannerN = new Scanner(System.in);
+            venueName = scannerN.next();
             if (Functions.checkAvailability(venueName,eventDateString )) {
                 if (Integer.parseInt(eventt.getAttendeeCount()) <= Functions.getVenueCapacity(venueName)) {
                     venueAvailable = true;
@@ -433,14 +442,12 @@ public class Event {
                 } else {
                     printing.printSomething("The attendee count exceeds the capacity of the venue. Please choose another venue.\n");
                 }
-            } else {
-         	  // printing.printSomething("\n choose another venue \n");
-              }
+            } 
         } while (!venueAvailable );
 
         
         eventt.setVenuename(venueName);
-       eventt.updateVenueInVenueBook(eventidd, venueName, filename);
+       Venue.updateVenueInVenueBook(eventidd, venueName,"venuebook.txt");
           }
 //////////////////////////////////////////////////////////
     public static void updateEventInFile(Event event2, String filename) throws IOException, NullPointerException {
@@ -482,82 +489,6 @@ public class Event {
     
  /////////////////////////////////////////////////////////////////////////////////////////////
 
-
-public void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
-       try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
-           StringBuilder sb = new StringBuilder();
-           String line;
-           while ((line = reader.readLine()) != null) {
-               String[] parts = line.split(",");
-               if (parts.length >= 5 && parts[4].equals(eventId)) {
-               	 Date date;
-                    try {
-                        date = DATE_FORMAT.parse(parts[2]);
-                    } catch (ParseException e) {
-
-                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-                       
-                    }
-                    date=newDate;
-                   line = String.join(",", parts);
-               }
-               sb.append(line).append("\n");
-           }
-           // Write the updated content back to the file
-           try (FileWriter writer = new FileWriter(venueBookFileName)) {
-               writer.write(sb.toString());
-           }
-       } catch (IOException e) {
-    	   printing.printSomething( ERROR_PREFIX + e.getMessage());
-       }
-   }
-   
-   
-public void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
-       try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
-           StringBuilder sb = new StringBuilder();
-           String line;
-           while ((line = reader.readLine()) != null) {
-               String[] parts = line.split(",");
-               if (parts.length >= 5 && parts[4].equals(eventId)) {
-               	 Date date=new Date();
-                    try {
-                        date = DATE_FORMAT.parse(parts[2]);
-                    } catch (ParseException e) {
-
-                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-                    }
-                    newV= DATE_FORMAT.format(date) ;
-                   line = String.join(",", parts);
-               }
-               sb.append(line).append("\n");
-           }
-           // Write the updated content back to the file
-           try (FileWriter writer = new FileWriter(venueBookFileName)) {
-               writer.write(sb.toString());
-           }
-       } catch (IOException e) {
-    	   printing.printSomething( ERROR_PREFIX + e.getMessage());
-       }
-   }
-   
-   
-public static String findVenueIdByName(String venueName, String filename) {
-    String id = null;
-    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length >= 5 && parts[1].trim().equals(venueName.trim())) {
-                id = parts[0].trim(); // Found the venue name, return its ID
-                break; // No need to continue searching
-            }
-        }
-    } catch (IOException e) {
-    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-    }
-    return id;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -659,9 +590,10 @@ public String toString2() {
     
    Functions. updateServiceList();
    for (String serviceId : serviceIds) {
-        serviceId = serviceId.replaceAll("\\[|\\]", "");
+     serviceId = serviceId.replaceAll("[\\[\\]]", "");
+
        
-        for (ServiceDetails service : Functions.serviceDetails) {
+        for (Service service : Functions.serviceDetails) {
         	if (serviceId.equalsIgnoreCase("[No service]")) {
         		sb.append("No service");
         	    break;
@@ -685,7 +617,7 @@ public String toString() {
     sb.append("Name: ").append(name).append(", ")
       .append("Date: ").append(DATE_FORMAT.format(date)).append(", ")
       .append("User ID: ").append(userId).append(", ")
-      .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
+      .append("Event ID: ").append(eventId).append(".").append("\n"); // Moved event ID to the end
    // sb.append(RESET_COLOR); // Reset text color
 
     return sb.toString();
@@ -695,8 +627,7 @@ public LocalDate getDateAsLocalDate() {
     // Assuming 'date' is your java.util.Date object
     Instant instant = date.toInstant();
     ZoneId zoneId = ZoneId.systemDefault(); // Or specify the desired time zone
-    LocalDate localDate = instant.atZone(zoneId).toLocalDate();
-    return localDate;
+   return instant.atZone(zoneId).toLocalDate();
 }
 
 

@@ -22,7 +22,7 @@ public class Admin {
     public void setState(boolean s) {
 		this.state =s;
 	}
-    
+
   
 }
 

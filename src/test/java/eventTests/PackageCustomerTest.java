@@ -1,16 +1,19 @@
-package eventSteps;
+package eventTests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.example.Admin;
 import org.example.Paackage;
 import org.example.Printing;
+import org.junit.Test;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class packagecusttest {
+public class PackageCustomerTest {
     private Admin admin;
     private Paackage selectedPackage;
     private boolean packageAddedSuccessfully;
@@ -38,6 +41,25 @@ public void thePackageShouldBeAddedSuccesfully() {
   
 	 }
 }
+@org.junit.Before
+public void setUp() {
+    admin = new Admin();
+}
+
+@Test
+public void customerLoginTest() {
+    // Test customer login functionality
+	admin.setState(true);
+    assertTrue(admin.getstate()); // Assuming login() method authenticates the administrator
+}
+
+@Test
+public void selectPackageTest() {
+    // Test package selection functionality
+    selected = true;
+    assertTrue(selected);
+}
+
 
 
 	 

@@ -1,4 +1,4 @@
-package eventSteps;
+package eventTests;
 
 
 import static org.junit.Assert.assertFalse;
@@ -10,16 +10,23 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class LogInSteps {
+public class LogInTest{
 	
+////////////////
+
+
+
+
 	
     User u = new User();
 
-    static Logger logger= Logger.getLogger(LogInSteps.class.getName());
+    static Logger logger= Logger.getLogger(LogInTest.class.getName());
 
+   
     @Given("table")
-
-    ///
+    public void table_step() {
+        // Step implementation here
+    }
 
     @Given("that the user is not logged in")
     public void that_the_user_is_not_logged_in() {
