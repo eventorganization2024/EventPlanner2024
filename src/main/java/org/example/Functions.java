@@ -1170,22 +1170,24 @@ public   void adminPage(String adminId) throws Exception{
    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
  public static void addDiscount(Scanner scanner, String filename) {
-        printing.printSomething("Adding a discount...");
+	 Scanner scannerD =new Scanner(System.in);
+       
+	 printing.printSomething("Adding a discount...");
         
         try {
             printing.printSomething("Enter discount ID: ");
-            int discountId = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            int discountId = scannerD .nextInt();
+            scannerD .nextLine(); // Consume newline
             
             printing.printSomething("Enter discount code: ");
-            String discountCode = scanner.nextLine();
+            String discountCode = scannerD .nextLine();
             
             printing.printSomething("Enter discount percentage: ");
-            double discountPercentage = scanner.nextDouble();
+            double discountPercentage = scannerD .nextDouble();
             scanner.nextLine(); // Consume newline
             
             printing.printSomething("Enter validity period (YYYY-MM-DD): ");
-            String validityPeriod = scanner.nextLine();
+            String validityPeriod = scannerD .nextLine();
 
             // Validate input if necessary
             
