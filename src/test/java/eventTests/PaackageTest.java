@@ -498,6 +498,29 @@ public class PaackageTest
                assertTrue(updateCpage);
 	        
 	    }
+	    @Test
+	    public void testUpdateCustomerProfile_AddressChange() throws IOException {
+	
+	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Email\n".getBytes());
+	        System.setIn(mockInputStream);
+
+	        Customer customer = new Customer();
+	        customer.setId("123");
+	        customer.setName("Username");
+	        customer.setPhone("Phone");
+	        customer.setAddress("newAddress");
+	        customer.setEmail("Email");
+
+	     
+	        Functions functions = new Functions();
+			
+		       functions.updateCustomerProfile(3);
+		       assertEquals("newAddress", customer.getaddress());
+		       updateCpage=true;
+               assertTrue(updateCpage);
+	        
+	    }
+	    
 	    
 	    
 	    
