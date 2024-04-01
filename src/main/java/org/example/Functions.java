@@ -50,7 +50,9 @@ public class Functions {
 	    int choice2;
 	    static boolean found;
 	    static String tmp;
-	
+
+	    //String d;
+
 	    static double price;
 	    private static final String IMAGE_LABEL = " Image: ";
 
@@ -63,7 +65,7 @@ public class Functions {
 	    static Provider provider1=new Provider();
 	    protected static final List<Customer> customers = new ArrayList<>();
 	    private static final ArrayList<Provider> providers = new ArrayList<>();
-	    private static final ArrayList<Event> events = new ArrayList<>();
+	    private   static final ArrayList<Event> events = new ArrayList<>();
 	    private static final String VENUE_ID_LABEL = "Venue ID: ";
 	    private static final String NAME_LABEL = " Name: ";
 	   protected static final List<Service> serviceDetails = new ArrayList<>();
@@ -86,13 +88,15 @@ public class Functions {
 	    private static final String CAPACITY_LABEL = " Capacity: ";
 	    private static final String PRICE_LABEL = " Price: ";
 	    static final String EXITING = "Exiting...";
+
 	     static final String INVALID_INPUT = "Invalid input: ";
+
 	    static final String ENTER_CHOICE = "Enter your choice:\n ";
 	    static final String ENTER_PASSWORD= "Enter Password:";
 	    private static final String ACCOUNT_ALREADY_EXIST_MESSAGE = "This account is already existed, Please Sign in.\n";
 	    private static final String THANK_MESSAGE = "  \nThank you! Your information has been recorded.    \nEnter a password: ";
         static final String INVALID_CHOICE = "\nInvalid choice! Please enter a valid choice.\n";
-	
+
 	    static final String LINE = "----------------------------------------";
 	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
 	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
@@ -397,8 +401,11 @@ public   void adminPage(String adminId) throws Exception{
 	        	    break;
 
 	        case 9:
-	        	  
-	        	if(  viewCostomerevents(customerId,EVENT_FILE_NAME)) { 
+
+	        	events.clear();
+	        	if(  viewCostomerevents(customerId,EVENT_FILE_NAME)) {
+	        		
+
 		          	 
 	          	 while (true) {
 	          		 
@@ -410,7 +417,8 @@ public   void adminPage(String adminId) throws Exception{
 	          	    	  updateEventList(EVENT_FILE_NAME);
 	          			   Event e=Event.findeventID(eventIDToView,EVENT_FILE_NAME);
 	          	    	
-	          			 printing.printSomething(e.toString2());	          	    	 
+	          			 printing.printSomething(e.toString2());
+	          			printing.printSomething("\n");
 	          	    
 	          	       }
 	              	 }
@@ -418,9 +426,13 @@ public   void adminPage(String adminId) throws Exception{
 	              break;
 	        	 	        	 	        		        	  	        	   	        	   
 	        case 10: 
-	        	 printing.printSomething("\n");   	        	  
+
+	        	 printing.printSomething("\n");
+	        	 events.clear();   	        	  
 	        	if(viewCostomerevents(customerId,REQUEST_FILE_NAME)){
-	        	
+	        		
+
+
         	     while (true) {
         		 
         		 printing.printSomething("\nEnter the Event ID you want to view details for (or enter 'done' to finish):\n ");
@@ -441,7 +453,10 @@ public   void adminPage(String adminId) throws Exception{
 	        case 11:
 
 
-	        	Calendar calendar = loadEventsForCustomerInCalendar(id);
+
+	        	Calendar calendar = loadEventsForCustomerInCalendar(customerId);
+
+
 	        	if (calendar != null) {
 	        	    displayAllCustomerEvents(calendar);
 	        	} else {
@@ -814,28 +829,29 @@ public   void adminPage(String adminId) throws Exception{
                    
     	        }
     	    }}
- 	                  //////////////////////////////////////////////////////////////////////
-      public static boolean viewCostomerevents(String cId, String filename) throws Exception {
-    	    boolean foundd = false;
-    	    updateeventandcustomer(filename);
-    	    for (Customer customer : customers) {
-    	        String customerId = customer.getId();
-    	        if (customerId != null && customerId.equals(cId)) { // Add null check here
-    	            List<Event> customerEvents = customer.getEvents();
+                            ///////////////////////////////////////////////////////////////////
 
-    	            if (!customerEvents.isEmpty()) {
-    	                printing.printSomething("\nHere are all your events:");
-    	                for (Event event : customerEvents) {
-    	                    printing.printSomething(event.toString());
-    	                    foundd = true;
-    	                }
-    	            } else {
-    	                printing.printSomething("Customer found, but has no events.");
-    	            }
-    	        }
-    	    }
-    	    return foundd;
-    	}
+    	
+      public static boolean viewCostomerevents( String cIdIn,String filename) throws Exception {
+ 		 boolean foundd = false; 
+ 		    updateeventandcustomer(cIdIn,filename); 
+ 		    for (Customer customer : customers) {
+ 		        if (customer.getId().equals(cIdIn)) {
+ 		            List<Event> customerEvents = Customer.getEvents();
+ 		           
+ 		               if (!customerEvents.isEmpty()){
+ 		                printing.printSomething("\nHere are all your events:\n");
+ 		                for (Event event : customerEvents)
+ 		                {printing.printSomething(event.toString());
+ 		                 foundd=true;}
+ 		                }
+ 		                		                
+ 		                else { printing.printSomething("Customer found, but has no events.");}
+ 		       }
+           }
+ 		    
+ 			return foundd;}
+
                  //////////////////////////////////////////////////////////////////////////
   	public static boolean viewproviderservice(String id2)  {
   		 boolean found = false; 
@@ -1062,7 +1078,9 @@ public   void adminPage(String adminId) throws Exception{
            
         
          
+
         addBookingVenue(venueName,idUser,dateInput,"Reserved",evenId);
+
 
 ///////////////////////	               
          List<String> serviceIdsList = new ArrayList<>();
@@ -2036,7 +2054,6 @@ public static void deleteVenueById(Scanner scanner, String filename) {
 	        return false; // Venue with specified ID not found
 	    }
 
-
 public static void printAllVenues(List<Venue> venues) {
     printing.printSomething("\nAll Venues:");
     for (Venue venue : venues) {
@@ -2298,7 +2315,9 @@ public static void updateCustomerFile() {
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                            //SEARCH IDS//
 public static boolean searchIdU(String id) {
+
 	 try (BufferedReader br = new BufferedReader(new FileReader("CUSTOMER_FILE_NAME"))) {
+
 	        String line;
 	        while ((line = br.readLine()) != null) {
 	            String[] items = line.split(" , ");
@@ -2312,7 +2331,9 @@ public static boolean searchIdU(String id) {
 	    } catch (IOException e) {
 	        printing.printSomething(ERROR + e.getMessage());
 	    } catch (NumberFormatException e) {
+
 	        printing.printSomething(INVALID_INPUT + e.getMessage());
+
 	    }
 	    return false; // Return false if the ID is not found in any line
 }
@@ -2398,8 +2419,10 @@ public static void updateCustomersList() {
     }
 }
 //////////////////////////////////////
-public  static void updateeventandcustomer(String filename) {
-    updateEventList(filename);
+public  static void updateeventandcustomer(String cId, String filename) {
+	Customer.Cevents.clear();
+	events.clear();
+	updateEventList(filename);
     updateCustomersList();
 
     String e = null;
@@ -2409,8 +2432,8 @@ public  static void updateeventandcustomer(String filename) {
         e = event.getUsrTd();
         for (Customer customer : customers) {
             c = customer.getId();
-            if (e != null && c != null && e.equals(c)) {
-            	Customer.getCevents().add (event); 
+            if (e != null && c != null && e.equals(c)&&c.equals(cId)) {
+            	Customer.Cevents.add (event); 
             }
         }
     }
@@ -2587,18 +2610,10 @@ public static void discountManagementadminList() {
 
 
 
-
-
-
-
-/////////////////////////////////////////////////    haneen  new code    /////////////////////////////////////
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
-public static List<Event> makeListofEvent(String cId) throws Exception {
-updateeventandcustomer(EVENT_FILE_NAME);
+public  List<Event> makeListofEvent(String cId) throws Exception {
+updateeventandcustomer(customerId,EVENT_FILE_NAME);
+
 
 List<Event> customerEvents = new ArrayList<>();
 
@@ -2619,7 +2634,7 @@ return customerEvents;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //method to load events for a specific customer in calendar
-public static Calendar loadEventsForCustomerInCalendar(String customerId) {
+public  Calendar loadEventsForCustomerInCalendar(String customerId) {
 List<Event> customerEvents;
 try {
 customerEvents = makeListofEvent(customerId);
@@ -2636,7 +2651,9 @@ printing.printSomething( "No events found for customer with ID: " + customerId);
 }
 } catch (Exception e) {
 
+
 	printing.printSomething( ERROR_PREFIX + e.getMessage());
+
 } return null ;
 
 }
@@ -2745,11 +2762,13 @@ printing.printInColor(dayRow.toString(), Printing.ANSI_GREEN);
 printing.printInColor("\n", Printing.ANSI_GREEN);
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 
-// Print events for each day
+
+//Print events for each day
 printEventsForWeek(calendar, currentDate.minusDays(7), currentDate.minusDays(1));
 }
 
-// Print the footer for the days of the week
+//Print the footer for the days of the week
+
 printing.printInColor(LINE2, Printing.ANSI_LIME);
 }
 
@@ -2796,6 +2815,7 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 }
 
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	  
 
 
@@ -2804,75 +2824,71 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 
 
 
-      //Initialize a set to keep track of event IDs for which notifications have been sent
-      private Set<String> notifiedEvents = new HashSet<>();
+//Initialize a set to keep track of event IDs for which notifications have been sent
+private Set<String> notifiedEvents = new HashSet<>();
 
-     //Initialize a scheduled executor service
-     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+//Initialize a scheduled executor service
+private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-     public void startApproachingUpcomingEvents() {
-       // Schedule the approachUpcomingEvents method to run every hour
-      executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
-      }
-
-    public void stopApproachingUpcomingEvents() {
-    	// Shutdown the executor service when you want to stop checking for upcoming events
-      executor.shutdown();
-      }
-
-      public void approachUpcomingEvents() throws NullPointerException {
-        LocalDateTime now = LocalDateTime.now();
-        updateEventList(EVENT_FILE_NAME);
-
-        List<Event> upcomingEvents = events.stream()
-                .filter(event -> {
-                    LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-                    return eventDate.isEqual(now.toLocalDate());
-                })
-                .collect(Collectors.toList());
-
-        for (Event event : upcomingEvents) {
-            LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
-            LocalTime currentTime = LocalTime.now();
-            long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
-
-            if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
-                String customerId = event.getUsrTd();
-                String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
-                if (recipientDetails != null) {
-                    String[] details = recipientDetails.split("-");
-                    String recipientName = details[1];
-                    String messageContent = generateMessageContent(recipientName, event.getTime(), 60 - timeDifferenceMinutes);
-                    String subject = "Notification for Upcoming Event: " + event.getName();
-                    sendNotificationsToParticipants(details[0], subject, messageContent);
-                    notifiedEvents.add(event.getEID());
-                } else {
-                  
-                    System.out.println("Recipient details are null for event: " + event.getName());
-                }
-            }
-        }
-    }
-
-
-      private String getEmailAndNameFromCustomerFile(String customerId) {
-   
-    updateCustomersList();
-
-
-
-    for (Customer cust : customers) {
-    if (cust.getId().equals(customerId)) { 	            
-
-    return cust.getEmail()+"-"+customer1.getUsername();
-    }
-     }
-
-    return null;
+public void startApproachingUpcomingEvents() {
+// Schedule the approachUpcomingEvents method to run every hour
+executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
 }
-    
-      private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
-// Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
+
+public void stopApproachingUpcomingEvents() {
+// Shutdown the executor service when you want to stop checking for upcoming events
+executor.shutdown();
+}
+
+public void approachUpcomingEvents()throws NullPointerException {
+LocalDateTime now = LocalDateTime.now();
+updateEventList(EVENT_FILE_NAME);
+
+List<Event> upcomingEvents = events.stream()
+.filter(event -> {
+LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+return eventDate.isEqual(now.toLocalDate());
+})
+.collect(Collectors.toList());
+
+for (Event event : upcomingEvents) {
+LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
+LocalTime currentTime = LocalTime.now();
+long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
+
+if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
+String customerId = event.getUsrTd();
+String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
+String[] details = recipientDetails.split("-");
+String recipientName = details[1];		            
+String messageContent = generateMessageContent(recipientName, event.getTime(), 60-timeDifferenceMinutes);
+String subject = "Notification for Upcoming Event: " + event.getName();
+
+sendNotificationsToParticipants(details[0], subject, messageContent);
+notifiedEvents.add(event.getEID());
+}
+}
+}
+
+
+private String getEmailAndNameFromCustomerFile(String customerId) {
+
+updateCustomersList();
+
+
+
+for (Customer cust : customers) {
+if (cust.getId().equals(customerId)) { 	            
+
+return cust.getEmail()+"-"+customer1.getUsername();
+}
+}
+
+return null;
+}
+
+private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
+//Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
 return "Dear " + customerName + ",\n\n"
 + "We are pleased to confirm your registration for the upcoming event.\n\n"
 + "Event Details:\n"
@@ -2882,6 +2898,9 @@ return "Dear " + customerName + ",\n\n"
 + "Best regards,\n"
 + "The Event Management Team";
 }
+
+
+
 
 
 
@@ -2898,8 +2917,10 @@ properties.put("mail.smtp.host", "smtp.gmail.com");
 properties.put("mail.smtp.port", "587");
 
 Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-	   @Override
-	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+
+@Override
+protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+
 return new javax.mail.PasswordAuthentication(senderEmail, password);
 }
 });
@@ -2913,7 +2934,9 @@ message.setText(messageContent);
 Transport.send(message);
 
 } catch (MessagingException mex) {
+
 	 printing.printSomething( ERROR_PREFIX + mex.getMessage());
+
 }
 }
 
@@ -2931,7 +2954,7 @@ break;
 }
 }
 } catch (IOException e) {
-	printing.printSomething( ERROR_PREFIX + e.getMessage());
+printing.printSomething( ERROR_PREFIX + e.getMessage());
 }
 return password;
 }
