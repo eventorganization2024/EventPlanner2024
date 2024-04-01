@@ -195,7 +195,7 @@ public void signInAdmin(String id) throws Exception {
     }
 }
 
- void signInProvider(String Id) throws Exception {
+ void signInProvider(String provId) throws Exception {
 	
     boolean found = false;
     updateProvidersList(); 
@@ -207,7 +207,7 @@ public void signInAdmin(String id) throws Exception {
             String[] providerData = line.split(",");
             String providerIdFromFile = providerData[0].trim();
             String passwordFromFile = providerData[5].trim(); 
-            if (Id.equals(providerIdFromFile) && password.equals(passwordFromFile)) {
+            if (provId.equals(providerIdFromFile) && password.equals(passwordFromFile)) {
                 found = true;
                 break;
             }
@@ -220,7 +220,7 @@ public void signInAdmin(String id) throws Exception {
         while (x > 0) {
             providerPageList();
             int c = scanner.nextInt();
-            providerOptions(Id,c);
+            providerOptions(provId,c);
         }
     } else {
         printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
