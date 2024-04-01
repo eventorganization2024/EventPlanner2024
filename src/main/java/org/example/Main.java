@@ -81,10 +81,7 @@ public class Main {
                 printing.printSomething("Invalid choice! Please enter a valid choice.");
                 break;
         }
-//     Functions functions = new Functions();
-//    Functions.printCustomersList();
-//    	
-//}
+
         }}
 
 
