@@ -1,6 +1,8 @@
 package eventTests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -19,24 +21,32 @@ public class ProviderTest {
 	
 
 
-	   @Test
-	    public void testAddProviderToFile() throws IOException {
-		   if (Functions.searchIdP(p.getId())) found=true;else found=false;                            
-		    if (found)
-		    {	
-		    	  Provider.deleteProviderFromFileAndArrayList("provider.txt", p.getId());
-		          Provider.addProviderToFile(p); 
-		          f.viewproviderservice("testId");
-		    } 
-		    
-	    }
-
+    @Test
+    public void testAddProviderToFile() throws IOException {
+        if (Functions.searchIdP(p.getId()))
+            found = true;
+        else 
+        found=false;
+      
+        if (found) {
+        	assertTrue(found);
+            Provider.deleteProviderFromFileAndArrayList("provider.txt", p.getId());
+            Provider.addProviderToFile(p);
+            f.viewproviderservice("testId");
+            
+        }
+    }
+	   
+	   
 	    @Test
+	    
 	    public void testDeleteProviderFromFileAndArrayList() throws IOException {
 	    Provider provider = new Provider("testId2", "testPassword2", "testName2", "123456789", "test2@example.com","Test2Address");
 		provider.deleteProviderFromFileAndArrayList("provider.txt", provider.getId());
-
+		 boolean exists = Functions.searchIdP(provider.getId());
+	       assertTrue("Provider should be deleted", !exists);
 	    }
+	    
 	    
 	    
 	    @Test
