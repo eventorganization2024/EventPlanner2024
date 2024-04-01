@@ -819,7 +819,7 @@ public   void adminPage(String adminId) throws Exception{
                             ///////////////////////////////////////////////////////////////////
 
     	
-      public static boolean viewCostomerevents( String cIdIn,String filename) throws Exception {
+      public static boolean viewCostomerevents( String cIdIn,String filename)  {
  		 boolean foundd = false; 
  		    updateeventandcustomer(cIdIn,filename); 
  		    for (Customer customer : customers) {
