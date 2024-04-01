@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.logging.Level;
 import java.util.logging.*;
 import org.example.*;
+import org.junit.Test;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -33,14 +35,19 @@ public class UserRegTest {
 
 
 	}
+	 
 	@When("the User is registered {string}")
 	public void theUserIsRegistered(String string) {
 
         if(u.isRegest(string)) {
             User.adduser(u);
+            boolean registered = u.isRegest(string);
+
+            assertTrue(registered);
      
         }
 	}
+	
 	@Then("the User with User ID {string} ,NAME {string} , PASSWORD {string} , phone {string}, address {string} is registered in the system")
 	public void theUserWithUserIDNAMEPASSWORDPhoneAddressIsRegisteredInTheSystem(String string, String string2, String string3, String string4, String string5) {
 		   if(u.isRegest(string))
@@ -48,7 +55,7 @@ public class UserRegTest {
 	}
 
 
-
+	    @Test
 
 	 @Then("the error message {string} is given")
 	    public void theErrorMessageIsGiven() {
@@ -60,6 +67,35 @@ public class UserRegTest {
 	 
 	 
 	
-	
+	    @Test
+	    public void testUserRegistrationSuccess() {
+	    
+	        User u = new User();
+	        u.setId("123");
+	        u.setName("John Doe");
+	        u.setPassword("password123");
+	        u.setPhone("1234567890");
+	        u.setAddress("123 Street");
 
+	        boolean registered = u.isRegest("string");
+
+	        assertTrue(registered);
+	    }
+
+	    @Test
+	    public void testUserRegistrationFailure() {
+	    
+	        User u = new User();
+	        u.setId("123");
+	        u.setName("John Doe");
+	        u.setPassword("password123");
+	        u.setPhone("1234567890");
+	        u.setAddress("123 Street");
+
+	        User.adduser(u);
+
+	        boolean registered = u.isRegest("John Doe");
+
+	        assertTrue(!registered);
+	    }
 }
