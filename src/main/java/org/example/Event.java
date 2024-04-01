@@ -447,7 +447,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
 
         
         eventt.setVenuename(venueName);
-       Venue.updateVenueInVenueBook(eventidd, venueName, filename);
+       Venue.updateVenueInVenueBook(eventidd, venueName,"venuebook.txt");
           }
 //////////////////////////////////////////////////////////
     public static void updateEventInFile(Event event2, String filename) throws IOException, NullPointerException {
