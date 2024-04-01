@@ -63,7 +63,7 @@ public class Functions {
 	    static Event event1=new Event();
 	    static Provider provider1=new Provider();
 	    protected static final List<Customer> customers = new ArrayList<>();
-	    public static final ArrayList<Provider> providers = new ArrayList<>();
+	   protected static final ArrayList<Provider> providers = new ArrayList<>();
 	    private  static final ArrayList<Event> events = new ArrayList<>();
 	    private static final String VENUE_ID_LABEL = "Venue ID: ";
 	    private static final String NAME_LABEL = " Name: ";
