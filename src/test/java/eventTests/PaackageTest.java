@@ -413,10 +413,10 @@ public class PaackageTest
 	        String filename = "venuebook.txt"; // Name of the file
 	        prepareTestData(filename, eventIdToDelete);
 
-	        // Call the method to be tested
+	       
 	        Functions.deleteVenueBooking(eventIdToDelete, filename);
 
-	        // Verify that the event with the specified ID is deleted from the file
+	        
 	    }
 
 	    // Helper method to prepare test data
