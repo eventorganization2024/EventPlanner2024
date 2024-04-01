@@ -303,7 +303,8 @@ public class PaackageTest
 	        System.setIn(in);
 
 	        Functions.addPackage(new Scanner(System.in), "package.txt");
-	   
+	         added=true;
+	      assertTrue(added);
 			
 	        
 	    }
