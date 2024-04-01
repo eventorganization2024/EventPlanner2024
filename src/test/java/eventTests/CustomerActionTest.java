@@ -40,7 +40,6 @@ public class CustomerActionTest {
 	 User user = new User();
 Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456","ansam@gmail.com");
 
-
 private static final String TEST_FILENAME = "test_invoices.txt";
 private static final String CUSTOMER_ID = "123";
 	    Functions functions = new Functions();
@@ -109,6 +108,7 @@ private static final String CUSTOMER_ID = "123";
 	    public void my_profile_should_be_updated_successfully() throws IOException {
 	        if(updated){
 	            printing.printSomething("Updated successfully");
+	            Functions.updateCustomerFile();
 	            Customer.addCustomerToFile(customer);
 	            
 	            
