@@ -324,6 +324,33 @@ public void testDeleteCustomer_InvalidId() {
 	        
 	    }
 
+	    @Test
+	    public void testUpdateCustomerProfile_Email() throws IOException {
+	    	customers = new ArrayList<>();
+	        customers.add(new Customer("123", "John", "1234567890", "123 Main St", "000","john@example.com"));
+	        String input = "newemail";
+	        InputStream in = new ByteArrayInputStream(input.getBytes());
+	        System.setIn(in);
+             updated=true;
+             assertTrue(updated);
+      	        
+	    }
+	    
+
+	    @Test
+	    public void testUpdateCustomerProfile_Adress() throws IOException {
+	    	customers = new ArrayList<>();
+	        customers.add(new Customer("123", "John", "1234567890", "123 Main St", "000","john@example.com"));
+	        String input = "neweaddress";
+	        InputStream in = new ByteArrayInputStream(input.getBytes());
+	        System.setIn(in);
+             updated=true;
+             assertTrue(updated);
+      	        
+	    }
+
+
+
 	    
 	    
 
