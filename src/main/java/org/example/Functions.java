@@ -1290,7 +1290,6 @@ public   void adminPage(String adminId) throws Exception{
             }
             String priceV =scannerV.next();
              priceVD = Double.valueOf(priceV); 
-           //price = scannerV.nextDouble();
         } while (priceVD <= 0);
         scannerV.nextLine(); 
         Venue newVenue = new Venue(venueId, name, address, capacity, price, image);
