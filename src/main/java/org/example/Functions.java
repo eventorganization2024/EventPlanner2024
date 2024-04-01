@@ -1062,8 +1062,8 @@ public   void adminPage(String adminId) throws Exception{
            
         
          
-        addBookingVenue(getVenueIdByName(eventObj.getVenuename()),id,dateInput,"Reserved",JId);
-         
+        addBookingVenue(venueName,idUser,dateInput,"Reserved",evenId);
+
 ///////////////////////	               
          List<String> serviceIdsList = new ArrayList<>();
      
