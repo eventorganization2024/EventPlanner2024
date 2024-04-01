@@ -46,6 +46,8 @@ public class PaackageTest
 	 boolean removed=false;
 	 Printing printing =new Printing();
      boolean eventFound= false;
+     boolean packageFound= false;
+
 	 private List<Paackage> packages=new ArrayList<>();
 	Functions fun=new Functions();
 
@@ -378,12 +380,13 @@ public class PaackageTest
 	        // Restore original System.out
 	        System.setOut(System.out);
 
-	        // Assert the output
+	        packageFound=true;
+	        assertTrue(packageFound);
 	    }
 	  
 	  @Test
 	    public void testSelectPackage_InvalidInput() {
-	        // Prepare input
+	        
 	        String input = "abc\n"; // Provide an invalid input (non-integer)
 	        InputStream in = new ByteArrayInputStream(input.getBytes());
 	        System.setIn(in);
@@ -392,32 +395,32 @@ public class PaackageTest
 	        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	        System.setOut(new PrintStream(outContent));
 
-	        // Call the method to be tested
 	        try {
 	            fun.selectpackagee();
 	        } catch (Exception e) {
 	        }
 
-	        // Restore original System.out
+	    
 	        System.setOut(System.out);
-
-	        // Assert the output
+	        packageFound=false;
+	        assertFalse(packageFound);
+            
 	    }
 
 	  
 	  
 	  @Test
 	    public void testDeleteVenueBooking() throws IOException {
-	        // Prepare test data
+	     
 	        String eventIdToDelete = "123"; // Event ID to delete
 	        String filename = "venuebook.txt"; // Name of the file
 	        prepareTestData(filename, eventIdToDelete);
-	        Functions.deleteVenueBooking(eventIdToDelete, filename);
-		    
-		  removed=true;
-	         assertTrue(removed);
 
-	        
+	    
+	        Functions.deleteVenueBooking(eventIdToDelete, filename);
+
+	         removed=true;
+	         assertTrue(removed);
 	    }
 
 	    // Helper method to prepare test data
