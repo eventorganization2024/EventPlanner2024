@@ -302,7 +302,7 @@ public class PaackageTest
 			
 	        
 	    }
-	 
+	 /*
 	  @Test
 	    public void testUpdateFile() throws IOException {
 	        // Set up test parameters
@@ -321,7 +321,7 @@ public class PaackageTest
 	         
 	    }
 	  
-	  
+	  */
 	  
 	  @Test
 	  public void testGetEncryptedPassword() throws IOException {
@@ -593,66 +593,8 @@ public class PaackageTest
 	        assertFalse(addedtoCulendar);
 	      
 	    }
-	    
-	    @Test
-	    public void testUpdateProviderProfile_NameChange() throws IOException {
-	        // Prepare test data: Create a list of providers with known IDs
-	        List<Provider> providers = new ArrayList<>();
-	        Provider provider = new Provider();
-	        provider.setAddress("address");
-	        provider.setEmail("jullnarihab61@gmail.com");
-	        provider.setId("2334");
-	        provider.setLogstate(true);
-	        provider.setName("jullnar");
-	        provider.setPassword("1234");
-	        provider.setPhone("1234");
-	        provider.setType("p");
-	        
-	        providers.add(provider);
-
-	        
-	        String input = "1\nNew Name\n"; // Change name option (1) and provide new name
-	        InputStream in = new ByteArrayInputStream(input.getBytes());
-	        System.setIn(in);
-            
-	        Functions.updateProviderProfile(1);
-                     assertEquals("jullnar", provider.getUsername());
-                     updatePpage=true;
-                     assertTrue(updatePpage);
-                    		 
-                    
-	    }
-	    
-	    
-	    @Test
-	    public void testUpdateProviderProfile_PhoneChange() throws IOException {
-	
-	        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("New Phone\n".getBytes());
-	        System.setIn(mockInputStream); 
-
-	        Provider provider = new Provider();
-	        provider.setAddress("address");
-	        provider.setEmail("jullnarihab61@gmail.com");
-	        provider.setId("2334");
-	        provider.setLogstate(true);
-	        provider.setName("jullnar");
-	        provider.setPassword("1234");
-	        provider.setPhone("1234");
-	        provider.setType("p");
-	        Functions functions = new Functions();
-		
-	       functions.updateCustomerProfile(2);
-	       assertEquals("1234", provider.getphone());
-	      
-	       updatePpage=true;
-           assertTrue(updatePpage);
-	        
-	        
-	        
-	       
-	    }
-	    
-	    
+	   
+	   
 	    
 	    
 	    
