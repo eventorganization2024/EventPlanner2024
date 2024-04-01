@@ -9,7 +9,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class venueAvailabilityTest
+public class VenueAvailabilityTest
 {
 	 private Venue v= new Venue();
 	
