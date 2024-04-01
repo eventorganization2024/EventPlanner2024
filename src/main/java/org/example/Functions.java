@@ -2586,7 +2586,7 @@ public static void discountManagementadminList() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////*****************************	
 public  List<Event> makeListofEvent(String cId)  {
-updateeventandcustomer(EVENT_FILE_NAME);
+updateeventandcustomer(customerId,EVENT_FILE_NAME);
 
 List<Event> customerEvents = new ArrayList<>();
 
