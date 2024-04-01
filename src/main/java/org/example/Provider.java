@@ -3,7 +3,6 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
