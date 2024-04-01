@@ -119,7 +119,7 @@ public class Functions {
 	    private static String  JId ;
 		   
 	    private static  String id;
-	    private static  String adminId;
+	    private static  String adminId =admin.getAdminId();
 	    String customerId;
 	    String provideId;
 
@@ -135,7 +135,7 @@ public class Functions {
     
     switch (choice) {
         case 1:
-        	adminId=admin.getAdminId();
+        	
             signInAdmin(id);
             break; 
         case 2:
