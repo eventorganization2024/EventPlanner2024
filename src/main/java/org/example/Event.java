@@ -30,9 +30,8 @@ public class Event {
     private String eventId;
     private String venueName;
     private List<String> serviceIds = new ArrayList<>();
-   // private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
-
+    private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
+    private static final String FORMAT = "yyyy-MM-dd";
     private static final String ERROR_PREFIX = "An error occurred: ";
     static final String VENUE_FILE_NAME = "venue.txt";
     static final String VENUEBOOK_FILE_NAME = "venuebook.txt";   
@@ -79,7 +78,7 @@ private static final String COMMA_WITH_WHITESPACE_REGEX = ",\\s*";
    
  /////////////////////////////////////////////////////////////////////////////////   
    public static Event getEventFromLine(String line) {
-	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	   SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
        
 	   Event event = new Event();
 	    String[] items = line.split(" , ");
@@ -136,7 +135,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
     
     
    public static void addEventToFile(Event event, String filename) {
-	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	   SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
        
 	   try (FileWriter eventFile = new FileWriter(filename, true)) { // Open the file in append mode
 	        eventFile.write(event.getName() + " , " +
@@ -279,7 +278,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
   
 ///////////////////////// /////////////////////////////////////////////////////////////////////////////////////////////////
    public static void printUpdateList(Event eventUpdate) {
-	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	   SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
        
 	   printing.printSomething(Printing.ANSI_MAGENTA + // Set text color to magenta
         	    '\n' +
@@ -359,7 +358,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
 
     public static Event updateEventDate(Event eventt,String eventidd) {
     	
-    	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
          printing.printSomething("Enter new event date (yyyy-MM-dd):");
     	 Scanner scannerD = new Scanner(System.in);
     	 String dateInput = scannerD.next();
@@ -435,7 +434,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
     public  void updateEventVenue(String eventidd,Event eventt, String filename) throws IOException,NullPointerException, NumberFormatException{
     	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
         
-        SimpleDateFormat dateFormatV = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormatV = new SimpleDateFormat(FORMAT);
         String eventDateString = dateFormatV.format(eventt.getDate());
        boolean venueAvailable=false;
         
@@ -579,7 +578,7 @@ public String getVenuename(){return venueName;}
 
 
 public String toString2() {
-	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
      
 	StringBuilder sb = new StringBuilder();
   //  sb.append(CYAN_COLOR); // Set text color to cyan
@@ -622,7 +621,7 @@ public String toString2() {
 
 
 public String toString() {
-	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
      
 	StringBuilder sb = new StringBuilder();
    // sb.append(MAGENTA_COLOR); // Set text color to magenta
