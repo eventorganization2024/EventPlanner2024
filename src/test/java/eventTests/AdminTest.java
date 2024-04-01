@@ -27,7 +27,7 @@ public class AdminTest {
   
   
 
-    @Before
+    @org.junit.Before
     public void setUp() throws Exception {
 
          functions = new Functions();
