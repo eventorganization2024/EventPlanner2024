@@ -960,8 +960,8 @@ public   void adminPage(String adminId) throws Exception{
     	        	
     	        	 String[] items = lineC .split(" , ");
     		            if (items.length >= 6) {
-    		                String Id =items[0].trim();
-    		                if (Id .equals(id)) {
+    		                String selectedId =items[0].trim();
+    		                if (selectedId.equals(id)) {
     		                	if (lineC.contains(oldValue)) {
     		    	              
     		                		String updatedLine = lineC.replace(oldValue, newValue);
