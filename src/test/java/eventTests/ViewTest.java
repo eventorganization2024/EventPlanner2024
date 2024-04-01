@@ -1,7 +1,8 @@
 package eventTests;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
 import org.example.Event;
 import org.example.Functions;
 import org.junit.Test;
-
+import org.junit.Before;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -34,12 +35,14 @@ show_mangepages;
 
 Functions F;
 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
- @Test
+ @Before
 public void setUp() throws ParseException {
     F = new Functions();
     Event e = new Event("Conference", DATE_FORMAT.parse("2024-03-15"), "9:00 AM", "Tech conference on AI and Machine Learning", "200", "admin123", "Tech", "Conference", "V1", "111");
- assertNotNull(e);
-}
+    assertNotNull(e);
+ 
+ }
+ 
 
 
     @Test
