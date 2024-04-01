@@ -156,7 +156,6 @@ public void signInAdmin(String id) throws Exception {
 	  printing.printSomething( ENTER_PASSWORD);
 	    String password = scanner.next();
     if (id.equals(admin.getAdminId()) && password.equals(admin.getAdminPassword())) {
-    	// adminId=id;
     	adminPage(adminId);
     } else {
         printing.printSomething("\nSomething went wrong!, Try again.");
