@@ -100,7 +100,6 @@ public class Functions {
 	    static final String LINE_STARS="\n\n+************************************************************************************************************************************************************************+\n";
 	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
-	   // private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_PATTERN);
 
 	    static final String ADD="ADD";
 	    static final String VIEW_ALL=" VIEW_ALL";
