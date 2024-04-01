@@ -325,6 +325,8 @@ public class PaackageTest
 	         oldValue = "VenueName";
 	         newValue = "VenueName1";
 		        Functions.updateFile(filePath, oldValue, newValue);
+		        updated=true;
+		        assertTrue(updated);
 
 	         
 	    }
