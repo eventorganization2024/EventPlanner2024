@@ -163,7 +163,7 @@ public void signInAdmin(String id) throws Exception {
     }
 }
 
- void signInCustomer(String Id) throws Exception {
+ void signInCustomer(String custId) throws Exception {
     boolean found = false;
     updateCustomersList(); 
     printing.printSomething( ENTER_PASSWORD);
@@ -174,7 +174,7 @@ public void signInAdmin(String id) throws Exception {
             String[] customerData = line.split(",");
             String customerIdFromFile = customerData[0].trim();
             String passwordFromFile = customerData[5].trim(); 
-            if (Id.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
+            if (custId.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
                 found = true;
                 break;
             }
@@ -187,7 +187,7 @@ public void signInAdmin(String id) throws Exception {
         while (x > 0) {
             customerPageList();
             int c = scanner.nextInt();
-            customerOptions(Id,c);
+            customerOptions(custId,c);
         }
     } else {
         printing.printSomething("\nThis account does not exist or the password is incorrect. Please check your inputs.\n");
