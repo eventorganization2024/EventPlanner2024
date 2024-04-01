@@ -45,6 +45,7 @@ private static final String CUSTOMER_ID = "123";
 	    Functions functions = new Functions();
 	    static boolean updated = false;
 	    static boolean deleteProfile = false;
+	    static boolean read = false;
 	    Printing printing = new Printing();
 	    Event event=new Event();
 	  
@@ -269,9 +270,9 @@ public void testDeleteCustomer_InvalidId() {
 	    public void testReadInvoiceFile_ValidInvoices() throws IOException {
 	    	
                 Functions.addToInvoice(CUSTOMER_ID, "Evint1", "EventName", 150.0);         
-	     
-
 	        Functions.readInvoiceFile("invoice.txt", CUSTOMER_ID);
+		        read=true;
+	        assertTrue(read);
 
 	       
 	    }
