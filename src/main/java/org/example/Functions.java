@@ -101,11 +101,19 @@ public class Functions {
 	    static final String LINE2 = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+\n";
 	    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 
-	    static final String ADD="ADD";
-	    static final String VIEW_ALL=" VIEW_ALL";
-	    static final String DELETE=" DELETE";
-	    static final String EDIT=" EDIT";
-	    static final String LOG_OUT=" LOG_OUT";
+	     static final String ADD=" ADD                              |\n";
+	    static final String VIEW_ALL=" VIEW_ALL                         |\n";
+	      static final String DELETE=" DELETE                           |\n";
+	        static final String EDIT=" EDIT                             |\n";
+	     static final String LOG_OUT=" LOG_OUT                          |\n";
+	    
+	    private static final String ONE = " |   1. ";
+	    private static final String TWO = " |   2. ";
+	    private static final String THREE = " |   3. ";
+	    private static final String FOUR = " |   4. ";
+	    private static final String FIVE = " |   4. ";
+	    private static final String SIXE = " |   4. ";
+	    
 	    
 	    
 	    
@@ -2480,17 +2488,17 @@ public  static void customerPageList(){
             "\n|        5. ALl My Services             |"+  "\n|        6.Log Out                      |" +
             SPACE + "\n----------------------------------------\n" + ENTER_CHOICE);
 }
-    public static void eventManagementAdminPageList() {
+     public static void eventManagementAdminPageList() {
     	printing.printSomething(
     			YELLOW_TEXT_COLOR+
     		    " ---- Welcome to EventManagement Page ----\n"+
     		    YELLOW_TEXT_COLOR+
-    		   " |   1. IN requst                         |\n"+
-    		   " |   2. All events                        |\n"+
-    		   " |   3. ADD EVENT                         |\n"+
-    		   " |   4."+DELETE+"                         |\n" +
-    		   " |   5."+EDIT+"                           |\n" +
-    		   " |   6."+LOG_OUT+"                        |\n" +
+    		      ONE+" IN requst                        |\n"+
+    		      TWO+" All events                       |\n"+
+    		    THREE+" ADD EVENT                        |\n"+
+    		       FOUR+DELETE+
+    		       FIVE+EDIT+
+    		       SIXE+LOG_OUT+
     		   YELLOW_TEXT_COLOR);
 
 }
@@ -2498,11 +2506,11 @@ public  static void customerPageList(){
 public static void userManagementAdminPageList() {
     printing.printSomething(
     		YELLOW_TEXT_COLOR +
-        "---- Welcome to User Management Page ----\n" +
+        " ---- Welcome to User Management Page ----\n" +
         YELLOW_TEXT_COLOR+
-        "|   1."+VIEW_ALL+"                       |\n" +
-        "|   2."+DELETE+"                         |\n" +
-        "|   3."+LOG_OUT+"                        |\n" +
+        ONE+VIEW_ALL+
+        TWO+DELETE+
+        THREE+LOG_OUT+
         YELLOW_TEXT_COLOR + "\n" 
     );
 }
@@ -2521,50 +2529,51 @@ public static void userSearchPageList() {
 public static void venueManagementadminList() {
     printing.printSomething(
     		YELLOW_TEXT_COLOR +
-        "---- Welcome to Venue Management Page ----\n" +
+        " ---- Welcome to Venue Management Page ----\n" +
         YELLOW_TEXT_COLOR  +
-        "|   1."+VIEW_ALL+"                       |\n" +
-        "|   2."+ADD+"                            |\n" +
-        "|   3."+DELETE+"                         |\n" +
-        "|   4."+EDIT+"                           |\n" +
-        "|   5."+LOG_OUT+"                        |\n" +
+        ONE+VIEW_ALL+
+        TWO+ADD+
+        THREE+DELETE+
+        FOUR+EDIT+
+        FIVE+LOG_OUT+
         YELLOW_TEXT_COLOR + "\n" 
     );}
+
 
 public static void providerManagementAdminPageList() {
  printing.printSomething(
 		 YELLOW_TEXT_COLOR +
-    "---- Welcome to Provider Management Page ----\n" +
+    " ---- Welcome to Provider Management Page ----\n" +
     YELLOW_TEXT_COLOR +
-    "|   1."+VIEW_ALL+"                       |\n" +
-    "|   2."+DELETE+"                         |\n" +
-    "|   3."+LOG_OUT+"                        |\n" +
+    ONE+VIEW_ALL+
+    TWO+DELETE+
+    THREE+LOG_OUT+
     YELLOW_TEXT_COLOR + "\n"
 );}
 
 public static void packageManagementadminList() {
   printing.printSomething(
 		  YELLOW_TEXT_COLOR +
-      "---- Welcome to Package Management Page ----\n" +
+      " ---- Welcome to Package Management Page ----\n" +
       YELLOW_TEXT_COLOR+
-        "|   1."+VIEW_ALL+"                       |\n" +
-        "|   2."+ADD+"                            |\n" +
-        "|   3."+DELETE+"                         |\n" +
-        "|   4."+EDIT+"                           |\n" +
-        "|   5."+LOG_OUT+"                        |\n" +
+        ONE+VIEW_ALL+
+        TWO+ADD+
+        THREE+DELETE+
+        FOUR+EDIT+
+        FIVE+LOG_OUT+
       YELLOW_TEXT_COLOR + "\n"
   );}
 
 public static void discountManagementadminList() {
   printing.printSomething(
 		  YELLOW_TEXT_COLOR +
-      "---- Welcome to Discount Management Page ----\n" +
+      " ---- Welcome to Discount Management Page ----\n" +
       YELLOW_TEXT_COLOR+
-        "|   1."+VIEW_ALL+"                       |\n" +
-        "|   2."+ADD+"                            |\n" +
-        "|   3."+DELETE+"                         |\n" +
-        "|   4."+EDIT+"                           |\n" +
-        "|   5."+LOG_OUT+"                        |\n" +
+        ONE+VIEW_ALL+
+        TWO+ADD+
+        THREE+DELETE+
+        FOUR+EDIT+
+        FIVE+LOG_OUT+
       YELLOW_TEXT_COLOR+"\n" 
   );}
 //==========================================================================================================================================
@@ -2787,71 +2796,84 @@ printing.printInColor("|\n", Printing.ANSI_LIME);
 
 
 
-//Initialize a set to keep track of event IDs for which notifications have been sent
-private Set<String> notifiedEvents = new HashSet<>();
 
-//Initialize a scheduled executor service
-private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+      //Initialize a set to keep track of event IDs for which notifications have been sent
+      private Set<String> notifiedEvents = new HashSet<>();
 
-public void startApproachingUpcomingEvents() {
-// Schedule the approachUpcomingEvents method to run every hour
-executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
-}
+     //Initialize a scheduled executor service
+     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-public void stopApproachingUpcomingEvents() {
-// Shutdown the executor service when you want to stop checking for upcoming events
-executor.shutdown();
-}
+     public void startApproachingUpcomingEvents() {
+       // Schedule the approachUpcomingEvents method to run every hour
+      executor.scheduleAtFixedRate(this::approachUpcomingEvents, 0, 1, TimeUnit.MINUTES);
+      }
 
-public void approachUpcomingEvents()throws NullPointerException {
+    public void stopApproachingUpcomingEvents() {
+    	// Shutdown the executor service when you want to stop checking for upcoming events
+      executor.shutdown();
+      }
+
+    public void approachUpcomingEvents()throws NullPointerException {
 LocalDateTime now = LocalDateTime.now();
 updateEventList(EVENT_FILE_NAME);
 
 List<Event> upcomingEvents = events.stream()
 .filter(event -> {
-LocalDate eventDate = LocalDate.parse((CharSequence) event.getDate(), DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
-return eventDate.isEqual(now.toLocalDate());
+    // Convert Date to String
+    String dateString = new SimpleDateFormat(DATE_FORMAT_PATTERN).format(event.getDate());
+    // Parse String as LocalDate
+    LocalDate eventDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN));
+    return eventDate.isEqual(now.toLocalDate());
 })
-.collect(Collectors.toList());
+.toList();
+ 
+
 
 for (Event event : upcomingEvents) {
-LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
-LocalTime currentTime = LocalTime.now();
-long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
 
-if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
-String customerId = event.getUsrTd();
-String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
-String[] details = recipientDetails.split("-");
-String recipientName = details[1];		            
-String messageContent = generateMessageContent(recipientName, event.getTime(), 60-timeDifferenceMinutes);
-String subject = "Notification for Upcoming Event: " + event.getName();
+    LocalTime currentTime = LocalTime.now();
+    LocalTime eventTime = LocalTime.parse(event.getTime().trim(), DateTimeFormatter.ofPattern("h:mm a"));
+    long timeDifferenceMinutes = currentTime.until(eventTime, java.time.temporal.ChronoUnit.MINUTES);
+    
 
-sendNotificationsToParticipants(details[0], subject, messageContent);
-notifiedEvents.add(event.getEID());
-}
-}
-}
+    if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
+        String customerId = event.getUsrTd();
+        String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
+        String[] details = null;
 
-
-private String getEmailAndNameFromCustomerFile(String customerId) {
-
-updateCustomersList();
-
-
-
-for (Customer cust : customers) {
-if (cust.getId().equals(customerId)) { 	            
-
-return cust.getEmail()+"-"+customer1.getUsername();
-}
+        if (recipientDetails != null) {
+            details = recipientDetails.split("-");
+        } else {
+        	details = new String[]{"royasmine05@gmail.com", "CLIENT"};
+        }
+        String recipientName = details[1];
+        String messageContent = generateMessageContent(recipientName, event.getTime(), 60 - timeDifferenceMinutes);
+        String subject = "Notification for Upcoming Event: " + event.getName();
+        sendNotificationsToParticipants(details[0], subject, messageContent);
+        notifiedEvents.add(event.getEID());
+    }
 }
 
-return null;
 }
 
-private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
-//Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
+
+      private String getEmailAndNameFromCustomerFile(String customerId) {
+   
+    updateCustomersList();
+
+
+
+    for (Customer cust : customers) {
+    if (cust.getId().equals(customerId)) { 	            
+    	return cust.getEmail()+"-"+cust.getUsername();
+    }
+     }
+
+    return null;
+}
+    
+      private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
+// Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
 return "Dear " + customerName + ",\n\n"
 + "We are pleased to confirm your registration for the upcoming event.\n\n"
 + "Event Details:\n"
@@ -2864,12 +2886,9 @@ return "Dear " + customerName + ",\n\n"
 
 
 
-
-
-
 private void sendNotificationsToParticipants(String recipientEmail, String subject, String messageContent) {
 try {
-
+	 printing.printSomething("in");
 String senderEmail = "royasmine05@gmail.com";
 String password = getEncryptedPassword();
 
@@ -2880,10 +2899,8 @@ properties.put("mail.smtp.host", "smtp.gmail.com");
 properties.put("mail.smtp.port", "587");
 
 Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-
-@Override
-protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-
+	   @Override
+	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 return new javax.mail.PasswordAuthentication(senderEmail, password);
 }
 });
@@ -2897,9 +2914,7 @@ message.setText(messageContent);
 Transport.send(message);
 
 } catch (MessagingException mex) {
-
 	 printing.printSomething( ERROR_PREFIX + mex.getMessage());
-
 }
 }
 
@@ -2917,11 +2932,10 @@ break;
 }
 }
 } catch (IOException e) {
-printing.printSomething( ERROR_PREFIX + e.getMessage());
+	printing.printSomething( ERROR_PREFIX + e.getMessage());
 }
 return password;
 }
-
 
 
 
