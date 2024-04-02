@@ -2858,7 +2858,7 @@ for (Event event : upcomingEvents) {
 }
 
 
-      private String getEmailAndNameFromCustomerFile(String customerId) {
+      public String getEmailAndNameFromCustomerFile(String customerId) {
    
     updateCustomersList();
 
@@ -2873,7 +2873,7 @@ for (Event event : upcomingEvents) {
     return null;
 }
     
-      private String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
+      public String generateMessageContent( String customerName, String eventTime, long hoursDifference) {
 // Implement this method to generate a professional message confirming the event start time for the customer with the specified ID
 return "Dear " + customerName + ",\n\n"
 + "We are pleased to confirm your registration for the upcoming event.\n\n"
@@ -2887,7 +2887,7 @@ return "Dear " + customerName + ",\n\n"
 
 
 
-private void sendNotificationsToParticipants(String recipientEmail, String subject, String messageContent) {
+public void sendNotificationsToParticipants(String recipientEmail, String subject, String messageContent) {
 try {
 	 printing.printSomething("in");
 String senderEmail = "royasmine05@gmail.com";
@@ -2937,6 +2937,7 @@ break;
 }
 return password;
 }
+
 
 
 

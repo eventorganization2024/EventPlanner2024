@@ -4,9 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,12 +55,8 @@ private static final String CUSTOMER_ID = "123";
 	    Event event=new Event();
 	  
 	    private static List<Customer> customers;
-	    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    private final InputStream originalIn = System.in;
-	    private final PrintStream originalOut = System.out;
-	    
-	
-	    
+	 
+	 
 	    @Given("customer log in with true {string} and {string}")
 	    public void customerLogInWithTrueAnd(String arg0, String arg1) throws Exception {
 	        customer.setPassword("12345");
@@ -349,10 +349,39 @@ public void testDeleteCustomer_InvalidId() {
       	        
 	    }
 
+	    
+	    @Test
+	    public void testPrintCustomersList() throws IOException {
+	     
+	      
+	        Customer c= new Customer("2", "Jane Doe", "0987654321","Los Angeles","9999 ","jane@example.com");
+	      
+	      
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter("test_customers.txt", true))) {
+	            writer.write(c.getId() + "," + c.getaddress() + "," + c.getEmail() + "," + c.getphone() + "," +c.getUsername()+ "\n");
+	            System.out.println("customer  added successfully.");
+	        } catch (IOException e) {
+	            System.err.println("An error occurred while adding the customer : " + e.getMessage());
+	        }
+	        
+	        BufferedReader reader = new BufferedReader(new FileReader("test_customers.txt"));
+	        String line;
+	        boolean found = false;
+	        while ((line = reader.readLine()) != null) {
+	            if (line.contains(c.getId()) && line.contains(c.getaddress()) && line.contains(c.getEmail()) && line.contains(c.getphone()) && line.contains(c.getUsername()) ) {
+	                found = true;
+	                break;
+	            }
+	        }
+	        reader.close();
 
+	     
+	        assertTrue(found);
+	    }
+	    }
 
 	    
 	    
 
 	    
-}
+

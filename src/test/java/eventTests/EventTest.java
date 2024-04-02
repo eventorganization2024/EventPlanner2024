@@ -5,7 +5,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -315,7 +320,61 @@ public void theSystemShouldSuccessfullySaveTheChanges() throws NullPointerExcept
 }
 
 
+@Test
+public void testAddBookingVenue() throws IOException {
+    String venid = "VEN123";
+    String custid = "CUST456";
+    String date = "2024-04-01";
+    String status = "Confirmed";
+    String eventid = "EVENT789";
 
+    // Call the method to be tested
+    Functions.addBookingVenue(venid, custid, date, status, eventid);
+
+    // Read the content of the file to verify the addition
+    BufferedReader reader = new BufferedReader(new FileReader("venuebook.txt"));
+    String line;
+    boolean found = false;
+    while ((line = reader.readLine()) != null) {
+        if (line.contains(venid) && line.contains(custid) && line.contains(date) && line.contains(status) && line.contains(eventid)) {
+            found = true;
+            break;
+        }
+    }
+    reader.close();
+
+    assertTrue(found);
+}
+
+@Test
+public void testAddToInvoice() throws IOException {
+    String customerId = "CUST123";
+    String eventId = "EVENT456";
+    String eventName = "Sample Event";
+    double price = 100.0;
+
+    Functions.addToInvoice(customerId, eventId, eventName, price);
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("test_invoices.txt", true))) {
+        writer.write(customerId + "," + eventId + "," + eventName + "," + price + "\n");
+        System.out.println("Invoice item added successfully.");
+    } catch (IOException e) {
+        System.err.println("An error occurred while adding the invoice item: " + e.getMessage());
+    }
+    
+    BufferedReader reader = new BufferedReader(new FileReader("test_invoices.txt"));
+    String line;
+    boolean found = false;
+    while ((line = reader.readLine()) != null) {
+        if (line.contains(customerId) && line.contains(eventId) && line.contains(eventName) && line.contains(String.valueOf(price))) {
+            found = true;
+            break;
+        }
+    }
+    reader.close();
+
+ 
+    assertTrue(found);
+}
 
 
 
