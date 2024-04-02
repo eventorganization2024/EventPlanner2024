@@ -21,7 +21,6 @@ public class Service {
     private String availability;
     static Printing printing = new Printing();
     Functions f =new Functions();
-    private static final List<Service> serviceDetailsList = new ArrayList<>();
       static final String SERVICE_FILE_NAME = "service.txt";
     
     public Service() {}
@@ -126,33 +125,7 @@ public class Service {
 	}
    
  ////////////////////////////////////////////////////////////////////  
-  /*
-   public static  void deleteService(String serviceID) throws IOException {
-	    Functions.updateServiceList();
-	   // Functions.updateProviderAndServiceList( providerID);
-	   
-	    if ( !serviceDetailsList.isEmpty()) {
-	        Service serviceToDelete = null;
-	        for (Service service : Functions.serviceDetails) {
-	            if (service.getServiceID().equals(serviceID)) {
-	                serviceToDelete = service;
-	                break;
-	            }
-	        }
-
-         if (serviceToDelete != null) {
-               serviceDetailsList.remove(serviceToDelete);
-               deleteServiceFromFile(SERVICE_FILE_NAME, serviceID);
-                 
-           } else {
-           	printing.printSomething("Service not found.\n");
-           }
-       } else {
-       	printing.printSomething("Service details list is null.\n");
-       }}	
-	
-   */
-/////////////////////////////////////////////////////////
+  
    public static void deleteServiceFromFile(String filename,String sid)throws IOException 
 	{ 
 	
