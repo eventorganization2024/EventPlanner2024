@@ -120,7 +120,7 @@ public class Functions {
 	    }
 	   
 	    private static String  evenId ;
-	    private static String  JId ;
+	    private static String  servicId ;
 		   
 	    private static  String id;
 	    private static  String adminId =admin.getAdminId();
@@ -133,21 +133,21 @@ public class Functions {
     printing.printSomething(ENTER_CHOICE);
     int choice = scanner.nextInt();
     printing.printSomething("Enter Id: ");
-    String id = scanner.next();
+    String idSign = scanner.next();
     
    
     
     switch (choice) {
         case 1:
         	
-            signInAdmin(id);
+            signInAdmin(idSign);
             break; 
         case 2:
-        	customerId=id;
+        	customerId=idSign;
             signInCustomer(customerId);
             break;
         case 3: 
-        	provideId=id;
+        	provideId=idSign;
             signInProvider(provideId);
             break;
         default:
@@ -167,7 +167,7 @@ public void signInAdmin(String id) throws Exception {
 }
 
  void signInCustomer(String custId) throws Exception {
-    boolean found = false;
+     found = false;
     updateCustomersList(); 
     printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
@@ -178,7 +178,7 @@ public void signInAdmin(String id) throws Exception {
             String customerIdFromFile = customerData[0].trim();
             String passwordFromFile = customerData[5].trim(); 
             if (custId.equals(customerIdFromFile) && password.equals(passwordFromFile)) {
-                found = true;
+            	found = true;
                 break;
             }
         }
@@ -200,7 +200,7 @@ public void signInAdmin(String id) throws Exception {
 
  void signInProvider(String provId) throws Exception {
 	
-    boolean found = false;
+     found = false;
     updateProvidersList(); 
     printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
@@ -234,7 +234,7 @@ public void signInAdmin(String id) throws Exception {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static  int x =1;
 public   void adminPage(String adminId) throws Exception{
-	scanner=new Scanner(System.in);
+	 try (Scanner scanner = new Scanner(System.in)) {
 	   while (x > 0) {
 		 adminList();
 	    printing.printSomething(ENTER_CHOICE);
@@ -288,7 +288,7 @@ public   void adminPage(String adminId) throws Exception{
 	        case 8:
 	        	signInFunction();
 	            break;
-          case 0000:x=0;break;
+          case 0:x=0;break;
 	        
 	        
 	        
@@ -298,6 +298,7 @@ public   void adminPage(String adminId) throws Exception{
 	     	    
 	    }
    }
+	 }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 	  
@@ -649,7 +650,7 @@ public   void adminPage(String adminId) throws Exception{
 	    	    	  if(  viewallprovider(PROVIDER_FILE_NAME)) {
 	    	              printing.printSomething("\nEnter the Provider ID  you want to delete it: ");
 	    	              String providerID = scanner.next();  
-	    	             provider1.deleteProviderFromFileAndArrayList( PROVIDER_FILE_NAME, providerID);
+	    	             Provider.deleteProviderFromFileAndArrayList( PROVIDER_FILE_NAME, providerID);
 	    	      	  printing.printSomething("\nProvider with ID " + providerID + " successfully deleted .");}
 
 	    	      	break;  
@@ -846,7 +847,7 @@ public   void adminPage(String adminId) throws Exception{
 
                  //////////////////////////////////////////////////////////////////////////
   	public static boolean viewproviderservice(String id2)  {
-  		 boolean found = false; 
+  		  found = false; 
   		providers.clear();
   		  updateProviderAndServiceList(id2); 
 
@@ -919,7 +920,7 @@ public   void adminPage(String adminId) throws Exception{
     public static void showAdminMessage(String userId) {
         try (BufferedReader reader = new BufferedReader(new FileReader("Msg.txt"))) {
             String line;
-            boolean found = false;
+             found = false;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
                 if (parts.length >= 2 && parts[parts.length - 1].equals(userId)) {
@@ -1040,7 +1041,7 @@ public   void adminPage(String adminId) throws Exception{
 
 
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
-    public  Event addevent (String idUser,String filename) throws Exception {
+    public static  Event addevent (String idUser,String filename) throws Exception {
     	   SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
            
         updateEventList(REQUEST_FILE_NAME);
@@ -1160,15 +1161,15 @@ public   void adminPage(String adminId) throws Exception{
        Service service = new Service();
      
        printing.printSomething("\n"+"Enter Service Id:");
-       JId = s.next();	               
+       servicId = s.next();	               
       
-       if (searchIdS(JId,SERVICE_FILE_NAME )) { found =true ;}else found=false;	              
+       if (searchIdS(servicId,SERVICE_FILE_NAME )) { found =true ;}else found=false;	              
        if (found)
        { printing.printSomething("This service ID is already in use. Please enter a different Service ID.");
         addService( );return null; }
       else  {   
     	  
-   	   service.setServiceID(JId);
+   	   service.setServiceID(servicId);
    	   service.setProviderID(provideId);
    	   
         printing.printSomething("Enter service type:");
@@ -1181,8 +1182,8 @@ public   void adminPage(String adminId) throws Exception{
        service.setDescription(s.next());
 
        printing.printSomething("Enter service price:");
-       String  price = s.next();
-       Double priceD=Double.valueOf(price);
+       String  pricee = s.next();
+       Double priceD=Double.valueOf(pricee);
        service.setPrice(priceD);
 
        while (true) {
@@ -1719,25 +1720,25 @@ public   void adminPage(String adminId) throws Exception{
     }
 ////////////////////////////////////////////////////////////////////////////         
 public void selectpackagee() throws Exception {
-    Scanner scanner = new Scanner(System.in);
+    try (Scanner scanner = new Scanner(System.in)) {
+		try {
+		    printing.printSomething("Enter the ID for the package you want: ");
+		    int packageId = scanner.nextInt();
+		    scanner.nextLine(); 
 
-    try {
-        printing.printSomething("Enter the ID for the package you want: ");
-        int packageId = scanner.nextInt();
-        scanner.nextLine(); 
+		    
+		    if (!Paackage.isPackageIdExists(PACKAGE_FILE_NAME, packageId)) {
+		        printing.printSomething("\nPackage ID doesn't exist.");
+		        return;
+		    }
 
-        
-        if (!Paackage.isPackageIdExists(PACKAGE_FILE_NAME, packageId)) {
-            printing.printSomething("\nPackage ID doesn't exist.");
-            return;
-        }
+		    addevent(customerId,REQUEST_FILE_NAME);
 
-        addevent(customerId,REQUEST_FILE_NAME);
-
-        printing.printSomething("\nRequest successfully saved.");
-    } catch (InputMismatchException e) {
-        printing.printSomething("\nInvalid input. Please enter a valid integer.");
-    }
+		    printing.printSomething("\nRequest successfully saved.");
+		} catch (InputMismatchException e) {
+		    printing.printSomething("\nInvalid input. Please enter a valid integer.");
+		}
+	}
 }
 public static boolean isPackageIdExists(String filename, int id) {
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -1941,7 +1942,7 @@ public static void removeDiscount(Scanner scanner, String filename) {
         scanner.nextLine(); // Consume newline
 
         List<Discount> discounts = readDiscountsFromFile(filename);
-        boolean found = false;
+         found = false;
 
         List<Discount> updatedDiscounts = new ArrayList<>();
 
@@ -1989,7 +1990,7 @@ public static void deletePackageById(Scanner scanner, String filename) {
         int packageIdToRemove = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
-        boolean found = false;
+         found = false;
 
         for (Paackage p : packages) {
             if (p.getId() == packageIdToRemove) {
@@ -2024,7 +2025,7 @@ public static void deleteVenueById(Scanner scanner, String filename) {
 
 	    String venueIdToRemove = getVenueIdToRemove(scanner);
 
-	    boolean found = removeVenue0(venues, venueIdToRemove);
+	     found = removeVenue0(venues, venueIdToRemove);
 
 	    if (found) {
 	        updateVenueFile(filename, venues);
@@ -2137,8 +2138,8 @@ void customerSignUp() throws Exception {
 public  void updateCustomerProfile(int n) throws IOException {
      Scanner sc =new Scanner(System.in);
 	String tmp1;
-    for (Customer customer1 : customers) {
-        if (customer1.getId().equals(customerId)) {
+    for (Customer customerr : customers) {
+        if (customerr.getId().equals(customerId)) {
            
             switch (n) {
                 case 1:
@@ -2147,19 +2148,19 @@ public  void updateCustomerProfile(int n) throws IOException {
 
                     updateFile(customerId,CUSTOMER_FILE_NAME, tmp1,1);
 
-                    customer1.setName(tmp1);
+                    customerr.setName(tmp1);
                    break;
                 case 2:
                     printing.printSomething("Enter New Phone: ");
                     tmp1 = sc.nextLine();
                     updateFile(customerId,CUSTOMER_FILE_NAME, tmp1,2);
-                    customer1.setPhone(tmp1);
+                    customerr.setPhone(tmp1);
                     break;
                 case 3:
                     printing.printSomething("Enter New Address: ");
                     tmp1 = sc.nextLine();
                     updateFile(customerId,CUSTOMER_FILE_NAME,  tmp1,3);
-                    customer1.setAddress(tmp1);
+                    customerr.setAddress(tmp1);
                     break;
                 
               default:
@@ -2247,26 +2248,26 @@ public void updateProviderProfile(int n) throws IOException {
 	 Scanner sP =new Scanner(System.in);
 		 
 	String tmp1;
-    for (Provider provider1 : providers) {
-        if (provider1.getId().equals(provideId)) {
+    for (Provider providerr : providers) {
+        if (providerr.getId().equals(provideId)) {
             switch (n){
                 case 1:
                     printing.printSomething(ENTER_NAME);
                     tmp1 =  sP.next();
                     updateFile(provideId,PROVIDER_FILE_NAME,  tmp1,1);
-                    provider1.setName(tmp1);
+                    providerr.setName(tmp1);
                     break;
                 case 2:
                     printing.printSomething("Enter New Phone: ");
                     tmp1 =  sP.next();
                     updateFile(provideId,PROVIDER_FILE_NAME, tmp1,2);
-                    provider1.setPhone(tmp1);
+                    providerr.setPhone(tmp1);
                     break;
                 case 3:
                     printing.printSomething("Enter New Address: ");
                     tmp1=  sP.next();
                     updateFile(provideId,PROVIDER_FILE_NAME, tmp1,3);
-                    provider1.setAddress(tmp1);
+                    providerr.setAddress(tmp1);
                     break;
                
                 default:    printing.printSomething(INVALID_CHOICE);
@@ -2458,7 +2459,7 @@ public  static void updateProviderAndServiceList(String id)  {
 	      			for (Service Serv : serviceDetails)
 	      			{s=Serv.getProviderID();
 	      				if (p.equals(s)&& p.equals(id)) 
-	      				{Prov.serviceDetailsList.add(Serv); }}}}
+	      				{Provider.serviceDetailsList.add(Serv); }}}}
 	      				
 
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
@@ -2466,16 +2467,17 @@ public  static void updateProviderAndServiceList(String id)  {
 //==========================================================================================================================================
                                                      //PAGE LISTS//
 public static void signInPageList() {
-    printing.printSomething(
-        "---------- Sign in Page ----------\n" +
-        "|                                |\n" +
-        "|        1. Administrator        |\n" +
-        "|        2. Customer             |\n" +
-        "|        3. Provider             |\n" +
-        "|                                |\n" +
-        "----------------------------------"
-    );
+    printing.printSomething("""
+        ---------- Sign in Page ----------
+        |                                |
+        |        1. Administrator        |
+        |        2. Customer             |
+        |        3. Provider             |
+        |                                |
+        ----------------------------------
+        """);
 }
+
 
 
 public static void adminList() {      
