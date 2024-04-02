@@ -43,7 +43,6 @@ public class Functions {
 	    Customer customerObj;
 	    Provider providerObj;
 	    static Event eventObj;
-	    static int choice;
 	    int choice2;
 	    static boolean found;
 	    static String tmp;
@@ -641,7 +640,7 @@ public   void adminPage(String adminId) throws Exception{
 	 }
 	}
 	                           /////////////////////////////////////////////////////////////////////// 
-	      private static void providerAdminManagementOptions(int p) throws Exception {
+	      private static void providerAdminManagementOptions(int p) throws IOException {
 	    		switch (p) {
 	    	    case 1:
 	    	    	 viewallprovider(PROVIDER_FILE_NAME);
@@ -989,8 +988,7 @@ public   void adminPage(String adminId) throws Exception{
                                  file.writeBytes(updatedLine3);
                                  break;
                              case 4:
-                                 // Replace the value at index 4 (items[4])
-                                 //String updatedLine4 = line.replace(items[4], newValue);
+                               
                             	 items[4] = newValue;
                             	    
                             	    // Join the items back into a single line with the delimiter ", "
@@ -2468,15 +2466,15 @@ public  static void updateProviderAndServiceList(String id)  {
 //==========================================================================================================================================
                                                      //PAGE LISTS//
 public static void signInPageList() {
-    printing.printSomething("""
-        \n---------- Sign in Page ----------
-        |                                |
-        |        1. Administrator        |
-        |        2. Customer             |
-        |        3. Provider             |
-        |                                |
-        ----------------------------------
-        """);
+    printing.printSomething(
+        "---------- Sign in Page ----------\n" +
+        "|                                |\n" +
+        "|        1. Administrator        |\n" +
+        "|        2. Customer             |\n" +
+        "|        3. Provider             |\n" +
+        "|                                |\n" +
+        "----------------------------------"
+    );
 }
 
 
