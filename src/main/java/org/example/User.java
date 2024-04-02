@@ -12,7 +12,7 @@ public class User {
     String phone;
     String type;
     private boolean logged;
-    protected  static final List<User> users1 = new ArrayList<>();
+    private  static final List<User> users1 = new ArrayList<>();
 
     public User()
     {
