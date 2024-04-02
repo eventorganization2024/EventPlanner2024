@@ -64,37 +64,37 @@ public class Venue {
 		
 		
 
-public static void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
-	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
-       
-	try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
-           StringBuilder sb = new StringBuilder();
-           String line;
-           while ((line = reader.readLine()) != null) {
-               String[] parts = line.split(",");
-               if (parts.length >= 5 && parts[4].equals(eventId)) {
-               	 Date date;
-                    try {
-                        date = dateFormat.parse(parts[2]);
-                    } catch (ParseException e) {
+		public static void updateVenueInVenueBook(String eventId, Date newDate, String venueBookFileName) {
+		    SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
 
-                    	 printing.printSomething( ERROR_PREFIX + e.getMessage());
-                       
-                    }
-                    date=newDate;
-                   line = String.join(",", parts);
-               }
-               sb.append(line).append("\n");
-           }
-           // Write the updated content back to the file
-           try (FileWriter writer = new FileWriter(venueBookFileName)) {
-               writer.write(sb.toString());
-           }
-       } catch (IOException e) {
-    	   printing.printSomething( ERROR_PREFIX + e.getMessage());
-       }
-   }
-   
+		    try (BufferedReader reader = new BufferedReader(new FileReader(venueBookFileName))) {
+		        StringBuilder sb = new StringBuilder();
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            String[] parts = line.split(",");
+		            if (parts.length >= 5 && parts[4].equals(eventId)) {
+		                // Remove the unused "date" local variable declaration
+		                try {
+		                    // Parse the date directly without assigning it to a variable
+		                    dateFormat.parse(parts[2]);
+		                } catch (ParseException e) {
+		                    printing.printSomething(ERROR_PREFIX + e.getMessage());
+		                }
+		                // Update the date with the newDate parameter
+		                parts[2] = dateFormat.format(newDate);
+		                line = String.join(",", parts);
+		            }
+		            sb.append(line).append("\n");
+		        }
+		        // Write the updated content back to the file
+		        try (FileWriter writer = new FileWriter(venueBookFileName)) {
+		            writer.write(sb.toString());
+		        }
+		    } catch (IOException e) {
+		        printing.printSomething(ERROR_PREFIX + e.getMessage());
+		    }
+		}
+
    
    
 public static void updateVenueInVenueBook(String eventId, String newV, String venueBookFileName) {
