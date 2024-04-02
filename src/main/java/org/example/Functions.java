@@ -307,7 +307,7 @@ public   void adminPage(String adminId) throws Exception{
 	        switch (x){
 	        case 1:
                 updateCustomersList();
-                printing.printSomething("\nWhich info you want to update?\n1. Name  2.Phone  3. Address  4. Email"+"\n"+ENTER_CHOICE);
+                printing.printSomething("\nWhich info you want to update?\n1. Name  2.Phone  3. Address "+"\n"+ENTER_CHOICE);
                 updateCustomerProfile(scanner.nextInt());
 	            break;
 	            case 2:
@@ -470,7 +470,7 @@ public   void adminPage(String adminId) throws Exception{
 	        switch (choice) {
 	            case 1:
 	            	updateProvidersList();
-	                printing.printSomething("Which info you want to update?\n1. Name  2.Phone  3. Address  4. Email"+"\n"+ENTER_CHOICE);
+	                printing.printSomething("Which info you want to update?\n1. Name  2.Phone  3. Address "+"\n"+ENTER_CHOICE);
 	               updateProviderProfile(scanner.nextInt());
 	              
 	                break;
@@ -941,8 +941,10 @@ public   void adminPage(String adminId) throws Exception{
     }
   	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static void deleteLineByValue(String filePath, String value) throws IOException {
-        StringBuilder sb = new StringBuilder();
+     public static void deleteLineByValue(String filePath, String value) throws IOException {
+    	updateCustomerFile();
+    	
+    	StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
              BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 
@@ -956,30 +958,59 @@ public   void adminPage(String adminId) throws Exception{
             writer.write(sb.toString());
         }
     } 
-    public static void updateFile(String id,String filePath, String oldValue, String newValue) throws IOException {
-    	 try (RandomAccessFile file = new RandomAccessFile(filePath, "rw")) {
-    	        String lineC;
-    	        long lastPos = 0;
-        	        while ((lineC = file.readLine()) != null) {
-    	          //  if (lineC.contains(oldValue)) {
-    	        	
-    	        	 String[] items = lineC .split(" , ");
-    		            if (items.length >= 6) {
-    		                String selectedId =items[0].trim();
-    		                if (selectedId.equals(id)) {
-    		                	if (lineC.contains(oldValue)) {
-    		    	              
-    		                		String updatedLine = lineC.replace(oldValue, newValue);
-    		    	                file.seek(lastPos);
-    		    	                file.writeBytes(updatedLine);
-    		    	            }
-    		    	            lastPos = file.getFilePointer();
-    		    	        }
-    		    	      }     
-    		         }
-    		 }
-    	        	
+    public static void updateFile(String id,String filePath, String newValue,int index) throws IOException {
+    	updateCustomerFile();
+    	
+    	try (RandomAccessFile file = new RandomAccessFile(filePath, "rw")) {
+             String line;
+             long lastPos = 0;
+             while ((line = file.readLine()) != null) {
+                 String[] items = line.split(" , "); 
+                 if (items.length >= 6) {
+                     String selectedId = items[0].trim();
+                     if (selectedId.equals(id)) {
+                         switch (index) {
+                             case 1:
+                                 // Replace the value at index 1 (items[1])
+                                 String updatedLine1 = line.replace(items[1], newValue);
+                                 file.seek(lastPos);
+                                 file.writeBytes(updatedLine1);
+                                 break;
+                             case 2:
+                                 // Replace the value at index 2 (items[2])
+                                 String updatedLine2 = line.replace(items[2], newValue);
+                                 file.seek(lastPos);
+                                 file.writeBytes(updatedLine2);
+                                 break;
+                             case 3:
+                                 // Replace the value at index 3 (items[3])
+                                 String updatedLine3 = line.replace(items[3], newValue);
+                                 file.seek(lastPos);
+                                 file.writeBytes(updatedLine3);
+                                 break;
+                             case 4:
+                                 // Replace the value at index 4 (items[4])
+                                 //String updatedLine4 = line.replace(items[4], newValue);
+                            	 items[4] = newValue;
+                            	    
+                            	    // Join the items back into a single line with the delimiter ", "
+                            	    String updatedLine4 = String.join(" , ", items);
+                                 file.seek(lastPos);
+                                 file.writeBytes(updatedLine4);
+                                 break;
+                             default:
+                                 // Handle default case
+                                 break;
+                         }
+                         // Update the last position pointer
+                        lastPos = file.getFilePointer();
+                     }
+                 } 
+               lastPos = file.getFilePointer();
+             }
+         }
     }
+    	    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
     public static boolean isValidDate(String date) {
       try {
@@ -2116,28 +2147,23 @@ public  void updateCustomerProfile(int n) throws IOException {
                     printing.printSomething("Enter New Name: ");
                     tmp1 = sc.nextLine(); 
 
-                    updateFile(customerId,CUSTOMER_FILE_NAME, customer1.getUsername(), tmp1);
+                    updateFile(customerId,CUSTOMER_FILE_NAME, tmp1,1);
 
                     customer1.setName(tmp1);
                    break;
                 case 2:
                     printing.printSomething("Enter New Phone: ");
-                    tmp1 = sc.next();
-                    updateFile(customerId,CUSTOMER_FILE_NAME, customer1.getphone(), tmp1);
+                    tmp1 = sc.nextLine();
+                    updateFile(customerId,CUSTOMER_FILE_NAME, tmp1,2);
                     customer1.setPhone(tmp1);
                     break;
                 case 3:
                     printing.printSomething("Enter New Address: ");
-                    tmp1 = sc.next();
-                    updateFile(customerId,CUSTOMER_FILE_NAME, customer1.getaddress(), tmp1);
+                    tmp1 = sc.nextLine();
+                    updateFile(customerId,CUSTOMER_FILE_NAME,  tmp1,3);
                     customer1.setAddress(tmp1);
                     break;
-                case 4:
-                    printing.printSomething("Enter New Email: ");
-                    tmp1 = sc.next();
-                    updateFile(customerId,CUSTOMER_FILE_NAME, customer1.getEmail(), tmp1);
-                    customer1.setEmail(tmp1);
-                    break;
+                
               default:
                     printing.printSomething(INVALID_CHOICE);
             }
@@ -2229,27 +2255,22 @@ public void updateProviderProfile(int n) throws IOException {
                 case 1:
                     printing.printSomething(ENTER_NAME);
                     tmp1 =  sP.next();
-                    updateFile(provideId,PROVIDER_FILE_NAME, provider1.getUsername(), tmp1);
+                    updateFile(provideId,PROVIDER_FILE_NAME,  tmp1,1);
                     provider1.setName(tmp1);
                     break;
                 case 2:
                     printing.printSomething("Enter New Phone: ");
                     tmp1 =  sP.next();
-                    updateFile(provideId,PROVIDER_FILE_NAME, provider1.getphone(), tmp1);
+                    updateFile(provideId,PROVIDER_FILE_NAME, tmp1,2);
                     provider1.setPhone(tmp1);
                     break;
                 case 3:
                     printing.printSomething("Enter New Address: ");
                     tmp1=  sP.next();
-                    updateFile(provideId,PROVIDER_FILE_NAME, provider1.getaddress(), tmp1);
+                    updateFile(provideId,PROVIDER_FILE_NAME, tmp1,3);
                     provider1.setAddress(tmp1);
                     break;
-                case 4:
-                    printing.printSomething("Enter New Email: ");
-                    tmp1 =  sP.next();
-                    updateFile(provideId,PROVIDER_FILE_NAME, provider1.getEmail(), tmp1);
-                    provider1.setEmail(tmp1);
-                    break;
+               
                 default:    printing.printSomething(INVALID_CHOICE);
             }
         }
