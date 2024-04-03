@@ -104,7 +104,7 @@ public class CalendarNotificationsTest {
     @Test
     public void testGetUpcomingEventsForMonth() {
         Calendar calendar = new Calendar();
-   ]  assertTrue(true);
+     assertTrue(true);
     }
 
     @Test
