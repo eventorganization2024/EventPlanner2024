@@ -44,7 +44,7 @@ public class Functions {
 	    Provider providerObj;
 	    static Event eventObj;
 	    int choice2;
-	   public static boolean found;
+	    
 	    static String tmp;
 
 
@@ -167,7 +167,8 @@ public void signInAdmin(String id) throws Exception {
 }
 
  void signInCustomer(String custId) throws Exception {
-     found = false;
+	 boolean found; 
+	 found = false;
     updateCustomersList(); 
     printing.printSomething( ENTER_PASSWORD);
     String password = scanner.next();
@@ -199,7 +200,7 @@ public void signInAdmin(String id) throws Exception {
 }
 
  void signInProvider(String provId) throws Exception {
-	
+	 boolean found;
      found = false;
     updateProvidersList(); 
     printing.printSomething( ENTER_PASSWORD);
@@ -847,7 +848,8 @@ public   void adminPage(String adminId) throws Exception{
 
                  //////////////////////////////////////////////////////////////////////////
   	public static boolean viewproviderservice(String id2)  {
-  		  found = false; 
+  		boolean found;
+  		found = false; 
   		providers.clear();
   		  updateProviderAndServiceList(id2); 
 
@@ -918,7 +920,8 @@ public   void adminPage(String adminId) throws Exception{
   	}
               //////////////////////////////////////////////////////////////////////////////
     public static void showAdminMessage(String userId) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("Msg.txt"))) {
+    	boolean found;
+    	try (BufferedReader reader = new BufferedReader(new FileReader("Msg.txt"))) {
             String line;
              found = false;
             while ((line = reader.readLine()) != null) {
@@ -1042,7 +1045,8 @@ public   void adminPage(String adminId) throws Exception{
 
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
     public static  Event addevent (String idUser,String filename) throws Exception {
-    	   SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+    	boolean found;
+    	SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
     	 String  evenId ; 
         updateEventList(REQUEST_FILE_NAME);
         updateEventList(EVENT_FILE_NAME);
@@ -1156,6 +1160,8 @@ public   void adminPage(String adminId) throws Exception{
  }            
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Service addService() throws Exception {
+    	
+    	boolean found;
     	String  servicId ;
     	Scanner s =new Scanner(System.in);
          updateServiceList();
@@ -1935,7 +1941,8 @@ public static void deleteDiscountFromFile(String filename, List<Discount> update
 
 
 public static void removeDiscount(Scanner scanner, String filename) {
-    printing.printSomething("\nRemoving a discount...");
+	boolean found;
+	printing.printSomething("\nRemoving a discount...");
     printing.printSomething("Enter the ID of the discount to remove: ");
     
     try {
@@ -1973,7 +1980,7 @@ public static void removeDiscount(Scanner scanner, String filename) {
 
 
 public static void deletePackageById(Scanner scanner, String filename) {
-
+	boolean found;
     List<Paackage> packages = readPackagesFromFile(filename);
 
     if (packages.isEmpty()) {
@@ -2014,7 +2021,8 @@ public static void deletePackageById(Scanner scanner, String filename) {
 }
 
 public static void deleteVenueById(Scanner scanner, String filename) {
-	 printing.printSomething("\nRemoving a venue...");
+	boolean found;
+	printing.printSomething("\nRemoving a venue...");
 	    List<Venue> venues = readVenuesFromFile(filename);
 
 	    if (venues.isEmpty()) {
@@ -2112,7 +2120,8 @@ public  static void deleteVenueBooking(String eventId, String filename) {
 //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
                                                      //SINGUP + UPDATE +DELETE ON profiles&FILES//
 void customerSignUp() throws Exception {
-    customerObj = new Customer();
+	boolean found;
+	customerObj = new Customer();
     printing.printSomething("Enter your Id: ");
      id = scanner.next();
     found = searchIdU(id);
@@ -2221,7 +2230,8 @@ public static boolean deleteCustomer(String id) {
 
 //////////////////////////////////////
 public  void providerSignUp() throws Exception {
-      providerObj = new Provider();
+	boolean found;
+	providerObj = new Provider();
       printing.printSomething("Enter your Id: ");
       id = scanner.next();
       found = searchIdP(id);
