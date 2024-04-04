@@ -44,7 +44,7 @@ public class Functions {
 	    Provider providerObj;
 	    static Event eventObj;
 	    int choice2;
-	    
+	   private static  int x =1;
 	    static String tmp;
 
 
@@ -233,8 +233,9 @@ public void signInAdmin(String id) throws Exception {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-static  int x =1;
+
 public   void adminPage(String adminId) throws Exception{
+	
 	try (Scanner scannerA = new Scanner(System.in)) {
         while (x > 0) {
 		 adminList();
@@ -1913,9 +1914,9 @@ public static void readInvoiceFile(String fileName, String customerId) {
                 String invoiceCustomerId = parts[0].trim();
                 if (invoiceCustomerId.equals(customerId)) {
                     String eventName = parts[2].trim();
-                    double price = Double.parseDouble(parts[3].trim());
-                    printing.printSomething("\nEvent Name: " + eventName + "  , Price: " + price);
-                    totalPrice += price; // Accumulate the price
+                    double priceIn = Double.parseDouble(parts[3].trim());
+                    printing.printSomething("\nEvent Name: " + eventName + "  , Price: " + priceIn);
+                    totalPrice += priceIn; // Accumulate the price
                 }
             } else {
                 printing.printSomething("\nInvalid format in invoice file: " + line);
