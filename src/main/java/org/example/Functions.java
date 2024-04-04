@@ -234,7 +234,8 @@ public void signInAdmin(String id) throws Exception {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static  int x =1;
 public   void adminPage(String adminId) throws Exception{
-	 try (Scanner scanner = new Scanner(System.in)) {
+	
+	try (Scanner scanner = new Scanner(System.in)) {
 	   while (x > 0) {
 		 adminList();
 	    printing.printSomething(ENTER_CHOICE);
@@ -303,7 +304,7 @@ public   void adminPage(String adminId) throws Exception{
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 	  
 	  public  void customerOptions(String customerId,int x) throws Exception {
-	  
+		  Scanner scanner = new Scanner(System.in);
 	        switch (x){
 	        case 1:
                 updateCustomersList();
@@ -543,13 +544,14 @@ public   void adminPage(String adminId) throws Exception{
                             /////////////////////////////////////////////////////////////////////
 	  
 	   private  void eventManagementOptions(String  userId,int cE) throws Exception {
-	       switch (cE) {
+		   Scanner scanner = new Scanner(System.in);
+		   switch (cE) {
 	        case 1:
 	        if( viewalleventsforAdmin(REQUEST_FILE_NAME)) {
 	      	
 	        while (true) {     	
 	        printing.printSomething("\nEnter the Event ID of the event you want to accept or reject (or enter 'done' to finish): ");
-	         String eventID = scanner.next();
+	         String eventID = scanner.nextLine();
 	         if ("done".equalsIgnoreCase(eventID)) {
 	        	
 	          break; // Exit the switch case
@@ -663,7 +665,7 @@ public   void adminPage(String adminId) throws Exception{
       private static void packageManagementOptions(int r)
       {
       	
-      	Scanner scanner = new Scanner(System.in);
+    	  Scanner scanner = new Scanner(System.in);
       	switch (r)
       	{
       	case 1:
@@ -1205,7 +1207,8 @@ public   void adminPage(String adminId) throws Exception{
        
    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////	    
- public static void addDiscount(Scanner scanner, String filename) {
+/* 
+public static void addDiscount(Scanner scanner, String filename) {
 	 Scanner scannerD =new Scanner(System.in);
        
 	 printing.printSomething("Adding a discount...");
@@ -1238,6 +1241,48 @@ public   void adminPage(String adminId) throws Exception{
         }
     }
 
+   */
+ public static void addDiscount(Scanner scanner, String filename) {
+	 Scanner scannerDi =new Scanner(System.in);
+       
+	 printing.printSomething("Adding a discount...");
+        
+        try {
+            printing.printSomething("Enter discount ID: ");
+           
+            String discountIdSt = scannerDi.nextLine();
+            int discountIdIn= Integer.parseInt(discountIdSt);
+           
+            
+            printing.printSomething("Enter discount code: ");
+            String discountCode = scannerDi .nextLine();
+            
+            printing.printSomething("Enter discount percentage: ");
+            double discountPercentage = scannerDi .nextDouble();
+            scannerDi.nextLine(); // Consume newline
+            
+            printing.printSomething("Enter validity period (YYYY-MM-DD): ");
+            String validityPeriod = scannerDi .nextLine();
+
+            // Validate input if necessary
+            
+            Discount newDiscount = new Discount(discountPercentage, discountIdIn, validityPeriod, discountCode);
+            String discountDetails = newDiscount.toString();
+
+            addDiscountToFile(filename, discountDetails);
+            printing.printSomething("Discount successfully added.");
+        } catch (InputMismatchException e) {
+            printing.printSomething("Invalid input format. Please enter valid input.");
+            // Handle the exception or retry input
+        }
+    }
+
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1267,7 +1312,7 @@ public   void adminPage(String adminId) throws Exception{
                 printing.printSomething("Package ID already exists in the file. Please enter a new ID.");
             } catch (InputMismatchException e) {
                 printing.printSomething("Invalid input for package ID. Please enter a valid integer ID.");
-                scanner.nextLine();
+               // scanner.nextLine();
             }
         }
         printing.printSomething("Enter package name: ");
