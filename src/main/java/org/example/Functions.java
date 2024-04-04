@@ -44,7 +44,7 @@ public class Functions {
 	    Provider providerObj;
 	    static Event eventObj;
 	    int choice2;
-	    static boolean found;
+	   public static boolean found;
 	    static String tmp;
 
 
@@ -119,8 +119,8 @@ public class Functions {
 	        }
 	    }
 	   
-	    private static String  evenId ;
-	    private static String  servicId ;
+	   
+	    
 		   
 	    private static  String id;
 	    private static  String adminId =admin.getAdminId();
@@ -1043,7 +1043,7 @@ public   void adminPage(String adminId) throws Exception{
 ///////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////
     public static  Event addevent (String idUser,String filename) throws Exception {
     	   SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_PATTERN);
-           
+    	 String  evenId ; 
         updateEventList(REQUEST_FILE_NAME);
         updateEventList(EVENT_FILE_NAME);
          eventObj = new Event();	
@@ -1156,7 +1156,8 @@ public   void adminPage(String adminId) throws Exception{
  }            
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Service addService() throws Exception {
-         Scanner s =new Scanner(System.in);
+    	String  servicId ;
+    	Scanner s =new Scanner(System.in);
          updateServiceList();
        Service service = new Service();
      
