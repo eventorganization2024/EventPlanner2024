@@ -2125,13 +2125,13 @@ void customerSignUp() throws Exception {
 	boolean found;
 	customerObj = new Customer();
     printing.printSomething("Enter your Id: ");
-     id = scanner.next();
-    found = searchIdU(id);
+    String idcustomersing = scanner.next();
+    found = searchIdU(idcustomersing);
     if (found) {
         printing.printSomething(ACCOUNT_ALREADY_EXIST_MESSAGE);
         signInFunction();
     } else {
-    	customerObj.setId(id);
+    	customerObj.setId(idcustomersing);
         printing.printSomething("Enter your Name: ");
         customerObj.setName(scanner.next());
         printing.printSomething("Enter your Phone: ");
@@ -2235,13 +2235,13 @@ public  void providerSignUp() throws Exception {
 	boolean found;
 	providerObj = new Provider();
       printing.printSomething("Enter your Id: ");
-      id = scanner.next();
-      found = searchIdP(id);
+     String idprovider = scanner.next();
+      found = searchIdP(idprovider);
       if (found) {
       printing.printSomething(ACCOUNT_ALREADY_EXIST_MESSAGE);
       signInFunction();
       } else {
-    	  providerObj.setId(id);
+    	  providerObj.setId(idprovider);
           printing.printSomething("Enter your Name: ");
           providerObj.setName(scanner.next());
           printing.printSomething("Enter your Phone: ");
@@ -2872,8 +2872,8 @@ for (Event event : upcomingEvents) {
     
 
     if (!notifiedEvents.contains(event.getEID()) && timeDifferenceMinutes == 59) {
-        String customerId = event.getUsrTd();
-        String recipientDetails = getEmailAndNameFromCustomerFile(customerId);
+        String customerIdd = event.getUsrTd();
+        String recipientDetails = getEmailAndNameFromCustomerFile(customerIdd);
         String[] details = null;
 
         if (recipientDetails != null) {
