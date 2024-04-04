@@ -1191,8 +1191,8 @@ public   void adminPage(String adminId) throws Exception{
        service.setDescription(s.next());
 
        printing.printSomething("Enter service price:");
-       String  pricee = s.next();
-       Double priceD=Double.valueOf(pricee);
+       String  priceeS = s.next();
+       Double priceD=Double.valueOf(priceeS);
        service.setPrice(priceD);
 
        while (true) {
