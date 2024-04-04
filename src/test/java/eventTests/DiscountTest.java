@@ -45,7 +45,7 @@ Scanner scanner;
         navigates = true;
     }
 
-
+/*
     @When("the administrator provides the discount details such as {string}, {string}, {string}, and {string}")
     public void theAdministratorProvidesTheDiscountDetailsSuchAsAnd(String discountpercentage, String discountid, String validityperiod, String discountcode) {
         // Implement code here to provide the discount details
@@ -71,6 +71,36 @@ Discounts.add(discount);
 Functions.writeDiscountsToFile("discounts.txt",Discounts);
         adding = true;
     }
+*/
+
+    @When("the administrator provides the discount details such as {string}, {string}, {string}, and {string}")
+    public void theAdministratorProvidesTheDiscountDetailsSuchAsAnd(String discountpercentage, String discountid, String validityperiod, String discountcode) {
+     
+    	// Implement code here to provide the discount details
+        discount.setdiscountcode(discountcode);
+        discount.setsiscountid(Integer.parseInt(discountid));
+        discount.setdiscountpercentage(Double.parseDouble(discountpercentage));
+        discount.setvalidity(validityperiod);
+
+        // Convert input parameters to Scanner format
+        String scannerInputDi = "123\n" + discountpercentage + "\n" + validityperiod + "\n" + discountcode + "\n";
+        Scanner scannerDi = new Scanner(scannerInputDi);
+
+        // Call the existing addDiscount function with Scanner and filename
+      //  Functions.addDiscount(scannerDi, "discounts.txt");
+        
+        
+        Functions.isValidDate("2020-11-12");
+        assertFalse(Functions.isValidDate("20202"));
+        String discountDetails = "1,ABC123,10.0,2024-12-31"; // Example discount details
+        Functions.addDiscountToFile("discounts.txt", discountDetails);
+
+Discounts.add(discount);
+Functions.writeDiscountsToFile("discounts.txt",Discounts);
+        adding = true;
+    }
+
+   
 
     @Then("the new discount is successfully added to the system")
     public void theNewDiscountIsSuccessfullyAddedToTheSystem() {
