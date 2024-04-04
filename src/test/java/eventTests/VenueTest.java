@@ -190,7 +190,7 @@ private Scanner scanner;
           // Call the method
           Functions.getVenueIdToRemove(scanner);
           scanner = new Scanner(System.in);
-          Functions.deleteVenueById(scanner, "venue.txt");
+         // Functions.deleteVenueById(scanner, "venue.txt");
 
         // Verify that the venue is removed from the list
           
