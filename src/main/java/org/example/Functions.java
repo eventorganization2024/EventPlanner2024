@@ -56,7 +56,7 @@ public class Functions {
 	    static Admin admin = new Admin();
 	    static Paackage p = new Paackage();
 	    static Customer customer1 = new Customer();
-	    static Event event1=new Event();
+	    
 	    static Provider provider1=new Provider();
 	    protected static final List<Customer> customers = new ArrayList<>();
 	   protected static final ArrayList<Provider> providers = new ArrayList<>();
@@ -235,16 +235,16 @@ public void signInAdmin(String id) throws Exception {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static  int x =1;
 public   void adminPage(String adminId) throws Exception{
-	 try (Scanner scanner = new Scanner(System.in)) {
-	   while (x > 0) {
+	try (Scanner scannerA = new Scanner(System.in)) {
+        while (x > 0) {
 		 adminList();
 	    printing.printSomething(ENTER_CHOICE);
-	    int c = scanner.nextInt();
+	    int c = scannerA.nextInt();
 
 	    switch (c) {
 	        case 1:
 	        	 userManagementAdminPageList();
-	        	 int j=scanner.nextInt();
+	        	 int j=scannerA.nextInt();
 	            switch(j) {
 	            case 1:viewCustomer();
 	            break;
@@ -258,28 +258,28 @@ public   void adminPage(String adminId) throws Exception{
 	            break;
 	        case 2:
 	        	discountManagementadminList();
-	        	int l = scanner.nextInt();
+	        	int l = scannerA.nextInt();
 	        	discountManagementOptions(l);
 	            break;
 	        case 3:
 	        	eventManagementAdminPageList();
-	        	int customerEvent=scanner.nextInt();
+	        	int customerEvent=scannerA.nextInt();
 	        	eventManagementOptions(adminId,customerEvent);
 	            break;
 	        case 4:
 	        	venueManagementadminList();
-	        	int cusVenue=scanner.nextInt();
+	        	int cusVenue=scannerA.nextInt();
 	        	venueManagementOptions(cusVenue);
 	            break;
 	         
 	        case 5:
 	        	providerManagementAdminPageList();
-	        	int providerMan=scanner.nextInt();
+	        	int providerMan=scannerA.nextInt();
 	        	providerAdminManagementOptions(providerMan);
 	            break;
 	        case 6:
 	        	packageManagementadminList();
-	        	int packageMan=scanner.nextInt();
+	        	int packageMan=scannerA.nextInt();
 	        	packageManagementOptions(packageMan);
 	            
 	            break;
@@ -304,7 +304,7 @@ public   void adminPage(String adminId) throws Exception{
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 	  
 	  public  void customerOptions(String customerId,int x) throws Exception {
-	  
+		  Event event1=new Event();
 	        switch (x){
 	        case 1:
                 updateCustomersList();
@@ -544,7 +544,8 @@ public   void adminPage(String adminId) throws Exception{
                             /////////////////////////////////////////////////////////////////////
 	  
 	   private  void eventManagementOptions(String  userId,int cE) throws Exception {
-	       switch (cE) {
+		   Event event1=new Event();
+		   switch (cE) {
 	        case 1:
 	        if( viewalleventsforAdmin(REQUEST_FILE_NAME)) {
 	      	
