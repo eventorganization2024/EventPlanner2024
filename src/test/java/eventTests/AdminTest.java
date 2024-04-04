@@ -37,7 +37,7 @@ public class AdminTest {
          InputStream inputStream = new ByteArrayInputStream(        		   
       		   (       "1\n1\n"+"1\n4\n"    //customer view all
         				   + "2\n1\n"+"2\n5\n"+"2\n6\n"      				   
-      				   + "3\n1\ndone\n3\n2\ndone\n"+"3\n2\n1000\ndone\n"+"3\n4\ndone\n"+"3\n5\ndone\n"+"3\n7\n"
+      				  // + "3\n1\ndone\n3\n2\ndone\n"+"3\n2\n1000\ndone\n"+"3\n4\ndone\n"+"3\n5\ndone\n"+"3\n7\n"
         				  // +"3\n1\n111\nN\n"
       				   + "4\n1\n"+"4\n5\n"+"4\n6\n"   // venue
         				   + "5\n1\n"+"5\n3\n" +"5\n6\n"    //provider
@@ -50,7 +50,7 @@ public class AdminTest {
       				   
       				   ).getBytes());
 	        System.setIn(inputStream);
-	        System.setIn(inputStream);
+	      //  System.setIn(inputStream);
           try {
         	  //Functions.signInAdmin("111");
                functions.adminPage(admin.getAdminId());
