@@ -1,61 +1,10 @@
-VenueID123,VenueName111111,VenueAddress,image.jpg,100,150.0R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0000,VenueName11111,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0000,VenueName1111,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.056,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName111,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
 R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName11,VenueAddress,VenueImage,100,0.0NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName1,VenueAddress,VenueImage,100,0.0
 NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
 R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
 NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
 R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
 NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
 R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
 NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
 R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
-NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
-R456,Palestine_Convention_Center,Main_Street_Ramallah,ramallah_venue_image.jpg,200,200.0
-000,VenueName,VenueAddress,VenueImage,100,0.0
 NABLUS123,Nablus_Event_Center, Al-Quds_St_Nablus,nablus_venue_image.jpg,150,120.0
