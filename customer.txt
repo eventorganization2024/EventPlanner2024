@@ -1,10 +1,1 @@
-121Test , Test , 057806241 , Nablus , Test@gmail.com , 123456
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
-12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
 12114777 , Ali , 059847832 , yafa , Ali@gami.com , 12345
