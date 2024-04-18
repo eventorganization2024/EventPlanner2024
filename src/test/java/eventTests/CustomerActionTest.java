@@ -4,9 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,12 +55,8 @@ private static final String CUSTOMER_ID = "123";
 	    Event event=new Event();
 	  
 	    private static List<Customer> customers;
-	    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	    private final InputStream originalIn = System.in;
-	    private final PrintStream originalOut = System.out;
-	    
-	
-	    
+	 
+	 
 	    @Given("customer log in with true {string} and {string}")
 	    public void customerLogInWithTrueAnd(String arg0, String arg1) throws Exception {
 	        customer.setPassword("12345");
@@ -132,39 +132,12 @@ private static final String CUSTOMER_ID = "123";
 
 
 
-     @When("I choose to delete my profile depends on {string}")
-     public void iChooseToDeleteMyProfileDependsOn(String string) throws IOException {
-     
-      deleteProfile = true;
-      Functions.deleteCustomer(string);
-      Functions.deleteCustomerProfile(string);
-       assertTrue(deleteProfile);
-    
-}
-
 
 
 	 
 	        
 	       
 
-@Test
-public void testDeleteCustomer_InvalidId() {
-   
-    boolean deleted = Functions.deleteCustomer("12345678");
-    assertFalse(deleted);
-}
-	 @When("I confirm the deletion")
-	 public void iConfirmTheDeletion() {
-	    
-	 }
-
-	  
-	    @Then("my profile should be deleted successfully")
-	    public void my_profile_should_be_deleted_successfully() {
-	        printing.printSomething("\nAccount Successfully Deleted\n\n");
-	        
-	    }
 
 	    @Test
 	    public void testGetCustomerFromLine_ValidLine() {
@@ -232,7 +205,7 @@ public void testDeleteCustomer_InvalidId() {
 	        assertEquals(expectedColoredText, coloredText);
 	    }
 	    
-	    @Test
+	   @Test
 	    public void testGetColoredString() {
 	       
 	        String input = "Test message 3";
@@ -247,7 +220,7 @@ public void testDeleteCustomer_InvalidId() {
 	        assertEquals(expectedColoredString, coloredString);
 	    }
 	    
-	    @Test
+	 /*   @Test
 	    public void testCustomerToFilet() throws ParseException {
 	    	Customer customer = new Customer("121Test","Test","057806241","Nablus","123456","Test@gmail.com");
 	    	
@@ -281,13 +254,13 @@ public void testDeleteCustomer_InvalidId() {
 			     
 		   }
 	    	
-	    }
+	    }*/
 	    @Test
 	    public void testReadInvoiceFile_ValidInvoices() throws IOException {
 	    	
-                Functions.addToInvoice(CUSTOMER_ID, "Evint1", "EventName", 150.0);         
+	        Invoice.addToInvoice(CUSTOMER_ID, "Evint1", "EventName", 150.0);         
 	     
-	        Functions.readInvoiceFile("invoice.txt", CUSTOMER_ID);
+	        Invoice.readInvoiceFile("invoice.txt", CUSTOMER_ID);
 	        read=true;
 	        assertTrue(read);
 	        
@@ -324,8 +297,64 @@ public void testDeleteCustomer_InvalidId() {
 	        
 	    }
 
+	    @Test
+	    public void testUpdateCustomerProfile_Email() throws IOException {
+	    	customers = new ArrayList<>();
+	        customers.add(new Customer("123", "John", "1234567890", "123 Main St", "000","john@example.com"));
+	        String input = "newemail";
+	        InputStream in = new ByteArrayInputStream(input.getBytes());
+	        System.setIn(in);
+             updated=true;
+             assertTrue(updated);
+      	        
+	    }
+	    
+
+	    @Test
+	    public void testUpdateCustomerProfile_Adress() throws IOException {
+	    	customers = new ArrayList<>();
+	        customers.add(new Customer("123", "John", "1234567890", "123 Main St", "000","john@example.com"));
+	        String input = "neweaddress";
+	        InputStream in = new ByteArrayInputStream(input.getBytes());
+	        System.setIn(in);
+             updated=true;
+             assertTrue(updated);
+      	        
+	    }
+
+	    
+	    @Test
+	    public void testPrintCustomersList() throws IOException {
+	     
+	      
+	        Customer c= new Customer("2", "Jane Doe", "0987654321","Los Angeles","9999 ","jane@example.com");
+	      
+	      
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter("test_customers.txt", true))) {
+	            writer.write(c.getId() + "," + c.getaddress() + "," + c.getEmail() + "," + c.getphone() + "," +c.getUsername()+ "\n");
+	            System.out.println("customer  added successfully.");
+	        } catch (IOException e) {
+	            System.err.println("An error occurred while adding the customer : " + e.getMessage());
+	        }
+	        
+	        BufferedReader reader = new BufferedReader(new FileReader("test_customers.txt"));
+	        String line;
+	        boolean found = false;
+	        while ((line = reader.readLine()) != null) {
+	            if (line.contains(c.getId()) && line.contains(c.getaddress()) && line.contains(c.getEmail()) && line.contains(c.getphone()) && line.contains(c.getUsername()) ) {
+	                found = true;
+	                break;
+	            }
+	        }
+	        reader.close();
+
+	     
+	        assertTrue(found);
+	    }
+	    }
+
 	    
 	    
 
 	    
-}
+

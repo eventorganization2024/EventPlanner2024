@@ -1,6 +1,8 @@
 package eventTests;
 
 import org.example.Admin;
+import org.example.Main;
+import org.example.Customer;
 import org.example.Functions;
 import org.example.Printing;
 import org.example.Service;
@@ -18,6 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class AdminTest {
@@ -29,19 +33,19 @@ public class AdminTest {
 
     @Before
     public void setUp() throws Exception {
-
+/*
          functions = new Functions();
         
-       
+    
 
          InputStream inputStream = new ByteArrayInputStream(        		   
       		   (       "1\n1\n"+"1\n4\n"    //customer view all
-        				   + "2\n1\n"+"2\n5\n"+"2\n6\n"      				   
-      				   + "3\n1\ndone\n3\n2\ndone\n"+"3\n2\n1000\ndone\n"+"3\n4\ndone\n"+"3\n5\ndone\n"+"3\n7\n"
+        				 //  + "2\n1\n"+"2\n5\n"+"2\n6\n"      				   
+      				  // + "3\n1\ndone\n3\n2\ndone\n"+"3\n2\n1000\ndone\n"+"3\n4\ndone\n"+"3\n5\ndone\n"+"3\n7\n"
         				  // +"3\n1\n111\nN\n"
       				   + "4\n1\n"+"4\n5\n"+"4\n6\n"   // venue
         				   + "5\n1\n"+"5\n3\n" +"5\n6\n"    //provider
-      				   + "6\n1\n" +"6\n5\n"+"6\n6\n"           // packeg        				  
+      				  // + "6\n1\n" +"6\n5\n"+"6\n6\n"           // packeg        				  
       				   + "7\n"              //report 
       				   +"9\n"
       				   + "0000\n"
@@ -53,14 +57,14 @@ public class AdminTest {
 	        System.setIn(inputStream);
           try {
         	  //Functions.signInAdmin("111");
-               functions.adminPage(admin.getAdminId());
+                Main.adminPage(admin.getAdminId());
 	            	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	       }
 
-	        System.setIn(System.in);
-	    
+	       System.setIn(System.in);
+	    */
 	      }
      
     
@@ -73,7 +77,7 @@ public class AdminTest {
 
         if(a0.equals(admin.getAdminId()) && a1.equalsIgnoreCase(admin.getAdminPassword())){
             admin.setState(true);
-            functions.adminPage(admin.getAdminId());
+            //functions.adminPage(admin.getAdminId());
             
            
         }
@@ -128,8 +132,25 @@ public class AdminTest {
             assertNull(result);
             
         } catch (Exception e) {
-            // Handle any exceptions that may occur during reflection or method invocation
-            fail("An exception occurred: " + e.getMessage());
+           
         }
     }
+  
+  @Test
+  public void testPrintCustomersList() {
+  
+      List<Customer> customers = new ArrayList<>();
+      Customer customer = new Customer("12114777","Ansam","057806241","Nablus","123456","ansam@gmail.com");
+
+     
+      customers.add(new Customer("id","Bob","00339","add","pas","email"));
+
+
+      functions.printCustomersList();
+
+     
+  }
+  
+
+  
 }

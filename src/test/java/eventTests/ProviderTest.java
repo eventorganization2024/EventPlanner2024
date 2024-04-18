@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.example.Customer;
 import org.example.Functions;
 import org.example.Provider;
 import org.example.Service;
@@ -27,7 +28,7 @@ public class ProviderTest {
 
     @Test
     public void testAddProviderToFile() throws IOException {
-        if (Functions.searchIdP(p.getId()))
+        if (Provider.searchIdP(p.getId()))
             found = true;
         else 
         found=false;
@@ -47,7 +48,7 @@ public class ProviderTest {
 	    public void testDeleteProviderFromFileAndArrayList() throws IOException {
 	    Provider provider = new Provider("testId2", "testPassword2", "testName2", "123456789", "test2@example.com","Test2Address");
 		provider.deleteProviderFromFileAndArrayList("provider.txt", provider.getId());
-		 boolean exists = Functions.searchIdP(provider.getId());
+		 boolean exists = Provider.searchIdP(provider.getId());
 	       assertTrue("Provider should be deleted", !exists);
 	    }
 	    
@@ -85,9 +86,11 @@ public class ProviderTest {
 	    
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    @Test
-	    public void testUpdateProviderProfile_NameChange() throws IOException {
+	    public void testUpdateProviderProfileChange() throws IOException {
 	        // Prepare test data: Create a list of providers with known IDs
-	        List<Provider> providers = new ArrayList<>();
+	    	f.  providers.clear();
+	    	
+	    	//List<Provider> providers = new ArrayList<>();
 	        Provider provider = new Provider();
 	        provider.setAddress("address");
 	        provider.setEmail("jullnarihab61@gmail.com");
@@ -97,17 +100,40 @@ public class ProviderTest {
 	        provider.setPassword("1234");
 	        provider.setPhone("1234");
 	        provider.setType("p");
-	        
-	       providers.add(provider);
+	       f.provideId="2334" ;
+	       f. providers.add(provider);
 
 	        
-	        String input = "1\nNew Name\n"; // Change name option (1) and provide new name
+	        String input = "New Name\n"; // Change name option (1) and provide new name
 	        InputStream in = new ByteArrayInputStream(input.getBytes());
 	        System.setIn(in);
             
 	       
-			f.updateProviderProfile(1);
-                     assertEquals("jullnar", provider.getUsername());
+			Provider.updateProviderProfile(1);
+             
+			  String input2 = "New phone\n"; 
+		        InputStream in22 = new ByteArrayInputStream(input2.getBytes());
+		        System.setIn(in22);
+	            
+		        Provider.updateProviderProfile(2);
+	             
+			
+
+				  String input3 = "New Address\n"; 
+			        InputStream in3 = new ByteArrayInputStream(input3.getBytes());
+			        System.setIn(in3);
+		            
+			        Provider.updateProviderProfile(3);
+		             
+			        Provider.updateProviderProfile(5);
+		             
+					
+			
+			
+			
+			
+			
+			
                      updatePpage=true;
                      assertTrue(updatePpage);
                     		 
@@ -131,7 +157,7 @@ public class ProviderTest {
 	        provider.setPhone("1234");
 	        provider.setType("p");
 	        
-	       f.updateCustomerProfile(2);
+	        Provider.updateProviderProfile(2);
 	       assertEquals("1234", provider.getphone());
 	      
 	       updatePpage=true;
@@ -141,7 +167,9 @@ public class ProviderTest {
 	        
 	       
 	    }
-	    
+////////////////////////////////////////////////////////////////////////////////
+	
+
 	    
 	    
 

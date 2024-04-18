@@ -2,7 +2,7 @@ Feature: Event Management
 
 Scenario: Customer Creates an Event 
 Given the customer is going to create an event 
-When the customer enters the event details such as Date "2024-04-14", time "5:00pm", description "A_celebration", attendeeCount "300", name "omar_party",category "Birthday" ,theme "Decades_Theme",Venue "Palestine_Convention_Center",eventid "2000"
+When the customer enters the event details such as Date "2024-04-14", time "5:00 pm", description "A_celebration", attendeeCount "300", name "omar_party",category "Birthday" ,theme "Decades_Theme",Venue "Nablus_Event_Center",eventid "2000"
 Then the event is added to admin requst
 
 Scenario: Cancels an Existing Event 
@@ -24,7 +24,7 @@ Then  non_Existing massage
 
 Scenario: Administrator Creates an Event
 Given the administrator is going to create an event
-When the administrator enters the event details such as Date "2024-06-24", time "5:00 pm", description "A celebration", attendeeCount "200", name "reem party",category "Birthday" ,theme "Decades Theme",Venue "Palestine_Convention_Center",eventid "1000"
+When the administrator enters the event details such as Date "2024-06-24", time "5:00 pm", description "A celebration", attendeeCount "200", name "reem party",category "Birthday" ,theme "Decades Theme",Venue "Nablus_Event_Center",eventid "1000"
 Then the event is successfully created in the system
 
 
@@ -79,7 +79,7 @@ Scenario: Update Event Category
 
 Scenario: Update Event Venue
   Given the user wants to update event details
-  When they update the event venue to "Palestine_Convention_Center"
+  When they update the event venue to "Nablus_Event_Center"
   Then the system should successfully save the changes
 
 Scenario: Update Event Services

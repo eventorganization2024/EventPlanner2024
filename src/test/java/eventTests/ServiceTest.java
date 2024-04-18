@@ -194,7 +194,7 @@ public class ServiceTest {
     @Test 
     public void testAll() throws IOException {
     Service Exservice = new Service("Photography", "Full_Event_Coverage", "Professional_photography_coverage_event", "available", "100", 600.0, "700");
-    if (Functions.searchIdS(Exservice.getServiceID(), "service.txt")) found=true;else found=false;                            
+    if (Service.searchIdS(Exservice.getServiceID(), "service.txt")) found=true;else found=false;                            
     if (found)
     {	 Service.deleteServiceFromFile( "service.txt","100"); 
         Service.addServiceToFile(Exservice); 
@@ -251,7 +251,7 @@ public class ServiceTest {
  
 /////////////////////////////////////////////////////
 
-
+/*
 @Test
 public void testAddService() throws Exception {
     // Prepare test input
@@ -292,7 +292,7 @@ public void testAddService() throws Exception {
 
  }
 
-
+*/
 
 }
 

@@ -34,14 +34,30 @@ public class VenueTest {
 	 private InputStream inputStream;
 private Scanner scanner;
     Printing printing = new Printing();
-    
+    Functions func=new Functions();
     List<Venue> venues = new ArrayList<>();
     
     Venue venue1 = new Venue("VenueName", "VenueAddress", 100, 150.0, "Available", "VenueID123", "image.jpg");
-    Venue venue2 = new Venue("VenueName", "VenueAddress", 100, "image.jpg", 150.0, "Available", "2026-01-01");
+   // Venue venue2 = new Venue("VenueName", "VenueAddress", 100, "image.jpg", 150.0, "Available", "2026-01-01");
    
    
-	
+    /*@Test 
+    public void addVenueTo() {
+ 	   boolean found;
+ 	   Venue v1 = new Venue("Palestine_Convention_Center", "Main_Street_Ramallah", 200, 200.0, "Available", "R456", "ramallah_venue_image.jpg");
+ 	   String venueDetails = v.toFileString(); 
+ 	   if (func. isVenueIdExists("venue.txt",v1.getId()))found=true ;else found =false;  
+ 	   if( found) 
+ 	   {
+ 		   printing.printSomething("venue found");
+ 		   
+ 	   }
+ 	   else   Functions.addVenueToFile("venue.txt",venueDetails );
+ 	   
+ 	   
+ 	   
+    }
+	*/
     @Given("that the admin is logged into the system")
     public void thatTheAdminIsLoggedIntoTheSystem() {
         Admin admin = new Admin();
@@ -62,27 +78,22 @@ private Scanner scanner;
          v.setCapacity(int1);
          v.setImage(string3);
          String venueDetails = v.toFileString();
-         String input = "000\nVenueName\nVenueAddress\nVenueImage\n100\n50.0\n";
-         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-         System.setIn(inputStream);
          venues.add(v);
-         //venues.add(venue1);
-         Scanner scanner = new Scanner(System.in);
-
-         Functions.addVenue(scanner, "venue.txt");
-         
-         
-         
-      
-         Functions.addVenueToFile("venue.txt",venueDetails );
-         
-    	// Functions.updateVenueFile("venue.txt",venues);
-
-         
-         
-        
+    
+        boolean found;
+		if ( Venue. isVenueIdExists("venue.txt",string))found=true ;else found =false;  
+  	   if( found) 
+  	   {
+  		   printing.printSomething("venue"+string+" found");
+	   
+  	   }
+  	   else   {     
+  		  // Functions.addVenue(scanner, "venue.txt");
+  		   Venue.addVenueToFile("venue.txt",venueDetails );
+       }
+  	   
+  	  //////////////////////////////////////// 
     }
-
     @Then("the admin can successfully add the venue to the system.")
     public void theAdminCanSuccessfullyAddTheVenueToTheSystem() {
         // Assuming some logic to add the venue to the system
@@ -106,7 +117,7 @@ private Scanner scanner;
                 System.setIn(inputStream);
                 
                  scanner = new Scanner(System.in);
-                Functions.editVenuefrom(scanner,"venue.txt");
+                Venue. editVenuefrom(scanner,"venue.txt");
 //                Functions.updateVenueFile("venue.txt",venues);
                
                     break;
@@ -117,7 +128,7 @@ private Scanner scanner;
                     System.setIn(inputStream);
                     
                      scanner = new Scanner(System.in);
-                    Functions.editVenuefrom(scanner,"venue.txt");
+                     Venue.editVenuefrom(scanner,"venue.txt");
                     break;
                 case "Name":
                 	
@@ -126,7 +137,7 @@ private Scanner scanner;
                     System.setIn(inputStream);
                     
                      scanner = new Scanner(System.in);
-                    Functions.editVenuefrom(scanner,"venue.txt");
+                     Venue.editVenuefrom(scanner,"venue.txt");
                     break;
                 case "Capacity":
                     v.setCapacity(Integer.parseInt(value));
@@ -134,7 +145,7 @@ private Scanner scanner;
                     System.setIn(inputStream);
                     
                      scanner = new Scanner(System.in);
-                    Functions.editVenuefrom(scanner,"venue.txt");
+                     Venue.editVenuefrom(scanner,"venue.txt");
                     break;
                 case "Price":
                     v.setPrice(Double.parseDouble(value));
@@ -142,7 +153,7 @@ private Scanner scanner;
                     System.setIn(inputStream);
                     
                      scanner = new Scanner(System.in);
-                    Functions.editVenuefrom(scanner,"venue.txt");
+                     Venue.editVenuefrom(scanner,"venue.txt");
                     break;
                 case "Image":
                     v.setImage(value);
@@ -150,7 +161,7 @@ private Scanner scanner;
                     System.setIn(inputStream);
                     
                      scanner = new Scanner(System.in);
-                    Functions.editVenuefrom(scanner,"venue.txt");
+                     Venue.editVenuefrom(scanner,"venue.txt");
                     break;
             }
         }
@@ -164,37 +175,20 @@ private Scanner scanner;
     String venueIdToRemove;
     @When("select to delete a venue by its {string}")
     public void selectToDeleteAVenueByIts(String venueId) {
-    	Functions.getPriceByVenue("jullnar");
-    	Functions.getPriceByVenue(venue1.getName());
-
+      
         
-    	 venueIdToRemove = "000"; // Venue ID to remove
+    	 venueIdToRemove = "N123"; // Venue ID to remove
          inputStream = new ByteArrayInputStream(venueIdToRemove.getBytes());
          scanner = new Scanner(inputStream); // Provide venue ID as input
 
-          // Test the deleteVenueById method
           
-         Functions.isVenueIdExists("venue.txt","000");
-         assertTrue( Functions.isVenueIdExists("venue.txt","000"));
-         assertFalse (Functions.isVenueIdExists("venue.txt","nmnmnmn"));
-        assertFalse(Functions.removeVenue0(venues,"9"));
-         Venue venue123 = new Venue("123", "VenueName", "VenueAddress", 100, 1000.0, "imagepath");
-
-         venues.add(venue123);
-         assertTrue(Functions.removeVenue0(venues,"123"));
-
-           venueId = "VenueID123";
-          InputStream inputStream = new ByteArrayInputStream(venueId.getBytes());
-           scanner = new Scanner(inputStream);
-
-          // Call the method
-          Functions.getVenueIdToRemove(scanner);
-          scanner = new Scanner(System.in);
-          Functions.deleteVenueById(scanner, "venue.txt");
-
-        // Verify that the venue is removed from the list
-          
-      
+         Venue.isVenueIdExists("venue.txt","R456");
+         assertTrue(  Venue.isVenueIdExists("venue.txt","N123"));
+         assertFalse (  Venue.isVenueIdExists("venue.txt","nmnmnmn"));
+        assertFalse( Venue.removeVenue0(venues,"9"));
+        //////////////////////////////////////////////////////////////////
+        
+       
        
     	delete = true;
 }
@@ -209,16 +203,16 @@ private Scanner scanner;
 
     @When("select to view all venues registered in the system")
     public void selectToViewAllVenuesRegisteredInTheSystem() {
-    	Functions.viewAllVenues("venue.txt");
+        Venue.viewAllVenues("venue.txt");
     	
-    	Functions.printAllVenues(venues);
+        Venue.printAllVenues(venues);
 
     }
 
     @Then("the admin can see a comprehensive list of all venues.")
     public void theAdminCanSeeAComprehensiveListOfAllVenues() {
-    	Functions.viewAllVenues("venue.txt");
-    	Functions.updateVenueFile("venue.txt", venues);
+        Venue.viewAllVenues("venue.txt");
+        Venue.updateVenueFile("venue.txt", venues);
     	
     	
     	//venues.add(venue1);

@@ -3,7 +3,7 @@ Feature: Venue Management for Admin
 
 Scenario: Add Venue
 Given that the admin is logged into the system
-When select to add a new venue such as details "NABLUS123", 120.0, " Al-Quds_St_Nablus", "nablus_venue_image.jpg", "Nablus_Event_Center", 150
+When select to add a new venue such as details "N123", 120.0, " Al-Quds_St_Nablus", "nablus_venue_image.jpg", "Nablus_Event_Center", 150
 Then the admin can successfully add the venue to the system.
 
 #Scenario: Edit Venue

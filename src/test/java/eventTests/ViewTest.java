@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-
-
+import org.example.Customer;
 import org.example.Event;
 import org.example.Functions;
+import org.example.Venue;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -69,7 +69,7 @@ public void setUp() throws ParseException {
 	@Then("the list of users  displayed")
 	public void theListOfUsersDisplayed() {
 		 assertTrue(show_allcustomers); 
-		 F.viewCustomer();               ////////////////////////////////////////////////////////////////////
+		 Customer.viewCustomer();               ////////////////////////////////////////////////////////////////////
 	}
 
 
@@ -95,7 +95,7 @@ public void setUp() throws ParseException {
    }
 	@Then("the list of venues  displayed")
 	public void theListOfVenuesDisplayed() {
-		 assertTrue(show_VenueforAdmin); F.viewAllVenues("venue.txt");    /////////////////////////////////////////////////////          
+		 assertTrue(show_VenueforAdmin);Venue.viewAllVenues("venue.txt");    /////////////////////////////////////////////////////          
 	}
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ public void setUp() throws ParseException {
 		}
 	@Then("the list of available venues  displayed")
 	public void theListOfAvailableVenuesDisplayed() {
-		 assertTrue(show_Venueforcustomer); F.viewAllVenuesCustomer("venue.txt");         
+		 assertTrue(show_Venueforcustomer);Venue.viewAllVenuesCustomer("venue.txt");         
 			}
 
 	

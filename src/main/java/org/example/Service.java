@@ -272,6 +272,27 @@ public class Service {
 		
 		
 	}
+   //////////////////////////////////////////////////////////////////
+
+public static boolean searchIdS(String serviceID, String fileName) {
+    try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] items = line.split(" , ");
+            if (items.length >= 7) { 
+                String serviceid = items[0].trim();
+                if (serviceid.equals(serviceID)) {
+                    return true; 
+                }
+            }
+        }
+    } catch (IOException e) {
+        printing.printSomething(Functions. ERROR + e.getMessage());
+    } catch (NumberFormatException e) {
+        printing.printSomething(Functions.INVALID_INPUT + e.getMessage());
+    }
+    return false; 
+}
 //////////////////////////////////////////////////////////////////////
    public String getServiceID() {
        return serviceID;}

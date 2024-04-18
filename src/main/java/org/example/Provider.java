@@ -3,6 +3,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -10,13 +11,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Provider extends User  {
-    private static final List<Service> serviceDetailsList = new ArrayList<>();
+   protected static  List<Service> serviceDetailsList = new ArrayList<>();
     private String email;
     private String addresss;
     static Printing printing = new Printing();
     static List<Provider> providers = new ArrayList<>(); 
     Functions f=new Functions();
-   
+    static Scanner scanner = new Scanner(System.in);
+    static boolean found;
+    
 ///////////////////////////////////////////////////////////////////////
     public Provider() {  }
     
@@ -124,7 +127,7 @@ public class Provider extends User  {
     public String getEmail() { return email;  }
     public void setEmail(String email) { this.email = email;}
     
-    public void setAddress(String address) {this.addresss=address;}
+   // public void setAddress(String address) {this.addresss=address;}
     public String getProviderAddress() { return addresss;  }
     
     public static Provider getProviderFromLine(String line) {
@@ -273,7 +276,78 @@ public class Provider extends User  {
             printing.printSomething("An error occurred: " + e.getMessage());
         }
     }
+///////////////////////////////////////////////////////////////////////////////////
+
+public static boolean searchIdP(String id) {
+    boolean f = false;
+    try (BufferedReader br = new BufferedReader(new FileReader(Functions. PROVIDER_FILE_NAME))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (line.contains(id)) { f = true;}
+        }
+    } catch (IOException e) { printing.printSomething(Functions. ERROR + e.getMessage());}
+    return f;
+}
+////////////////
+public static  void providerSignUp() throws Exception {
+   Provider providerObj = new Provider();
+    printing.printSomething("Enter your Id: ");
+    String IdIn;
+    IdIn = scanner.next();
+    found = searchIdP(IdIn);
+    if (found) {
+    printing.printSomething(Functions.ACCOUNT_ALREADY_EXIST_MESSAGE);
+   Main. signInFunction();
+    } else {
+  	  providerObj.setId(IdIn);
+        printing.printSomething("Enter your Name: ");
+        providerObj.setName(scanner.next());
+        printing.printSomething("Enter your Phone: ");
+        providerObj.setPhone(scanner.next());
+        printing.printSomething("Enter your Address: ");
+        providerObj.setAddress(scanner.next());
+        printing.printSomething("Enter your Email: ");
+        providerObj.setEmail(scanner.next());
+        printing.printSomething(Functions.THANK_MESSAGE);
+        providerObj.setPassword(scanner.next());
+        printing.printSomething("\nRegistration done successfully\n");
+        Functions. providers.add(providerObj);
+        Provider. addProviderToFile(providerObj);
+      }
+}
+//////////////////////////
+
+public static void updateProviderProfile(int n) throws IOException {
+	 Scanner sP =new Scanner(System.in);
+		 
+	String tmp1;
+    for (Provider provider1 : Functions.providers) {
+        if (provider1.getId().equals(Functions.provideId)) {
+            switch (n){
+                case 1:
+                    printing.printSomething(Functions.ENTER_NAME);
+                    tmp1 =  sP.next();
+                    Functions.updateFile(Functions.provideId,Functions.PROVIDER_FILE_NAME,  tmp1,1);
+                    provider1.setName(tmp1);
+                    break;
+                case 2:
+                    printing.printSomething("Enter New Phone: ");
+                    tmp1 =  sP.next();
+                    Functions. updateFile(Functions.provideId,Functions.PROVIDER_FILE_NAME, tmp1,2);
+                    provider1.setPhone(tmp1);
+                    break;
+                case 3:
+                    printing.printSomething("Enter New Address: ");
+                    tmp1=  sP.next();
+                    Functions. updateFile(Functions.provideId,Functions.PROVIDER_FILE_NAME, tmp1,3);
+                    provider1.setAddress(tmp1);
+                    break;
+               
+                default:    printing.printSomething(Functions.INVALID_CHOICE);
+            }
+        }
+    }
+
 	
-	
-	
+}
 }

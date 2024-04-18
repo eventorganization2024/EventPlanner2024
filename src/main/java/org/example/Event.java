@@ -76,7 +76,27 @@ public class Event {
        this.serviceIds = serviceIds;
    }
    
- /////////////////////////////////////////////////////////////////////////////////   
+ /////////////////////////////////////////////////////////////////////////////////
+   public static boolean searchIdE(String id3, String filename) {
+	    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            String[] items = line.split(" , ");
+	            if (items.length >= 10) {
+	                String eventId =items[9].trim();
+	                if (eventId .equals(id3)) {
+	                    return true; 
+	               }
+	            }
+	        }
+	    } catch (IOException e) {
+	        printing.printSomething(Functions.ERROR + e.getMessage());
+	    } catch (NumberFormatException e) {
+	        printing.printSomething(Functions. INVALID_INPUT + e.getMessage());
+	    }
+	    return false; // Return false if the ID is not found in any line
+	}
+   ///////////////////////////////////////////////////////////////////////////////
    public static Event getEventFromLine(String line) {
 	   SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
        
@@ -101,11 +121,10 @@ public class Event {
 	        String eventId = items[9];
 	        String serviceIdsString = items[10];
 	        // Remove leading and trailing brackets if present
-	        serviceIdsString = serviceIdsString.replaceAll("^(\\[|\\])$", "");
-
-	// The regex "\\s*,\\s*" is safe as it splits the input string by commas with optional whitespace.
-// The limit of -1 ensures that trailing empty strings are not discarded.
-String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -1);
+	        serviceIdsString = serviceIdsString.replaceAll("^\\[|\\]$", "");
+	    	// The regex "\\s*,\\s*" is safe as it splits the input string by commas with optional whitespace.
+	    // The limit of -1 ensures that trailing empty strings are not discarded.
+	    String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -1);
 
 
 
@@ -163,6 +182,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
 	        printing.printSomething( ERROR_PREFIX + e.getMessage());
 	    }
 	}
+
 
 
 
@@ -227,6 +247,8 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
         try (FileOutputStream fos = new FileOutputStream(venueBookFileName, false)) {
             fos.write(venueBookFileContent.toString().getBytes());
         }
+       Invoice.deleteInvoice(eventId2);
+        Venue.deleteVenueBooking(eventId2, venueBookFileName);
     }
        
 ///////////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -376,10 +398,14 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
    
 
     public static Event updateEventTime(Event eventt) {
-        printing.printSomething("Enter new event time:");
+        printing.printSomething("Enter new event time(HH:MM):");
         Scanner scannerTime = new Scanner(System.in);
-        String newTime=scannerTime.next();
-        eventt.setTime(newTime);
+        String newTime = scannerTime.next();
+        printing.printSomething("Enter 'am' or 'pm':");
+        String amPmChoice = scannerTime.next().toUpperCase();
+        String formattedTime = newTime + " " + amPmChoice;
+
+       eventt.setTime(formattedTime);
         return eventt;
     }
 
@@ -432,7 +458,7 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
  
     
     public  void updateEventVenue(String eventidd,Event eventt) throws IOException,NullPointerException, NumberFormatException{
-    	Functions.viewAllVenuesCustomer(VENUE_FILE_NAME);
+    	Venue.viewAllVenuesCustomer(VENUE_FILE_NAME);
         
         SimpleDateFormat dateFormatV = new SimpleDateFormat(FORMAT);
         String eventDateString = dateFormatV.format(eventt.getDate());
@@ -442,8 +468,8 @@ String[] serviceIdsArray = serviceIdsString.split(COMMA_WITH_WHITESPACE_REGEX, -
             printing.printSomething("Enter Venue name:");
             Scanner scannerN = new Scanner(System.in);
             venueName = scannerN.next();
-            if (Functions.checkAvailability(venueName,eventDateString )) {
-                if (Integer.parseInt(eventt.getAttendeeCount()) <= Functions.getVenueCapacity(venueName)) {
+            if ( Venue.checkAvailability(venueName,eventDateString )) {
+                if (Integer.parseInt(eventt.getAttendeeCount()) <=  Venue.getVenueCapacity(venueName)) {
                     venueAvailable = true;
                     eventt.setVenuename(venueName);
                 } else {
@@ -581,9 +607,9 @@ public String toString2() {
 	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
      
 	StringBuilder sb = new StringBuilder();
-  //  sb.append(CYAN_COLOR); // Set text color to cyan
+    sb.append(printing.ANSI_GRAY); // Set text color to cyan
     sb.append("Event Details:\n");
-   // sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
+    sb.append(printing.ANSI_YELLOW); // Set text color to yellow for attribute names
     sb.append("- UserID: ").append(userId).append("\n");
     sb.append("- Name: ").append(name).append("\n");
     sb.append("- Date: ").append(dateFormat.format(date)).append("\n");
@@ -595,7 +621,6 @@ public String toString2() {
     sb.append("- Category: ").append(category).append("\n");
     sb.append("- Event ID: ").append(eventId).append("\n");
    sb.append("- Service IDs: ").append(String.join(", ", serviceIds)).append("\n"); // Moved service IDs to the end
-
     
    Functions. updateServiceList();
    for (String serviceId : serviceIds) {
@@ -614,8 +639,8 @@ public String toString2() {
             }
         }
     }
-  //  sb.append(RESET_COLOR); // Reset text color
-    return sb.toString();
+   sb.append(Printing.ANSI_RESET); // Reset text color
+   return sb.toString();
 }
 
 
@@ -624,12 +649,12 @@ public String toString() {
 	 SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT);
      
 	StringBuilder sb = new StringBuilder();
-   // sb.append(MAGENTA_COLOR); // Set text color to magenta
+   sb.append(Printing.ANSI_MAGENTA); // Set text color to magenta
     sb.append("Name: ").append(name).append(", ")
       .append("Date: ").append(dateFormat.format(date)).append(", ")
       .append("User ID: ").append(userId).append(", ")
-      .append("Event ID: ").append(eventId).append(".").append("\n"); // Moved event ID to the end
-   // sb.append(RESET_COLOR); // Reset text color
+      .append("Event ID: ").append(eventId).append("."); // Moved event ID to the end
+     sb.append(Printing.ANSI_RESET); // Reset text color
 
     return sb.toString();
 }
